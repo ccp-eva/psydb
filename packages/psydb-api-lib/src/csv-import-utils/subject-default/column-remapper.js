@@ -21,7 +21,7 @@ var ColumnRemapper = ({ subjectCRT }) => {
         var { key, subChannel, pointer } = it;
         var mkey = (
             dups.includes(key) || staticMapping[key]
-            ? `subChannel.${key}`
+            ? `${subChannel}.${key}`
             : key
         );
         customMapping[mkey] = convertPointerToPath(pointer);

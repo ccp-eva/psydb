@@ -4,12 +4,13 @@ import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Alert } from '@mpieva/psydb-ui-layout';
 
 const IssueItemsAlert = (ps) => {
-    var { invalid, demapping = {}} = ps;
+    var { invalid, remapper, demapping = {}} = ps;
 
     return (
         <Alert variant='danger'>
             <InvalidItemList
                 items={ invalid }
+                remapper={ remapper }
                 demapping={ demapping }
             />
         </Alert>
@@ -17,7 +18,7 @@ const IssueItemsAlert = (ps) => {
 }
 
 const InvalidItemList = (ps) => {
-    var { style, className, items, demapping } = ps;
+    var { style, className, items, remapper, demapping } = ps;
     var translate = useUITranslation();
 
     return (
@@ -25,7 +26,7 @@ const InvalidItemList = (ps) => {
             <b>{ 'Invalid Rows' }</b>
             <div className='d-flex flex-column gapy-2'>
                 { items.map((it, ix) => {
-                    var bag = { key: ix, item: it, demapping };
+                    var bag = { key: ix, item: it, remapper, demapping };
                     return (it.replacementErrors ? (
                         <RefIssueItem { ...bag } />
                     ) : (
@@ -49,7 +50,7 @@ const CSVLine = (ps) => {
 }
 
 const IssueItemWrapper = (ps) => {
-    var { index, demapping, children } = ps;
+    var { index, remapper, demapping, children } = ps;
     return (
         <div className='d-flex'>
             <b style={{ display: 'block', minWidth: '70px' }}>
@@ -63,7 +64,7 @@ const IssueItemWrapper = (ps) => {
 }
 
 const RefIssueItem = (ps) => {
-    var { item, demapping } = ps;
+    var { item, remapper, demapping } = ps;
     var { index, csvLine, replacementErrors } = item;
     
     return (
@@ -72,7 +73,9 @@ const RefIssueItem = (ps) => {
             <div>
                 { replacementErrors.map((it, ix) => (
                     <ReplacementError
-                        key={ ix } error={ it } demapping={ demapping }
+                        key={ ix } error={ it }
+                        remapper={ remapper }
+                        demapping={ demapping }
                     />
                 ))}
             </div>
@@ -81,7 +84,7 @@ const RefIssueItem = (ps) => {
 }
 
 const DataIssueItem = (ps) => {
-    var { item, demapping } = ps;
+    var { item, remapper, demapping } = ps;
     var { index, csvLine, validationErrors } = item
     return (
         <IssueItemWrapper index={ index }>
@@ -89,7 +92,9 @@ const DataIssueItem = (ps) => {
             <div>
                 { validationErrors.map((it, ix) => (
                     <ValidationError
-                        key={ ix } error={ it } demapping={ demapping }
+                        key={ ix } error={ it }
+                        remapper={ remapper }
+                        demapping={ demapping }
                     />
                 ))}
             </div>
@@ -166,7 +171,7 @@ var demap = ({ dataPath, demapping }) => {
 }
 
 var ValidationError = (ps) => {
-    var { error, demapping } = ps;
+    var { error, remapper, demapping } = ps;
     var { dataPath, keyword, params, message } = error;
     
     console.log({ error });
@@ -178,35 +183,53 @@ var ValidationError = (ps) => {
             ? `${dataPath}.${missingProperty}`
             : missingProperty
         );
-        var cols = demap({ dataPath, demapping });
-        return cols.map(it => (
-            <div><b>{' - '}"{ it }" is required</b></div>
+        var cols = (
+            remapper
+            ? remapper.obj2csv({ path: dataPath })
+            : demap({ dataPath, demapping })
+        )
+        return cols.map((it, ix) => (
+            <div key={ ix }><b>{' - '}"{ it }" is required</b></div>
         ))
     }
     else if (keyword === 'additionalProperties') {
         var { additionalProperty } = params;
-        var cols = demap({ dataPath: additionalProperty, demapping });
-        return cols.map(it => (
-            <div><b>{' - '}"{ it }" is unknown</b></div>
+        var cols = (
+            remapper
+            ? remapper.obj2csv({ path: additionalProperty })
+            : demap({ dataPath: additionalProperty, demapping })
+        )
+        return cols.map((it, ix) => (
+            <div key={ ix }><b>{' - '}"{ it }" is unknown</b></div>
         ))
     }
     else {
-        var cols = demap({ dataPath, demapping });
-        return cols.map(it => (
-            <div><b>{' - '}"{ it }" { message }</b></div>
+        var cols = (
+            remapper
+            ? remapper.obj2csv({ path: dataPath })
+            : demap({ dataPath, demapping })
+        )
+        return cols.map((it, ix) => (
+            <div key={ ix }><b>{' - '}"{ it }" { message }</b></div>
         ))
     }
 }
 
 var ReplacementError = (ps) => {
-    var { error, demapping } = ps;
+    var { error, remapper, demapping } = ps;
     var { matchingItems, mapping } = error;
     var { csvColumn, value } = mapping;
-    
-    var cols = demap({ dataPath: csvColumn, demapping });
+   
+    // FIXME: csvCOlumn??
+    console.log({ csvColumn });
+    var cols = (
+        remapper
+        ? remapper.obj2csv({ path: csvColumn })
+        : demap({ dataPath: csvColumn, demapping })
+    )
 
-    return cols.map(it => (
-        <div><b>
+    return cols.map((it, ix) => (
+        <div key={ ix }><b>
             {' - '}"{ it }" reference value "{ value }"
             {' '}
             { matchingItems.length === 0 ? (

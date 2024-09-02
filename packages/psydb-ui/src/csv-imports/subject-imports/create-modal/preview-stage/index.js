@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 
 import { only, groupBy } from '@mpieva/psydb-core-utils';
+import { CSVColumnRemappers, CRTSettings } from '@mpieva/psydb-common-lib';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 import { IssueItemsAlert } from '@mpieva/psydb-ui-lib/csv-import';
@@ -133,14 +134,9 @@ const PreviewStage = (ps) => {
                 { !allOk && (
                     <IssueItemsAlert
                         invalid={ invalid }
-                        demapping={{
-                            'ethnologyId': [
-                                { key: 'scientific', type: 'object' },
-                                { key: 'state', type: 'object' },
-                                { key: 'custom', type: 'object' },
-                                { key: 'ethnologyId', type: 'scalar' },
-                            ]
-                        }}
+                        remapper={ CSVColumnRemappers.SubjectDefault({
+                            subjectCRT: CRTSettings({ data: crtSettings })
+                        })}
                     />
                 )}
                 <SplitPartitioned partitions={[ 4, 8 ]}>
