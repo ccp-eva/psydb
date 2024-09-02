@@ -4,22 +4,18 @@ import { only, groupBy } from '@mpieva/psydb-core-utils';
 import { CSVColumnRemappers } from '@mpieva/psydb-common-lib';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
-import {
-    Alert,
-    Button,
-    SmallFormFooter,
-    LoadingIndicator,
-    AsyncButton,
-} from '@mpieva/psydb-ui-layout';
+import { Alert, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
-import { IssueItemsAlert } from '@mpieva/psydb-ui-lib/csv-import';
+import {
+    ButtonHeader,
+    IssueItemsAlert
+} from '@mpieva/psydb-ui-lib/csv-import';
 
 import PreviewRecord from './preview-record';
-import ButtonHeader from './button-header';
 
 const PreviewStage = (ps) => {
     var { studyId, subjectType, formValues, gotoPrepare } = ps;
-    var { fileId, locationType } = formValues['$'];
+    var { fileId } = formValues['$'];
 
     var translate = useUITranslation();
 
@@ -28,18 +24,18 @@ const PreviewStage = (ps) => {
     ]});
 
     var commonPayload = {
-        fileId, studyId, subjectType, locationType,
+        fileId, studyId, subjectType
     }
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.previewCSVExperimentImport({
-            importType: 'manual-only-participation',
+            importType: 'online-survey',
             ...commonPayload,
             extraAxiosConfig: { disableErrorModal: [ 409 ]}
         })
     ), []);
 
     var send = useSend(() => ({
-        type: 'csv-import/experiment/create-manual-only-participation',
+        type: 'csv-import/experiment/create-online-survey',
         payload: { ...commonPayload }
     }), { ...triggerBag })
 
@@ -90,7 +86,7 @@ const PreviewStage = (ps) => {
                 { !allOk && (
                     <IssueItemsAlert invalid={ invalid } remapper={
                         CSVColumnRemappers.Experiment
-                        .ManualOnlyParticipation()
+                        .OnlineSurvey()
                     } />
                 )}
                 { (allOk || canForceImport) && (
@@ -110,7 +106,5 @@ const PreviewStage = (ps) => {
         )
     }
 }
-
-var filterTruthy = (ary) => ary.filter(it => !!it);
 
 export default PreviewStage;
