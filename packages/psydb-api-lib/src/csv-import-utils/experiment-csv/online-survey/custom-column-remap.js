@@ -1,15 +1,11 @@
 'use strict';
+var { CSVColumnRemappers } = require('@mpieva/psydb-common-lib');
 
 var customColumnRemap = (col) => {
-    if (col === 'date') {
-        return 'date';
-    }
-    if (col === 'time') {
-        return 'time';
-    }
-    if (col === 'subject') {
-        return 'subjectData[0].subjectId';
-    }
+    return (
+        CSVColumnRemappers.Experiment.OnlineSurvey()
+        .csv2obj({ colkey: col })
+    );
 }
 
 module.exports = customColumnRemap;

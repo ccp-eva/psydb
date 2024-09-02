@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { only, groupBy } from '@mpieva/psydb-core-utils';
+import { CSVColumnRemappers } from '@mpieva/psydb-common-lib';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 import {
@@ -11,9 +12,10 @@ import {
     AsyncButton,
 } from '@mpieva/psydb-ui-layout';
 
+import { IssueItemsAlert } from '@mpieva/psydb-ui-lib/csv-import';
+
 import PreviewRecord from './preview-record';
 import ButtonHeader from './button-header';
-import IssueItemsAlert from './issue-items-alert';
 
 const PreviewStage = (ps) => {
     var { studyId, subjectType, formValues, gotoPrepare } = ps;
@@ -86,7 +88,10 @@ const PreviewStage = (ps) => {
                 />
                 <hr />
                 { !allOk && (
-                    <IssueItemsAlert invalid={ invalid } />
+                    <IssueItemsAlert invalid={ invalid } remapper={
+                        CSVColumnRemappers.Experiment
+                        .ManualOnlyParticipation()
+                    } />
                 )}
                 { (allOk || canForceImport) && (
                     <div className='d-flex flex-column gapy-2'>
