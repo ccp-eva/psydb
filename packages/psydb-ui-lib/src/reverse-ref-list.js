@@ -1,6 +1,7 @@
 import React from 'react';
 import { groupBy } from '@mpieva/psydb-core-utils';
 import enums from '@mpieva/psydb-schema-enums';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 var collectionUILinks = {
     'subject': 'subjects',
@@ -18,6 +19,7 @@ var collectionUILinks = {
 
 export const ReverseRefList = (ps) => {
     var { reverseRefs, shouldInlineItems = false } = ps;
+    var translate = useUITranslation();
 
     var groupedReverseRefs = groupBy({
         items: reverseRefs,
@@ -46,8 +48,8 @@ export const ReverseRefList = (ps) => {
         Object.keys(groupedReverseRefs).map(collection => {
             var collectionLabel = (
                 collection === '_participation'
-                ? 'Studien-Teilnahmen'
-                : enums.collection.mapping[collection]
+                ? translate('Study Participations')
+                : enums.collections.mapping[collection]
             );
             var collectionReverseRefs = groupedReverseRefs[collection];
             return (
