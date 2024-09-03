@@ -13,9 +13,9 @@ var read = async (context, next) => {
     var { db, request, permissions } = context;
 
     // TODO: permissions
-    if (!permissions.isRoot()) {
-        throw new ApiError(403)
-    }
+    //if (!permissions.isRoot()) {
+    //    throw new ApiError(403)
+    //}
 
     validateOrThrow({
         schema: Schema(),

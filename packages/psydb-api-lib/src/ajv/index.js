@@ -48,6 +48,7 @@ var AjvWrapper = (bag = {}) => {
     ajv.addFormat('nanoid-default', mergedFormats.nanoidDefault);
     ajv.addFormat('phone-number', mergedFormats.germanPhoneNumber);
     ajv.addFormat('hex-color', mergedFormats.hexColor);
+    ajv.addFormat('time-hm', mergedFormats.timeHM);
     
     ajvKeywords(ajv, [
         'uniqueItemProperties',

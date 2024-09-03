@@ -1,9 +1,9 @@
 'use strict';
 var { ejson } = require('@mpieva/psydb-core-utils');
+var { CSVColumnRemappers } = require('@mpieva/psydb-common-lib');
 var { runDefaultPipeline } = require('../common');
 
 var CSVSchema = require('./csv-schema');
-var ColumnRemapper = require('./column-remapper');
 var transformPrepared = require('./transform-prepared');
 
 var runPipeline = async (bag) => {
@@ -16,7 +16,9 @@ var runPipeline = async (bag) => {
     } = bag;
 
     var schema = CSVSchema({ subjectCRT });
-    var customColumnRemap = ColumnRemapper({ subjectCRT });
+    var customColumnRemap = (
+        CSVColumnRemappers.SubjectDefault({ subjectCRT }).csv2obj
+    );
 
     var { pipelineData, preparedObjects } = await runDefaultPipeline({
         db, csvData, schema, customColumnRemap, unmarshalClientTimezone

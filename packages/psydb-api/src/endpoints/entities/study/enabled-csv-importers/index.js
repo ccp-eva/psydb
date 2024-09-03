@@ -39,6 +39,12 @@ var enabledCSVImporters = async (context, next) => {
             if (type === 'apestudies-wkprc-default') {
                 enabledImporters.push('wkprc-evapecognition')
             }
+            if (type === 'manual-only-participation') {
+                enabledImporters.push('manual-only-participation')
+            }
+            if (type === 'online-survey') {
+                enabledImporters.push('online-survey')
+            }
         }
     }
 

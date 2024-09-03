@@ -9,7 +9,9 @@ var executeSystemEvents = async (context) => {
         dispatch, dispatchProps
     } = context;
 
-    var { timezone } = message;
+    var { timezone, payload } = message;
+    var { subjectType  } = payload;
+
     var { study, file, pipelineOutput } = cache.get();
 
     var { pipelineData, transformed } = pipelineOutput;
@@ -17,13 +19,14 @@ var executeSystemEvents = async (context) => {
 
     var now = new Date();
     var csvImportId = await createId();
-    await db.collection('csvImport').insert({
+    await db.collection('csvImport').insertOne({
         _id: csvImportId,
         type: 'experiment/wkprc-apestudies-default',
         createdBy: personnelId,
         createdAt: now,
         fileId: file._id,
         studyId: study._id,
+        subjectType,
         pipelineData,
     });
 

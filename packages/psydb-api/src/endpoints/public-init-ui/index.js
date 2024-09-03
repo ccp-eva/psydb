@@ -39,10 +39,13 @@ var publicInitUI = async (context, next) => {
         '/twoFactorAuth',
         '/branding',
         '/disableLogoOverlay',
+
         '/dev_enableStagingBanner',
         '/dev_enableDevPanel',
         '/dev_copyNoticeGreyscale',
         '/dev_enableForeignIdRefLinkInForms',
+        '/dev_enableCSVSubjectImport',
+        '/dev_enableCSVParticipationImport'
     ]});
 
     var configHashSum = '';

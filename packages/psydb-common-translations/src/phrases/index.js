@@ -324,6 +324,10 @@ module.exports = [
         de: 'T-Alter'
     },
     {
+        en: 'Study Participations',
+        de: 'Studien-Teilnahmen'
+    },
+    {
         en: 'Part. Stud.',
         de: 'Teilg. Stud.'
     },

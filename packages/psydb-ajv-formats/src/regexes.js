@@ -9,6 +9,8 @@ module.exports = {
     date: /^(\d\d\d\d)-(\d\d)-(\d\d)$/,
     time: /^(\d\d):(\d\d):(\d\d)(\.\d+)?(z|[+-]\d\d:\d\d)?$/i,
 
+    timeHM: /^([0-1][0-9]|[2][0-3]):[0-5][0-9]$/,
+
     germanPhoneNumber: rx(`
        ^
        (

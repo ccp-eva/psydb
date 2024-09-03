@@ -518,7 +518,7 @@ var createRouting = (bag = {}) => {
         endpoint: endpoints.file.read
     }));
     
-    router.post('/csv-import/preview',
+    router.post('/csv-import/preview/wkprc-apestudies-default',
         withSelfAuth(),
         withPermissions(),
         withKoaBody(),
@@ -530,9 +530,36 @@ var createRouting = (bag = {}) => {
     router.post('/csv-import/experiment/read', ...withPostStages({
         endpoint: endpoints.csvImport.experiment.read
     }));
-    router.post('/csv-import/experiment/preview', ...withPostStages({
-        endpoint: endpoints.csvImport.experiment.preview
-    }));
+    router.post(
+        '/csv-import/experiment/related-experiments',
+        ...withPostStages({
+            endpoint: endpoints.csvImport.experiment.relatedExperiments
+        })
+    );
+    router.post(
+        '/csv-import/experiment/preview/wkprc-apestudies-default',
+        ...withPostStages({
+            endpoint: endpoints.csvImport.experiment.preview[
+                'wkprc-apestudies-default'
+            ]
+        })
+    );
+    router.post(
+        '/csv-import/experiment/preview/manual-only-participation',
+        ...withPostStages({
+            endpoint: endpoints.csvImport.experiment.preview[
+                'manual-only-participation'
+            ]
+        })
+    );
+    router.post(
+        '/csv-import/experiment/preview/online-survey',
+        ...withPostStages({
+            endpoint: endpoints.csvImport.experiment.preview[
+                'online-survey'
+            ]
+        })
+    );
 
     router.post('/csv-import/subject/search', ...withPostStages({
         endpoint: endpoints.csvImport.subject.search
@@ -540,6 +567,12 @@ var createRouting = (bag = {}) => {
     router.post('/csv-import/subject/read', ...withPostStages({
         endpoint: endpoints.csvImport.subject.read
     }));
+    router.post(
+        '/csv-import/subject/related-subjects',
+        ...withPostStages({
+            endpoint: endpoints.csvImport.subject.relatedSubjects
+        })
+    );
     router.post('/csv-import/subject/preview', ...withPostStages({
         endpoint: endpoints.csvImport.subject.preview
     }));
@@ -550,6 +583,9 @@ var createRouting = (bag = {}) => {
         endpoint: endpoints.researchGroup.searchMetadata
     }));
 
+    router.post('/study/read', ...withPostStages({
+        endpoint: endpoints.study.read
+    }));
     router.post('/study/read-many', ...withPostStages({
         endpoint: endpoints.study.readMany
     }));
