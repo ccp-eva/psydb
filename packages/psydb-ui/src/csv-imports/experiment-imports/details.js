@@ -40,10 +40,10 @@ const Details = (ps) => {
                     <SplitPartitioned partitions={[ 1,1 ]}>
                         <div>
                             <CSVImport.StudyId __useNewRelated />
-                            <CSVImport.CreatedAt />
+                            <CSVImport.Type />
                         </div>
                         <div>
-                            <CSVImport.Type />
+                            <CSVImport.CreatedAt />
                             <CSVImport.CreatedBy __useNewRelated />
                         </div>
                     </SplitPartitioned>
