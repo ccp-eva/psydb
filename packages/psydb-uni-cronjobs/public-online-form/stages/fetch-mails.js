@@ -39,7 +39,7 @@ var fetchMails = async (context, next) => {
             });
         }
   
-        debug('fetched mails:', preprocessedMails.length);
+        console.log('fetched mails:', preprocessedMails.length);
         context.mails = preprocessedMails;
     }
     finally {
