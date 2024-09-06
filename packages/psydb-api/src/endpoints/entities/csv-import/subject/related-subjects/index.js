@@ -53,6 +53,10 @@ var relatedExperiments = async (context, next) => {
             csvImportId
         },
         sort: { 'sequenceNumber': 1 },
+        collation: {
+            locale: 'de@collation=phonebook',
+            numericOrdering: true
+        },
         fetchRelated: false
     });
 
