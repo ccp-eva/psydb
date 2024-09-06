@@ -164,4 +164,16 @@ describe('csv-import/subject/create-default fs-malaysia', function () {
             custom: { name: 'Alice' }
         });
     });
+    
+    it('full import with 1000 lines', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({ db, buffer: (
+            loadCSV('subject-import/fs-malaysia-1000-subjects')
+        )});
+
+        await sendMessage({
+            type: 'csv-import/subject/create-default',
+            timezone: 'UTC',
+            payload: jsonify({ researchGroupId, subjectType, fileId })
+        });
+    });
 })
