@@ -59,7 +59,7 @@ const Item = (ps) => {
     var { _id, type, sequenceNumber, _recordLabel } = record;
 
     var type = record.type;
-    var uri = `/subject/${type}/${_id}`;
+    var uri = `/subjects/${type}/${_id}`;
 
     return (
         <>
