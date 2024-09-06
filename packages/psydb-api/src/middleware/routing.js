@@ -577,7 +577,10 @@ var createRouting = (bag = {}) => {
         endpoint: endpoints.csvImport.subject.preview
     }));
 
-
+    
+    router.post('/statistics/study', ...withPostStages({
+            endpoint: endpoints.statistics.study
+    }));
 
     router.post('/researchGroup/search-metadata', ...withPostStages({
         endpoint: endpoints.researchGroup.searchMetadata

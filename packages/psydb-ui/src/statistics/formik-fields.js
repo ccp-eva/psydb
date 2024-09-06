@@ -1,7 +1,7 @@
 import React from 'react';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
-    withField,
+    withField, withFieldArray,
     Fields as CoreFields
 } from '@mpieva/psydb-ui-lib';
 
@@ -56,6 +56,12 @@ const DateOnlyServerSideInterval = withField({ Control: (ps) => {
         </div>
     )
 }})
+
+const LabMethodKeyList = withFieldArray({
+    FieldComponent: CoreFields.LabMethodKey,
+    ArrayItemWrapper: 'ScalarArrayItemWrapper',
+    defaultItemValue: (ps) => '',
+})
 
 export default {
     ...CoreFields,

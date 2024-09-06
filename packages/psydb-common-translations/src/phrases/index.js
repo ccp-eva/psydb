@@ -466,6 +466,10 @@ module.exports = [
         de: 'Altersfenster'
     },
     {
+        en: 'Age Ranges',
+        de: 'Altersfenster'
+    },
+    {
         en: 'Desired Time Range',
         de: 'Gewünschter Zeitraum'
     },
@@ -537,6 +541,10 @@ module.exports = [
     {
         en: 'Shorthand',
         de: 'Kürzel'
+    },
+    {
+        en: 'Scientist',
+        de: 'Wissenschaftler:in'
     },
     {
         en: 'Scientists',
@@ -1097,6 +1105,16 @@ module.exports = [
     },
     {
         internal: '_extended_search_results_tab',
+        en: 'Result List',
+        de: 'Ergebnisliste',
+    },
+    {
+        internal: '_statistics_filters_tab',
+        en: 'Search Conditions',
+        de: 'Suchbedingungen',
+    },
+    {
+        internal: '_statistics_results_tab',
         en: 'Result List',
         de: 'Ergebnisliste',
     },

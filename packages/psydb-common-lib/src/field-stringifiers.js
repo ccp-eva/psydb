@@ -86,6 +86,7 @@ var AgeFrame = (value) => {
 
 var AgeFrameBoundary = (value) => {
     var { years, months, days } = value;
+    console.log(years);
     return `${years}/${months}/${days}`;
 }
 

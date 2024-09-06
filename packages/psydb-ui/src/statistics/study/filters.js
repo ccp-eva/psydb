@@ -1,6 +1,6 @@
 import React from 'react';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { Button } from '@mpieva/psydb-ui-layout';
+import { Button, SmallFormFooter } from '@mpieva/psydb-ui-layout';
 import { FormBox, DefaultForm } from '@mpieva/psydb-ui-lib';
 import Fields from '../formik-fields';
 
@@ -13,8 +13,8 @@ const StudyStatisticsFilters = () => {
                 dataXPath='$.runningPeriodOverlap'
                 label={ translate('Date Range') }
             />
-            <Fields.LabMethodKey
-                dataXPath='$.labMethod'
+            <Fields.LabMethodKeyList
+                dataXPath='$.labMethodKeys'
                 label={ translate('Lab Workflow') }
             />
             <Fields.ForeignId
@@ -31,6 +31,10 @@ const StudyStatisticsFilters = () => {
                 dataXPath='$.ageFrameIntervalOverlap'
                 label={ translate('Age Range') }
             />
+            <hr />
+            <SmallFormFooter>
+                <Button type='submit'>Weiter</Button>
+            </SmallFormFooter>
         </FormBox>
     )
 }
