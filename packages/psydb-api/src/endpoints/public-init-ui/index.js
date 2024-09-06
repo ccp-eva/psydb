@@ -45,7 +45,8 @@ var publicInitUI = async (context, next) => {
         '/dev_copyNoticeGreyscale',
         '/dev_enableForeignIdRefLinkInForms',
         '/dev_enableCSVSubjectImport',
-        '/dev_enableCSVParticipationImport'
+        '/dev_enableCSVParticipationImport',
+        '/dev_enableStatistics',
     ]});
 
     var configHashSum = '';

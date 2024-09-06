@@ -32,4 +32,6 @@ module.exports = {
     
     dev_enableCSVSubjectImport: true,
     dev_enableCSVParticipationImport: true,
+    
+    dev_enableStatistics: true,
 }
