@@ -44,10 +44,7 @@ const SideNav = (ps) => {
             >
                 <div className='navbar-nav'>
                     
-                    {(
-                        dev_enableCSVSubjectImport
-                        || dev_enableCSVParticipationImport
-                    ) && (
+                    { dev_enableStatistics && (
                         <WhenAllowed isRoot>
                             <Link to='/statistics'><b>
                                 { translate('Statistics') }
