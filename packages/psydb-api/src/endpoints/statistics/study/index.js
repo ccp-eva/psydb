@@ -1,7 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:statistics:study');
 
-var { only, groupBy, unique } = require('@mpieva/psydb-core-utils');
+var { only, keyBy, groupBy, unique } = require('@mpieva/psydb-core-utils');
 var {
     ResponseBody,
     validateOrThrow,
@@ -71,13 +71,15 @@ var endpoint = async (context, next) => {
         var ageFrames = ageFramesForStudy[studyId] || [];
         var labMethods = labMethodsForStudy[studyId] || [];
 
-        aggregateItems.push({
-            _id: studyId,
-            type,
-            shorthand,
-            ageFrames,
-            labMethods: unique(labMethods)
-        })
+        if (labMethods.length > 0) {
+            aggregateItems.push({
+                _id: studyId,
+                type,
+                shorthand,
+                ageFrames,
+                labMethods: unique(labMethods)
+            })
+        }
     }
 
     context.body = ResponseBody({ data: {
@@ -107,18 +109,30 @@ var fetchGroupedAgeFrames = async (bag) => {
 
 var fetchGroupedLabMethods = async (bag) => {
     var { db, studies, filters } = bag;
+    var { labMethodKeys = {}} = filters;
+    var { logicGate, values = [] } = labMethodKeys;
     
-    var labMethods = await aggregateToArray({
-        db, experimentVariantSetting: [
+    var groups = await aggregateToArray({
+        db, experimentVariantSetting: SmartArray([
             { $match: {
                 studyId: { $in: studies.map(it => it._id) }
-            }}
-        ]
+            }},
+            { $group: {
+                _id: '$studyId',
+                labMethods: { $push: '$type' }
+            }},
+
+            (( logicGate && values.length > 0) && { $match: {
+                [`$${logicGate}`]: values.map(it => ({
+                    'labMethods': it
+                }))
+            }})
+        ])
     });
 
-    return groupBy({
-        items: labMethods, byProp: 'studyId',
-        transform: (it) => it.type
+    return keyBy({
+        items: groups, byProp: '_id',
+        transform: (it) => it.labMethods
     });
 }
 

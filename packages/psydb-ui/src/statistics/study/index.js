@@ -48,6 +48,7 @@ const Inner = (ps) => {
     var { onSwitchTab } = ps;
     var { path } = useRouteMatch();
     var { values } = useFormikContext();
+    console.log(values);
 
     var handleSwitchTab = ({ nextTab }) => {
         onSwitchTab({ nextTab, formData: values['$'] });

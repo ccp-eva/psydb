@@ -13,7 +13,7 @@ const StudyStatisticsFilters = () => {
                 dataXPath='$.runningPeriodOverlap'
                 label={ translate('Date Range') }
             />
-            <Fields.LabMethodKeyList
+            <Fields.LabMethodKeyListWithLogicGate
                 dataXPath='$.labMethodKeys'
                 label={ translate('Lab Workflow') }
             />

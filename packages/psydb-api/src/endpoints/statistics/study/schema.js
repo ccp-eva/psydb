@@ -6,6 +6,8 @@ var {
     LabMethodKey,
     ForeignId,
     AgeFrameBoundary,
+    LogicGate,
+    ClosedObject,
 } = require('@mpieva/psydb-schema-fields');
 
 var Schema = () => {
@@ -14,8 +16,11 @@ var Schema = () => {
             'start': DateOnlyServerSide({ isNullable: true }),
             'end': DateOnlyServerSide({ isNullable: true }),
         }),
-        'labMethodKeys': DefaultArray({
-            items: LabMethodKey(),
+        'labMethodKeys': ClosedObject({
+            'logicGate': LogicGate(),
+            'values': DefaultArray({
+                items: LabMethodKey(),
+            })
         }),
         'researchGroupId': ForeignId({
             collection: 'researchGroup', isNullable: true

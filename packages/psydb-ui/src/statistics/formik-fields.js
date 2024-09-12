@@ -61,10 +61,46 @@ const LabMethodKeyList = withFieldArray({
     FieldComponent: CoreFields.LabMethodKey,
     ArrayItemWrapper: 'ScalarArrayItemWrapper',
     defaultItemValue: (ps) => '',
+});
+
+const withLogicGate = (bag) => {
+    var { FieldComponent, defaultItemValue } = bag;
+
+    var ValueList = withFieldArray({
+        FieldComponent,
+        ArrayItemWrapper: 'ScalarArrayItemWrapper',
+        defaultItemValue,
+    });
+
+    var Complex = withField({ Control: (ps) => {
+        var { dataXPath } = ps;
+        var translate = useUITranslation();
+
+        return (
+            <div className='border pt-3 px-3'>
+                <CoreFields.LogicGate
+                    label={ translate('Logic Operation') }
+                    dataXPath={ `${dataXPath}.logicGate` }
+                />
+                <ValueList
+                    label={ translate('Values') }
+                    dataXPath={ `${dataXPath}.values` }
+                />
+            </div>
+        )
+    }})
+
+    return Complex;
+}
+
+const LabMethodKeyListWithLogicGate = withLogicGate({
+    FieldComponent: CoreFields.LabMethodKey,
+    defaultItemValue: (ps) => '',
 })
 
 export default {
     ...CoreFields,
     AgeFrameInterval,
-    DateOnlyServerSideInterval
+    DateOnlyServerSideInterval,
+    LabMethodKeyListWithLogicGate,
 }

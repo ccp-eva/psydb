@@ -143,7 +143,11 @@ const sanitizeFormData = (raw = {}) => {
     ]});
 
     if (raw.labMethodKeys) {
-        out.labMethodKeys = raw.labMethodKeys.filter(it => !!it);
+        var { logicGate, values = [] } = raw.labMethodKeys;
+        out.labMethodKeys = {
+            logicGate,
+            values: values.filter(it => !!it)
+        }
     }
     // TODO: age frame overlap
     return out;
