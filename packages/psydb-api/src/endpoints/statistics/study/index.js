@@ -29,7 +29,8 @@ var endpoint = async (context, next) => {
     
     validateOrThrow({
         schema: Schema(),
-        payload: request.body
+        payload: request.body,
+        unmarshalClientTimezone: i18n.timezone
     });
 
     var {
