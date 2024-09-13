@@ -54,7 +54,9 @@ const ParamWrapper = (ps) => {
         window.scrollTo(0, 0);
     }
 
-    var initialValues = decodedFormData || {};
+    var initialValues = decodedFormData || {
+        labMethodKeys: { logicGate: 'and' }
+    };
     return (
         <PageWrappers.Level2
             title={ translate('Study Statistics') }
