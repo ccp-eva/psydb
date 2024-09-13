@@ -11,6 +11,10 @@ var {
 } = require('@mpieva/psydb-api-lib');
 
 var Schema = require('./schema');
+var {
+    MatchRunningPeriodOverlapStage,
+    MatchAgeFrameOverlapStage
+} = require('./db-helpers');
 
 var endpoint = async (context, next) => {
     var { db, permissions, request } = context;
@@ -92,14 +96,39 @@ var endpoint = async (context, next) => {
 var fetchGroupedParticipations = async (bag) => {
 }
 
+
+var sanitizeAgeFrameEdge = (ageFrameEdge) => {
+    var { years, months, days } = ageFrameEdge;
+
+    years = years || 0;
+    months = months || 0;
+    days = days || 0;
+
+    return { years, months, days }
+}
+
 var fetchGroupedAgeFrames = async (bag) => {
     var { db, studies, filters } = bag;
+    var { ageFrameIntervalOverlap = {}} = filters;
+    var { start, end } = ageFrameIntervalOverlap;
 
-    var ageFrames = await aggregateToArray({ db, ageFrame: [
+    console.log({ start, end });
+
+    if (start) {
+        start = sanitizeAgeFrameEdge(start);
+    }
+    if (end) {
+        end = sanitizeAgeFrameEdge(end);
+    }
+
+    var ageFrames = await aggregateToArray({ db, ageFrame: SmartArray([
         { $match: {
             studyId: { $in: studies.map(it => it._id) }
-        }}
-    ]});
+        }},
+        ((start && end) && MatchAgeFrameOverlapStage({
+            ageFrame: ageFrameIntervalOverlap
+        }))
+    ])});
     
     return groupBy({
         items: ageFrames, byProp: 'studyId',
@@ -134,32 +163,6 @@ var fetchGroupedLabMethods = async (bag) => {
         items: groups, byProp: '_id',
         transform: (it) => it.labMethods
     });
-}
-
-var MatchRunningPeriodOverlapStage = (bag) => {
-    var { interval } = ps;
-    var { start, end } = interval;
-    var path = 'state.runningPeriod';
-
-    return { $match: { $or: [
-        IntervalIncludes({ path, value: start }),
-        IntervalIncludes({ path, value: end }),
-        IntervalWithinOurs({ path, interval})
-    ]}}
-}
-
-var IntervalIncludes = ({ path, value }) => {
-    return { $and: [
-        { [`${path}.start`]: { $lte: value }},
-        { [`${path}.end`]: { $gte: value }},
-    ]}
-}
-
-var IntervalWithinOurs = ({ path, interval }) => {
-    return { $and: [
-        { [`${path}.start`]: { $gte: interval.start }},
-        { [`${path}.end`]: { $lte: interval.end }},
-    ]}
 }
 
 module.exports = endpoint;

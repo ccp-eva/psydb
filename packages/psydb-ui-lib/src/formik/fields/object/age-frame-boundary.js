@@ -6,7 +6,7 @@ import { InputGroup, Form } from '@mpieva/psydb-ui-layout';
 
 const PartField = withField({
     type: 'number',
-    fakeDefault: 999, // FIXME: Infinity breaks formik
+    fakeDefault: null, // FIXME: Infinity breaks formik
     Control: (ps) => {
         var { isInvalid, formikField, disabled, min = 0, max, step = 1 } = ps;
         return (

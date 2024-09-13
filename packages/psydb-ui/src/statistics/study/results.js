@@ -149,6 +149,24 @@ const sanitizeFormData = (raw = {}) => {
             values: values.filter(it => !!it)
         }
     }
+
+    if (raw.ageFrameIntervalOverlap) {
+        var { start, end } = raw.ageFrameIntervalOverlap;
+
+        out.ageFrameIntervalOverlap = {
+            start: {
+                years: start.years || 0,
+                months: start.months || 0,
+                days: start.days || 0,
+            },
+            end: {
+                years: start.years || 999999,
+                months: start.months || 0,
+                days: start.days || 0,
+            },
+        }
+    }
+
     // TODO: age frame overlap
     return out;
 }
