@@ -348,6 +348,20 @@ module.exports = [
         de: 'Proband:innen-Statistiken'
     },
     {
+        en: 'Logic Operation',
+        de: 'Logische Verknüpfung'  
+    },
+    {
+        internal: '_logicGate_and',
+        en: 'AND',
+        de: 'UND'
+    },
+    {
+        internal: '_logicGate_or',
+        en: 'OR',
+        de: 'ODER'
+    },
+    {
         internal: '_studyParticipations_short',
         en: 'P.',
         de: 'T.',
