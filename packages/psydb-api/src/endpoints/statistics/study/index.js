@@ -54,11 +54,6 @@ var endpoint = async (context, next) => {
         })),
     ])});
 
-    // TODO
-    var participationsForStudy = await fetchGroupedParticipations({
-        db, studies
-    });
-
     var ageFramesForStudy = await fetchGroupedAgeFrames({
         db, studies, filters: { ageFrameIntervalOverlap }
     });
@@ -67,33 +62,84 @@ var endpoint = async (context, next) => {
         db, studies, filters: { labMethodKeys }
     });
 
-    var aggregateItems = [];
+    var prefiltered = [];
     for (var it of studies) {
         var { _id: studyId, type, state } = it;
         var { shorthand } = state;
 
-        var ageFrames = ageFramesForStudy[studyId] || [];
-        var labMethods = labMethodsForStudy[studyId] || [];
+        var matchingAgeFrames = ageFramesForStudy[studyId] || [];
+        var matchingLabMethods = labMethodsForStudy[studyId] || [];
 
-        if (labMethods.length > 0) {
-            aggregateItems.push({
+        var shouldInclude = (
+            matchingAgeFrames.length > 0
+            && matchingLabMethods.length > 0
+        );
+
+        if (shouldInclude) {
+            prefiltered.push({
                 _id: studyId,
                 type,
                 shorthand,
-                ageFrames,
-                labMethods: unique(labMethods)
+                ageFrames: matchingAgeFrames,
+                labMethods: unique(matchingLabMethods)
             })
         }
     }
 
+    var participationCountsForStudy = await fetchGroupedParticipationCounts({
+        db, studyIds: prefiltered.map(it => it._id)
+    });
+
+    var final = [];
+    for (var it of prefiltered) {
+        var { _id: studyId } = it;
+        var participationCounts = participationCountsForStudy[studyId];
+
+        if (participationCounts?.total > 0) {
+            final.push({ ...it, participationCounts });
+        }
+    }
+
     context.body = ResponseBody({ data: {
-        aggregateItems,
+        aggregateItems: final
     }})
 
     await next();
 }
 
-var fetchGroupedParticipations = async (bag) => {
+var fetchGroupedParticipationCounts = async (bag) => {
+    var { db, studyIds } = bag;
+    
+    var counts = await aggregateToArray({ db, experiment: SmartArray([
+        { $match: {
+            'state.studyId': { $in: studyIds },
+            'state.subjectData.participationStatus': 'participated',
+        }},
+
+        { $unwind: '$state.subjectData' },
+        { $match: {
+            'state.subjectData.participationStatus': 'participated',
+        }},
+        { $group: {
+            '_id': { studyId: '$state.studyId', type: '$type' },
+            'type': { $first: { $ifNull: [ '$realType', '$type'] }},
+            'count': { $sum: 1 }
+        }},
+        { $group: {
+            '_id': '$_id.studyId',
+            'total': { $sum: '$count' },
+            'byType': { $push: { 'k': '$type', 'v': '$count' }}
+        }},
+        { $project: {
+            'total': true,
+            'byType': { $arrayToObject: '$byType' }
+        }}
+    ])});
+
+    return keyBy({
+        items: counts, byProp: '_id',
+        transform: (it) => ({ total: it.total, ...it.byType })
+    });
 }
 
 
@@ -111,8 +157,6 @@ var fetchGroupedAgeFrames = async (bag) => {
     var { db, studies, filters } = bag;
     var { ageFrameIntervalOverlap = {}} = filters;
     var { start, end } = ageFrameIntervalOverlap;
-
-    console.log({ start, end });
 
     if (start) {
         start = sanitizeAgeFrameEdge(start);

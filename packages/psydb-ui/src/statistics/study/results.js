@@ -1,7 +1,4 @@
 import React from 'react';
-import { Base64 } from 'js-base64';
-import { useParams, useRouteMatch } from 'react-router-dom';
-
 import { omit } from '@mpieva/psydb-core-utils';
 import { fieldStringifiers } from '@mpieva/psydb-common-lib';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
@@ -13,32 +10,14 @@ import {
     StudyIconButton,
 } from '@mpieva/psydb-ui-layout';
 
-const maybeDecodeBase64 = (encoded, { isJson = true } = {}) => {
-    var decoded = undefined;
-    try {
-        if (encoded) {
-            decoded = Base64.decode(encoded);
-            if (isJson) {
-                decoded = JSON.parse(decoded);
-            }
-            console.log('decoded base64', decoded);
-        }
-    }
-    catch (e) {
-        console.log(e);
-    }
-    return decoded;
-}
-
-const StudyStatisticsResults = () => {
-    var { b64 } = useParams();
-    var decodedFormData = maybeDecodeBase64(b64, { isJson: true });
+const StudyStatisticsResults = (ps) => {
+    var { formData } = ps;
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.getAxios().post('/api/statistics/study', {
-            ...sanitizeFormData(decodedFormData),
+            ...sanitizeFormData(formData),
         })
-    ), [ b64 ]);
+    ), [ JSON.stringify(formData) ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
@@ -76,6 +55,8 @@ const TableHead = (ps) => {
     return (
         <thead><tr>
             <th>{ translate('Shorthand') }</th>
+            {/*<th>{ translate('_studyParticipations_short') }</th>*/}
+            <th>N</th>
             <th>{ translate('Lab Workflows') }</th>
             <th>{ translate('Age Ranges') }</th>
             <th></th>
@@ -85,31 +66,63 @@ const TableHead = (ps) => {
 
 const ResultTable = (ps) => {
     var { aggregateItems } = ps;
+    var translate = useUITranslation(); 
+
+    var studyCount = aggregateItems.length;
+    var participationTotal = aggregateItems.reduce((acc, it) => (
+        acc + it.participationCounts.total
+    ), 0);
+
     return (
-        <Table>
-            <TableHead { ...ps } />
-            <tbody>
-                { aggregateItems.map((it) => (
-                    <Row item={ it } />
-                ))}
-            </tbody>
-        </Table>
+        <>
+            <div className={`
+                bg-light pt-2 pb-2 pr-3 pl-3
+                d-flex align-items-center
+            `}>
+                <span style={{ width: '200px' }}>
+                    <b>{ translate('Studies') }:</b>
+                    {' '}
+                    { studyCount }
+                </span>
+                <span style={{ width: '200px' }}>
+                    <b>{ translate('Study Participations') }:</b>
+                    {' '}
+                    { participationTotal }
+                </span>
+            </div>
+
+            <Table>
+                <TableHead { ...ps } />
+                <tbody>
+                    { aggregateItems.map((it) => (
+                        <Row key={ it._id } item={ it } />
+                    ))}
+                </tbody>
+            </Table>
+        </>
     );
 }
 
 var Row = (ps) => {
     var { item } = ps;
-    var { _id, type, shorthand, labMethods, ageFrames } = item;
+    var {
+        _id, type, shorthand,
+        labMethods, ageFrames, participationCounts
+    } = item;
 
     var translate = useUITranslation(); 
     var uri = `/studies/${type}/${_id}`;
 
     return (
-        <tr key={ _id }>
+        <tr>
             <td>{ shorthand }</td>
-            <td>{ labMethods.map(l => (
-                translate(`_labWorkflow_${l}`)
-            )).sort().join(', ') }</td>
+            <td>{ participationCounts.total }</td>
+            <td>
+                <LabMethods
+                    types={ labMethods }
+                    counts={ participationCounts }
+                />
+            </td>
             <td>{ ageFrames.map(a => (
                 // FIXME: fieldStringifiers.AgeFrame
                 // cannot handle start/end being object
@@ -136,8 +149,25 @@ var Row = (ps) => {
     )
 }
 
+const LabMethods = (ps) => {
+    var { types, counts } = ps;
+    var translate = useUITranslation(); 
+    
+    types = types.map(it => ({
+        key: it,
+        label: translate(`_labWorkflow_${it}`)
+    })).sort((a,b) => (a.label < b.label ? -1 : 1));
+
+    return types.map((it, ix) => {
+        var c = counts[it.key] || 0;
+        return <span key={ it.key } style={ c === 0 ? { color: '#bbb' } : {}}>
+            { it.label} ({ c })
+            { ix < (types.length - 1) && ', ' }
+        </span>
+    });
+}
+
 const sanitizeFormData = (raw = {}) => {
-    console.log(raw);
     var out = omit({ from: raw, paths: [
         'labMethodKeys', 'ageFrameIntervalOverlap'
     ]});
@@ -151,7 +181,7 @@ const sanitizeFormData = (raw = {}) => {
     }
 
     if (raw.ageFrameIntervalOverlap) {
-        var { start, end } = raw.ageFrameIntervalOverlap;
+        var { start = {}, end = {}} = raw.ageFrameIntervalOverlap;
 
         out.ageFrameIntervalOverlap = {
             start: {
@@ -160,14 +190,13 @@ const sanitizeFormData = (raw = {}) => {
                 days: start.days || 0,
             },
             end: {
-                years: start.years || 999999,
-                months: start.months || 0,
-                days: start.days || 0,
+                years: end.years || 999999,
+                months: end.months || 0,
+                days: end.days || 0,
             },
         }
     }
 
-    // TODO: age frame overlap
     return out;
 }
 

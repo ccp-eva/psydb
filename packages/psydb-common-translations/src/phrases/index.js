@@ -336,6 +336,23 @@ module.exports = [
         de: 'Status'
     },
     {
+        en: 'Statistics',
+        de: 'Statistiken'
+    },
+    {
+        en: 'Study Statistics',
+        de: 'Studien-Statistiken'
+    },
+    {
+        en: 'Subject Statistics',
+        de: 'Proband:innen-Statistiken'
+    },
+    {
+        internal: '_studyParticipations_short',
+        en: 'P.',
+        de: 'T.',
+    },
+    {
         internal: 'unknown_short',
         en: 'unk.',
         de: 'unb.',

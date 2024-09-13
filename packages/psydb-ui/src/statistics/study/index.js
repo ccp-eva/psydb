@@ -1,7 +1,7 @@
 import React from 'react';
 import { Base64 } from 'js-base64';
 import { useHistory } from 'react-router';
-import { useRouteMatch, Switch, Route, Redirect } from 'react-router-dom';
+import { useParams, useRouteMatch, Switch, Route, Redirect } from 'react-router-dom';
 
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { PageWrappers } from '@mpieva/psydb-ui-layout';
@@ -11,8 +11,36 @@ import TabNav from './tab-nav';
 import Filters from './filters';
 import Results from './results';
 
+const maybeDecodeBase64 = (encoded, { isJson = true } = {}) => {
+    var decoded = undefined;
+    try {
+        if (encoded) {
+            decoded = Base64.decode(encoded);
+            if (isJson) {
+                decoded = JSON.parse(decoded);
+            }
+            console.log('decoded base64', decoded);
+        }
+    }
+    catch (e) {
+        console.log(e);
+    }
+    return decoded;
+}
+
 const StudyStatisticsRouting = (ps) => {
     var { url, path } = useRouteMatch();
+    return (
+        <Route path={ `${path}/:tab/:b64?` }>
+            <ParamWrapper url={ url } path={ path }/>
+        </Route>
+    )
+}
+
+const ParamWrapper = (ps) => {
+    var { url, path } = ps;
+    var { b64 } = useParams();
+    var decodedFormData = maybeDecodeBase64(b64, { isJson: true });
 
     var history = useHistory();
     var translate = useUITranslation();
@@ -26,7 +54,7 @@ const StudyStatisticsRouting = (ps) => {
         window.scrollTo(0, 0);
     }
 
-    var initialValues = {}
+    var initialValues = decodedFormData || {};
     return (
         <PageWrappers.Level2
             title={ translate('Study Statistics') }
@@ -47,6 +75,7 @@ const StudyStatisticsRouting = (ps) => {
 const Inner = (ps) => {
     var { onSwitchTab } = ps;
     var { path } = useRouteMatch();
+    var { tab } = useParams();
     var { values } = useFormikContext();
 
     var handleSwitchTab = ({ nextTab }) => {
@@ -54,27 +83,14 @@ const Inner = (ps) => {
     }
 
     return (
-        <Switch>
-            <Route path={ `${path}/filters/:b64?` }>
-                <>
-                    <TabNav
-                        activeTab='filters'
-                        onSwitchTab={ handleSwitchTab }
-                    />
-                    <Filters />
-                </>
-            </Route>
-            <Route path={ `${path}/results/:b64?` }>
-                
-                <>
-                    <TabNav
-                        activeTab='results'
-                        onSwitchTab={ handleSwitchTab }
-                    />
-                    <Results />
-                </>
-            </Route>
-        </Switch>
+        <>
+            <TabNav activeTab={ tab } onSwitchTab={ handleSwitchTab } />
+            { tab === 'results' ? (
+                <Results formData={ values['$'] } />
+            ) : (
+                <Filters />
+            )}
+        </>
     )
 }
 
