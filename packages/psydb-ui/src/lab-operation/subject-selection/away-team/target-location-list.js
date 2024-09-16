@@ -63,7 +63,9 @@ const TargetLocationList = (ps) => {
     var translate = useUITranslation();
     var { value: revision, up: increaseRevision } = useRevision();
 
-    var pagination = usePaginationReducer();
+    var pagination = usePaginationReducer({
+        limit: 250, // FIXME: make configurable
+    });
     var { offset, limit } = pagination;
     
     var [ state, dispatch ] = useReducer(reducer, {
