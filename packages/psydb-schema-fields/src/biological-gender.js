@@ -1,5 +1,5 @@
 'use strict';
-var BiologicalGender = ({ ...additionalKeywords }) => ({
+var BiologicalGender = ({ ...additionalKeywords } = {}) => ({
     systemType: 'BiologicalGender',
     type: 'string',
     enum: [

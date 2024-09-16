@@ -24,7 +24,7 @@ var executeSystemEvents = async (context) => {
 
     var now = new Date();
     var csvImportId = await createId();
-    await db.collection('csvImport').insert({
+    await db.collection('csvImport').insertOne({
         _id: csvImportId,
         type: 'subject/default',
         createdBy: personnelId,

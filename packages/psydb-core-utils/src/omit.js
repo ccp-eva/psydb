@@ -22,6 +22,10 @@ var omit = (bag) => {
 
 var omitOne = (bag) => {
     var { from, paths } = bag;
+    if (Object.keys(from).length < 1) {
+        return {};
+    }
+
     var flatted = flatten(from);
 
     var out = {};

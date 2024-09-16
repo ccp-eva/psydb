@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 
-import { only } from '@mpieva/psydb-core-utils';
+import { only, groupBy } from '@mpieva/psydb-core-utils';
+import { CSVColumnRemappers, CRTSettings } from '@mpieva/psydb-common-lib';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
+
+import {
+    ButtonHeader,
+    IssueItemsAlert
+} from '@mpieva/psydb-ui-lib/csv-import';
 
 import {
     Alert,
@@ -54,39 +60,16 @@ const PreviewStage = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    //var { status } = (fetched.response || fetched.errorResponse)
-    //if (status !== 200) {
-    //    return (
-    //        <>
-    //            <Button
-    //                variant='outline-primary'
-    //                onClick={ gotoPrepare }
-    //            >
-    //                { translate('Back') }
-    //            </Button>
-    //            <hr />
-    //            <ErrorInfo fetched={ fetched } />
-    //        </>
-    //    )
-    //}
-
     if (fetched.errorResponse) {
         var { apiStatus, data } = fetched.errorResponse.data;
         var { message } = data;
         return (
             <>
-                <SmallFormFooter>
-                    <AsyncButton { ...send.passthrough } disabled={ true }>
-                        { translate('Import') }
-                    </AsyncButton>
-                    <Button
-                        disabled={ send.isTransmitting }
-                        variant='outline-primary'
-                        onClick={ gotoPrepare }
-                    >
-                        { translate('Back') }
-                    </Button>
-                </SmallFormFooter>
+                <ButtonHeader
+                    { ...send.passthrough }
+                    enableSubmit={ false }
+                    onClickBack={ gotoPrepare }
+                />
                 <hr />
                 <Alert variant='danger'>
                     <b>{ apiStatus }</b>
@@ -96,22 +79,39 @@ const PreviewStage = (ps) => {
         )
     }
     else {
-        var { previewRecords, related, crtSettings } = fetched.data;
+        var {
+            previewRecords, pipelineData,
+            related, crtSettings
+        } = fetched.data;
+
+        console.log(pipelineData);
+        var { invalid = [] } = groupBy({
+            items: pipelineData,
+            createKey: (it) => (
+                (!it.isValid || !it.isRefReplacementOk) ? 'invalid' : 'ok'
+            )
+        });
+        console.log(invalid);
+
+        var allOk = (invalid.length === 0 && previewRecords.length > 0);
+        var canForceImport = (previewRecords.length > 0);
+        var forceImport = true;
+
         return (
             <>
-                <SmallFormFooter>
-                    <AsyncButton { ...send.passthrough }>
-                        { translate('Import') }
-                    </AsyncButton>
-                    <Button
-                        disabled={ send.isTransmitting }
-                        variant='outline-primary'
-                        onClick={ gotoPrepare }
-                    >
-                        { translate('Back') }
-                    </Button>
-                </SmallFormFooter>
+                <ButtonHeader
+                    { ...send.passthrough }
+                    enableSubmit={ allOk || (canForceImport && forceImport) }
+                    onClickBack={ gotoPrepare }
+                />
                 <hr />
+                { !allOk && (
+                    <IssueItemsAlert invalid={ invalid } remapper={
+                        CSVColumnRemappers.SubjectDefault({
+                            subjectCRT: CRTSettings({ data: crtSettings })
+                        })
+                    } />
+                )}
                 <SplitPartitioned partitions={[ 4, 8 ]}>
                     <div className='d-flex flex-column gapy-2'>
                         { previewRecords.map((it, ix) => {
@@ -128,11 +128,13 @@ const PreviewStage = (ps) => {
                         })}
                     </div>
                     <div className='border ml-3 px-3 py-1'>
-                        <RecordDetails.Body fetched={{
-                            record: previewRecords[selectedIndex],
-                            related,
-                            crtSettings,
-                        }} />
+                        { previewRecords[selectedIndex] && (
+                            <RecordDetails.Body fetched={{
+                                record: previewRecords[selectedIndex],
+                                related,
+                                crtSettings,
+                            }} />
+                        )}
                     </div>
                 </SplitPartitioned>
             </>
@@ -163,24 +165,6 @@ const AComponent = (ps) => {
                 <Icons.ChevronDoubleRight />
             </b>
         </a>
-    )
-}
-
-const ErrorInfo = (ps) => {
-    var { fetched } = ps;
-    var { apiStatus, data: {
-        message, stack, ...errorInfo
-    }} = fetched.errorResponse.data;
-
-    return (
-        <>
-            <Alert variant='danger' className='mb-3'>
-                <b>{ message }</b>
-            </Alert>
-            <pre className='bg-white border p-3'>
-                { JSON.stringify(errorInfo, null, 4) }
-            </pre>
-        </>
     )
 }
 

@@ -324,12 +324,47 @@ module.exports = [
         de: 'T-Alter'
     },
     {
+        en: 'Study Participations',
+        de: 'Studien-Teilnahmen'
+    },
+    {
         en: 'Part. Stud.',
         de: 'Teilg. Stud.'
     },
     {
         en: 'Status',
         de: 'Status'
+    },
+    {
+        en: 'Statistics',
+        de: 'Statistiken'
+    },
+    {
+        en: 'Study Statistics',
+        de: 'Studien-Statistiken'
+    },
+    {
+        en: 'Subject Statistics',
+        de: 'Proband:innen-Statistiken'
+    },
+    {
+        en: 'Logic Operation',
+        de: 'Logische Verknüpfung'  
+    },
+    {
+        internal: '_logicGate_and',
+        en: 'AND',
+        de: 'UND'
+    },
+    {
+        internal: '_logicGate_or',
+        en: 'OR',
+        de: 'ODER'
+    },
+    {
+        internal: '_studyParticipations_short',
+        en: 'P.',
+        de: 'T.',
     },
     {
         internal: 'unknown_short',
@@ -462,6 +497,10 @@ module.exports = [
         de: 'Altersfenster'
     },
     {
+        en: 'Age Ranges',
+        de: 'Altersfenster'
+    },
+    {
         en: 'Desired Time Range',
         de: 'Gewünschter Zeitraum'
     },
@@ -533,6 +572,10 @@ module.exports = [
     {
         en: 'Shorthand',
         de: 'Kürzel'
+    },
+    {
+        en: 'Scientist',
+        de: 'Wissenschaftler:in'
     },
     {
         en: 'Scientists',
@@ -1093,6 +1136,16 @@ module.exports = [
     },
     {
         internal: '_extended_search_results_tab',
+        en: 'Result List',
+        de: 'Ergebnisliste',
+    },
+    {
+        internal: '_statistics_filters_tab',
+        en: 'Search Conditions',
+        de: 'Suchbedingungen',
+    },
+    {
+        internal: '_statistics_results_tab',
         en: 'Result List',
         de: 'Ergebnisliste',
     },

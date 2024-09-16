@@ -59,7 +59,7 @@ var resolveRefs = async (bag) => {
                 ],
                 extraMatch: { setId: ObjectId(setId) }
             })
-        )
+        );
     }
 
     return { resolvedRecords, resolvedHSIs }

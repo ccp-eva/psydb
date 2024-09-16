@@ -1,23 +1,21 @@
 import React, { useState } from 'react';
 
 import { only, groupBy } from '@mpieva/psydb-core-utils';
+import { CSVColumnRemappers } from '@mpieva/psydb-common-lib';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
+import { Alert, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+
 import {
-    Alert,
-    Button,
-    SmallFormFooter,
-    LoadingIndicator,
-    AsyncButton,
-} from '@mpieva/psydb-ui-layout';
+    ButtonHeader,
+    IssueItemsAlert
+} from '@mpieva/psydb-ui-lib/csv-import';
 
 import PreviewRecord from './preview-record';
-import ButtonHeader from './button-header';
-import IssueItemsAlert from './issue-items-alert';
 
 const PreviewStage = (ps) => {
     var { studyId, subjectType, formValues, gotoPrepare } = ps;
-    var { fileId, locationType } = formValues['$'];
+    var { fileId } = formValues['$'];
 
     var translate = useUITranslation();
 
@@ -26,18 +24,18 @@ const PreviewStage = (ps) => {
     ]});
 
     var commonPayload = {
-        fileId, studyId, subjectType, locationType,
+        fileId, studyId, subjectType, 
     }
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.previewCSVExperimentImport({
-            importType: 'manual-only-participation',
+            importType: 'wkprc-apestudies-default',
             ...commonPayload,
             extraAxiosConfig: { disableErrorModal: [ 409 ]}
         })
     ), []);
 
     var send = useSend(() => ({
-        type: 'csv-import/experiment/create-manual-only-participation',
+        type: 'csv-import/experiment/create-wkprc-apestudies-default',
         payload: { ...commonPayload }
     }), { ...triggerBag })
 
@@ -86,7 +84,10 @@ const PreviewStage = (ps) => {
                 />
                 <hr />
                 { !allOk && (
-                    <IssueItemsAlert invalid={ invalid } />
+                    <IssueItemsAlert invalid={ invalid } remapper={
+                        CSVColumnRemappers.Experiment
+                        .WKPRCApestudiesDefault()
+                    } />
                 )}
                 { (allOk || canForceImport) && (
                     <div className='d-flex flex-column gapy-2'>

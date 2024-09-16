@@ -531,6 +531,12 @@ var createRouting = (bag = {}) => {
         endpoint: endpoints.csvImport.experiment.read
     }));
     router.post(
+        '/csv-import/experiment/related-experiments',
+        ...withPostStages({
+            endpoint: endpoints.csvImport.experiment.relatedExperiments
+        })
+    );
+    router.post(
         '/csv-import/experiment/preview/wkprc-apestudies-default',
         ...withPostStages({
             endpoint: endpoints.csvImport.experiment.preview[
@@ -561,16 +567,28 @@ var createRouting = (bag = {}) => {
     router.post('/csv-import/subject/read', ...withPostStages({
         endpoint: endpoints.csvImport.subject.read
     }));
+    router.post(
+        '/csv-import/subject/related-subjects',
+        ...withPostStages({
+            endpoint: endpoints.csvImport.subject.relatedSubjects
+        })
+    );
     router.post('/csv-import/subject/preview', ...withPostStages({
         endpoint: endpoints.csvImport.subject.preview
     }));
 
-
+    
+    router.post('/statistics/study', ...withPostStages({
+            endpoint: endpoints.statistics.study
+    }));
 
     router.post('/researchGroup/search-metadata', ...withPostStages({
         endpoint: endpoints.researchGroup.searchMetadata
     }));
 
+    router.post('/study/read', ...withPostStages({
+        endpoint: endpoints.study.read
+    }));
     router.post('/study/read-many', ...withPostStages({
         endpoint: endpoints.study.readMany
     }));

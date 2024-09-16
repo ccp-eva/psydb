@@ -817,6 +817,11 @@ const createAgent = (options = {}) => {
     agent.previewCSVExperimentImport = ({ importType, ...pass }) => dumpPOST({
         url: `/api/csv-import/experiment/preview/${importType}`,
     })(pass);
+    agent.fetchCSVExperimentImportExperiments = (
+        ({ out = 'full', ...pass }) => dumpPOST({
+            url: '/api/csv-import/experiment/related-experiments',
+        })({ out, ...pass })
+    );
 
     agent.searchCSVSubjectImports = dumpPOST({
         url: '/api/csv-import/subject/search',
@@ -827,6 +832,11 @@ const createAgent = (options = {}) => {
     agent.previewCSVSubjectImport = dumpPOST({
         url: '/api/csv-import/subject/preview',
     });
+    agent.fetchCSVSubjectImportSubjects = (
+        ({ out = 'full', ...pass }) => dumpPOST({
+            url: '/api/csv-import/subject/related-subjects',
+        })({ out, ...pass })
+    );
 
     agent.fetchStudySubjectTypeInfos = (bag) => {
         var {

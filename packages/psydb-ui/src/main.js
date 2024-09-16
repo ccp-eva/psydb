@@ -39,6 +39,7 @@ import ExternalOrganizations from './external-organizations';
 import HelperSets from './helper-sets';
 
 import CSVImports from './csv-imports';
+import Statistics from './statistics';
 
 import Calendars from './calendars';
 import LabOperation from './lab-operation';
@@ -177,6 +178,7 @@ var Routing = () => (
     <Route path='/helper-sets' component={ withEB(HelperSets) } />
     
     <Route path='/csv-imports' component={ withEB(CSVImports) } />
+    <Route path='/statistics' component={ withEB(Statistics) } />
 
     <Route path='/calendars' component={ withEB(Calendars) } />
     <Route path='/lab-operation' component={ withEB(LabOperation) } />

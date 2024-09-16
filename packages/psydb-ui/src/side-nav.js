@@ -23,6 +23,7 @@ const SideNav = (ps) => {
     var {
         dev_enableCSVSubjectImport = false,
         dev_enableCSVParticipationImport = false,
+        dev_enableStatistics = false,
     } = useUIConfig();
 
     var permissions = usePermissions();
@@ -43,6 +44,14 @@ const SideNav = (ps) => {
             >
                 <div className='navbar-nav'>
                     
+                    { dev_enableStatistics && (
+                        <WhenAllowed isRoot>
+                            <Link to='/statistics'><b>
+                                { translate('Statistics') }
+                            </b></Link>
+                        </WhenAllowed>
+                    )}
+
                     {(
                         dev_enableCSVSubjectImport
                         || dev_enableCSVParticipationImport

@@ -10,6 +10,7 @@ module.exports = {
     Address: require('./address'),
     BiologicalGender: require('./biological-gender'),
     Color: require('./color'),
+    LogicGate: require('./logic-gate'),
 
     CollectionEnum: require('./collection-enum'),
     CustomRecordTypeCollectionEnum: require('./custom-record-type-collection-enum'),

@@ -29,7 +29,13 @@ SimpleRecordList.fetchData = (context) => async (options) => {
     var { db, payload } = context;
 
     var { out, limit, offset } = payload;
-    var { collection, filter, sort } = options;
+    var {
+        collection,
+        filter,
+        sort,
+        collation,
+        fetchRelated = true
+    } = options;
 
     var stages = [
         filter && { $match: filter },
@@ -44,7 +50,7 @@ SimpleRecordList.fetchData = (context) => async (options) => {
         stages,
         {
             allowDiskUse: true,
-            collation: { locale: 'de@collation=phonebook' }
+            collation: collation || { locale: 'de@collation=phonebook' }
         }
     ).toArray();
 
@@ -62,17 +68,22 @@ SimpleRecordList.fetchData = (context) => async (options) => {
         return { records };
     }
     else {
-        var related = await fetchRelatedLabelsForMany({
-            db,
-            collectionName: 'experiment', // XXX: ???
-            records,
-        });
-        //console.dir(related, { depth: null });
+        if (fetchRelated) {
+            var related = await fetchRelatedLabelsForMany({
+                db,
+                collectionName: collection, // XXX: ???
+                records,
+            });
+            //console.dir(related, { depth: null });
 
-        return {
-            records,
-            ...related
-        };
+            return {
+                records,
+                ...related
+            };
+        }
+        else {
+            return { records };
+        }
     }
 
 }
