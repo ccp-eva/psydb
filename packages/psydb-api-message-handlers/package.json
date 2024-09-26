@@ -47,7 +47,7 @@
     "mocha-chai-jest-snapshot": "~1.1.4",
     "@mpieva/psydb-fixtures": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-api-mocha-test-tools": "workspace:~0.1.0-alpha",
-    "@cdxoo/mongo-test-helpers": "~0.7.1",
+    "@cdxoo/mongo-test-helpers": "~0.8.0",
     "mongodb-memory-server": "~6.9.2"
   },
   "config": {

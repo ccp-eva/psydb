@@ -88,7 +88,7 @@
     "@mpieva/psydb-fixtures": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-axios-test-wrapper": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-api-mocha-test-tools": "workspace:~0.1.0-alpha",
-    "@cdxoo/mongo-test-helpers": "~0.7.1",
+    "@cdxoo/mongo-test-helpers": "~0.8.0",
     "@cdxoo/mongodb-restore": "2.0.0-alpha.2"
   },
   "config": {

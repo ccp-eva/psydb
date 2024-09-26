@@ -10,11 +10,10 @@ var {
     SmartArray,
 } = require('@mpieva/psydb-api-lib');
 
+var { match } = require('@mpieva/psydb-mongo-stages');
+
 var Schema = require('./schema');
-var {
-    MatchRunningPeriodOverlapStage,
-    MatchAgeFrameOverlapStage
-} = require('./db-helpers');
+var { MatchAgeFrameOverlapStage } = require('./db-helpers');
 
 var endpoint = async (context, next) => {
     var { db, permissions, request } = context;
@@ -50,8 +49,8 @@ var endpoint = async (context, next) => {
             'state.scientistIds': scientistId,
         }}),
         
-        ( runningPeriodOverlap && MatchRunningPeriodOverlapStage({
-            interval: runningPeriodOverlap
+        ( runningPeriodOverlap && match.IntervalOverlapsOurs({
+            dbpath: 'state.runningPeriod', interval: runningPeriodOverlap,
         })),
     ])});
 
@@ -88,7 +87,8 @@ var endpoint = async (context, next) => {
     }
 
     var participationCountsForStudy = await fetchGroupedParticipationCounts({
-        db, studyIds: prefiltered.map(it => it._id)
+        db, studyIds: prefiltered.map(it => it._id),
+        overlapInterval: runningPeriodOverlap,
     });
 
     var final = [];
@@ -109,13 +109,16 @@ var endpoint = async (context, next) => {
 }
 
 var fetchGroupedParticipationCounts = async (bag) => {
-    var { db, studyIds } = bag;
+    var { db, studyIds, overlapInterval } = bag;
     
     var counts = await aggregateToArray({ db, experiment: SmartArray([
         { $match: {
             'state.studyId': { $in: studyIds },
             'state.subjectData.participationStatus': 'participated',
         }},
+        ( overlapInterval && match.IntervalOverlapsOurs({
+            dbpath: 'state.interval', interval: overlapInterval,
+        })),
 
         { $unwind: '$state.subjectData' },
         { $match: {
