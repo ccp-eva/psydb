@@ -160,6 +160,11 @@ const LabMethods = (ps) => {
 
     return types.map((it, ix) => {
         var c = counts[it.key] || 0;
+
+        if (c === 0) {
+            return null; // TODO: add toggle for this
+        }
+
         return <span key={ it.key } style={ c === 0 ? { color: '#bbb' } : {}}>
             { it.label} ({ c })
             { ix < (types.length - 1) && ', ' }
