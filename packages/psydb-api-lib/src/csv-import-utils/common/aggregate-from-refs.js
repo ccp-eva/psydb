@@ -1,5 +1,7 @@
 'use strict';
-var { entries, convertPointerToPath } = require('@mpieva/psydb-core-utils');
+var { 
+    groupBy, entries, convertPointerToPath
+} = require('@mpieva/psydb-core-utils');
 var aggregateToArray = require('../../aggregate-to-array');
 
 var aggregateFromRefs = async (bag) => {
@@ -24,14 +26,28 @@ var aggregateFromRefs = async (bag) => {
         ]})
     }));
 
-    var out = [];
-    for (var r of resolved) {
-        out.push(...r.map(it => {
+    var merged = [];
+    for (var res of resolved) {
+        merged.push(...res.map(it => {
             var { _id, type, ...rest } = it;
             var [ pointer, value ] = entries(rest)[0];
             return { _id, type, pointer, value }
         }))
     }
+    
+    // NOTE: in some cases miltiple pointers can match the same
+    // record i.e. when a helperSet is labeled the same in english or german
+    var resolvedForId = groupBy({
+        items: merged,
+        byProp: '_id',
+    });
+
+    var out = [];
+    for (var [ k, group ] of entries(resolvedForId)) {
+        var [ first, ...unused ] = group;
+        out.push(first);
+    }
+
     return out;
 }
 

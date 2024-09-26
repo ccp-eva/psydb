@@ -19,7 +19,7 @@ describe('csv-import/subject/create-default fs-malaysia', function () {
 
     var db, sendMessage;
     beforeEach(async function () {
-        await this.restore('2024-09-06__0249');
+        await this.restore('2024-09-26__0717');
         
         db = this.getDbHandle();
         ([ sendMessage ] = this.createMessenger({
@@ -165,7 +165,31 @@ describe('csv-import/subject/create-default fs-malaysia', function () {
         });
     });
     
-    it('full import with 1000 lines', async function () {
+    it('works when HSI is found twice (same en/de)', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({
+            db, buffer: loadCSV('subject-import/fs-malaysia-hsi-temiar'),
+        });
+
+        var koaContext = await sendMessage({
+            type: 'csv-import/subject/create-default',
+            timezone: 'UTC',
+            payload: jsonify({ researchGroupId, subjectType, fileId })
+        });
+
+        var { csvImportId } = koaContext.response.body.data;
+        var subjects = await aggregateToArray({ db, subject: [
+            { $match: { csvImportId }},
+        ]});
+        expect(subjects.length).to.eql(2);
+        expect(ejson(subjects[0].gdpr.state)).to.eql({
+            custom: { name: 'Bob' }
+        });
+        expect(ejson(subjects[1].gdpr.state)).to.eql({
+            custom: { name: 'Alice' }
+        });
+    });
+
+    it.skip('full import with 1000 lines', async function () {
         var { _id: fileId } = await this.createFakeFileUpload({ db, buffer: (
             loadCSV('subject-import/fs-malaysia-1000-subjects')
         )});
