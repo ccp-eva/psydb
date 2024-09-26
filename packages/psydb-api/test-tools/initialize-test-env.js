@@ -40,7 +40,12 @@ var beforeAll = async function () {
                 url: mongo.uri,
                 dbName: mongo.dbName,
                 useUnifiedTopology: true,
-            }
+            },
+            sessionSecret: [
+                '------------------------------------------',
+                'DO NOT USE IN PRODUCTION GENERATE YOUR OWN',
+                '------------------------------------------',
+            ].join(''),
         }}));
         
         var agent = createAgent(app.callback(), { enableCookies: true });
