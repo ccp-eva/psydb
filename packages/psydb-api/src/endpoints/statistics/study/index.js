@@ -1,7 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:statistics:study');
 
-var { only, keyBy, groupBy, unique } = require('@mpieva/psydb-core-utils');
+var { only, keyBy, groupBy, unique, ejson } = require('@mpieva/psydb-core-utils');
 var {
     ResponseBody,
     validateOrThrow,
@@ -122,14 +122,16 @@ var fetchGroupedParticipationCounts = async (bag) => {
             'state.subjectData.participationStatus': 'participated',
         }},
         { $group: {
-            '_id': { studyId: '$state.studyId', type: '$type' },
-            'type': { $first: { $ifNull: [ '$realType', '$type'] }},
+            '_id': {
+                studyId: '$state.studyId',
+                type: { $ifNull: ['$realType', '$type'] }
+            },
             'count': { $sum: 1 }
         }},
         { $group: {
             '_id': '$_id.studyId',
             'total': { $sum: '$count' },
-            'byType': { $push: { 'k': '$type', 'v': '$count' }}
+            'byType': { $push: { 'k': '$_id.type', 'v': '$count' }}
         }},
         { $project: {
             'total': true,
