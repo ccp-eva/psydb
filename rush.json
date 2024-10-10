@@ -76,6 +76,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-mongo-field-utils",
+       "projectFolder": "packages/psydb-mongo-field-utils",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-rohrpost-utils",
        "projectFolder": "packages/psydb-rohrpost-utils",
        "reviewCategory": "production"

@@ -1104,6 +1104,25 @@ importers:
     dependencies:
       mongodb: 3.6.12
 
+  ../../packages/psydb-mongo-field-utils:
+    specifiers:
+      '@mpieva/psydb-common-utils': workspace:*
+      '@mpieva/psydb-core-utils': workspace:*
+      '@mpieva/psydb-mongo-adapter': workspace:*
+      chai: ~4.3.7
+      diacritic-regex: ~1.1.0
+      escape-string-regexp: ~4.0.0
+      mocha: ~10.2.0
+    dependencies:
+      '@mpieva/psydb-common-utils': link:../psydb-common-utils
+      '@mpieva/psydb-core-utils': link:../psydb-core-utils
+      '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
+      diacritic-regex: 1.1.0
+      escape-string-regexp: 4.0.0
+    devDependencies:
+      chai: 4.3.10
+      mocha: 10.2.0
+
   ../../packages/psydb-mongo-stages:
     specifiers:
       '@cdxoo/inline-string': ~1.0.0
