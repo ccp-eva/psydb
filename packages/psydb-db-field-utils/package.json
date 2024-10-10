@@ -13,6 +13,10 @@
     "chai": "~4.3.7"
   },
   "dependencies": {
-    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha"
+    "escape-string-regexp": "~4.0.0",
+    "diacritic-regex": "~1.1.0",
+    "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-common-utils": "workspace:*",
+    "@mpieva/psydb-mongo-adapter": "workspace:*"
   }
 }
