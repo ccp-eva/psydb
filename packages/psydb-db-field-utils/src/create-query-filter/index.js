@@ -1,15 +1,9 @@
 'use strict';
-var createExtendedSearchFilter = require('./extended-search');
-var createQuickSearchFilter = require('./quick-search');
+var Fields = require('../fields');
 
 var createQueryFilter = (bag) => {
     var { type, definition, input } = bag;
-    switch (type) {
-        case 'extended-search':
-            return createExtendedSearchFilter({ definition, input });
-        case 'quick-search':
-            return createQuickSearchFilter({ definition, input });
-        default:
-            throw new Error(`unknown type "${type}"`);
-    }
+    var systemType = definition.systemType || definition.type; // FIXME
+
+    return Fields[systemType]({ type, definition, input });
 }

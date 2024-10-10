@@ -27,7 +27,7 @@ var createExtendedSearchFilter = (bag) => {
 
         case 'ForeignId':
         case 'HelperSetItemId':
-            // EqualsOneOf(pointer, input, { any: true, map: ObjectId })
+            // EqualsOneOf(pointer, input, { transform: ObjectId })
             return MongoFk(pointer, input, props);
 
         case 'ForeignIdList':

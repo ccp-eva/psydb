@@ -52,25 +52,70 @@ var PointWithinOurRange = (pointer, input) => {
     return value ? { [pointer]: value } : undefined;
 }
 
-var MongoFk = (pointer, input, props) => {
-    input = input || {};
-    var { isNullable } = props; // TODO
-    // input.any
+var EqualsOneOf = (pointer, input = {}, options = {}) => {
+    var { transform = false } = options;
+    var { any, negate, values = [] } = input;
+    
+    if (input.any === true) {
+        var expr = { $and: [
+            { $exists: true },
+            { $ne: { $type: 10 }}
+        ]};
+        return { [pointer]: negate ? { $ne: expr } : expr };
+    }
+    
+    values = values.filter(it => !!it);
+    if (transform) {
+        values = values.map(transform);
+    }
 
-    var op = input.negate ? '$nin' : '$in';
+    var op = negate ? '$nin' : '$in';
     return (
-        input.values && input.values.length > 0
-        ? { [pointer]: { [op]: input.values.map(ObjectId) }}
+        values.length > 0
+        ? { [pointer]: { [op]: values }}
+        : undefined
+    );
+}
+
+var IncludesOneOf = (pointer, input = {}, options = {}) => {
+    var { transform = false } = options;
+    var { any, negate, values = [] } = input;
+
+    values = values.filter(it => !!it);
+    if (transform) {
+        values = values.map(transform);
+    }
+
+    if (any) {
+        //return { [pointer]: (
+        //    negate ? xxx : { $exists: true, $type: 'array', $ne: [] }
+        //)}
+        return { [`${pointer}/0`]: {
+            $exists: negate ? false : true
+        }}
+    }
+
+    values = values.filter(it => !!it);
+    if (transform) {
+        values = values.map(transform);
+    }
+
+    var op = negate ? '$nin' : '$in';
+    return (
+        values.length > 0
+        ? { [pointer]: { [op]: values }}
         : undefined
     )
 }
 
-var MongoFkList = (pointer, input) => {
-    input = input || {};
-    var op = input.negate ? '$nin' : '$in';
-    return (
-        input.values && input.values.length > 0
-        ? { [pointer]: { [op]: input.values.map(ObjectId) }}
-        : undefined
-    )
+module.exports = {
+    JustRegex,
+    MultiRegex,
+    Boolify,
+
+    IncludesOneOf,
+    EqualsOneOf,
+    EqualsOneOfTruthyKeys,
+
+    PointWithinOurRange, 
 }

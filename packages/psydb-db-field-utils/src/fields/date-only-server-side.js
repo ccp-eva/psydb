@@ -1,13 +1,18 @@
 'use strict';
-var { switchQueryFilterType } = require('../utils');
+var {
+    switchQueryFilterType,
+    convertPointerKeys,
+} = require('../utils');
 
 var createQueryFilter = (bag) => {
     var { type, definition, input } = bag;
    
-    return switchQueryFilterType({
+    var filter = switchQueryFilterType({
         'extended-search': () => ExtendedSearchFilter(definition, input);
         'quick-search': () => { throw new Error() }
     })(type);
+
+    return convertPointerKeys(filter);
 }
 
 var ExtendedSearchFilter = (definition, input) => {

@@ -5,7 +5,7 @@ var switchQueryFilterType = (mapping) => (type) => {
     if (!lambda) {
         throw new Error(`unknown type "${type}"`);
     }
-    return lambda;
+    return lambda();
 }
 
 module.exports = switchQueryFilterType;
