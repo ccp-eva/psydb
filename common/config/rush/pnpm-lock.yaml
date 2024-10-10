@@ -382,6 +382,31 @@ importers:
     dependencies:
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
 
+  ../../packages/psydb-api-endpoints:
+    specifiers:
+      '@mpieva/psydb-api-endpoint-lib': workspace:*
+      '@mpieva/psydb-api-lib': workspace:*
+      '@mpieva/psydb-api-lib-errors': workspace:*
+      '@mpieva/psydb-api-mocha-test-tools': workspace:*
+      '@mpieva/psydb-common-lib': workspace:*
+      '@mpieva/psydb-core-utils': workspace:*
+      '@mpieva/psydb-fixtures': workspace:*
+      chai: ~4.3.7
+      debug: ~4.3.4
+      mocha: ~10.2.0
+    dependencies:
+      '@mpieva/psydb-api-endpoint-lib': link:../psydb-api-endpoint-lib
+      '@mpieva/psydb-api-lib': link:../psydb-api-lib
+      '@mpieva/psydb-api-lib-errors': link:../psydb-api-lib-errors
+      '@mpieva/psydb-common-lib': link:../psydb-common-lib
+      '@mpieva/psydb-core-utils': link:../psydb-core-utils
+      debug: 4.3.4
+    devDependencies:
+      '@mpieva/psydb-api-mocha-test-tools': link:../psydb-api-mocha-test-tools
+      '@mpieva/psydb-fixtures': link:../psydb-fixtures
+      chai: 4.3.10
+      mocha: 10.2.0
+
   ../../packages/psydb-api-integration-test-helpers:
     specifiers:
       '@cdxoo/mongo-test-helpers': ~0.8.0
@@ -686,7 +711,7 @@ importers:
   ../../packages/psydb-api-mocha-test-tools:
     specifiers:
       '@cdxoo/mongo-test-helpers': ~0.8.0
-      '@cdxoo/mongodb-restore': 2.0.0-alpha.4
+      '@cdxoo/mongodb-restore': ~2.0.1
       '@mpieva/psydb-api-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-fixtures': workspace:~0.1.0-alpha
@@ -696,7 +721,7 @@ importers:
       mocha-chai-jest-snapshot: ~1.1.4
     dependencies:
       '@cdxoo/mongo-test-helpers': 0.8.0
-      '@cdxoo/mongodb-restore': 2.0.0-alpha.4
+      '@cdxoo/mongodb-restore': 2.0.1
       '@mpieva/psydb-api-config': link:../psydb-api-config
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
@@ -3826,13 +3851,15 @@ packages:
       - mongodb-extjson
       - snappy
 
-  /@cdxoo/mongodb-restore/2.0.0-alpha.4:
-    resolution: {integrity: sha512-uJ7fmaCK8hoC7+6TpaKYgzNSmzcoKwMnVgr4TsdemdVYCycWJsvxqh73/aE1twf2iV11HnjwxKFefEnW0BM73Q==}
+  /@cdxoo/mongodb-restore/2.0.1:
+    resolution: {integrity: sha512-v8HhvU1JZF70hvcA3vfoylmUWJs6YOd1hqQ4YFErMSYRlPBVbwRs6gzWvUY/ySyc3CX+W6gTYKs9uK0YWleZfg==}
     engines: {node: '>=14'}
-    peerDependencies:
-      mongodb: 4.x
     dependencies:
       bson: 4.7.2
+      mongodb: 4.17.2
+    transitivePeerDependencies:
+      - '@aws-sdk/client-sso-oidc'
+      - aws-crt
     dev: false
 
   /@cdxoo/objectpath-to-jsonpointer/1.0.0:
