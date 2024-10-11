@@ -76,8 +76,8 @@
        "reviewCategory": "production"
     },
     {
-       "packageName": "@mpieva/psydb-mongo-field-utils",
-       "projectFolder": "packages/psydb-mongo-field-utils",
+       "packageName": "@mpieva/psydb-custom-fields-mongo",
+       "projectFolder": "packages/psydb-custom-fields-mongo",
        "reviewCategory": "production"
     },
     {

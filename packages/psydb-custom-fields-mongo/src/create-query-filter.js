@@ -7,3 +7,5 @@ var createQueryFilter = (bag) => {
 
     return Fields[systemType]({ type, definition, input });
 }
+
+module.exports = createQueryFilter;

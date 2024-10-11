@@ -1,9 +1,9 @@
 'use strict';
-var makeRX = require('./make-rx');
+var { makeDiaRX } = require('@mpieva/psydb-common-lib');
 
 var JustRegex = (pointer, input) => (
     input
-    ? { [pointer]: makeRX(input) }
+    ? { [pointer]: makeDiaRX(input) }
     : undefined
 );
 

@@ -21,7 +21,8 @@
     "@cdxoo/inline-text": "~1.0.2",
     "flat": "~5.0.2",
     "date-fns-tz": "~1.3.8",
-    "sift": "~16.0.1"
+    "sift": "~16.0.1",
+    "escape-string-regexp": "~4.0.0"
   },
   "devDependencies": {
     "jest": "~29.7.0",

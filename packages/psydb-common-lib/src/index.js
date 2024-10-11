@@ -2,6 +2,10 @@ module.exports = {
     sift: require('sift'),
     inlineText: require('@cdxoo/inline-text'),
 
+    excapeRX: require('./escape-rx'),
+    makeRX: require('./make-rx'),
+    makeDiaRX: require('./make-dia-rx'),
+
     CRTSettings: require('./crt-settings'),
     CRTSettingsList: require('./crt-settings-list'),
     FieldDefinition: require('./field-definition'),

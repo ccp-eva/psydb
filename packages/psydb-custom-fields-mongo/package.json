@@ -1,5 +1,5 @@
 {
-  "name": "@mpieva/psydb-mongo-field-utils",
+  "name": "@mpieva/psydb-custom-fields-mongo",
   "version": "0.1.0-alpha",
   "description": "",
   "main": "src/index.js",
@@ -13,8 +13,6 @@
     "chai": "~4.3.7"
   },
   "dependencies": {
-    "escape-string-regexp": "~4.0.0",
-    "diacritic-regex": "~1.1.0",
     "@mpieva/psydb-core-utils": "workspace:*",
     "@mpieva/psydb-common-lib": "workspace:*",
     "@mpieva/psydb-mongo-adapter": "workspace:*"
