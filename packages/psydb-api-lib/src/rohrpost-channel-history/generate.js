@@ -11,6 +11,8 @@ var PULL = require('./pull');
 var generate = (bag = {}) => {
     var { events, omitPaths } = bag;
 
+    var doOmit = (from) => omit({ from, paths: omitPaths });
+
     var history = [];
     var virtualChannel = {};
     for (var it of events.reverse()) {
@@ -28,12 +30,12 @@ var generate = (bag = {}) => {
             message.payload,
             additionalChannelProps
         );
-        if (omitPaths) {
-            virtualChannel = omit({
-                from: virtualChannel,
-                paths: omitPaths
-            });
-        }
+        //if (omitPaths) {
+        //    virtualChannel = omit({
+        //        from: virtualChannel,
+        //        paths: omitPaths
+        //    });
+        //}
 
         // NOTE: diff is not safe when in situ changing diffed objects
         var clone = copy(virtualChannel);
@@ -44,8 +46,8 @@ var generate = (bag = {}) => {
                 message,
                 ...(additionalChannelProps && { additionalChannelProps }),
             },
-            version: clone,
-            diff: diff(preUpdate, clone),
+            version: doOmit(clone),
+            diff: diff(doOmit(preUpdate), doOmit(clone)),
         });
     }
 
