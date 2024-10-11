@@ -75,6 +75,98 @@ describe('createQueryFilter()', () => {
         })
     });
     
+    it('ForeignIdList / HelperSetItemIdList', () => {
+        var inputs = [
+            { values: [
+                '000000000000000000000000'
+            ]},
+            { values: [
+                '000000000000000000000000',
+                '000000000000000000000001',
+            ]},
+            { negate: true, values: [
+                '000000000000000000000000'
+            ]},
+
+            { any: true },
+            { negate: true, any: true },
+        ];
+        var out = [
+            { 'foo': { $in: [
+                { $oid: '000000000000000000000000' }
+            ]}},
+            { 'foo': { $in: [
+                { $oid: '000000000000000000000000' },
+                { $oid: '000000000000000000000001' }
+            ]}},
+            { 'foo': { $nin: [
+                { $oid: '000000000000000000000000' },
+            ]}},
+            { 'foo.0': { $exists: true }},
+            { 'foo.0': { $exists: false }}
+        ]
+        for (var [ ix, it ] of inputs.entries()) {
+            var fk = Fields.ForeignIdList.createQueryFilter({
+                type, definition, input: it
+            });
+            var hsi = Fields.HelperSetItemIdList.createQueryFilter({
+                type, definition, input: it
+            });
+
+            //console.log(fk, hsi);
+            expect(ejson(fk)).to.eql(out[ix]);
+            expect(ejson(hsi)).to.eql(out[ix]);
+        }
+    });
+    
+    it('ForeignId / HelperSetItemId', () => {
+        var inputs = [
+            { values: [
+                '000000000000000000000000'
+            ]},
+            { values: [
+                '000000000000000000000000',
+                '000000000000000000000001',
+            ]},
+            { negate: true, values: [
+                '000000000000000000000000'
+            ]},
+
+            { any: true },
+            { negate: true, any: true },
+        ];
+        var out = [
+            { 'foo': { $in: [
+                { $oid: '000000000000000000000000' }
+            ]}},
+            { 'foo': { $in: [
+                { $oid: '000000000000000000000000' },
+                { $oid: '000000000000000000000001' }
+            ]}},
+            { 'foo': { $nin: [
+                { $oid: '000000000000000000000000' },
+            ]}},
+            { 'foo': {
+                $exists: true, $not: { $type: 10 }
+            }},
+            { 'foo': {
+                $not: { $exists: true, $not: { $type: 10 }}
+            }}
+        ]
+        for (var [ ix, it ] of inputs.entries()) {
+            var fk = Fields.ForeignId.createQueryFilter({
+                type, definition, input: it
+            });
+            var hsi = Fields.HelperSetItemId.createQueryFilter({
+                type, definition, input: it
+            });
+
+            //console.log(fk, hsi);
+            expect(ejson(fk)).to.eql(out[ix]);
+            expect(ejson(hsi)).to.eql(out[ix]);
+        }
+    });
+
     it('FullText', () => {
         var a = Fields.FullText.createQueryFilter({
             type, definition, input: 'ddd'

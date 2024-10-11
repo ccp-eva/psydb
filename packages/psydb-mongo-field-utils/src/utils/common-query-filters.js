@@ -57,11 +57,11 @@ var EqualsOneOf = (pointer, input = {}, options = {}) => {
     var { any, negate, values = [] } = input;
     
     if (input.any === true) {
-        var expr = { $and: [
-            { $exists: true },
-            { $ne: { $type: 10 }}
-        ]};
-        return { [pointer]: negate ? { $ne: expr } : expr };
+        var expr = {
+            $exists: true,
+            $not: { $type: 10 }
+        };
+        return { [pointer]: negate ? { $not: expr } : expr };
     }
     
     values = values.filter(it => !!it);
