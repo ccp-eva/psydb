@@ -11,9 +11,9 @@ var MultiRegex = (pointer, input, keys) => {
     input = input || {};
     var out = {};
     for (var it of keys) {
-        out = { ...out, ...JustRegex(`${pointer}/${it}`, input[key]) };
+        out = { ...out, ...JustRegex(`${pointer}/${it}`, input[it]) };
     }
-    return Object.keys(out) > 0 ? out : undefined;
+    return Object.keys(out).length > 0 ? out : undefined;
 }
 
 var Boolify = (pointer, input, options) => {

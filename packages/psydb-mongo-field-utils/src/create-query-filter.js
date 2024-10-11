@@ -1,5 +1,5 @@
 'use strict';
-var Fields = require('../fields');
+var Fields = require('./fields');
 
 var createQueryFilter = (bag) => {
     var { type, definition, input } = bag;

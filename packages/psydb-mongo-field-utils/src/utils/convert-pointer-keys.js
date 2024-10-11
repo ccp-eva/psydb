@@ -8,7 +8,7 @@ var convertPointerKeys = (obj) => {
 
     var out = {};
     for (var [ key, value ] of Object.entries(obj)) {
-        out[convertPointerToPath(key)]: value;
+        out[convertPointerToPath(key)] = value;
     }
     return out;
 }

@@ -10,7 +10,7 @@ var createQueryFilter = (bag) => {
     var { type, definition, input } = bag;
    
     var filter = switchQueryFilterType({
-        'extended-search': () => ExtendedSearchFilter(definition, input);
+        'extended-search': () => ExtendedSearchFilter(definition, input),
         'quick-search': () => { throw new Error() }
     })(type);
 
@@ -26,7 +26,7 @@ var ExtendedSearchFilter = (definition, input) => {
     if (input) {
         var { interval, ageFrame } = input;
         if (interval && (interval.start || interval.end)) {
-            out = {
+            value = {
                 // FIXME: date conversion via ajv
                 // FIXME: endOfDay?
                 ...(interval.start && {

@@ -13,7 +13,7 @@ var createQueryFilter = (bag) => {
         'extended-search': () => MultiRegex(pointer, input, [
             'country', 'city', 'postcode',
             'street', 'housenumber', 'affix',
-        ]);
+        ]),
         'quick-search': () => { throw new Error() }
     })(type);
 

@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "npx mocha test/*.spec.js"
+    "test": "npx mocha --config mocha.config.json tests/"
   },
   "author": "Jan Schwalbe",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "escape-string-regexp": "~4.0.0",
     "diacritic-regex": "~1.1.0",
     "@mpieva/psydb-core-utils": "workspace:*",
-    "@mpieva/psydb-common-utils": "workspace:*",
+    "@mpieva/psydb-common-lib": "workspace:*",
     "@mpieva/psydb-mongo-adapter": "workspace:*"
   }
 }

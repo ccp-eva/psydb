@@ -12,7 +12,7 @@ var createQueryFilter = (bag) => {
     var filter = switchQueryFilterType({
         'extended-search': () => Boolify(pointer, input, [
             'only-true', 'only-false'
-        ]);
+        ]),
         'quick-search': () => { throw new Error() }
     })(type);
 
