@@ -55,7 +55,8 @@
     "encodeurl": "~2.0.0",
     "@cdxoo/gather-possible-jss-paths": "~0.0.5",
     "clean-deep": "~3.4.0",
-    "@cdxoo/stringify-path-perlstyle": "~0.0.3"
+    "@cdxoo/stringify-path-perlstyle": "~0.0.3",
+    "mingo": "~6.4.9"
   },
   "devDependencies": {
     "mocha": "~10.2.0",

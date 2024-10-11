@@ -3,6 +3,8 @@ var { copy } = require('copy-anything');
 var diff = require('deep-diff');
 var { entries, omit, ejson } = require('@mpieva/psydb-core-utils');
 
+//var spoolEvents = require('./spool-events');
+
 var SET = require('./set');
 var UNSET = require('./unset');
 var PUSH = require('./push');
@@ -10,6 +12,12 @@ var PULL = require('./pull');
 
 var generate = (bag = {}) => {
     var { events, omitPaths } = bag;
+
+    // TODO: use this instead
+    //var [ virtualChannel, updates ] = spoolEvents({
+    //    events: events.reverse()
+    //});
+    //console.log(updates);
 
     var doOmit = (from) => omit({ from, paths: omitPaths });
 

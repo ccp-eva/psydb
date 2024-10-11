@@ -495,6 +495,7 @@ importers:
       jsonpointer: ~5.0.1
       koa-compose: ~4.1.0
       map-obj: ~4.3.0
+      mingo: ~6.4.9
       mocha: ~10.2.0
       mongodb: ~3.6.3
       nanoid: ~3.3.6
@@ -545,6 +546,7 @@ importers:
       jsonpointer: 5.0.1
       koa-compose: 4.1.0
       map-obj: 4.3.0
+      mingo: 6.4.15
       mongodb: 3.6.12
       nanoid: 3.3.7
       nodemailer: 6.9.14
