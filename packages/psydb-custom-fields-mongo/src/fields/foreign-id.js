@@ -2,7 +2,6 @@
 var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 var { 
     switchQueryFilterType,
-    convertPointerKeys,
     EqualsOneOf
 } = require('../utils');
 
@@ -16,7 +15,7 @@ var createQueryFilter = (bag) => {
         'quick-search': () => { throw new Error() }
     })(type);
 
-    return convertPointerKeys(filter);
+    return filter;
 }
 
 module.exports = {

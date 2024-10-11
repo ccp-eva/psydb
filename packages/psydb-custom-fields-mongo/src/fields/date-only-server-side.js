@@ -1,10 +1,7 @@
 'use strict';
+var { convertPointerToPath } = require('@mpieva/psydb-core-utils');
 var { timeshiftAgeFrame } = require('@mpieva/psydb-common-lib');
-
-var {
-    switchQueryFilterType,
-    convertPointerKeys,
-} = require('../utils');
+var { switchQueryFilterType } = require('../utils');
 
 var createQueryFilter = (bag) => {
     var { type, definition, input } = bag;
@@ -14,11 +11,12 @@ var createQueryFilter = (bag) => {
         'quick-search': () => { throw new Error() }
     })(type);
 
-    return convertPointerKeys(filter);
+    return filter;
 }
 
 var ExtendedSearchFilter = (definition, input) => {
     var { pointer, props } = definition;
+    var path = convertPointerToPath(pointer);
 
     //console.log({ field, input });
     var value = undefined;
@@ -54,7 +52,7 @@ var ExtendedSearchFilter = (definition, input) => {
         }
     }
     //console.log(value);
-    return value ? { [pointer]: value } : undefined;
+    return value ? { [path]: value } : undefined;
 }
 module.exports = {
     createQueryFilter,

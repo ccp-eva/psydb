@@ -1,7 +1,6 @@
 'use strict';
 var { 
     switchQueryFilterType,
-    convertPointerKeys,
     Boolify,
 } = require('../utils');
 
@@ -16,7 +15,7 @@ var createQueryFilter = (bag) => {
         'quick-search': () => { throw new Error() }
     })(type);
 
-    return convertPointerKeys(filter);
+    return filter;
 }
 
 module.exports = {

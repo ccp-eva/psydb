@@ -1,11 +1,15 @@
 'use strict';
+var { convertPointerToPath } = require('@mpieva/psydb-core-utils');
 var { makeDiaRX } = require('@mpieva/psydb-common-lib');
 
-var JustRegex = (pointer, input) => (
-    input
-    ? { [pointer]: makeDiaRX(input) }
-    : undefined
-);
+var JustRegex = (pointer, input) => {
+    var path = convertPointerToPath(pointer);
+    return (
+        input
+        ? { [path]: makeDiaRX(input) }
+        : undefined
+    )
+};
 
 var MultiRegex = (pointer, input, keys) => {
     input = input || {};
@@ -17,6 +21,8 @@ var MultiRegex = (pointer, input, keys) => {
 }
 
 var Boolify = (pointer, input, options) => {
+    var path = convertPointerToPath(pointer);
+
     var value = undefined;
     if (input === options[0]) {
         value = true;
@@ -26,22 +32,26 @@ var Boolify = (pointer, input, options) => {
     }
     return (
         value !== undefined
-        ? { [pointer]: value }
+        ? { [path]: value }
         : undefined
     )
 }
 
 var EqualsOneOfTruthyKeys = (pointer, input) => {
+    var path = convertPointerToPath(pointer);
+
     input = input || {};
     var values = Object.keys(input).filter(key => !!input[key]);
     return (
         values.length > 0
-        ? { [pointer]: { $in: values }}
+        ? { [path]: { $in: values }}
         : undefined
     )
 }
 
 var PointWithinOurRange = (pointer, input) => {
+    var path = convertPointerToPath(pointer);
+
     var value = undefined;
     if (input && (input.min || input.max)) {
         value = {
@@ -49,10 +59,12 @@ var PointWithinOurRange = (pointer, input) => {
             ...(input.max && { $lte: input.max })
         };
     }
-    return value ? { [pointer]: value } : undefined;
+    return value ? { [path]: value } : undefined;
 }
 
 var EqualsOneOf = (pointer, input = {}, options = {}) => {
+    var path = convertPointerToPath(pointer);
+
     var { transform = false } = options;
     var { any, negate, values = [] } = input;
     
@@ -61,7 +73,7 @@ var EqualsOneOf = (pointer, input = {}, options = {}) => {
             $exists: true,
             $not: { $type: 10 }
         };
-        return { [pointer]: negate ? { $not: expr } : expr };
+        return { [path]: negate ? { $not: expr } : expr };
     }
     
     values = values.filter(it => !!it);
@@ -72,12 +84,14 @@ var EqualsOneOf = (pointer, input = {}, options = {}) => {
     var op = negate ? '$nin' : '$in';
     return (
         values.length > 0
-        ? { [pointer]: { [op]: values }}
+        ? { [path]: { [op]: values }}
         : undefined
     );
 }
 
 var IncludesOneOf = (pointer, input = {}, options = {}) => {
+    var path = convertPointerToPath(pointer);
+
     var { transform = false } = options;
     var { any, negate, values = [] } = input;
 
@@ -90,7 +104,7 @@ var IncludesOneOf = (pointer, input = {}, options = {}) => {
         //return { [pointer]: (
         //    negate ? xxx : { $exists: true, $type: 'array', $ne: [] }
         //)}
-        return { [`${pointer}/0`]: {
+        return { [`${path}.0`]: {
             $exists: negate ? false : true
         }}
     }
@@ -103,7 +117,7 @@ var IncludesOneOf = (pointer, input = {}, options = {}) => {
     var op = negate ? '$nin' : '$in';
     return (
         values.length > 0
-        ? { [pointer]: { [op]: values }}
+        ? { [path]: { [op]: values }}
         : undefined
     )
 }

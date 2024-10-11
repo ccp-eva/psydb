@@ -1,7 +1,6 @@
 'use strict';
 var { 
     switchQueryFilterType,
-    convertPointerKeys,
     JustRegex
 } = require('../utils');
 
@@ -14,7 +13,7 @@ var createQueryFilter = (bag) => {
         'quick-search': () => JustRegex(`${pointer}/number`, input),
     })(type);
 
-    return convertPointerKeys(filter);
+    return filter;
 }
 
 module.exports = {
