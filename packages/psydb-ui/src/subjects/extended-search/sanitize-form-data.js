@@ -40,12 +40,13 @@ const sanitizeCustomFieldValues = (options) => {
             case 'HelperSetItemId':
             case 'HelperSetItemIdList':
                 var input = values[key];
+                var any = input && input.any;
                 var saneValues = (
                     input &&
                     input.values &&
                     input.values.filter(it => !!it)
                 );
-                if (saneValues && saneValues.length > 0) {
+                if (any || saneValues && saneValues.length > 0) {
                     sanitized[key] = {
                         ...input,
                         values: saneValues

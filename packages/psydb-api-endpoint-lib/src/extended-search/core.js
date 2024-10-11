@@ -15,10 +15,7 @@ var {
     fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
 
-var {
-    createCustomQueryValues,
-    convertPointerKeys,
-} = require('./utils');
+var { createCustomQueryValues } = require('./utils');
 
 var extendedSearchCore = async (bag) => {
     var {
@@ -144,6 +141,8 @@ var extendedSearchCore = async (bag) => {
                 filters: customGdprFilters,
             }),
         }
+
+        console.log(customQueryValues);
     }
     else {
         var permissionStatePath = 'state';
@@ -174,7 +173,6 @@ var extendedSearchCore = async (bag) => {
             isDummy: { $ne: true },
             'scientific.state.internals.isRemoved': { $ne: true },
             ...(recordType && { type: recordType }),
-            //...convertPointerKeys(customQueryValues),
             ...customQueryValues,
             ...specialFilterConditions,
         }},

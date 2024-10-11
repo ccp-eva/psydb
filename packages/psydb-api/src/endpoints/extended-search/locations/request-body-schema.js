@@ -41,6 +41,7 @@ var NegatableForeignIdList = (bag) => {
 RequestBodySchema.Full = () => ExactObject({
     properties: {
         locationType: CustomRecordTypeKey({ collection: 'location' }),
+        // XXX
         customFilters: { type: 'object' },
         
         specialFilters: ExactObject({

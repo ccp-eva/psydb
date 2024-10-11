@@ -1197,8 +1197,20 @@ module.exports = [
         de: 'Keine Bedingungen',
     },
     {
+        en: 'Specific Values',
+        de: 'Spezifische Werte',
+    },
+    {
         en: 'Not with theese Values',
         de: 'Nicht mit diesen Werten',
+    },
+    {
+        en: 'Has Any Value',
+        de: 'Mit beliebigem Wert',
+    },
+    {
+        en: 'Has No Value',
+        de: 'Mit keinem Wert',
     },
     {
         en: 'Values',

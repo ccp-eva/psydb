@@ -29,6 +29,7 @@ RequestBodySchema.Core = () => OpenObject({
 RequestBodySchema.Full = () => ExactObject({
     properties: {
         subjectType: CustomRecordTypeKey({ collection: 'subject' }),
+        // XXX
         customGdprFilters: { type: 'object' },
         customScientificFilters: {
             type: 'object',

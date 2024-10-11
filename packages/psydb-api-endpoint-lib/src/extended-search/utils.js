@@ -39,6 +39,4 @@ var convertPointerKeys = (obj) => {
 module.exports = {
     createCustomQueryValues,
     convertPointerKeys,
-    makeRX,
-    escapeRX, // FIXME: use make RX
 }
