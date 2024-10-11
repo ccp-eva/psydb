@@ -15,7 +15,10 @@ var {
     fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
 
-var { createCustomQueryValues } = require('./utils');
+var {
+    createCustomQueryValues,
+    createCustomFieldMatchStages
+} = require('./utils');
 
 var extendedSearchCore = async (bag) => {
     var {
@@ -131,6 +134,17 @@ var extendedSearchCore = async (bag) => {
             )
         };
 
+        var customFieldMatchStages = [
+            ...createCustomFieldMatchStages({
+                definitions: customFields.scientific,
+                inputs: customScientificFilters,
+            }),
+            ...createCustomFieldMatchStages({
+                definitions: customFields.gdpr,
+                inputs: customGdprFilters,
+            }),
+        ]
+
         var customQueryValues = {
             ...createCustomQueryValues({
                 fields: customFields.scientific,
@@ -142,13 +156,20 @@ var extendedSearchCore = async (bag) => {
             }),
         }
 
-        console.log(customQueryValues);
+        console.log(customFieldMatchStages);
     }
     else {
         var permissionStatePath = 'state';
         var customFields = (
             fields.filter(it => !it.isRemoved)
         );
+
+        var customFieldMatchStages = [
+            ...createCustomFieldMatchStages({
+                definitions: customFields,
+                inputs: customFilters,
+            }),
+        ]
 
         var customQueryValues = {
             ...createCustomQueryValues({
@@ -173,10 +194,13 @@ var extendedSearchCore = async (bag) => {
             isDummy: { $ne: true },
             'scientific.state.internals.isRemoved': { $ne: true },
             ...(recordType && { type: recordType }),
-            ...customQueryValues,
-            ...specialFilterConditions,
+            //...customQueryValues,
+            //...specialFilterConditions,
         }},
 
+        ...customFieldMatchStages,
+
+        { $match: specialFilterConditions },
         ...(permissions.isRoot() ? [] : [
             { $match: {
                 [permissionFullPath]: { $in: (
