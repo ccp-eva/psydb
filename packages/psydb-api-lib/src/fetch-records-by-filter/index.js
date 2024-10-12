@@ -5,13 +5,15 @@ var inlineString = require('@cdxoo/inline-string');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var { ejson, arrify, isPromise } = require('@mpieva/psydb-core-utils');
+var futils = require('@mpieva/psydb-custom-fields-mongo');
+
+var SmartArray = require('../smart-array');
 
 var {
     SystemPermissionStages,
     ProjectDisplayFieldsStage,
     SeperateRecordLabelDefinitionFieldsStage,
     StripEventsStage,
-    QuickSearchStages,
     MatchConstraintsStage,
 } = require('../fetch-record-helpers');
 
@@ -148,11 +150,17 @@ var fetchRecordByFilter = async ({
 
         ...maybeStages({
             condition: queryFields && queryFields.length > 0,
-            stages: () => QuickSearchStages({
-                queryFields,
-                fieldTypeConversions,
-            })
-        })
+            stages: () => futils.createMatchStages({
+                from: queryFields.map(it => ({
+                    definition: {
+                        systemType: it.systemType,
+                        pointer: it.dataPointer
+                    },
+                    input: it.value,
+                })),
+                type: 'quick-search',
+            }),
+        }),
     ];
 
     //console.dir(ejson(preCountStages), { depth: null });

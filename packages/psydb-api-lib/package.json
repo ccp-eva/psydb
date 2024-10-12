@@ -21,6 +21,7 @@
     "@cdxoo/inline-text": "~1.0.2",
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-mongo-stages": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-custom-fields-mongo": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-i18n": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-timezone-helpers": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-creators": "workspace:~0.1.0-alpha",

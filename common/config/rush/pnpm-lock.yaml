@@ -470,6 +470,7 @@ importers:
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-verify-helpers': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
+      '@mpieva/psydb-custom-fields-mongo': workspace:~0.1.0-alpha
       '@mpieva/psydb-fixtures': workspace:~0.1.0-alpha
       '@mpieva/psydb-i18n': workspace:~0.1.0-alpha
       '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
@@ -523,6 +524,7 @@ importers:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-common-verify-helpers': link:../psydb-common-verify-helpers
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
+      '@mpieva/psydb-custom-fields-mongo': link:../psydb-custom-fields-mongo
       '@mpieva/psydb-i18n': link:../psydb-i18n
       '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
       '@mpieva/psydb-mongo-stages': link:../psydb-mongo-stages
