@@ -1,4 +1,6 @@
 'use strict';
+var { convertPointerToPath } = require('@mpieva/psydb-core-utils');
+var { makeRX } = require('@mpieva/psydb-common-lib');
 var { 
     switchQueryFilterType,
     PointWithinOurRange
@@ -10,7 +12,14 @@ var createQueryFilter = (bag) => {
    
     var filter = switchQueryFilterType({
         'extended-search': () => PointWithinOurRange(pointer, input),
-        'quick-search': () => { throw new Error() }
+        'quick-search': () => {
+            var path = convertPointerToPath(pointer);
+
+            return { $expr: { $regex: {
+                input: { $toString: `$${path}` },
+                regex: makeRX(input),
+            }}}
+        }
     })(type);
 
     return filter;

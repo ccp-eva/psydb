@@ -4,33 +4,56 @@ var { ejson } = require('@mpieva/psydb-core-utils');
 var { createQueryFilter, Fields } = require('../src');
 
 describe('createQueryFilter()', () => {
-    var type = 'extended-search';
+    var te = 'extended-search';
+    var tq = 'quick-search';
     var definition = { pointer: '/foo', props: {}};
 
     it('Address', () => {
-        var a = Fields.Address.createQueryFilter({
-            type, definition, input: { 'city': 'LE', 'street': 'Ostplatz' }
+        var e = Fields.Address.createQueryFilter({
+            type: te, definition, input: {
+                country: 'DE', 'city': 'LE', 'street': 'Ostplatz'
+            }
         });
         //console.log(a);
-        expect(a).to.eql({
+        expect(e).to.eql({
+            'foo.country': 'DE',
             'foo.city': /L[EeÈèÉéÊêËë]/i,
             'foo.street': /[OoÒòÓóÔôÕõÖö]stpl[AaÀàÁáÂâÃãÄäåĂă]tz/i
-        })
+        });
+
+        var q = Fields.Address.createQueryFilter({
+            type: tq, definition, input: 'Ostplatz 12'
+        });
+        expect(q).to.eql({ $expr: { $regexMatch: {
+            input: { $concat: [
+                '$foo.street', ' ', '$foo.housenumber', ' ', '$foo.affix',
+                ' ', '$foo.postcode', ' ', '$foo.city'
+            ]},
+            regex: /[OoÒòÓóÔôÕõÖö]stpl[AaÀàÁáÂâÃãÄäåĂă]tz 12/i
+        }}});
     });
 
     it('BiologicalGender', () => {
-        var a = Fields.BiologicalGender.createQueryFilter({
-            type, definition, input: { 'f': true, 'o': true, 'm': false }
+        var e = Fields.BiologicalGender.createQueryFilter({
+            type: te, definition, input: {
+                'f': true, 'o': true, 'm': false
+            }
         });
-        //console.log(a);
-        expect(a).to.eql({
+        //console.log(e);
+        expect(e).to.eql({
             'foo': { $in: [ 'f', 'o' ]}
         })
+        
+        var q = Fields.BiologicalGender.createQueryFilter({
+            type: tq, definition, input: 'f'
+        });
+        //console.log(e);
+        expect(q).to.eql({ 'foo': 'f' })
     });
 
     it('DateOnlyServerSide', () => {
         var a = Fields.DateOnlyServerSide.createQueryFilter({
-            type, definition, input: { interval: {
+            type: te, definition, input: { interval: {
                 start: '2020-01-01T00:00:00.000Z',
                 end: '2020-12-31T00:00:00.000Z',
             }}
@@ -44,35 +67,49 @@ describe('createQueryFilter()', () => {
     });
 
     it('DefaultBool', () => {
-        var a = Fields.DefaultBool.createQueryFilter({
-            type, definition, input: 'only-false'
+        var e = Fields.DefaultBool.createQueryFilter({
+            type: te, definition, input: 'only-false'
         });
-        //console.log(a);
-        expect(a).to.eql({
-            'foo': false
-        })
+        //console.log(e);
+        expect(e).to.eql({ 'foo': false });
+        
+        var q = Fields.DefaultBool.createQueryFilter({
+            type: tq, definition, input: false
+        });
+        //console.log(q);
+        expect(q).to.eql({ 'foo': false });
     });
 
     it('EmailList', () => {
-        var a = Fields.EmailList.createQueryFilter({
-            type, definition, input: 'f@b.dd'
+        var e = Fields.EmailList.createQueryFilter({
+            type: te, definition, input: 'f@b.dd'
         });
-        //console.log(a);
-        expect(a).to.eql({
-            'foo.email': /f@b\.dd/i
-        })
+        //console.log(e);
+        expect(e).to.eql({ 'foo.email': /f@b\.dd/i })
+        
+        var q = Fields.EmailList.createQueryFilter({
+            type: tq, definition, input: 'f@b.dd'
+        });
+        //console.log(q);
+        expect(q).to.eql({ 'foo.email': /f@b\.dd/i })
     });
     
     it('ExtBool', () => {
-        var a = Fields.ExtBool.createQueryFilter({
-            type, definition, input: {
+        var e = Fields.ExtBool.createQueryFilter({
+            type: te, definition, input: {
                 'yes': false, 'no': true, 'unknown': true
             }
         });
-        //console.log(a);
-        expect(a).to.eql({
+        //console.log(e);
+        expect(e).to.eql({
             'foo': { $in: [ 'no', 'unknown' ]}
         })
+        
+        var q = Fields.ExtBool.createQueryFilter({
+            type: tq, definition, input: 'unknown'
+        });
+        //console.log(e);
+        expect(q).to.eql({ 'foo': 'unknown' })
     });
     
     it('ForeignIdList / HelperSetItemIdList', () => {
@@ -107,10 +144,10 @@ describe('createQueryFilter()', () => {
         ]
         for (var [ ix, it ] of inputs.entries()) {
             var fk = Fields.ForeignIdList.createQueryFilter({
-                type, definition, input: it
+                type: te, definition, input: it
             });
             var hsi = Fields.HelperSetItemIdList.createQueryFilter({
-                type, definition, input: it
+                type: te, definition, input: it
             });
 
             //console.log(fk, hsi);
@@ -155,10 +192,10 @@ describe('createQueryFilter()', () => {
         ]
         for (var [ ix, it ] of inputs.entries()) {
             var fk = Fields.ForeignId.createQueryFilter({
-                type, definition, input: it
+                type: te, definition, input: it
             });
             var hsi = Fields.HelperSetItemId.createQueryFilter({
-                type, definition, input: it
+                type: te, definition, input: it
             });
 
             //console.log(fk, hsi);
@@ -169,7 +206,7 @@ describe('createQueryFilter()', () => {
 
     it('FullText', () => {
         var a = Fields.FullText.createQueryFilter({
-            type, definition, input: 'ddd'
+            type: te, definition, input: 'ddd'
         });
         //console.log(a);
         expect(a).to.eql({
@@ -179,7 +216,7 @@ describe('createQueryFilter()', () => {
     
     it('Integer', () => {
         var a = Fields.Integer.createQueryFilter({
-            type, definition, input: { min: 4, max: 8 }
+            type: te, definition, input: { min: 4, max: 8 }
         });
         //console.log(a);
         expect(a).to.eql({
@@ -189,7 +226,7 @@ describe('createQueryFilter()', () => {
     
     it('PhoneList', () => {
         var a = Fields.PhoneList.createQueryFilter({
-            type, definition, input: '123'
+            type: te, definition, input: '123'
         });
         //console.log(a);
         expect(a).to.eql({
@@ -199,7 +236,7 @@ describe('createQueryFilter()', () => {
     
     it('PhoneWithTypeList', () => {
         var a = Fields.PhoneWithTypeList.createQueryFilter({
-            type, definition, input: '123'
+            type: te, definition, input: '123'
         });
         //console.log(a);
         expect(a).to.eql({
@@ -209,7 +246,7 @@ describe('createQueryFilter()', () => {
     
     it('SaneString', () => {
         var a = Fields.SaneString.createQueryFilter({
-            type, definition, input: 'ddd'
+            type: te, definition, input: 'ddd'
         });
         //console.log(a);
         expect(a).to.eql({
@@ -219,7 +256,7 @@ describe('createQueryFilter()', () => {
     
     it('URLStringList', () => {
         var a = Fields.URLStringList.createQueryFilter({
-            type, definition, input: 'ddd'
+            type: te, definition, input: 'ddd'
         });
         //console.log(a);
         expect(a).to.eql({

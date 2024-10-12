@@ -1,7 +1,7 @@
 'use strict';
 var { 
     switchQueryFilterType,
-    EqualsOneOfTruthyKeys,
+    EqualsOneOfTruthyKeys, JustEqual,
 } = require('../utils');
 
 var createQueryFilter = (bag) => {
@@ -10,7 +10,7 @@ var createQueryFilter = (bag) => {
    
     var filter = switchQueryFilterType({
         'extended-search': () => EqualsOneOfTruthyKeys(pointer, input),
-        'quick-search': () => { throw new Error() }
+        'quick-search': () => JustEqual(pointer, input),
     })(type);
 
     return filter;

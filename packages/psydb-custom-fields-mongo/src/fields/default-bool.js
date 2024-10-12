@@ -1,7 +1,7 @@
 'use strict';
 var { 
     switchQueryFilterType,
-    Boolify,
+    Boolify, JustEqual,
 } = require('../utils');
 
 var createQueryFilter = (bag) => {
@@ -12,7 +12,7 @@ var createQueryFilter = (bag) => {
         'extended-search': () => Boolify(pointer, input, [
             'only-true', 'only-false'
         ]),
-        'quick-search': () => { throw new Error() }
+        'quick-search': () => JustEqual(pointer, input)
     })(type);
 
     return filter;

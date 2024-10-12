@@ -2,6 +2,15 @@
 var { convertPointerToPath } = require('@mpieva/psydb-core-utils');
 var { makeDiaRX } = require('@mpieva/psydb-common-lib');
 
+var JustEqual = (pointer, input) => {
+    var path = convertPointerToPath(pointer);
+    return (
+        input !== undefined
+        ? { [path]: input }
+        : undefined
+    )
+};
+
 var JustRegex = (pointer, input) => {
     var path = convertPointerToPath(pointer);
     return (
@@ -11,6 +20,15 @@ var JustRegex = (pointer, input) => {
     )
 };
 
+var MultiEqual = (pointer, input, keys) => {
+    input = input || {};
+    var out = {};
+    for (var it of keys) {
+        out = { ...out, ...JustEqual(`${pointer}/${it}`, input[it]) };
+    }
+    return Object.keys(out).length > 0 ? out : undefined;
+}
+
 var MultiRegex = (pointer, input, keys) => {
     input = input || {};
     var out = {};
@@ -18,6 +36,24 @@ var MultiRegex = (pointer, input, keys) => {
         out = { ...out, ...JustRegex(`${pointer}/${it}`, input[it]) };
     }
     return Object.keys(out).length > 0 ? out : undefined;
+}
+
+var ConcatRegex = (pointer, input, keys, options = {}) => {
+    var { sep = ' ' } = options;
+    var path = convertPointerToPath(pointer);
+
+    var CONCAT = keys.flatMap((it, ix) => (
+        ix === 0
+        ? `$${path}.${it}`
+        : [ sep, `$${path}.${it}` ]
+    ));
+
+    return (
+        { $expr: { $regexMatch: {
+            input: { $concat: CONCAT },
+            regex: makeDiaRX(input)
+        }}}
+    );
 }
 
 var Boolify = (pointer, input, options) => {
@@ -123,8 +159,13 @@ var IncludesOneOf = (pointer, input = {}, options = {}) => {
 }
 
 module.exports = {
+    JustEqual,
     JustRegex,
+    MultiEqual,
     MultiRegex,
+
+    ConcatRegex,
+
     Boolify,
 
     IncludesOneOf,
