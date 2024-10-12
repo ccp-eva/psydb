@@ -5,9 +5,8 @@ var inlineString = require('@cdxoo/inline-string');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var { ejson, arrify, isPromise } = require('@mpieva/psydb-core-utils');
+var { SmartArray } = require('@mpieva/psydb-common-lib');
 var futils = require('@mpieva/psydb-custom-fields-mongo');
-
-var SmartArray = require('../smart-array');
 
 var {
     SystemPermissionStages,
@@ -18,7 +17,6 @@ var {
 } = require('../fetch-record-helpers');
 
 var convertPointerToPath = require('../convert-pointer-to-path');
-var fieldTypeConversions = require('../mongodb-field-type-conversions');
 var createRecordLabel = require('../create-record-label');
 var fromFacets = require('../from-facets');
 var maybeStages = require('../maybe-stages');
@@ -151,6 +149,7 @@ var fetchRecordByFilter = async ({
         ...maybeStages({
             condition: queryFields && queryFields.length > 0,
             stages: () => futils.createMatchStages({
+                type: 'quick-search',
                 from: queryFields.map(it => ({
                     definition: {
                         systemType: it.systemType,
@@ -158,7 +157,6 @@ var fetchRecordByFilter = async ({
                     },
                     input: it.value,
                 })),
-                type: 'quick-search',
             }),
         }),
     ];

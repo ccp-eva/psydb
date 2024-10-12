@@ -1,6 +1,4 @@
 'use strict';
-var { ejson } = require('@mpieva/psydb-core-utils');
-var { convertPointerToPath } = require('@mpieva/psydb-core-utils');
 var { createMatchStages } = require('@mpieva/psydb-custom-fields-mongo');
 
 var QuickSearchStages = ({

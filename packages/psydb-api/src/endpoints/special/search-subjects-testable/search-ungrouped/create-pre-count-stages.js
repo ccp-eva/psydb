@@ -3,23 +3,17 @@ var { ejson, convertPointerToPath } = require('@mpieva/psydb-core-utils');
 
 var {
     timeshiftAgeFrame,
-    fieldTypeMetadata
+    SmartArray,
 } = require('@mpieva/psydb-common-lib');
 
-var {
-    convertFiltersToQueryFields,
-    SmartArray
-} = require('@mpieva/psydb-api-lib');
+var { convertFiltersToQueryPairs } = require('@mpieva/psydb-api-lib');
+
+var futils = require('@mpieva/psydb-custom-fields-mongo');
 
 var {
     AddSubjectTestabilityFieldsStage,
     HasAnyTestabilityStage,
-    QuickSearchStages,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
-
-var fieldTypeConversions = (
-    require('@mpieva/psydb-api-lib/src/mongodb-field-type-conversions')
-);
 
 var createPreCountStages = (bag) => {
     var {
@@ -44,12 +38,9 @@ var createPreCountStages = (bag) => {
         queryFields
     } = bag;
 
-    console.log({ sampleSize })
-
-    var queryFields = convertFiltersToQueryFields({
+    var definedQuickSearch = convertFiltersToQueryPairs({
         filters: quickSearchFilters || {},
         displayFields: subjectRecordLabelDefinition.tokens,
-        fieldTypeMetadata,
     });
 
     var preCountStages = SmartArray([
@@ -82,11 +73,12 @@ var createPreCountStages = (bag) => {
             )}}
         ),
 
-        // TODO: quicksearch
-        ...QuickSearchStages({
-            queryFields, 
-            fieldTypeConversions,
-        }),
+        (definedQuickSearch.length > 0 && (
+            futils.createMatchStages({
+                type: 'quick-search',
+                from: definedQuickSearch
+            })
+        )),
 
         // TODO: optimization
         // first match children that ar in any of the timeshifted
@@ -110,7 +102,7 @@ var createPreCountStages = (bag) => {
         }),
         
         (sampleSize > 0 && { $sample: { size: sampleSize }}),
-    ]);
+    ], { spreadArrayItems: true });
 
     return preCountStages;
 }
