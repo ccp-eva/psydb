@@ -1,11 +1,35 @@
 'use strict';
+var { ejson } = require('@mpieva/psydb-core-utils');
 var { convertPointerToPath } = require('@mpieva/psydb-core-utils');
+var { Fields } = require('@mpieva/psydb-custom-fields-mongo');
 
 var QuickSearchStages = ({
     queryFields,
     fieldTypeConversions,
 }) => {
+    var sane = [];
+    for (var it of queryFields) {
+        var { systemType, dataPointer, value } = it;
+        sane.push({
+            definition: { systemType, pointer: dataPointer }, // FIXME
+            input: value
+        })
+    }
+
+    
     var stages = [];
+    for (var it of sane) {
+        var { definition, input } = it;
+        stages.push({ $match: (
+            Fields[definition.systemType].createQueryFilter({
+                type: 'quick-search', definition, input
+            })
+        )})
+    }
+
+    console.dir(ejson(stages), { depth: null });
+    return stages;
+    throw new Error();
 
     var {
         projectionFields,

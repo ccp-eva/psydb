@@ -2,7 +2,7 @@
 var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 var { 
     switchQueryFilterType,
-    IncludesOneOf
+    IncludesOneOf, JustEqual,
 } = require('../utils');
 
 var createQueryFilter = (bag) => {
@@ -12,7 +12,7 @@ var createQueryFilter = (bag) => {
     var options = { transform: ObjectId };
     var filter = switchQueryFilterType({
         'extended-search': () => IncludesOneOf(pointer, input, options),
-        'quick-search': () => { throw new Error() }
+        'quick-search': () => JustEqual(pointer, input)
     })(type);
 
     return filter;

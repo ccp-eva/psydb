@@ -17,7 +17,7 @@
     "@cdxoo/objectpath-to-jsonpointer": "~1.0.0",
     "@cdxoo/traverse": "~0.0.2",
     "@cdxoo/flat": "~0.0.11",
-    "@cdxoo/tiny-ejson": "~1.0.0"
+    "@cdxoo/tiny-ejson": "~1.1.0"
   },
   "devDependencies": {
     "mocha": "~10.2.0",

@@ -1,6 +1,6 @@
 'use strict';
 var { convertPointerToPath } = require('@mpieva/psydb-core-utils');
-var { timeshiftAgeFrame } = require('@mpieva/psydb-common-lib');
+var { makeRX, timeshiftAgeFrame } = require('@mpieva/psydb-common-lib');
 var { switchQueryFilterType } = require('../utils');
 
 var createQueryFilter = (bag) => {
@@ -8,10 +8,24 @@ var createQueryFilter = (bag) => {
    
     var filter = switchQueryFilterType({
         'extended-search': () => ExtendedSearchFilter(definition, input),
-        'quick-search': () => { throw new Error() }
+        'quick-search': () => QuickSearchFilter(definition, input),
     })(type);
 
     return filter;
+}
+
+var QuickSearchFilter = (definition, input) => {
+    var { pointer, props } = definition;
+    var path = convertPointerToPath(pointer);
+
+    return { $expr: { $regexMatch: {
+        input: { $dateToString: {
+            date: `$${path}`,
+            format: '%d.%m.%Y', // XXX: locale (i18n)
+            timezone: 'Europe/Berlin' // XXX: timezone (i18n)
+        }},
+        regex: makeRX(input)
+    }}}
 }
 
 var ExtendedSearchFilter = (definition, input) => {

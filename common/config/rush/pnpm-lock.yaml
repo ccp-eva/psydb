@@ -852,7 +852,7 @@ importers:
       '@cdxoo/flat': ~0.0.11
       '@cdxoo/jsonpointer-to-objectpath': ~1.0.0
       '@cdxoo/objectpath-to-jsonpointer': ~1.0.0
-      '@cdxoo/tiny-ejson': ~1.0.0
+      '@cdxoo/tiny-ejson': ~1.1.0
       '@cdxoo/traverse': ~0.0.2
       chai: ~4.3.7
       deepmerge: ~4.2.2
@@ -864,7 +864,7 @@ importers:
       '@cdxoo/flat': 0.0.11
       '@cdxoo/jsonpointer-to-objectpath': 1.0.0
       '@cdxoo/objectpath-to-jsonpointer': 1.0.0
-      '@cdxoo/tiny-ejson': 1.0.0
+      '@cdxoo/tiny-ejson': 1.1.0
       '@cdxoo/traverse': 0.0.2
       deepmerge: 4.2.2
       escape-string-regexp: 4.0.0
@@ -1131,6 +1131,7 @@ importers:
       '@cdxoo/mongo-test-helpers': ~0.8.0
       '@mpieva/psydb-common-lib': workspace:*
       '@mpieva/psydb-core-utils': workspace:*
+      '@mpieva/psydb-custom-fields-mongo': workspace:*
       '@mpieva/psydb-fixtures': workspace:*
       '@mpieva/psydb-schema-creators': workspace:*
       chai: ~4.3.7
@@ -1143,6 +1144,7 @@ importers:
       '@cdxoo/inline-string': 1.0.0
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
+      '@mpieva/psydb-custom-fields-mongo': link:../psydb-custom-fields-mongo
       '@mpieva/psydb-schema-creators': link:../psydb-schema-creators
       jsonpointer: 5.0.1
       nanoid: 3.3.7
@@ -3930,6 +3932,10 @@ packages:
 
   /@cdxoo/tiny-ejson/1.0.0:
     resolution: {integrity: sha512-L7gCaEFXndZZmmGEVwlkht7HtWik7yaGj/Ly6pTQT7ejxIsIrvfcryw9Ph1yqtYs6hDVMHYJ1HIV0o22PU6E/Q==}
+
+  /@cdxoo/tiny-ejson/1.1.0:
+    resolution: {integrity: sha512-Kvf24Hay4d4/C96pZ+j/R1jnwfO605E17zw3/4zwwz6doZPYX9l74Pyj8bBdKqF6dTVLn0DD9ROqJSzIG4JdCw==}
+    dev: false
 
   /@cdxoo/tiny-ejson/1.1.0-beta.1:
     resolution: {integrity: sha512-pKVfAdGYdftVAadSagFJ8OBDOyRFGVXRx2ZsAXDQdiFvRLg++/JixEKyJ/3sJprvhp9mIFuJwAKYcT23OX9Dbw==}

@@ -13,6 +13,7 @@
     "@mpieva/psydb-core-utils": "workspace:*",
     "@mpieva/psydb-common-lib": "workspace:*",
     "@mpieva/psydb-schema-creators": "workspace:*",
+    "@mpieva/psydb-custom-fields-mongo": "workspace:*",
     "jsonpointer": "~5.0.1",
     "@cdxoo/inline-string": "~1.0.0",
     "nanoid": "~3.3.6"
