@@ -149,6 +149,7 @@ importers:
       '@mpieva/psydb-ajv-keywords': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-endpoint-lib': workspace:~0.1.0-alpha
+      '@mpieva/psydb-api-endpoints': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-lib-errors': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-message-handlers': workspace:~0.1.0-alpha
@@ -219,6 +220,7 @@ importers:
       '@mpieva/psydb-ajv-keywords': link:../psydb-ajv-keywords
       '@mpieva/psydb-api-config': link:../psydb-api-config
       '@mpieva/psydb-api-endpoint-lib': link:../psydb-api-endpoint-lib
+      '@mpieva/psydb-api-endpoints': link:../psydb-api-endpoints
       '@mpieva/psydb-api-lib': link:../psydb-api-lib
       '@mpieva/psydb-api-lib-errors': link:../psydb-api-lib-errors
       '@mpieva/psydb-api-message-handlers': link:../psydb-api-message-handlers
@@ -1704,12 +1706,14 @@ importers:
   ../../packages/psydb-ui-request-agents:
     specifiers:
       '@mpieva/psydb-common-lib': workspace:*
+      '@mpieva/psydb-core-utils': workspace:*
       '@mpieva/psydb-timezone-helpers': workspace:*
       axios: ~0.28.1
       chai: ~4.3.7
       mocha: ~10.2.0
     devDependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
+      '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-timezone-helpers': link:../psydb-timezone-helpers
       axios: 0.28.1
       chai: 4.3.10

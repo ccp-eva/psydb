@@ -1,10 +1,10 @@
 'use strict';
 var {
-    MaxObject, OpenObject, IdList, DefaultBool, StringEnum,
+    MaxObject, OpenObject, Id, IdList
 } = require('@mpieva/psydb-schema-fields');
 
 var {
-    ListBodyCommon, Pagination, Sort,
+    ListBodyCommon, Pagination, Sort
 } = require('@mpieva/psydb-schema-fields-special');
 
 var futils = require('@mpieva/psydb-custom-fields-common');
@@ -12,6 +12,7 @@ var futils = require('@mpieva/psydb-custom-fields-common');
 var SearchConstraints = () => {
     var schema = MaxObject({
         '/_id': IdList(),
+        '/setId': Id(),
     });
     return schema;
 }

@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
+import { jsonpointer } from '@mpieva/psydb-core-utils';
 import { CRTSettingsList } from '@mpieva/psydb-common-lib';
 
 const createAgent = (options = {}) => {
@@ -61,7 +62,9 @@ const createAgent = (options = {}) => {
     agent.readCustomRecordTypeMetadata = ({
         only, ignoreResearchGroups
     } = {}) => {
-        return axios.post(`/api/metadata/custom-record-types`, { only, ignoreResearchGroups });
+        return axios.post(`/api/metadata/custom-record-types`, {
+            only, ignoreResearchGroups
+        });
     }
 
     agent.readRecordSchema = ({
@@ -933,6 +936,19 @@ const createAgent = (options = {}) => {
         url: '/api/audit/rohrpost-event/read'
     });
 
+    ///////////////////////
+
+    agent.fetch = (tag, payload) => {
+        var fn = jsonpointer.get(agent, tag);
+        return fn(payload);
+    }
+    agent.helperSet = {
+        list: dumpPOST({ url: '/api/helperSet/list' })
+    };
+    agent.helperSetItem = {
+        list: dumpPOST({ url: '/api/helperSetItem/list' })
+    };
+    
     // XXX
     agent.fetchFixedEventDetails = (bag) => {
         var { extraAxiosConfig, ...payload } = bag;

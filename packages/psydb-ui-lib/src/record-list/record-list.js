@@ -93,14 +93,13 @@ var RecordList = (ps) => {
 
         var { showHidden: realShowHidden, ...realFilters } = filters;
 
-        return agent.searchRecords({
+        console.log({ collection, recordType });
+
+        var commonPayload = {
             target,
-            collection,
-            recordType,
             searchOptions,
-            offset: (
-                didChangeFilters ? 0 : offset
-            ),
+
+            offset: didChangeFilters ? 0 : offset,
             limit,
             constraints,
             extraIds,
@@ -116,8 +115,21 @@ var RecordList = (ps) => {
                 ? realShowHidden
                 : showHidden
             )
-        })
-        .then((response) => {
+        }
+
+        var promise = undefined;
+        if (['helperSet', 'helperSetItem'].includes(collection)) {
+            promise = agent.fetch(`/${collection}/list`, {
+                ...commonPayload,
+            });
+        }
+        else {
+            promise = agent.searchRecords({
+                ...commonPayload, collection, recordType
+            });
+        }
+
+        return promise.then((response) => {
             setDidChangeFilters(false);
             pagination.setTotal(response.data.data.recordsCount);
             return response;

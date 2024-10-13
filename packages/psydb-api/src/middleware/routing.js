@@ -9,6 +9,7 @@ var compose = require('koa-compose'),
     init = require('../init-endpoint'),
     endpoints = require('../endpoints/');
 
+var endpoints_SPLIT = require('@mpieva/psydb-api-endpoints');
 var inline = require('@cdxoo/inline-string');
 
 var withPostStages = ({
@@ -123,14 +124,23 @@ var createRouting = (bag = {}) => {
         endpoints.search
     );
 
-    router.post('/helperSet/search', ...withPostStages({
-        endpoint: endpoints.helperSet.search,
+    router.post('/helperSet/list', ...withPostStages({
+        endpoint: endpoints_SPLIT.helperSet.list,
         enableApiKeyAuth: true,
     }));
-    router.post('/helperSetItem/search', ...withPostStages({
-        endpoint: endpoints.helperSetItem.search,
+    router.post('/helperSetItem/list', ...withPostStages({
+        endpoint: endpoints_SPLIT.helperSetItem.list,
         enableApiKeyAuth: true,
     }));
+
+    //router.post('/helperSet/search', ...withPostStages({
+    //    endpoint: endpoints.helperSet.search,
+    //    enableApiKeyAuth: true,
+    //}));
+    //router.post('/helperSetItem/search', ...withPostStages({
+    //    endpoint: endpoints.helperSetItem.search,
+    //    enableApiKeyAuth: true,
+    //}));
     
     //router.post('/search/helperSetItem',
     //    withSelfAuth(),

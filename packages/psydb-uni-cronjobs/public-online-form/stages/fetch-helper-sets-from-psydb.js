@@ -56,7 +56,7 @@ var fetchSetIds = async (bag) => {
     var { driver, constraints } = bag;
 
     var fetched = await driver.post({
-        url: '/helperSet/search',
+        url: '/helperSet/list',
         payload: {
             constraints,
 
@@ -82,7 +82,7 @@ var fetchItemRecords = async (bag) => {
     var { driver, constraints } = bag;
     
     var fetched = await driver.post({
-        url: '/helperSetItem/search',
+        url: '/helperSetItem/list',
         payload: {
             constraints,
 
