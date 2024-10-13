@@ -20,6 +20,12 @@
     "debug": "~4.3.4",
     "@mpieva/psydb-core-utils": "workspace:*",
     "@mpieva/psydb-common-lib": "workspace:*",
+    "@mpieva/psydb-i18n": "workspace:*",
+    "@mpieva/psydb-schema-fields": "workspace:*",
+    "@mpieva/psydb-schema-fields-special": "workspace:*",
+    "@mpieva/psydb-mongo-adapter": "workspace:*",
+    "@mpieva/psydb-mongo-stages": "workspace:*",
+    "@mpieva/psydb-custom-fields-common": "workspace:*",
     "@mpieva/psydb-api-lib-errors": "workspace:*",
     "@mpieva/psydb-api-lib": "workspace:*",
     "@mpieva/psydb-api-endpoint-lib": "workspace:*"

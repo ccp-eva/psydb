@@ -1,9 +1,3 @@
-const __fixDefinitions = (definitions) => {
-    console.info('FIXING DEFINITIONS');
-    return definitions.map(def => {
-        var { type, dataPointer, ...pass } = def;
-        return { systemType: type, pointer: dataPointer, ...pass };
-    })
-}
-
+// FIXME: rewire
+import { __fixDefinitions } from '@mpieva/psydb-common-lib';
 export default __fixDefinitions;

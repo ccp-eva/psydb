@@ -1,4 +1,6 @@
 module.exports = {
+    __fixDefinitions: require('./__fix-definitions'),
+
     sift: require('sift'),
     inlineText: require('@cdxoo/inline-text'),
 

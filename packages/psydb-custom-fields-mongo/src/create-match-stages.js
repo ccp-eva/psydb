@@ -1,4 +1,5 @@
 'use strict';
+var { __fixDefinitions } = require('@mpieva/psydb-common-lib');
 var Fields = require('./fields');
 
 var createMatchStages = (bag) => {
@@ -7,7 +8,9 @@ var createMatchStages = (bag) => {
     var stages = [];
     for (var it of from) {
         var { definition, input } = it;
-        var systemType = definition.systemType || definition.type; // FIXME
+        ([ definition ] = __fixDefinitions([ definition ])); // FIXME
+
+        var { systemType } = definition;
 
         if (input !== undefined) {
             stages.push({ $match: (

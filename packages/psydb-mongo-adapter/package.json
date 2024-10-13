@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mongodb": "~3.6.12"
+    "mongodb": "~3.6.12",
+    "@cdxoo/mongodb-utils": "~1.0.1"
   }
 }

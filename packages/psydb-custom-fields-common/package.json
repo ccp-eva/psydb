@@ -1,0 +1,19 @@
+{
+  "name": "@mpieva/psydb-custom-fields-common",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "npx mocha --config mocha.config.json tests/"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "~10.2.0",
+    "chai": "~4.3.7"
+  },
+  "dependencies": {
+    "@mpieva/psydb-schema-fields": "workspace:*",
+    "@mpieva/psydb-common-lib": "workspace:*"
+  }
+}

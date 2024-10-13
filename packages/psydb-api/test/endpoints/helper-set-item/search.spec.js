@@ -10,9 +10,7 @@ var picard = ObjectId("6312720d8dde11df80a50aa2");
 describe('endpoints/helper-set-item/search', function () {
     var db, agent;
     beforeEach(async function () {
-        await this.restore(
-            '2023-10-16__2324'
-        );
+        await this.restore('2024-10-13__1818');
         
         this.createKoaApi();
         await this.signIn();
@@ -33,11 +31,11 @@ describe('endpoints/helper-set-item/search', function () {
             agent.post('/helperSetItem/search', jsonify({
                 target: 'optionlist',
                 filters: {
-                    //'/state/label': 'Ac'
+                    '/state/label': 'Ord'
                     //'/state/displayNameI18N/de': 'Ak'
                 },
                 constraints: {
-                    '/setId': '6429e5a8ed7180d81fc1644c'
+                    '/setId': '64d42dc4443aa279ca4cadc2',
                 },
                 limit: 100,
                 offset: 0

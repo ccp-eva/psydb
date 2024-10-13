@@ -76,6 +76,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-custom-fields-common",
+       "projectFolder": "packages/psydb-custom-fields-common",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-custom-fields-mongo",
        "projectFolder": "packages/psydb-custom-fields-mongo",
        "reviewCategory": "production"

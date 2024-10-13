@@ -394,7 +394,13 @@ importers:
       '@mpieva/psydb-api-mocha-test-tools': workspace:*
       '@mpieva/psydb-common-lib': workspace:*
       '@mpieva/psydb-core-utils': workspace:*
+      '@mpieva/psydb-custom-fields-common': workspace:*
       '@mpieva/psydb-fixtures': workspace:*
+      '@mpieva/psydb-i18n': workspace:*
+      '@mpieva/psydb-mongo-adapter': workspace:*
+      '@mpieva/psydb-mongo-stages': workspace:*
+      '@mpieva/psydb-schema-fields': workspace:*
+      '@mpieva/psydb-schema-fields-special': workspace:*
       chai: ~4.3.7
       debug: ~4.3.4
       mocha: ~10.2.0
@@ -404,6 +410,12 @@ importers:
       '@mpieva/psydb-api-lib-errors': link:../psydb-api-lib-errors
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
+      '@mpieva/psydb-custom-fields-common': link:../psydb-custom-fields-common
+      '@mpieva/psydb-i18n': link:../psydb-i18n
+      '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
+      '@mpieva/psydb-mongo-stages': link:../psydb-mongo-stages
+      '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
+      '@mpieva/psydb-schema-fields-special': link:../psydb-schema-fields-special
       debug: 4.3.4
     devDependencies:
       '@mpieva/psydb-api-mocha-test-tools': link:../psydb-api-mocha-test-tools
@@ -878,6 +890,19 @@ importers:
       chai: 4.3.10
       mocha: 10.2.0
 
+  ../../packages/psydb-custom-fields-common:
+    specifiers:
+      '@mpieva/psydb-common-lib': workspace:*
+      '@mpieva/psydb-schema-fields': workspace:*
+      chai: ~4.3.7
+      mocha: ~10.2.0
+    dependencies:
+      '@mpieva/psydb-common-lib': link:../psydb-common-lib
+      '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
+    devDependencies:
+      chai: 4.3.10
+      mocha: 10.2.0
+
   ../../packages/psydb-custom-fields-mongo:
     specifiers:
       '@mpieva/psydb-common-lib': workspace:*
@@ -1125,8 +1150,10 @@ importers:
 
   ../../packages/psydb-mongo-adapter:
     specifiers:
+      '@cdxoo/mongodb-utils': ~1.0.1
       mongodb: ~3.6.12
     dependencies:
+      '@cdxoo/mongodb-utils': 1.0.1
       mongodb: 3.6.12
 
   ../../packages/psydb-mongo-stages:
@@ -3887,6 +3914,10 @@ packages:
     transitivePeerDependencies:
       - '@aws-sdk/client-sso-oidc'
       - aws-crt
+    dev: false
+
+  /@cdxoo/mongodb-utils/1.0.1:
+    resolution: {integrity: sha512-1JwdEYoYXgxX54ufLw5nRow3JETx+DDf4puWQATHogkTKJ4gRyt4bi7pi9y3KjAZXfoaIE4ftGop9CBfVvyHYQ==}
     dev: false
 
   /@cdxoo/objectpath-to-jsonpointer/1.0.0:
