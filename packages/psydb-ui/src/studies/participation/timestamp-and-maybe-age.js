@@ -2,13 +2,13 @@ import React from 'react';
 import { jsonpointer } from '@mpieva/psydb-core-utils';
 import { calculateAge } from '@mpieva/psydb-common-lib';
 import { check1970 } from '@mpieva/psydb-ui-utils';
-import { useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { datefns } from '@mpieva/psydb-ui-lib';
-
-const IS_WKPRC = true;
 
 const TimestampAndMaybeAge = (ps) => {
     var { record, timestamp, dateOfBirthField } = ps;
+    
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
     var locale = useUILocale();
     
     if (check1970(timestamp)) {

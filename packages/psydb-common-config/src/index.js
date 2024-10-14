@@ -34,4 +34,5 @@ module.exports = {
     dev_enableCSVParticipationImport: true,
     
     dev_enableStatistics: true,
+    dev_enableWKPRCPatches: true,
 }

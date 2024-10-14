@@ -1,7 +1,11 @@
 import React from 'react';
 import { convertPointerToPath, hasNone } from '@mpieva/psydb-core-utils';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import {
+    useUIConfig,
+    useUITranslation
+} from '@mpieva/psydb-ui-contexts';
+
 import {
     useModalReducer,
     usePermissions,
@@ -27,8 +31,6 @@ import {
 } from '@mpieva/psydb-ui-lib/src/participation/for-study';
 
 import TimestampAndMaybeAge from './timestamp-and-maybe-age';
-
-const IS_WKPRC = true;
 
 const ParticipationList = (ps) => {
     var {
@@ -114,6 +116,7 @@ const TableHeadCols = (ps) => {
         canSort,
     } = ps;
 
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
     var translate = useUITranslation();
 
     return (
@@ -171,6 +174,7 @@ const ParticipationListRow = (ps) => {
         onRemove,
     } = ps;
 
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
     var translate = useUITranslation();
 
     var showEdit = permissions.hasFlag('canWriteParticipation');

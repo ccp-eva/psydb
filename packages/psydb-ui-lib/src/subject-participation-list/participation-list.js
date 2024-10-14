@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     useModalReducer,
     usePermissions
@@ -27,8 +27,6 @@ import {
 
 import TimestampAndMaybeAge from './timestamp-and-maybe-age';
 
-const IS_WKPRC = true;
-
 const ParticipationList = (ps) => {
     var {
         sorter,
@@ -52,6 +50,7 @@ const ParticipationList = (ps) => {
         enableItemFunctions,
     } = ps;
 
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
     var translate = useUITranslation();
     var editModal = useModalReducer();
     var removeModal = useModalReducer();
@@ -169,6 +168,7 @@ const ParticipationListRow = (ps) => {
 
     var { _id: subjectId, type: subjectType } = subjectRecord;
 
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
     var translate = useUITranslation();
     var permissions = usePermissions();
 
