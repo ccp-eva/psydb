@@ -47,6 +47,7 @@ var publicInitUI = async (context, next) => {
         '/dev_enableCSVSubjectImport',
         '/dev_enableCSVParticipationImport',
         '/dev_enableStatistics',
+        '/dev_enableWKPRCPatches',
     ]});
 
     var configHashSum = '';

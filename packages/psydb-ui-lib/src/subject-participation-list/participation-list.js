@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     useModalReducer,
     usePermissions
@@ -33,6 +33,7 @@ const ParticipationList = (ps) => {
         subjectId,
         subjectType,
         subjectRecord,
+        related,
 
         studyType,
         ageFrameField,
@@ -49,6 +50,7 @@ const ParticipationList = (ps) => {
         enableItemFunctions,
     } = ps;
 
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
     var translate = useUITranslation();
     var editModal = useModalReducer();
     var removeModal = useModalReducer();
@@ -75,19 +77,34 @@ const ParticipationList = (ps) => {
                             path='study.shorthand'
                         />
                         <SortableTH
-                            label={ translate('Date/Time') }
+                            label={ translate(
+                                IS_WKPRC ? 'Date' : 'Date/Time'
+                            )}
                             sorter={ sorter }
                             path='timestamp'
                         />
                         { ageFrameField && (
                             <th>{ translate('T-Age') }</th>
                         )}
-                        <th>{ translate('Lab Workflow') }</th>
-                        <SortableTH
-                            label={ translate('Status') }
-                            sorter={ sorter }
-                            path='status'
-                        />
+                        <th>
+                            { translate('T-Location') }
+                        </th>
+                        { IS_WKPRC ? (
+                            <>
+                                <th>{ translate('_wkprc_subjectRole') }</th>
+                                <th>{ translate('_wkprc_intradaySeqNumber_short') }</th>
+                                <th>{ translate('_wkprc_totalSubjectCount_short') }</th>
+                            </>
+                        ) : (
+                            <>
+                                <th>{ translate('Lab Workflow') }</th>
+                                <SortableTH
+                                    label={ translate('Status') }
+                                    sorter={ sorter }
+                                    path='status'
+                                />
+                            </>
+                        )}
                         <th></th>
                     </tr>
                 </thead>
@@ -102,6 +119,7 @@ const ParticipationList = (ps) => {
                                 subjectId,
                                 subjectType,
                                 subjectRecord,
+                                related,
 
                                 studyType,
                                 ageFrameField,
@@ -129,6 +147,7 @@ const ParticipationList = (ps) => {
 const ParticipationListRow = (ps) => {
     var {
         subjectRecord,
+        related,
 
         item: participationData,
 
@@ -149,6 +168,7 @@ const ParticipationListRow = (ps) => {
 
     var { _id: subjectId, type: subjectType } = subjectRecord;
 
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
     var translate = useUITranslation();
     var permissions = usePermissions();
 
@@ -168,6 +188,8 @@ const ParticipationListRow = (ps) => {
     var actualParticipationType = (
         realType ||participationType
     );
+    var realParticipationType = actualParticipationType; // FIXME
+
     var hasExperiment = ( participationType !== 'manual' && experimentId );
     var enableEdit = (
         participationStatus === 'participated'
@@ -184,12 +206,38 @@ const ParticipationListRow = (ps) => {
                 dateOfBirthField: ageFrameField
             })} />
 
-            <td>
-                { translate(`_labWorkflow_${actualParticipationType}`) }
-            </td>
-            <td>
-                { translate(formatStatus(participationData.status)) }
-            </td>
+            <td> {
+                realParticipationType === 'apestudies-wkprc-default'
+                ? (
+                    related.records
+                    .location[participationData.locationId]?._recordLabel
+                    + ` (${participationData.roomOrEnclosure})`
+                )
+                : (
+                    related.records
+                    .location[participationData.locationId]?._recordLabel
+                    || ((
+                        participationType === 'online-survey'
+                        || realParticipationType === 'online-survey'
+                    ) ? 'Online' : '-')
+                )
+            }</td>
+            { IS_WKPRC ? (
+                <>
+                    <td>{ participationData.role }</td>
+                    <td>{ participationData.intradaySeqNumber }</td>
+                    <td>{ participationData.totalSubjectCount }</td>
+                </>
+            ) : (
+                <>
+                    <td>
+                        { translate(`_labWorkflow_${actualParticipationType}`) }
+                    </td>
+                    <td>
+                        { translate(formatStatus(participationData.status)) }
+                    </td>
+                </>
+            )}
             { showItemFunctions ? (
                 <td className='d-flex justify-content-end'>
                     { hasExperiment && (

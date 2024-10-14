@@ -85,7 +85,7 @@ const SideNav = (ps) => {
                         </b></Link>
                     </WhenAllowed>
 
-                    { canViewAnyCalendar && (
+                    {/* canViewAnyCalendar && (
                         <>
                             <Link to='/calendars'><b>
                                 { translate('Calendars') }
@@ -125,9 +125,9 @@ const SideNav = (ps) => {
                                 </WhenAllowed>
                             </Nav>
                         </>
-                    )}
+                    )*/}
 
-                    <WhenAllowed labFlags={[
+                    {/*<WhenAllowed labFlags={[
                         'canWriteReservations',
                         'canSelectSubjectsForExperiments',
                         'canConfirmSubjectInvitation',
@@ -162,7 +162,7 @@ const SideNav = (ps) => {
                                 </Link>
                             </WhenAllowed>
                         </Nav>
-                    </WhenAllowed>
+                    </WhenAllowed>*/}
 
                     <div className='border-top mt-2 mb-2' />
 
@@ -173,20 +173,20 @@ const SideNav = (ps) => {
                             { translate('Locations') }
                         </Link>
                     </WhenAllowed>
-                    <WhenAllowed flags={[
+                    {/*<WhenAllowed flags={[
                         'canReadExternalPersons', 'canWriteExternalPersons'
                     ]}>
                         <Link to='/external-persons'>
                             { translate('External Persons') }
                         </Link>
-                    </WhenAllowed>
-                    <WhenAllowed flags={[
+                    </WhenAllowed>*/}
+                    {/*<WhenAllowed flags={[
                         'canReadExternalOrganizations', 'canWriteExternalOrganizations'
                     ]}>
                         <Link to='/external-organizations'>
                             { translate('External Organizations') }
                         </Link>
-                    </WhenAllowed>
+                    </WhenAllowed>*/}
                     <WhenAllowed flags={[
                         'canReadSubjectGroups', 'canWriteSubjectGroups'
                     ]}>

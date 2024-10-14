@@ -209,7 +209,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         displayName: 'Rearing History',
         displayNameI18N: { de: 'Aufzucht' },
         props: {
-            setId: cache.get('/helperSet/rearingHistory'),
+            setId: cache.get('/helperSet/wkprc_rearingHistory'),
             isNullable: true,
             displayEmptyAsUnknown: true,
         },
@@ -221,7 +221,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         displayName: 'Origin',
         displayNameI18N: { de: 'Herkunft' },
         props: {
-            setId: cache.get('/helperSet/origin'),
+            setId: cache.get('/helperSet/wkprc_origin'),
             isNullable: true,
             displayEmptyAsUnknown: true,
         },
