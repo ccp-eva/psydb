@@ -56,7 +56,8 @@ var stringifyFieldValue = ({
         }
         else if (relatedRecordLabels) {
             str = (
-                relatedRecordLabels[props.collection][rawValue]._recordLabel
+                relatedRecordLabels[props.collection][rawValue]?._recordLabel
+                || rawValue
             );
         }
         else {
