@@ -65,9 +65,10 @@ var stringifyFieldValue = ({
     }
     else if (type === 'ForeignIdList') {
         if (relatedRecordLabels) {
-            str = (rawValue || []).map(id => (
-                relatedRecordLabels[props.collection][id]._recordLabel
-            )).join();
+            str = (rawValue || []).map(id => {
+                var item = relatedRecordLabels[props.collection][id];
+                return item?._recordLabel || `[${id}]`
+            }).join();
         }
         else {
             str = (rawValue || []).join(', ')
