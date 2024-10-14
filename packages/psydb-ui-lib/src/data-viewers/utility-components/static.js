@@ -462,12 +462,11 @@ export const ForeignId = (ps) => {
     }
     else {
         label = (
-            related
-            ? related.relatedRecordLabels[collection][value]._recordLabel
-            : value
+            related?.relatedRecordLabels[collection]?.[value]?._recordLabel
+            || value
         );
     }
-    
+
     var collectionUI = collectionUIMapping[collection];
     if (collectionUI) {
         var uri = (
