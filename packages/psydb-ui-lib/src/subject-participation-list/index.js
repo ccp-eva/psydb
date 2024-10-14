@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 
 import { jsonpointer } from '@mpieva/psydb-core-utils';
+import { fixRelated } from '@mpieva/psydb-common-lib';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     useFetchAll,
@@ -116,6 +117,8 @@ const ParticipationByType = (ps) => {
         participationByStudyType
     } = participationData;
 
+    var related = fixRelated(subjectData, { isResponse: false });
+
     var translate = useUITranslation();
 
     var ageFrameField = subjectData.displayFieldData.find(it => (
@@ -150,6 +153,7 @@ const ParticipationByType = (ps) => {
                     subjectId,
                     subjectType,
                     subjectRecord: subjectData.record,
+                    related,
                     studyType: type,
                     ageFrameField,
                     ageFrameFieldValue,

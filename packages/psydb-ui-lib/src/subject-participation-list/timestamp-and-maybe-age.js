@@ -6,6 +6,8 @@ import { useUILocale } from '@mpieva/psydb-ui-contexts';
 
 import datefns from '../date-fns';
 
+const IS_WKPRC = true;
+
 const TimestampAndMaybeAge = (ps) => {
     var { record, timestamp, dateOfBirthField } = ps;
     var locale = useUILocale();
@@ -20,7 +22,7 @@ const TimestampAndMaybeAge = (ps) => {
     }
     else {
         var formattedTS = datefns.format(
-            new Date(timestamp), 'P p', { locale }
+            new Date(timestamp), (IS_WKPRC ? 'P' : 'P p'), { locale }
         );
 
         var out = [
