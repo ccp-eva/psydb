@@ -8,7 +8,7 @@ var ListBodyCommon = () => {
         target: StringEnum([ 'table', 'optionlist' ]),
         showHidden: DefaultBool(),
         excludedIds: IdList(),
-        // extraIds: IdList(), // TODO
+        extraIds: IdList(),
     });
 
     return schema;
