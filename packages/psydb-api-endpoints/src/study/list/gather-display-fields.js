@@ -5,10 +5,10 @@ var gatherDisplayFields = async (bag) => {
     var { db, collection, recordType, target } = bag;
 
     var crtSettings = await fetchCRTSettings({
-        collection, recordType, wrap: true
+        db, collectionName: collection, recordType, wrap: true
     });
 
-    return crt.augmentedDisplayFields(target);
+    return crtSettings.augmentedDisplayFields(target);
 }
 
 module.exports = gatherDisplayFields;

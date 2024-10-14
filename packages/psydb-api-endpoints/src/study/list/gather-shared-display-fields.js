@@ -1,21 +1,22 @@
 'use strict';
+var { intersect } = require('@mpieva/psydb-core-utils');
 var { fetchAllCRTSettings } = require('@mpieva/psydb-api-lib');
 
 var gatherSharedDisplayFields = async (bag) => {
     var { db, collection, target } = bag;
 
-    var crtSettingsList = await fetchAllCRTSettings({
-        db, todo: [{ collection: 'study' }], wrap: true, asTree: false
-    });
+    var crtSettingsList = await fetchAllCRTSettings(
+        db, [{ collection: 'study' }], { wrap: true, asTree: false }
+    );
 
     var sharedDisplayFields = undefined;
-    var compare = (a, b) => {
+    var compare = (a, b) => (
         a.pointer === b.pointer && a.systemType === b.systemType
-    }
+    )
     for (var it of crtSettingsList) {
         var current = it.augmentedDisplayFields(target);
 
-        if (sharedDisplayFields) {
+        if (!sharedDisplayFields) {
             sharedDisplayFields = current;
         }
         else {

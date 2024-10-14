@@ -1,6 +1,6 @@
 'use strict';
 var {
-    MaxObject, OpenObject, Id, IdList
+    MaxObject, ExactObject, IdentifierString, DefaultBool
 } = require('@mpieva/psydb-schema-fields');
 
 var {

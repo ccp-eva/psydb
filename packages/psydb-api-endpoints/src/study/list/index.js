@@ -47,7 +47,7 @@ var listEndpoint = async (context, next) => {
         });
         availableConstraints = await gatherAvailableConstraints({
             db, collection: 'study', recordType
-        });
+        }); // XXX
     }
     else {
         displayFields = await gatherSharedDisplayFields({
@@ -68,7 +68,7 @@ var listEndpoint = async (context, next) => {
     var {
         searchOptions = {},
         extraIds, excludedIds,
-        filters, constraints,
+        filters, constraints = {}, showHidden,
         offset, limit,
         sort,
     } = request.body;
@@ -98,7 +98,7 @@ var listEndpoint = async (context, next) => {
         hasSubChannels: false,
 
         enableResearchGroupFilter,
-        onlyIds,
+        // onlyIds, NOTE: not used here
         extraIds,
         excludedIds,
         constraints,
@@ -122,7 +122,7 @@ var listEndpoint = async (context, next) => {
 
     debug('<<<<<<<<< END FETCH')
 
-    var fromItems = mappifyPointer(record);
+    var fromItems = mappifyPointer(records, { spreadArrays: true });
     var todoRecordIds = {};
     var todoHelperSetItemIds = [];
     for (var it of displayFields) {
@@ -145,7 +145,7 @@ var listEndpoint = async (context, next) => {
     var relatedHelperSetItems = await fetchHelperSetItemLabelsManual(
         db, todoHelperSetItemIds, { ...i18n, oldWrappedLabels: true }
     );
-    debug('fetching done...');
+    debug('done');
 
     var __related = {
         relatedRecordLabels,
@@ -157,7 +157,7 @@ var listEndpoint = async (context, next) => {
             records,
             displayFieldData: displayFields,
             recordsCount: records.totalRecordCount,
-            related: fixRelated(__related, { isResponse: false }),
+            //related: fixRelated(__related, { isResponse: false }),
             ...(__related),
         },
     });

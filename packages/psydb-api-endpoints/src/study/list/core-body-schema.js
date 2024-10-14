@@ -9,7 +9,7 @@ var CoreBodySchema = () => {
             recordType: IdentifierString(), // FIXME: enum
             target: StringEnum([ 'table', 'optionlist' ]),
         },
-        required: [ 'collectionName' ]
+        required: []
     });
 
     return schema;
