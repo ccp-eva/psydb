@@ -8,10 +8,10 @@ module.exports = {
     dumbParseCSV: require('./dumb-parse-csv'),
     dumbMakeObjects: require('./dumb-make-objects'),
     
-    gatherPossibleRefs: require('./gather-possible-refs'),
-    createRefMappings: require('./create-ref-mappings'),
-    resolveRefs: require('./resolve-refs'),
-    replaceRefsByMapping: require('./replace-refs-by-mapping'),
+    gatherPossibleRefs: require('./inject-ref-ids/gather-possible-refs'),
+    createRefMappings: require('./inject-ref-ids/create-ref-mappings'),
+    resolveRefs: require('./inject-ref-ids/resolve-refs'),
+    replaceRefsByMapping: require('./inject-ref-ids/replace-refs-by-mapping'),
     
     //deserializers: require('./deserializers'), // FIXME: make obs
 }

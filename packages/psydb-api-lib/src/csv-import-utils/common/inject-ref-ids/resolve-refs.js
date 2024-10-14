@@ -2,8 +2,8 @@
 var { entries, groupBy } = require('@mpieva/psydb-core-utils');
 var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 
-var SmartArray = require('../../smart-array');
-var withRetracedErrors = require('../../with-retraced-errors');
+var SmartArray = require('../../../smart-array');
+var withRetracedErrors = require('../../../with-retraced-errors');
 var aggregateFromRefs = require('./aggregate-from-refs');
 
 var resolveRefs = async (bag) => {
