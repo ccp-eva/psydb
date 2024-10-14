@@ -847,6 +847,7 @@ importers:
     specifiers:
       '@cdxoo/inline-string': ~1.0.0
       '@cdxoo/mongodb-escape-keys': ~0.2.0-beta.0
+      '@cdxoo/mongodb-utils': ~1.0.1
       '@mpieva/psydb-api-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
@@ -858,6 +859,7 @@ importers:
     dependencies:
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/mongodb-escape-keys': 0.2.0-beta.0
+      '@cdxoo/mongodb-utils': 1.0.1
       '@mpieva/psydb-api-config': link:../psydb-api-config
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
@@ -3833,6 +3835,10 @@ packages:
       mongodb: 4.x
     dependencies:
       bson: 4.7.2
+    dev: false
+
+  /@cdxoo/mongodb-utils/1.0.1:
+    resolution: {integrity: sha512-1JwdEYoYXgxX54ufLw5nRow3JETx+DDf4puWQATHogkTKJ4gRyt4bi7pi9y3KjAZXfoaIE4ftGop9CBfVvyHYQ==}
     dev: false
 
   /@cdxoo/objectpath-to-jsonpointer/1.0.0:
