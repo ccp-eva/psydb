@@ -7,8 +7,7 @@ var createLocationCRT = async (context) => {
     };
 
     var crt = await driver.crt.create({
-        // FIXME: wkprc_ape_location
-        collection: 'location', key: 'wkprc_apeLocation',
+        collection: 'location', key: 'wkprc_ape_location',
         displayNames,
     });
 

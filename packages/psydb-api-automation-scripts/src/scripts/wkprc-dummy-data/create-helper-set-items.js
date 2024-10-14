@@ -8,9 +8,7 @@ module.exports = async (bag) => {
             type: 'helperSetItem/create',
             payload: { setId, props: {
                 label: it,
-                displayNameI18N: {
-                    'de': it,
-                }
+                displayNameI18N: {},
             }},
         }, { apiKey });
 

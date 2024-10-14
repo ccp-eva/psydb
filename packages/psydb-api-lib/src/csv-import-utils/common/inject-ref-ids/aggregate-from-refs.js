@@ -2,7 +2,7 @@
 var { 
     groupBy, entries, convertPointerToPath
 } = require('@mpieva/psydb-core-utils');
-var aggregateToArray = require('../../aggregate-to-array');
+var aggregateToArray = require('../../../aggregate-to-array');
 
 var aggregateFromRefs = async (bag) => {
     var { db, pointers, extraMatch, ...rest } = bag;
@@ -11,7 +11,8 @@ var aggregateFromRefs = async (bag) => {
     // NOTE: fire one query per possible pointer
     var resolved = await Promise.all(pointers.map(pointer => {
         var path = convertPointerToPath(pointer);
-        return aggregateToArray({ db, [collection]: [
+
+        var stages = [
             { $match: {
                 [path]: { $in: values },
                 ...extraMatch,
@@ -23,7 +24,11 @@ var aggregateFromRefs = async (bag) => {
                 type: true,
                 [pointer]: '$' + path
             }}
-        ]})
+        ];
+
+        //console.log(stages);
+
+        return aggregateToArray({ db, [collection]: stages })
     }));
 
     var merged = [];

@@ -22,8 +22,7 @@ var subjects = [
     },
     { type: 'wkprc_bonobo', label: 'Bonobo' },
     { type: 'wkprc_gorilla', label: 'Gorilla' },
-    // XXX: wkprc_orang_utan
-    { type: 'wkprc_orangutan', label: 'Orang-Utan' },
+    { type: 'wkprc_orang_utan', label: 'Orang-Utan' },
 ];
 
 module.exports = async (bag) => {

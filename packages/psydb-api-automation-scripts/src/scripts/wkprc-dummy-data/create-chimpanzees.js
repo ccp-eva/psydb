@@ -40,11 +40,9 @@ module.exports = async (bag) => {
                         arrivalDate: null,
                         arrivedFrom: '',
                         locationId: locationId,
-                        sensitiveComment: (
-                            'some possibly sensitive information'
-                        ),
+                        sensitiveComment: 'possibly sensitive information',
                     },
-                    comment: 'some comment accessible to everyone',
+                    comment: 'some information',
                     systemPermissions: {
                         isHidden: false,
                         accessRightsByResearchGroup: [
