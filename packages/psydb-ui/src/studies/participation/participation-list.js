@@ -28,6 +28,8 @@ import {
 
 import TimestampAndMaybeAge from './timestamp-and-maybe-age';
 
+const IS_WKPRC = true;
+
 const ParticipationList = (ps) => {
     var {
         studyId,
@@ -117,12 +119,14 @@ const TableHeadCols = (ps) => {
     return (
         <>
             <TableHeadCustomCols
-                definitions={ definitions }
+                definitions={ definitions.filter(it => (
+                    IS_WKPRC ? it.key !== 'locationId' : true
+                )) }
                 sorter={ sorter }
                 canSort={ canSort }
             />
             <SortableTH
-                label={ translate('Date/Time') }
+                label={ translate(IS_WKPRC ? 'Date' : 'Date/Time') }
                 sorter={ sorter }
                 path='scientific.state.internals.participatedInStudies.timestamp'
             />
@@ -136,11 +140,19 @@ const TableHeadCols = (ps) => {
             <th>
                 { translate('T-Location') }
             </th>
-            <SortableTH
-                label={ translate('Status') }
-                sorter={ sorter }
-                path='scientific.state.internals.participatedInStudies.status'
-            />
+            { IS_WKPRC ? (
+                <>
+                    <th>{ translate('_wkprc_subjectRole') }</th>
+                    <th>{ translate('_wkprc_intradaySeqNumber_short') }</th>
+                    <th>{ translate('_wkprc_totalSubjectCount_short') }</th>
+                </>
+            ) : (
+                <SortableTH
+                    label={ translate('Status') }
+                    sorter={ sorter }
+                    path='scientific.state.internals.participatedInStudies.status'
+                />
+            )}
         </>
     )
 }
@@ -189,7 +201,9 @@ const ParticipationListRow = (ps) => {
         <tr>
             <TableBodyCustomCols { ...({
                 record,
-                definitions,
+                definitions: definitions.filter(it => (
+                    IS_WKPRC ? it.key !== 'locationId' : true
+                )),
                 transformer,
             }) } />
             <TimestampAndMaybeAge { ...({
@@ -213,9 +227,17 @@ const ParticipationListRow = (ps) => {
                     ) ? 'Online' : '-')
                 )
             }</td>
-            <td>
-                { formatStatus(participationData.status) }
-            </td>
+            { IS_WKPRC ? (
+                <>
+                    <td>{ participationData.role }</td>
+                    <td>{ participationData.intradaySeqNumber }</td>
+                    <td>{ participationData.totalSubjectCount }</td>
+                </>
+            ) : (
+                <td>
+                    { formatStatus(participationData.status) }
+                </td>
+            )}
             <td className='d-flex justify-content-end'>
                 { hasExperiment && (
                     <ExperimentIconButton to={
