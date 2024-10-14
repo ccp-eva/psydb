@@ -3,7 +3,7 @@ var { expect } = require('@mpieva/psydb-api-mocha-test-tools/chai');
 
 var { ObjectId } = require('@cdxoo/mongo-test-helpers');
 var { ejson, omit, without } = require('@mpieva/psydb-core-utils');
-var { aggregateToArray } = require('@mpieva/psydb-api-lib');
+var { ApiError, aggregateToArray } = require('@mpieva/psydb-api-lib');
 var { getContent: loadCSV } = require('@mpieva/psydb-fixtures/csv');
 
 var jsonify = (that) => (
@@ -13,9 +13,13 @@ var jsonify = (that) => (
 var RootHandler = require('../../../src/');
 
 describe('csv-import/subject/create-default fs-malaysia', function () {
-    var db, sendMessage, fileId;
+
+    var subjectType = 'fs_malaysia_subject';
+    var researchGroupId = ObjectId("64d42dd0443aa279ca4caff8");
+
+    var db, sendMessage;
     beforeEach(async function () {
-        await this.restore('2024-03-29__1914_fieldsites');
+        await this.restore('2024-09-26__0717');
         
         db = this.getDbHandle();
         ([ sendMessage ] = this.createMessenger({
@@ -23,36 +27,177 @@ describe('csv-import/subject/create-default fs-malaysia', function () {
             ...(await this.createFakeLogin({ email: 'root@example.com' }))
         }));
 
-        var file = await this.createFakeFileUpload({
-            db, buffer: loadCSV('subject-import/fs-malaysia'),
-        });
-        fileId = file._id;
     });
 
-    it('does the thing', async function () {
-        var subjectType = 'fs_malaysia_subject';
-        var researchGroupId = ObjectId("66051bb1c1e37e5a99ee54c3");
+    it('full import with all available columns', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({
+            db, buffer: loadCSV('subject-import/fs-malaysia'),
+        });
 
         var koaContext = await sendMessage({
             type: 'csv-import/subject/create-default',
             timezone: 'UTC',
-            payload: jsonify({
-                researchGroupId,
-                subjectType,
-                fileId,
-            })
+            payload: jsonify({ researchGroupId, subjectType, fileId })
         });
 
         var { csvImportId } = koaContext.response.body.data;
-        console.log(csvImportId);
+        var subjects = await aggregateToArray({ db, subject: [
+            { $match: { csvImportId }},
+        ]});
+        expect(subjects.length).to.eql(2);
+        expect(ejson(subjects[0].gdpr.state)).to.eql({
+            custom: { name: 'Bob' }
+        });
+        expect(ejson(subjects[1].gdpr.state)).to.eql({
+            custom: { name: 'Alice' }
+        });
+    });
+    
+    it('full import with all only required columns', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({ db, buffer: (
+            loadCSV('subject-import/fs-malaysia-only-required-columns')
+        )});
+
+        var koaContext = await sendMessage({
+            type: 'csv-import/subject/create-default',
+            timezone: 'UTC',
+            payload: jsonify({ researchGroupId, subjectType, fileId })
+        });
+
+        var { csvImportId } = koaContext.response.body.data;
+        var subjects = await aggregateToArray({ db, subject: [
+            { $match: { csvImportId }},
+        ]});
+        expect(subjects.length).to.eql(2);
+        expect(ejson(subjects[0].gdpr.state)).to.eql({
+            custom: { name: 'Bob' }
+        });
+        expect(ejson(subjects[1].gdpr.state)).to.eql({
+            custom: { name: 'Alice' }
+        });
+    });
+
+    it('throws on missing required columns', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({ db, buffer: (
+            loadCSV('subject-import/fs-malaysia-missing-required-columns')
+        )});
+       
+        var apiError = undefined;
+        try {
+            await sendMessage({
+                type: 'csv-import/subject/create-default',
+                timezone: 'UTC',
+                payload: jsonify({ researchGroupId, subjectType, fileId })
+            });
+        }
+        catch (e) {
+            if (!(e instanceof ApiError)) {
+                throw e;
+            }
+
+            var info = e.getInfo();
+            expect(info.apiStatus).to.eql('NoSubjectsAreImportable');
+        }
+    });
+    
+    it('partial import on missing required value', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({ db, buffer: (
+            loadCSV('subject-import/fs-malaysia-missing-required-value')
+        )});
         
-        var imports = await db.collection('csvImport').find().toArray();
-        //console.dir(ejson(imports), { depth: null });
+        var koaContext = await sendMessage({
+            type: 'csv-import/subject/create-default',
+            timezone: 'UTC',
+            payload: jsonify({ researchGroupId, subjectType, fileId })
+        });
         
-        var subjects = await db.collection('subject').find().toArray();
-        //var subjects = await aggregateToArray({ db, subject: [
-        //    { $match: { csvImportId }}
-        //]});
-        console.dir(ejson(subjects), { depth: null });
-    })
+        var { csvImportId } = koaContext.response.body.data;
+        var subjects = await aggregateToArray({ db, subject: [
+            { $match: { csvImportId }},
+        ]});
+        expect(subjects.length).to.eql(1);
+        expect(ejson(subjects[0].gdpr.state)).to.eql({
+            custom: { name: 'Bob' }
+        });
+    });
+    
+    it('throws on missnamed column', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({ db, buffer: (
+            loadCSV('subject-import/fs-malaysia-misnamed-column')
+        )});
+        
+        var apiError = undefined;
+        try {
+            await sendMessage({
+                type: 'csv-import/subject/create-default',
+                timezone: 'UTC',
+                payload: jsonify({ researchGroupId, subjectType, fileId })
+            });
+        }
+        catch (e) {
+            if (!(e instanceof ApiError)) {
+                throw e;
+            }
+
+            var info = e.getInfo();
+            expect(info.apiStatus).to.eql('NoSubjectsAreImportable');
+        }
+    });
+    
+    it('partial import on invalid hsi ref', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({ db, buffer: (
+            loadCSV('subject-import/fs-malaysia-invalid-hsi-ref')
+        )});
+        
+        var koaContext = await sendMessage({
+            type: 'csv-import/subject/create-default',
+            timezone: 'UTC',
+            payload: jsonify({ researchGroupId, subjectType, fileId })
+        });
+        
+        var { csvImportId } = koaContext.response.body.data;
+        var subjects = await aggregateToArray({ db, subject: [
+            { $match: { csvImportId }},
+        ]});
+        expect(subjects.length).to.eql(1);
+        expect(ejson(subjects[0].gdpr.state)).to.eql({
+            custom: { name: 'Alice' }
+        });
+    });
+    
+    it('works when HSI is found twice (same en/de)', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({
+            db, buffer: loadCSV('subject-import/fs-malaysia-hsi-temiar'),
+        });
+
+        var koaContext = await sendMessage({
+            type: 'csv-import/subject/create-default',
+            timezone: 'UTC',
+            payload: jsonify({ researchGroupId, subjectType, fileId })
+        });
+
+        var { csvImportId } = koaContext.response.body.data;
+        var subjects = await aggregateToArray({ db, subject: [
+            { $match: { csvImportId }},
+        ]});
+        expect(subjects.length).to.eql(2);
+        expect(ejson(subjects[0].gdpr.state)).to.eql({
+            custom: { name: 'Bob' }
+        });
+        expect(ejson(subjects[1].gdpr.state)).to.eql({
+            custom: { name: 'Alice' }
+        });
+    });
+
+    it.skip('full import with 1000 lines', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({ db, buffer: (
+            loadCSV('subject-import/fs-malaysia-1000-subjects')
+        )});
+
+        await sendMessage({
+            type: 'csv-import/subject/create-default',
+            timezone: 'UTC',
+            payload: jsonify({ researchGroupId, subjectType, fileId })
+        });
+    });
 })

@@ -1,29 +1,50 @@
 'use strict';
-var {
-    entries,
-    jsonpointer,
-    convertPointerToPath
-} = require('@mpieva/psydb-core-utils');
-
+var { entries, groupBy } = require('@mpieva/psydb-core-utils');
 var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 
+var SmartArray = require('../../smart-array');
 var withRetracedErrors = require('../../with-retraced-errors');
-var aggregateToArray = require('../../aggregate-to-array');
-
+var aggregateFromRefs = require('./aggregate-from-refs');
 
 var resolveRefs = async (bag) => {
     var {
-        db, recordRefs, hsiRefs,
+        db, recordRefs, hsiRefs, tokenMapping,
         extraRecordResolvePointers = {},
     } = bag;
 
+    if (tokenMapping) {
+        var { helperSetItem: hsiIntermediate, ...recordRefs } = groupBy({
+            items: SmartArray(tokenMapping, { spreadArrayItems: true }),
+            createKey: (it) => (
+                it.recordType
+                ? `${it.collection}#${it.recordType}` : it.collection
+            ),
+            transform: it => (it.setId ? it : it.value)
+        });
+
+        var hsiRefs = groupBy({
+            items: hsiIntermediate || [],
+            byProp: 'setId',
+            transform: it => it.value
+        });
+    }
+
     var resolvedRecords = {};
-    for (var [ collection, refs ] of entries(recordRefs)) {
+    for (var [ key, refs ] of entries(recordRefs)) {
+        // XXX
+        var [ collection, recordType = undefined ] = key.split('#');
+
         var extraPointers = extraRecordResolvePointers[collection] || [];
         resolvedRecords[collection] = await withRetracedErrors(
-            aggregateFromRefs({ db, [collection]: refs, pointers: [
-                '/_id', '/sequenceNumber', ...extraPointers
-            ]})
+            aggregateFromRefs({
+                db, [collection]: refs,
+                pointers: [
+                    '/_id', '/sequenceNumber', ...extraPointers
+                ],
+                ...(recordType && {
+                    extraMatch: { type: recordType }
+                })
+            })
         )
     }
 
@@ -38,39 +59,10 @@ var resolveRefs = async (bag) => {
                 ],
                 extraMatch: { setId: ObjectId(setId) }
             })
-        )
+        );
     }
 
     return { resolvedRecords, resolvedHSIs }
-}
-
-var aggregateFromRefs = async (bag) => {
-    var { db, pointers, extraMatch, ...rest } = bag;
-    var [ collection, values ] = entries(rest)[0];
-
-    var resolved = await Promise.all(pointers.map(pointer => {
-        var path = convertPointerToPath(pointer);
-        return aggregateToArray({ db, [collection]: [
-            { $match: {
-                [path]: { $in: values },
-                ...extraMatch,
-            }},
-            { $project: {
-                _id: true,
-                [pointer]: '$' + path
-            }}
-        ]})
-    }));
-
-    var out = [];
-    for (var r of resolved) {
-        out.push(...r.map(it => {
-            var { _id, ...rest } = it;
-            var [ pointer, value ] = entries(rest)[0];
-            return { _id, pointer, value }
-        }))
-    }
-    return out;
 }
 
 module.exports = resolveRefs;

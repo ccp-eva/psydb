@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-    subjectFieldRequirementChecks as checksEnum,
-} from '@mpieva/psydb-schema-enums';
-
+import enums from '@mpieva/psydb-schema-enums';
 import { keyBy } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Pair } from '@mpieva/psydb-ui-layout';
@@ -59,7 +56,7 @@ export const InviteSetting = (ps) => {
                             <b style={{ fontWeight: 600 }}>
                                 { translate.fieldDefinition(def) }
                                 {' - '}
-                                { checksEnum.mapping[check] }
+                                { translate(enums.subjectFieldRequirementChecks.mapping[check]) }
                             </b>
                         </div>
                     )

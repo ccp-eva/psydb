@@ -1,7 +1,8 @@
 'use strict';
-var { isPlainObject, isPromise } = require('is-what');
+var { isArray, isPlainObject, isPromise } = require('is-what');
 
 module.exports = {
+    isArray,
     isPlainObject,
     isPromise,
     compareIds: require('./compare-ids'),
@@ -39,9 +40,11 @@ module.exports = {
     pathify: require('./pathify'),
     queryObject: require('./query-object'),
     forcePush: require('./force-push'),
+    uniquePush: require('./unique-push'),
 
     convertSchemaPointerToMongoPath: require('./schemapointer-to-mongopath'),
     
+    traverse: require('@cdxoo/traverse'),
     flatten: require('@cdxoo/flat').flatten,
     unflatten: require('@cdxoo/flat').unflatten,
     ejson: require('@cdxoo/tiny-ejson'),

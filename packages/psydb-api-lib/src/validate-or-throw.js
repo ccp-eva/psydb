@@ -8,11 +8,14 @@ var validateOrThrow = (bag) => {
     var {
         payload,
         schema,
-        apiStatus = 'InvalidRequestSchema'
+        apiStatus = 'InvalidRequestSchema',
+        unmarshalClientTimezone,
     } = bag;
 
-    var ajv = Ajv(),
-        isValid = false;
+    var ajv = Ajv({
+        unmarshalClientTimezone,
+    });
+    var isValid = false;
 
     isValid = ajv.validate(
         schema,

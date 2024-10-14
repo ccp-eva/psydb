@@ -21,11 +21,16 @@ const ExperimentImportCreateForm = (ps) => {
 
     var [ studyType, setStudyType ] = useState(
         //'wkprc_study'
+        //'default'
     );
     var [ studyRecord, setStudyRecord ] = useState(
-        //{ _id: '6566b5c26c830cb226c1389b' }
+        //{ _id: '6566b5c26c830cb226c1389b' } // wkprc
+        //{ _id: '64d42dcc443aa279ca4caf00', } // childlab ov
+        //{ _id: '64d42dd5443aa279ca4cb0b6', } // fs con
     );
-    var [ subjectType, setSubjectType ] = useState();
+    var [ subjectType, setSubjectType ] = useState(
+        //'fs_congo_subject'
+    );
     var [ csvImporter, setCSVImporter ] = useState();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({

@@ -1,5 +1,6 @@
 'use strict';
 module.exports = {
+    publicInitUI: require('./public-init-ui'),
     publicSignIn: require('./public-sign-in'),
     publicSignOut: require('./public-sign-out'),
     event: require('./event'),
@@ -35,6 +36,7 @@ module.exports = {
     experimentVariant: require('./entities/experiment-variant'),
     experimentVariantSetting: require('./entities/experiment-variant-setting'),
 
+    statistics: require('./statistics'),
     audit: require('./audit'),
     twoFactorCode: require('./two-factor-code'),
 

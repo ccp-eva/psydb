@@ -3,11 +3,13 @@ var addManyFields = async (bag) => {
     var { driver, crtId, subChannelKey, definitions } = bag;
 
     for (var def of definitions) {
+        var { __subChannelKey, ...realDef } = def;
         await driver.sendMessage({
             type: 'custom-record-types/add-field-definition',
             payload: {
-                id: crtId, subChannelKey,
-                props: def
+                id: crtId,
+                subChannelKey: __subChannelKey || subChannelKey,
+                props: realDef
             }
         })
     }

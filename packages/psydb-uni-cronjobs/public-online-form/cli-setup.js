@@ -110,6 +110,26 @@ var cliOptions = [
         description: 'include stack info in error mail',
         defaults: false
     },
+    {
+        long: 'dry',
+        description: 'full dry run',
+        defaults: false
+    },
+    {
+        long: 'dry-no-move-mails',
+        description: 'partial dry run - dont move mails from inbox',
+        defaults: false
+    },
+    {
+        long: 'dry-no-error-mails',
+        description: 'partial dry run - dont send error mails',
+        defaults: false
+    },
+    {
+        long: 'dry-no-create-subjects',
+        description: 'partial dry run - dont create subjects in db',
+        defaults: false
+    },
 ];
 
 for (var it of cliOptions) {

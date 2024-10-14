@@ -1,31 +1,67 @@
 'use strict';
-var { omit } = require('@mpieva/psydb-core-utils');
+var { omit, only, compareIds } = require('@mpieva/psydb-core-utils');
 var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 var { swapTimezone } = require('@mpieva/psydb-timezone-helpers');
 
+var onlyRelevant = ({ from }) => only({ from, keys: [
+    'experimentName',
+    'intradaySeqNumber',
+    'year',
+    'month',
+    'day',
+    'locationId',
+    'roomOrEnclosure',
+    'experimentOperatorIds',
+    'subjectData',
+    'totalSubjectCount',
+    'subjectGroupId',
+]});
+
 var makeExperiment = (bag) => {
     var {
-        preparedObject,
+        pipelineItemGroup,
         subjectType,
         study,
-        location,
-        labOperators,
+        //location,
+        //labOperators,
         timezone
     } = bag
+   
+
+    // NOTE: we assume that everything except subjectData s the same
+    var [ primaryItem, ...otherItems ] = pipelineItemGroup;
+    var {
+        year, month, day, subjectData,
+        ...shared
+    } = onlyRelevant({ from: primaryItem.obj });
     
-    var { 
-        timestamp,
-        subjectData,
-        experimentName,
-        roomOrEnclosure,
-        comment,
-
-        subjectGroupId,
-    } = preparedObject;
-
-    timestamp = convertYMDToClientNoon({
-        ...timestamp, clientTZ: timezone,
+    var timestamp = convertYMDToClientNoon({
+        year, month, day, clientTZ: timezone,
     });
+
+    var { locationId } = shared;
+    var { type: locationRecordType } = primaryItem.replacements.find(it => (
+        compareIds(it._id, locationId)
+    ));
+
+   
+    var mergedSubjectIds = [];
+    var mergedSubjectData = []
+    for (var it of [ primaryItem, ...otherItems ]) {
+        var { obj } = it;
+        for (var it of obj.subjectData) {
+            mergedSubjectIds.push(it.subjectId)
+            mergedSubjectData.push({
+                subjectType,
+                comment: '', // XXX: forceing default, can ajv do that?
+                ...it,
+
+                invitationStatus: 'scheduled',
+                participationStatus: 'participated',
+                excludeFromMoreExperimentsInStudy: false,
+            })
+        }
+    }
 
     var experimentId = ObjectId();
     var experimentCore = {
@@ -38,31 +74,16 @@ var makeExperiment = (bag) => {
         seriesId: ObjectId(),
         isPostprocessed: true,
 
-        studyId: study._id,
-        studyRecordType: study.type,
-
-        locationId: location._id,
-        locationRecordType: location.type,
+        selectedSubjectIds: mergedSubjectIds,
+        subjectData: mergedSubjectData,
 
         interval: { start: timestamp, end: timestamp },
+        timezone, // FIXME: ????
 
-        selectedSubjectIds: subjectData.map(it => it.subjectId),
-        subjectData: subjectData.map(it => ({
-            subjectType,
-            ...omit({ from: it, paths: [ 'role' ]}),
-            comment: it.role ? `${it.role}; ${comment}` : comment,
-
-            invitationStatus: 'scheduled',
-            participationStatus: 'participated',
-            excludeFromMoreExperimentsInStudy: false,
-        })),
-
-        experimentOperatorIds: labOperators.map(it => it._id),
-
-        subjectGroupId,
-        experimentName,
-        roomOrEnclosure,
-        timezone,
+        studyId: study._id,
+        studyRecordType: study.type,
+        ...shared,
+        locationRecordType,
     }
 
     return {

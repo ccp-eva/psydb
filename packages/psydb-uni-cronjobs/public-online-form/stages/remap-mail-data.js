@@ -24,6 +24,17 @@ var remapMailData = async (context, next) => {
         ].includes(pair.key)) {
             continue;
         }
+        
+        // NOTE: this is required due to an error in the
+        // online-form that existed for a certain time
+        // when all the erroneous mails have been processed
+        // this can be removed
+        if ([
+            'Bitte wählen'
+        ].includes(pair.value)) {
+            continue;
+        }
+        ///////////
 
         if (/Wieviele Kinder/.test(pair.key)) {
             inAdultBlock = false;
@@ -35,7 +46,7 @@ var remapMailData = async (context, next) => {
             debug(`raw pair is "${pair.key}" = "${pair.value}"`);
 
             if (pair.key === childBlockFirstKey) {
-                debug("\n", 'found child block at', pair,)
+                debug("\n", 'found child block at', pair)
                 if (childBlockData) {
                     childrenData.push(childBlockData);
                 }
@@ -43,7 +54,14 @@ var remapMailData = async (context, next) => {
             }
 
             var remapHandler, targetBucket;
-            if (inAdultBlock || /Auf welchem/.test(pair.key)) {
+            if (
+                inAdultBlock
+                || /Auf welchem/.test(pair.key)
+                || pair.key === 'errechneter Geburtstermin'
+            ) {
+                if (!inAdultBlock) {
+                    debug("\n", 'found late adult pair at', pair)
+                }
                 remapHandler = AdultFields[pair.key];
                 targetBucket = adultData;
             }
@@ -71,7 +89,7 @@ var remapMailData = async (context, next) => {
                     throw e
                 }
             }
-            if (!path || !value) {
+            if (!path || value === undefined) {
                 throw new RemapMailError(errorBag);
             }
             targetBucket[path] = value;

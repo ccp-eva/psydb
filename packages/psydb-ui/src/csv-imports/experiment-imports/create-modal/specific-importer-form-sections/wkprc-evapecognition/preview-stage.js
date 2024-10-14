@@ -1,61 +1,42 @@
 import React, { useState } from 'react';
 
-import { only } from '@mpieva/psydb-core-utils';
+import { only, groupBy } from '@mpieva/psydb-core-utils';
+import { CSVColumnRemappers } from '@mpieva/psydb-common-lib';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
-import {
-    Alert,
-    Button,
-    SmallFormFooter,
-    LoadingIndicator,
-    SplitPartitioned,
-    AsyncButton,
-} from '@mpieva/psydb-ui-layout';
+import { Alert, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
-// FIXME
 import {
-    DateTime,
-    ForeignId
-} from '@mpieva/psydb-ui-lib/src/data-viewers/utility-components';
+    ButtonHeader,
+    IssueItemsAlert
+} from '@mpieva/psydb-ui-lib/csv-import';
+
+import PreviewRecord from './preview-record';
 
 const PreviewStage = (ps) => {
     var { studyId, subjectType, formValues, gotoPrepare } = ps;
-    var {
-        locationType,
-        locationId,
-        labOperatorIds = [],
-        fileId,
-    } = formValues['$'];
+    var { fileId } = formValues['$'];
+
+    var translate = useUITranslation();
 
     var triggerBag = only({ from: ps, keys: [
         'onSuccessfulUpdate', 'onFailedUpdate'
     ]});
 
-    var saneLabOperatorIds = filterTruthy(labOperatorIds);
-
-    var translate = useUITranslation();
-
+    var commonPayload = {
+        fileId, studyId, subjectType, 
+    }
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.previewCSVExperimentImport({
-            fileId,
-            studyId,
-            subjectType,
-            locationId,
-            labOperatorIds,
-
+            importType: 'wkprc-apestudies-default',
+            ...commonPayload,
             extraAxiosConfig: { disableErrorModal: [ 409 ]}
         })
     ), []);
 
     var send = useSend(() => ({
-        type: 'csv-import/experiment/create-wkprc-evapecognition',
-        payload: {
-            subjectType,
-            studyId,
-            locationId,
-            labOperatorIds,
-            fileId,
-        }
+        type: 'csv-import/experiment/create-wkprc-apestudies-default',
+        payload: { ...commonPayload }
     }), { ...triggerBag })
 
     if (!didFetch) {
@@ -67,18 +48,11 @@ const PreviewStage = (ps) => {
         var { message } = data;
         return (
             <>
-                <SmallFormFooter>
-                    <AsyncButton { ...send.passthrough } disabled={ true }>
-                        { translate('Import') }
-                    </AsyncButton>
-                    <Button
-                        disabled={ send.isTransmitting }
-                        variant='outline-primary'
-                        onClick={ gotoPrepare }
-                    >
-                        { translate('Back') }
-                    </Button>
-                </SmallFormFooter>
+                <ButtonHeader
+                    { ...send.passthrough }
+                    enableSubmit={ false }
+                    onClickBack={ gotoPrepare }
+                />
                 <hr />
                 <Alert variant='danger'>
                     <b>{ apiStatus }</b>
@@ -88,99 +62,51 @@ const PreviewStage = (ps) => {
         )
     }
     else {
-        var { previewRecords, related, csvErrors } = fetched.data;
-        
+        var { previewRecords, related, pipelineData } = fetched.data;
+
+        var { invalid = [] } = groupBy({
+            items: pipelineData,
+            createKey: (it) => (
+                (!it.isValid || !it.isRefReplacementOk) ? 'invalid' : 'ok'
+            )
+        })
+
+        var allOk = (invalid.length === 0 && previewRecords.length > 0);
+        var canForceImport = (previewRecords.length > 0);
+        var forceImport = false;
+
         return (
             <>
-                <SmallFormFooter>
-                    <AsyncButton { ...send.passthrough }>
-                        { translate('Import') }
-                    </AsyncButton>
-                    <Button
-                        disabled={ send.isTransmitting }
-                        variant='outline-primary'
-                        onClick={ gotoPrepare }
-                    >
-                        { translate('Back') }
-                    </Button>
-                </SmallFormFooter>
+                <ButtonHeader
+                    { ...send.passthrough }
+                    enableSubmit={ allOk || (canForceImport && forceImport) }
+                    onClickBack={ gotoPrepare }
+                />
                 <hr />
-                <div className='d-flex flex-column gapy-2'>
-                    { previewRecords.map((it, ix) => {
-                        return (
-                            <PreviewRecord
-                                key={ ix }
-                                previewRecord={ it }
-                                related={ related }
-                            />
-                        )
-                    })}
-                </div>
+                { !allOk && (
+                    <IssueItemsAlert invalid={ invalid } remapper={
+                        CSVColumnRemappers.Experiment
+                        .WKPRCApestudiesDefault()
+                    } />
+                )}
+                { (allOk || canForceImport) && (
+                    <div className='d-flex flex-column gapy-2'>
+                        { previewRecords.map((it, ix) => {
+                            return (
+                                <PreviewRecord
+                                    key={ ix }
+                                    previewRecord={ it }
+                                    related={ related }
+                                />
+                            )
+                        })}
+                    </div>
+                )}
             </>
         )
     }
 }
 
-const PreviewRecord = (ps) => {
-    var { previewRecord, related } = ps;
-    var {
-        interval,
-        subjectData,
-        subjectGroupId,
-        experimentName,
-        roomOrEnclosure
-    } = previewRecord.state;
-
-    var translate = useUITranslation();
-
-    return (
-        <div className='bg-white py-2 px-3 border'>
-            <SplitPartitioned partitions={[ 1, 1, 1, 1 ]}>
-                <span>{ translate('Date/Time') }</span>
-                <BE><DateTime value={ interval.start } /></BE>
-
-                <span>{ translate('Subject Group') }:</span>
-                <BE><ForeignId
-                    value={ subjectGroupId }
-                    props={{ collection: 'subjectGroup' }}
-                    related={ related }
-                    newTab={ true }
-                    __useNewRelated={ true }
-                /></BE>
-            </SplitPartitioned>
-            <SplitPartitioned partitions={[ 1, 1, 1, 1 ]}>
-                <span>{ translate('Experiment Name') }:</span>
-                <BE>{ experimentName }</BE>
-                <span>{ translate('Room/Enclosure') }:</span>
-                <BE>{ roomOrEnclosure }</BE>
-            </SplitPartitioned>
-            <div className='mt-2 border-top pt-2'>
-                <header><b>
-                    { translate('Subjects') }
-                </b></header>
-                { subjectData.map((it, ix) => {
-                    var { subjectId, comment } = it;
-                    return (
-                        <SplitPartitioned partitions={[ 1, 1 ]}>
-                            <ForeignId
-                                value={ subjectId }
-                                props={{ collection: 'subject' }}
-                                related={ related }
-                                newTab={ true }
-                                __useNewRelated={ true }
-                            />
-                            <i>{ comment }</i>
-                        </SplitPartitioned>
-                    )
-                })}
-            </div>
-        </div>
-    );
-}
-
-var BE = (ps) => (
-    <b style={{ fontWeight: 600 }} { ...ps } />
-);
 var filterTruthy = (ary) => ary.filter(it => !!it);
 
 export default PreviewStage;

@@ -2,8 +2,6 @@ import React from 'react';
 import inline from '@cdxoo/inline-text';
 
 import { merge, unique, only } from '@mpieva/psydb-core-utils';
-import * as enums from '@mpieva/psydb-schema-enums';
-
 import { fixRelated } from '@mpieva/psydb-ui-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';

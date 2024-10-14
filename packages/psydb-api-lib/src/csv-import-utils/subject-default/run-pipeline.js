@@ -1,35 +1,39 @@
 'use strict';
-var parseLines = require('./parse-lines');
-var matchData = require('./match-data');
-var makeObjects = require('./make-objects');
+var { ejson } = require('@mpieva/psydb-core-utils');
+var { CSVColumnRemappers } = require('@mpieva/psydb-common-lib');
+var { runDefaultPipeline } = require('../common');
+
+var CSVSchema = require('./csv-schema');
 var transformPrepared = require('./transform-prepared');
 
 var runPipeline = async (bag) => {
     var {
         db,
-        csvLines,
-
+        csvLines: csvData,
         subjectCRT,
         researchGroup,
-        timezone
+        timezone: unmarshalClientTimezone
     } = bag;
 
-    var parsedLines = parseLines({ data: csvLines, subjectCRT });
-    var matchedData = await matchData({ db, parsedLines });
-    var preparedObjects = makeObjects({ matchedData });
+    var schema = CSVSchema({ subjectCRT });
+    var customColumnRemap = (
+        CSVColumnRemappers.SubjectDefault({ subjectCRT }).csv2obj
+    );
+
+    var { pipelineData, preparedObjects } = await runDefaultPipeline({
+        db, csvData, schema, customColumnRemap, unmarshalClientTimezone
+    });
 
     var transformed = transformPrepared({
         preparedObjects,
 
         subjectCRT,
         researchGroup,
-        timezone
+        timezone: unmarshalClientTimezone,
     });
 
     return {
-        parsedLines,
-        matchedData,
-        preparedObjects,
+        pipelineData,
         transformed
     }
 }

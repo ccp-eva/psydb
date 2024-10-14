@@ -11,6 +11,7 @@ import {
 import { Icons } from '@mpieva/psydb-ui-layout';
 import datefns from '../../date-fns';
 
+// XXX
 var collectionUIMapping = {
     'subject': 'subjects',
     'researchGroup': 'research-groups',
@@ -181,7 +182,7 @@ export const HelperSetItemId = (ps) => {
 }
 
 export const ForeignIdList = (ps) => {
-    var { value, props, related } = ps;
+    var { value, props, related, __useNewRelated, newTab = false } = ps;
     var { collection, recordType } = props;
     
     if (!(Array.isArray(value) && value.length)) {
@@ -196,6 +197,8 @@ export const ForeignIdList = (ps) => {
                 value={ it }
                 props={ props }
                 related={ related }
+                __useNewRelated={ __useNewRelated }
+                newTab={ newTab }
             />
         ))
     );
@@ -211,31 +214,43 @@ export const DateOnlyServerSide = (ps) => {
     var translate = useUITranslation();
     var locale = useUILocale();
     
-    var formatted = (
-        value === undefined || value === null
-        ? <NoValue />
-        : datefns.format(new Date(value), 'P', { locale })
+    var hasValue = (
+        value !== undefined && value !== null
     );
 
-    var age = calculateAge({
-        base: value,
-        relativeTo: new Date(),
-        asString: true
-    });
+    var formatted = (
+        hasValue 
+        ? datefns.format(new Date(value), 'P', { locale })
+        : <NoValue />
+    );
 
-    return (
-        <span>
-            { formatted }
-            { value && props.isSpecialAgeFrameField && (
-                <>
-                    {' '}
-                    <span style={{ color: '#bbb' }}>
-                        ({ translate('Age Today')}: { age })
-                    </span>
-                </>
-            )}
-        </span>
-    )
+    if (hasValue && props.isSpecialAgeFrameField) {
+        var age = calculateAge({
+            base: value,
+            relativeTo: new Date(),
+            asString: true
+        });
+
+        return (
+            <span>
+                { formatted }
+                { value && props.isSpecialAgeFrameField && (
+                    <>
+                        {' '}
+                        <span style={{ color: '#bbb' }}>
+                            ({ translate('Age Today')}: { age })
+                        </span>
+                    </>
+                )}
+            </span>
+        )
+    }
+    else {
+        return (
+            <span>{ formatted }</span>
+        )
+    }
+
 }
 
 export const DateTime = (ps) => {
@@ -244,7 +259,7 @@ export const DateTime = (ps) => {
 
     var formatted = (
         value === undefined || value === null
-        ? '-' 
+        ? <NoValue />
         : datefns.format(new Date(value), 'P p', { locale })
     );
     return (

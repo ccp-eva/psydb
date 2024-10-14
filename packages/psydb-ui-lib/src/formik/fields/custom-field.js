@@ -37,6 +37,7 @@ export const CustomField = (ps) => {
     switch (type) {
         case 'SaneString':
         case 'FullText':
+        case 'Email':
             isRequired = props.minLength > 0;
             break;
         case 'ForeignId':

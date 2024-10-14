@@ -1,6 +1,5 @@
 'use strict';
 var { isPlainObject } = require('is-what');
-var config = require('@mpieva/psydb-common-config');
 
 var {
     ExactObject,
@@ -90,9 +89,6 @@ var MultiChannelRecordCreateMessage = (bag) => {
             properties: {
                 id: Id(), // user can optionally force create id
                 sequenceNumber: Integer(), // user can optionally force it
-                ...(config.enableMigrationMode && {
-                    isDummy: DefaultBool(),
-                }),
                 props: payloadPropsSchema,
 
                 ...staticCreatePropSchemas,

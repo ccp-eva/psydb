@@ -1,4 +1,5 @@
 export { default as datefns } from './date-fns';
+export { default as createI18N } from './create-i18n';
 
 export {
     RecordPicker,

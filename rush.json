@@ -91,6 +91,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-schema-utils",
+       "projectFolder": "packages/psydb-schema-utils",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-schema-primitives",
        "projectFolder": "packages/psydb-schema-primitives",
        "reviewCategory": "production"
@@ -198,6 +203,11 @@
     {
        "packageName": "@mpieva/psydb-api-lib",
        "projectFolder": "packages/psydb-api-lib",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-api-self-auth",
+       "projectFolder": "packages/psydb-api-self-auth",
        "reviewCategory": "production"
     },
     {

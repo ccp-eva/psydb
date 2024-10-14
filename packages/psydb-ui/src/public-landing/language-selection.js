@@ -30,7 +30,7 @@ const LangButton = (ps) => {
     var onClick = (
         isActive
         ? undefined
-        : () => setLanguage(code)
+        : () => setLanguage({ language: code })
     );
 
     var bag = {
