@@ -1,7 +1,6 @@
 'use strict';
 module.exports = {
     CollectionEnum: require('./collection-enum'),
-    Color: require('./color'),
 
     CustomRecordTypeCollectionEnum: require('./custom-record-type-collection-enum'),
     // FIXME: duplicate

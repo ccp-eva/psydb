@@ -6,6 +6,8 @@ module.exports = {
     Address: require('./address'),
     BiologicalGender: require('./biological-gender'),
 
+    Color: require('./color'),
+
     ExtBool: require('./ext-bool'),
     EmailList: require('./email-list'),
     Email: require('./email'),
