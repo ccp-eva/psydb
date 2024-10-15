@@ -1,6 +1,6 @@
 'use strict';
-var ExactObject = require('./exact-object'),
-    DateTime = require('./date-time');
+var { ExactObject } = require('../core-compositions');
+var DateTime = require('./date-time');
 
 var DateTimeInterval = ({
     additionalStartKeywords,

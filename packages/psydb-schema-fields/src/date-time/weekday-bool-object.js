@@ -1,6 +1,6 @@
 'use strict';
-var ExactObject = require('./exact-object');
-var DefaultBool = require('./default-bool');
+var { ExactObject } = require('../core-compositions');
+var { DefaultBool } = require('../common');
 
 var days = [
     'mon', 'tue', 'wed', 'thu',

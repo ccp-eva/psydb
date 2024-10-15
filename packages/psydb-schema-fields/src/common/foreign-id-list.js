@@ -1,6 +1,6 @@
 'use strict';
-var DefaultArray = require('./default-array'),
-    ForeignId = require('./foreign-id');
+var { DefaultArray } = require('../core-compositions');
+var ForeignId = require('./foreign-id');
 
 var ForeignIdList = ({
     collection,

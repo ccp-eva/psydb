@@ -1,6 +1,6 @@
 'use strict';
-var DefaultArray = require('./default-array'),
-    HelperSetItemId = require('./helper-set-item-id');
+var { DefaultArray } = require('../core-compositions');
+var HelperSetItemId = require('./helper-set-item-id');
 
 var HelperSetItemIdList = ({
     setId,

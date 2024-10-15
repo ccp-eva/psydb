@@ -1,6 +1,6 @@
 'use strict';
 var inline = require('@cdxoo/inline-text');
-var Id = require('./id');
+var { Id } = require('../system');
 
 var ForeignId = ({
     collection,

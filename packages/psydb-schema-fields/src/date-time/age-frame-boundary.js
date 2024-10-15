@@ -1,6 +1,6 @@
 'use strict';
-var ExactObject = require('./exact-object'),
-    Integer = require('./integer');
+var { ExactObject } = require('../core-compositions');
+var { Integer } = require('../common');
 
 var AgeFrameBoundary = ({ minimum, ...additionalKeywords } = {}) => (
     ExactObject({

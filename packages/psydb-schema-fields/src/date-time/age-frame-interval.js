@@ -1,6 +1,6 @@
 'use strict';
-var ExactObject = require('./exact-object'),
-    AgeFrameBoundary = require('./age-frame-boundary');
+var { ExactObject } = require('../core-compositions');
+var AgeFrameBoundary = require('./age-frame-boundary');
 
 var AgeFrameInterval = ({
     startKeywords,

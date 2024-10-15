@@ -1,6 +1,6 @@
 'use strict';
-var DefaultArray = require('./default-array'),
-    URLString = require('./url-string');
+var { DefaultArray } = require('../core-compositions');
+var URLString = require('./url-string');
 
 var URLStringList = ({
     minItems,

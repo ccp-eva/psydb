@@ -1,5 +1,5 @@
 'use strict';
-var StringEnum = require('./string-enum');
+var { StringEnum } = require('../system');
 var { IANAZones } = require('@mpieva/psydb-timezone-helpers');
 
 var Timezone = (keywords) => (

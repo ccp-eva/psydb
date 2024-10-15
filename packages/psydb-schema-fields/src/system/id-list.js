@@ -1,6 +1,6 @@
 'use strict';
-var DefaultArray = require('./default-array'),
-    Id = require('./id');
+var { DefaultArray } = require('../core-compositions');
+var Id = require('./id');
 
 var IdList = ({
     minItems,

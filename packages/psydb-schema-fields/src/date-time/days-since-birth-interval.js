@@ -1,6 +1,6 @@
 'use strict';
-var ExactObject = require('./exact-object'),
-    DaysSinceBirth = require('./days-since-birth');
+var { ExactObject } = require('../core-compositions');
+var DaysSinceBirth = require('./days-since-birth');
 
 var DaysSinceBirthInterval = ({
     startKeywords,

@@ -1,5 +1,5 @@
 'use strict';
-var Id = require('./id');
+var { Id } = require('../system');
 
 var HelperSetItemId = (bag) => {
     var {

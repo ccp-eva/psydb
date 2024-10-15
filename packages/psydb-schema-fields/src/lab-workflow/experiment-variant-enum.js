@@ -1,6 +1,6 @@
 'use strict';
 var { experimentVariants } = require('@mpieva/psydb-schema-enums');
-var StringEnum = require('./string-enum');
+var { StringEnum } = require('../system');
 
 var ExperimentVariantEnum = (additionalKeywords) => {
     return StringEnum(experimentVariants.keys, {

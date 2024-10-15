@@ -1,5 +1,5 @@
 'use strict';
-var ExactObject = require('./exact-object');
+var { ExactObject } = require('../core-compositions');
 var Phone = require('./phone');
 
 var PhoneWithTypeList = ({ minItems, numbertypes, numbertypeNames }) => ({

@@ -1,5 +1,5 @@
 'use strict';
-var SaneString = require('./sane-string');
+var { SaneString } = require('../common');
 
 var SpecialAnimalName = ({
     additionalKeywords

@@ -1,9 +1,9 @@
 'use strict';
-var inline = require('@cdxoo/inline-text'),
-    DefaultArray = require('./default-array'),
-    ExactObject = require('./exact-object'),
-    DefaultBool = require('./default-bool'),
-    Email = require('./email');
+var inline = require('@cdxoo/inline-text');
+var { ExactObject, DefaultArray } = require('../core-compositions');
+
+var DefaultBool = require('./default-bool');
+var Email = require('./email');
 
 var EmailList = ({ minItems, ...additionalProperties }) => DefaultArray({
     systemType: 'EmailList', // FIXME: rename to EmailWithPrimaryList

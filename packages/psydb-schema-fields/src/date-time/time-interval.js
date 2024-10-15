@@ -1,6 +1,6 @@
 'use strict';
-var ExactObject = require('./exact-object'),
-    Time = require('./time');
+var { ExactObject } = require('../core-compositions');
+var Time = require('./time');
 
 var TimeInterval = ({
     description,

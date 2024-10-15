@@ -1,6 +1,6 @@
 'use strict';
-var ExactObject = require('./exact-object'),
-    SaneString = require('./sane-string');
+var { ExactObject } = require('../core-compositions');
+var { SaneString } = require('../common');
 
 var SpecialHumanName = ({
     additionalKeywords
