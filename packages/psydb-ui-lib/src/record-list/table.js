@@ -1,6 +1,6 @@
 import React from 'react';
+import { __fixRelated, __fixDefinitions } from '@mpieva/psydb-common-compat';
 import { createDefaultFieldDataTransformer } from '@mpieva/psydb-common-lib';
-import { fixRelated, __fixDefinitions } from '@mpieva/psydb-ui-utils';
 import { useUILocale } from '@mpieva/psydb-ui-contexts';
 
 import {
@@ -46,7 +46,7 @@ var RecordListTable = (ps) => {
     var locale = useUILocale();
 
     var definitions = __fixDefinitions(displayFieldData);
-    var related = fixRelated({
+    var related = __fixRelated({
         relatedRecordLabels,
         relatedHelperSetItems,
         relatedCustomRecordTypes,

@@ -1,0 +1,14 @@
+{
+  "name": "@mpieva/psydb-common-compat",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {},
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {
+    "@mpieva/psydb-core-utils": "workspace:*"
+  },
+  "devDependencies": {
+  }
+}

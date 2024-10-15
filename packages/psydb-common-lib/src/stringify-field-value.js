@@ -1,5 +1,5 @@
 'use strict';
-var fixRelated = require('./fix-related');
+var { __fixRelated } = require('@mpieva/psydb-common-compat');
 var stringifiers = require('./field-stringifiers');
 
 var stringifyFieldValue = ({
@@ -19,7 +19,7 @@ var stringifyFieldValue = ({
 }) => {
 
     if (!related) {
-        related = fixRelated({
+        related = __fixRelated({
             relatedRecordLabels,
             relatedHelperSetItems,
             relatedCustomRecordTypeLabels,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { createDefaultFieldDataTransformer } from '@mpieva/psydb-common-lib';
-import { fixRelated, __fixDefinitions } from '@mpieva/psydb-ui-utils';
+import { __fixRelated, __fixDefinitions } from '@mpieva/psydb-common-compat';
 import { useUILocale } from '@mpieva/psydb-ui-contexts';
 import { TableBodyCustomCols } from '@mpieva/psydb-ui-layout';
 
@@ -27,7 +27,7 @@ const FieldDataBodyCols = ({
         definitions = __fixDefinitions(displayFieldData)
     }
     if (!related) {
-        related = fixRelated({
+        related = __fixRelated({
             relatedRecordLabels,
             relatedHelperSetItems,
             relatedCustomRecordTypeLabels,

@@ -1,5 +1,5 @@
 'use strict';
-var { __fixDefinitions } = require('@mpieva/psydb-common-lib');
+var { __fixDefinitions } = require('@mpieva/psydb-common-compat');
 var Fields = require('./fields');
 
 var createMatchStages = (bag) => {

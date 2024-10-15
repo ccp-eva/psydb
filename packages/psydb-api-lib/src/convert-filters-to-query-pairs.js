@@ -1,6 +1,6 @@
 'use strict';
 var { keyBy } = require('@mpieva/psydb-core-utils');
-var { __fixDefinitions } = require('@mpieva/psydb-common-lib');
+var { __fixDefinitions } = require('@mpieva/psydb-common-compat');
 
 var convertFiltersToQueryPairs = (bag) => {
     var { filters = {}, displayFields } = bag;

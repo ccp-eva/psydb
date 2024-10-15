@@ -1,5 +1,5 @@
 import { jsonpointer } from '@mpieva/psydb-core-utils';
-import { fixRelated } from '@mpieva/psydb-common-lib';
+import { __fixRelated } from '@mpieva/psydb-common-compat';
 import stringifyFieldValue from './stringify-field-value';
 
 const applyValueToDisplayFields = ({
@@ -18,7 +18,7 @@ const applyValueToDisplayFields = ({
 }) => {
 
     if (!related) {
-        related = fixRelated({
+        related = __fixRelated({
             relatedRecordLabels,
             relatedHelperSetItems,
             relatedCustomRecordTypeLabels,

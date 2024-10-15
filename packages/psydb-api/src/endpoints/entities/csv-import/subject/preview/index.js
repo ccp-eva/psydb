@@ -1,6 +1,7 @@
 'use strict';
 var { only } = require('@mpieva/psydb-core-utils');
-var { sift, fixRelated } = require('@mpieva/psydb-common-lib');
+var { __fixRelated } = require('@mpieva/psydb-common-compat');
+var { sift } = require('@mpieva/psydb-common-lib');
 var {
     compose,
     ApiError,
@@ -87,7 +88,7 @@ var preview = async (context, next) => {
         }
     });
 
-    var related = fixRelated(
+    var related = __fixRelated(
         await fetchRelatedLabelsForMany({
             db, collectionName: 'subject', records: previewRecords,
             ...i18n

@@ -1,5 +1,5 @@
 import React from 'react';
-import { fixRelated } from '@mpieva/psydb-ui-utils';
+import { __fixRelated } from '@mpieva/psydb-common-compat';
 import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 
@@ -21,7 +21,7 @@ const ExperimentContainer = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    related = fixRelated(related, { isResponse: false, labelize: true });
+    related = __fixRelated(related, { isResponse: false, labelize: true });
 
     var locale = useUILocale();
     var translate = useUITranslation();

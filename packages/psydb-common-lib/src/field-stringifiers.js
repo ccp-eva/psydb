@@ -1,9 +1,6 @@
 'use strict';
-var maybeUseESM = require('./maybe-use-esm');
-
-var formatDate = maybeUseESM(require('date-fns/format'));
-//var formatDate_ESM = require('date-fns/format');
-//var formatDate = formatDate_ESM.default || formatDate_ESM;
+var { __maybeUseESM } = require('@mpieva/psydb-common-compat');
+var formatDate = __maybeUseESM(require('date-fns/format'));
 
 var { formatInTimeZone } = require('date-fns-tz');
 

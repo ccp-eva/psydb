@@ -156,6 +156,7 @@ importers:
       '@mpieva/psydb-api-mocha-test-tools': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-self-auth': workspace:~0.1.0-alpha
       '@mpieva/psydb-axios-test-wrapper': workspace:~0.1.0-alpha
+      '@mpieva/psydb-common-compat': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-utils': workspace:~0.1.0-alpha
@@ -225,6 +226,7 @@ importers:
       '@mpieva/psydb-api-lib-errors': link:../psydb-api-lib-errors
       '@mpieva/psydb-api-message-handlers': link:../psydb-api-message-handlers
       '@mpieva/psydb-api-self-auth': link:../psydb-api-self-auth
+      '@mpieva/psydb-common-compat': link:../psydb-common-compat
       '@mpieva/psydb-common-config': link:../psydb-common-config
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-common-utils': link:../psydb-common-utils
@@ -781,6 +783,12 @@ importers:
       axios-cookiejar-support: 4.0.7_axios@0.28.1+tough-cookie@4.1.4
       tough-cookie: 4.1.4
 
+  ../../packages/psydb-common-compat:
+    specifiers:
+      '@mpieva/psydb-core-utils': workspace:*
+    dependencies:
+      '@mpieva/psydb-core-utils': link:../psydb-core-utils
+
   ../../packages/psydb-common-config:
     specifiers: {}
 
@@ -788,6 +796,7 @@ importers:
     specifiers:
       '@cdxoo/inline-text': ~1.0.2
       '@mpieva/json-schema-convert-pointer': workspace:~0.1.0-alpha
+      '@mpieva/psydb-common-compat': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-translations': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-date-interval-fns': workspace:~0.1.0-alpha
@@ -808,6 +817,7 @@ importers:
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@mpieva/json-schema-convert-pointer': link:../json-schema-convert-pointer
+      '@mpieva/psydb-common-compat': link:../psydb-common-compat
       '@mpieva/psydb-common-translations': link:../psydb-common-translations
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-date-interval-fns': link:../psydb-date-interval-fns
@@ -894,25 +904,33 @@ importers:
 
   ../../packages/psydb-custom-fields-common:
     specifiers:
-      '@mpieva/psydb-common-lib': workspace:*
+      '@mpieva/psydb-common-compat': workspace:*
+      '@mpieva/psydb-common-translations': workspace:*
       '@mpieva/psydb-schema-fields': workspace:*
       chai: ~4.3.7
+      date-fns: ~2.30.0
+      date-fns-tz: ~1.3.8
       mocha: ~10.2.0
     dependencies:
-      '@mpieva/psydb-common-lib': link:../psydb-common-lib
+      '@mpieva/psydb-common-compat': link:../psydb-common-compat
+      '@mpieva/psydb-common-translations': link:../psydb-common-translations
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
+      date-fns: 2.30.0
+      date-fns-tz: 1.3.8_date-fns@2.30.0
     devDependencies:
       chai: 4.3.10
       mocha: 10.2.0
 
   ../../packages/psydb-custom-fields-mongo:
     specifiers:
+      '@mpieva/psydb-common-compat': workspace:*
       '@mpieva/psydb-common-lib': workspace:*
       '@mpieva/psydb-core-utils': workspace:*
       '@mpieva/psydb-mongo-adapter': workspace:*
       chai: ~4.3.7
       mocha: ~10.2.0
     dependencies:
+      '@mpieva/psydb-common-compat': link:../psydb-common-compat
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
@@ -1344,6 +1362,7 @@ importers:
       '@cdxoo/omit': ~1.0.1
       '@cdxoo/react-compose-contexts': ~1.0.0-beta.0
       '@mpieva/psydb-api-endpoint-schemas': workspace:~0.1.0-alpha
+      '@mpieva/psydb-common-compat': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-translations': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
@@ -1404,6 +1423,7 @@ importers:
       '@cdxoo/omit': 1.0.1
       '@cdxoo/react-compose-contexts': 1.0.0-beta.0_react@17.0.2
       '@mpieva/psydb-api-endpoint-schemas': link:../psydb-api-endpoint-schemas
+      '@mpieva/psydb-common-compat': link:../psydb-common-compat
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-common-translations': link:../psydb-common-translations
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
@@ -1604,6 +1624,7 @@ importers:
       '@cdxoo/inline-text': ~1.0.2
       '@cdxoo/omit': ~1.0.1
       '@mpieva/psydb-api-endpoint-schemas': workspace:~0.1.0-alpha
+      '@mpieva/psydb-common-compat': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-translations': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
@@ -1648,6 +1669,7 @@ importers:
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/omit': 1.0.1
       '@mpieva/psydb-api-endpoint-schemas': link:../psydb-api-endpoint-schemas
+      '@mpieva/psydb-common-compat': link:../psydb-common-compat
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-common-translations': link:../psydb-common-translations
       '@mpieva/psydb-core-utils': link:../psydb-core-utils

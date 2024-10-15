@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-common-compat": "workspace:*",
     "@mpieva/psydb-common-lib": "workspace:*",
     "@mpieva/psydb-mongo-adapter": "workspace:*"
   }

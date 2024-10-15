@@ -1,7 +1,7 @@
 // TODO: fix the underlying code
 var { flatten, unflatten } = require('@mpieva/psydb-core-utils');
 
-const fixRelated = (raw, options = {}) => {
+const __fixRelated = (raw, options = {}) => {
     console.info('FIXING RELATED');
     var {
         isResponse = true,
@@ -66,4 +66,4 @@ const fixRelated = (raw, options = {}) => {
     );
 }
 
-module.exports = fixRelated;
+module.exports = __fixRelated;

@@ -7,8 +7,8 @@ import {
 import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { keyBy } from '@mpieva/psydb-core-utils';
+import { __fixRelated, __fixDefinitions } from '@mpieva/psydb-common-compat';
 import { createDefaultFieldDataTransformer } from '@mpieva/psydb-common-lib';
-import { fixRelated, __fixDefinitions } from '@mpieva/psydb-ui-utils';
 
 import {
     useFetchAll,
@@ -104,7 +104,7 @@ const StudyParticipation = (ps) => {
     var { 
         records = [],
         related = {},
-    } = fixRelated(dataBySubjectType[selectedSubjectType] || {});
+    } = __fixRelated(dataBySubjectType[selectedSubjectType] || {});
 
     var transformer = createDefaultFieldDataTransformer({
         related,

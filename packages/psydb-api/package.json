@@ -54,6 +54,7 @@
     "@mpieva/psydb-date-interval-fns": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-config": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-common-compat": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-api-lib-errors": "workspace:~0.1.0-alpha",

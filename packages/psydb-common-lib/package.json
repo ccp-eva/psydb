@@ -9,6 +9,7 @@
   "dependencies": {
     "date-fns": "~2.30.0",
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-common-compat": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-interval-fns": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-date-interval-fns": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-enums": "workspace:~0.1.0-alpha",

@@ -276,6 +276,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-common-compat",
+       "projectFolder": "packages/psydb-common-compat",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-common-utils",
        "projectFolder": "packages/psydb-common-utils",
        "reviewCategory": "production"

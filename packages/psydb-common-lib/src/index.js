@@ -1,6 +1,4 @@
 module.exports = {
-    __fixDefinitions: require('./__fix-definitions'),
-
     sift: require('sift'),
     inlineText: require('@cdxoo/inline-text'),
 
@@ -67,5 +65,4 @@ module.exports = {
     ),
    
     SmartArray: require('./smart-array'),
-    fixRelated: require('./fix-related'),
 }

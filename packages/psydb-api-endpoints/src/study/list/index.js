@@ -1,7 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:study:list');
 var { entries } = require('@mpieva/psydb-core-utils');
-var { fixRelated } = require('@mpieva/psydb-common-lib');
+var { __fixRelated } = require('@mpieva/psydb-common-compat');
 
 var {
     ResponseBody,
@@ -128,7 +128,7 @@ var listEndpoint = async (context, next) => {
             records,
             displayFieldData: displayFields,
             recordsCount: records.totalRecordCount,
-            //related: fixRelated(__related, { isResponse: false }),
+            //related: __fixRelated(__related, { isResponse: false }),
             ...(__related),
         },
     });
