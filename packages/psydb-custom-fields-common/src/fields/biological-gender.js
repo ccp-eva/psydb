@@ -1,17 +1,15 @@
 'use strict';
 var { BiologicalGender } = require('@mpieva/psydb-schema-fields');
-var { translate } = require('@mpieva/psydb-common-translations');
-var { createStringifyValue } = require('../utils');
+var { JustTranslate } = require('../stringify-utils');
 
 var createQuickSearchSchema = (bag = {}) => {
     var { definition } = bag;
     return BiologicalGender(); // XXX: enable other/unknown from definition
 };
 
-var stringifyValue = createStringfyValue({ fn: (bag) => {
-    var { value, i18n: { language }} = bag;
-    return translate(language, `_BiologialGender_${value}`);
-}});
+var stringifyValue = JustTranslate({
+    prefix: '_BiologicalGender_'
+});
 
 // TODO
 var createLabelToken = (bag = {}) => {

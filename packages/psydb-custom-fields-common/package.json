@@ -12,6 +12,7 @@
     "chai": "~4.3.7"
   },
   "dependencies": {
+    "@mpieva/psydb-core-utils": "workspace:*",
     "@mpieva/psydb-schema-fields": "workspace:*",
     "@mpieva/psydb-common-compat": "workspace:*",
     "@mpieva/psydb-common-translations": "workspace:*",

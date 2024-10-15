@@ -2,7 +2,7 @@
 var { jsonpointer } = require('@mpieva/psydb-core-utils');
 
 var createStringifyValue = (options) => {
-    var { fn, fallback = '-' } = bag;
+    var { fn, fallback = '-' } = options;
     var wrapped = (bag) => {
         var {
             definition, value, related,

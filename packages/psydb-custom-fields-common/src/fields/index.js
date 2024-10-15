@@ -1,4 +1,6 @@
-module.exports = {
+var ensure = require('@mpieva/psydb-schema-fields/ensure');
+
+var fields = {
     Address: require('./address'),
     BiologicalGender: require('./biological-gender'),
     DateOnlyServerSide: require('./date-only-server-side'),
@@ -20,3 +22,11 @@ module.exports = {
     SaneString: require('./sane-string'),
     URLStringList: require('./url-string-list'),
 }
+
+for (var systemType of ensure) {
+    if (!fields[systemType]) {
+        throw new Error(`sytemType "${systemType}" is not handled`);
+    }
+}
+
+module.exports = fields;

@@ -19,6 +19,7 @@
   "dependencies": {
     "debug": "~4.3.4",
     "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-common-compat": "workspace:*",
     "@mpieva/psydb-common-lib": "workspace:*",
     "@mpieva/psydb-i18n": "workspace:*",
     "@mpieva/psydb-schema-fields": "workspace:*",

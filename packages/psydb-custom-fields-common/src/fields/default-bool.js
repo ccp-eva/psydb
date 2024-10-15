@@ -8,7 +8,7 @@ var createQuickSearchSchema = () => {
 
 var stringifyValue = JustTranslate({
     prefix: '_DefaultBool_', fallback: 'ERROR'
-})
+});
 
 module.exports = {
     canBeCustomField: true,

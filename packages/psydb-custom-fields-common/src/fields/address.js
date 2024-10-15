@@ -1,12 +1,12 @@
 'use strict';
 var { SaneString } = require('@mpieva/psydb-schema-fields');
-var { createStringifyValue } = require('../utils');
+var { createStringifyValue } = require('../stringify-utils');
 
 var createQuickSearchSchema = () => {
     return SaneString();
 };
 
-var stringifyValue = createStringfyValue({ fn: (bag) => {
+var stringifyValue = createStringifyValue({ fn: (bag) => {
     var { value } = bag;
     
     return ([

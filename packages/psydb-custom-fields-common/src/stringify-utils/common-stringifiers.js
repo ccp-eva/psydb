@@ -16,7 +16,7 @@ var JustString = (options = {}) => {
 }
 
 var JustJoin = (options = {}) => {
-    var { sep = ', ', ...pass } = bag;
+    var { sep = ', ', ...pass } = options;
 
     return createStringifyValue({ ...pass, fn: ({ value }) => {
         return value.join(sep);
@@ -24,7 +24,7 @@ var JustJoin = (options = {}) => {
 }
 
 var JustTranslate = (options = {}) => {
-    var { prefix = '', ...pass } = bag;
+    var { prefix = '', ...pass } = options;
     
     return createStringifyValue({ ...pass, fn: (bag) => {
         var { value, i18n: { language }} = bag;
@@ -33,7 +33,7 @@ var JustTranslate = (options = {}) => {
 }
 
 var JustLocaleDate = (options = {}) => {
-    var { format = 'P p', ...pass } = bag;
+    var { format = 'P p', ...pass } = options;
 
     return createStringifyValue({ ...pass, fn: (bag) => {
         var { value, i18n: { locale, timezone = undefined }} = bag;
@@ -49,6 +49,6 @@ var JustLocaleDate = (options = {}) => {
 module.exports = {
     JustString,
     JustJoin,
-    JustTranslate;
-    JustLocaleDate
+    JustTranslate,
+    JustLocaleDate,
 }

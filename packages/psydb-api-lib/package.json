@@ -27,6 +27,7 @@
     "@mpieva/psydb-schema-creators": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-verify-helpers": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-common-compat": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-api-config": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-mongo-adapter": "workspace:~0.1.0-alpha",
