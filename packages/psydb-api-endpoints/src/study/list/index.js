@@ -9,10 +9,6 @@ var {
     convertFiltersToQueryPairs,
 
     fetchRecordsByFilter,
-
-    mappifyPointer,
-    fetchRecordLabelsManual,
-    fetchHelperSetItemLabelsManual,
 } = require('@mpieva/psydb-api-lib');
 
 var CoreBodySchema = require('./core-body-schema');
@@ -21,6 +17,7 @@ var FullBodySchema = require('./full-body-schema');
 var gatherDisplayFields = require('./gather-display-fields');
 var gatherSharedDisplayFields = require('./gather-shared-display-fields');
 var gatherAvailableConstraints = require('./gather-available-constraints');
+var fetchRelated = require('./fetch-related');
 
 var listEndpoint = async (context, next) => {
     var { db, request, permissions } = context;
@@ -122,35 +119,9 @@ var listEndpoint = async (context, next) => {
 
     debug('<<<<<<<<< END FETCH')
 
-    var fromItems = mappifyPointer(records, { spreadArrays: true });
-    var todoRecordIds = {};
-    var todoHelperSetItemIds = [];
-    for (var it of displayFields) {
-        var { systemType, pointer, props } = it;
-
-        if (/^ForeignId/.test(systemType)) {
-            var { collection } = props;
-            todoRecordIds[collection] = fromItems(pointer);
-        }
-
-        if (/^HelperSetItem/.test(systemType)) {
-            todoHelperSetItemIds.push(...fromItems(pointer));
-        }
-    }
-
-    debug('fetching related...');
-    var relatedRecordLabels = await fetchRecordLabelsManual(
-        db, todoRecordIds, { ...i18n, oldWrappedLabels: true }
-    );
-    var relatedHelperSetItems = await fetchHelperSetItemLabelsManual(
-        db, todoHelperSetItemIds, { ...i18n, oldWrappedLabels: true }
-    );
-    debug('done');
-
-    var __related = {
-        relatedRecordLabels,
-        relatedHelperSetItems
-    }
+    var __related = await fetchRelated({
+        db, records, definitions: displayFields, i18n
+    });
 
     context.body = ResponseBody({
         data: {
@@ -162,6 +133,7 @@ var listEndpoint = async (context, next) => {
         },
     });
 
+    debug('next()');
     await next();
 }
 
