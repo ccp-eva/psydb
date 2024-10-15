@@ -10,15 +10,19 @@ var makeParticipationItems = (bag) => {
         subjectData,
         locationId,
         locationRecordType,
+
         experimentName,
         roomOrEnclosure,
+        intradaySeqNumber,
+        totalSubjectCount,
+
         timezone,
     } = experimentParts.state;
 
 
     var out = [];
     for (var it of subjectData) {
-        var { subjectId, comment } = it;
+        var { subjectId, comment, role } = it;
         var participationItem = {
             _id: ObjectId(),
             experimentId: experimentParts._id,
@@ -33,6 +37,9 @@ var makeParticipationItems = (bag) => {
             
             experimentName,
             roomOrEnclosure,
+            intradaySeqNumber,
+            totalSubjectCount,
+            role,
 
             status: 'participated',
             excludeFromMoreExperimentsInStudy: false,

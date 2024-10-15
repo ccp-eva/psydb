@@ -1473,9 +1473,19 @@ module.exports = [
         de: 'Laufende Nummer (am Tag)'
     },
     {
+        internal: '_wkprc_intradaySeqNumber_short',
+        en: 'Daily-No.',
+        de: 'Tägl-Nr.'
+    },
+    {
         internal: '_wkprc_totalSubjectCount',
         en: 'Trial Participants',
         de: 'Trial Participants' // FIXME
+    },
+    {
+        internal: '_wkprc_totalSubjectCount_short',
+        en: 'Trial-P.',
+        de: 'Trial-P.' // FIXME
     },
     
     // Field sites

@@ -56,7 +56,8 @@ var stringifyFieldValue = ({
         }
         else if (relatedRecordLabels) {
             str = (
-                relatedRecordLabels[props.collection][rawValue]._recordLabel
+                relatedRecordLabels[props.collection][rawValue]?._recordLabel
+                || rawValue
             );
         }
         else {
@@ -65,9 +66,10 @@ var stringifyFieldValue = ({
     }
     else if (type === 'ForeignIdList') {
         if (relatedRecordLabels) {
-            str = (rawValue || []).map(id => (
-                relatedRecordLabels[props.collection][id]._recordLabel
-            )).join();
+            str = (rawValue || []).map(id => {
+                var item = relatedRecordLabels[props.collection][id];
+                return item?._recordLabel || `[${id}]`
+            }).join();
         }
         else {
             str = (rawValue || []).join(', ')
