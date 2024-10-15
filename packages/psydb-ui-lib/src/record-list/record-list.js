@@ -118,7 +118,10 @@ var RecordList = (ps) => {
         }
 
         var promise = undefined;
-        if (['helperSet', 'helperSetItem'].includes(collection)) {
+        if ([
+            'study',
+            'helperSet', 'helperSetItem'
+        ].includes(collection)) {
             promise = agent.fetch(`/${collection}/list`, {
                 ...commonPayload,
             });

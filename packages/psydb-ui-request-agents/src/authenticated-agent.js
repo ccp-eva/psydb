@@ -942,6 +942,9 @@ const createAgent = (options = {}) => {
         var fn = jsonpointer.get(agent, tag);
         return fn(payload);
     }
+    agent.study = {
+        list: dumpPOST({ url: '/api/study/list' })
+    };
     agent.helperSet = {
         list: dumpPOST({ url: '/api/helperSet/list' })
     };

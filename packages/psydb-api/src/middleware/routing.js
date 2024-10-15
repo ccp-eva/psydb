@@ -124,6 +124,10 @@ var createRouting = (bag = {}) => {
         endpoints.search
     );
 
+    router.post('/study/list', ...withPostStages({
+        endpoint: endpoints_SPLIT.study.list,
+        enableApiKeyAuth: true,
+    }));
     router.post('/helperSet/list', ...withPostStages({
         endpoint: endpoints_SPLIT.helperSet.list,
         enableApiKeyAuth: true,
