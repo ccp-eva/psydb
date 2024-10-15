@@ -178,6 +178,10 @@ var CRTSettings = ({ data }) => {
         Object.values(__availableDisplayFieldsByPointer)
     );
     crt.augmentedDisplayFields = (target) => {
+        // FIXME: record lists target is lower case
+        if (target === 'optionlist') {
+            target = 'optionList';
+        }
         // FIXME:gather-display-fields-for-record-type.js
         // uses full target name others dont
         var displayFields = data[
