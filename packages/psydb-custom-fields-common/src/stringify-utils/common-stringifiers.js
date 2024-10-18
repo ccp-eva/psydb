@@ -4,6 +4,7 @@ var { __maybeUseESM } = require('@mpieva/psydb-common-compat');
 var formatDate = __maybeUseESM(require('date-fns/format'));
 var { formatInTimeZone } = require('date-fns-tz');
 
+var { jsonpointer } = require('@mpieva/psydb-core-utils');
 var { translate } = require('@mpieva/psydb-common-translations');
 var createStringifyValue = require('./create-stringify-value');
 
@@ -16,9 +17,12 @@ var JustString = (options = {}) => {
 }
 
 var JustJoin = (options = {}) => {
-    var { sep = ', ', ...pass } = options;
+    var { sep = ', ', pointer = undefined, ...pass } = options;
 
     return createStringifyValue({ ...pass, fn: ({ value }) => {
+        if (pointer) {
+            value = value.map(it => jsonpointer.get(it, pointer));
+        }
         return value.join(sep);
     }});
 }

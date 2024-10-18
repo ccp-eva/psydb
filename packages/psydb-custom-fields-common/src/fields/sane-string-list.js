@@ -6,7 +6,7 @@ var createQuickSearchSchema = () => {
     return SaneString();
 };
 
-var stringifyValue = JustJoin();
+var stringifyValue = JustJoin({ sep: ', ' });
 
 module.exports = {
     canBeCustomField: true,

@@ -1,12 +1,12 @@
 'use strict';
 var { SaneString } = require('@mpieva/psydb-schema-fields');
-var { JustJoin } = require('../stringify-utils');
+var { JustString } = require('../stringify-utils');
 
 var createQuickSearchSchema = () => {
     return SaneString();
 };
 
-var stringifyValue = JustJoin();
+var stringifyValue = JustString();
 
 module.exports = {
     canBeCustomField: true,
