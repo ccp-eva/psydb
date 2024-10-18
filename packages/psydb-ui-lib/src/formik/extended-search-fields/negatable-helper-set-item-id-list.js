@@ -42,7 +42,7 @@ export const NegatableHelperSetItemIdList = withField({ Control: (ps) => {
 
     return (
         <div className='border p-3'>
-            <div className='d-flex gapx-5 text-bold'>
+            <div className='d-flex gapx-5'>
                 <Tab
                     onClick={ onClickNoCondition }
                     isActive={ activeTab === 'no-condition' }
@@ -97,7 +97,7 @@ const Tab = (ps) => {
 
     var className = classnames([
         'd-flex align-items-center',
-        isActive ? 'text-primary' : 'text-muted'
+        isActive ? 'text-primary' : ''
     ]);
 
     return (

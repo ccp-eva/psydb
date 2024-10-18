@@ -77,8 +77,8 @@ const Header = (ps) => {
     var { isActive, onClick, children } =ps;
     var className = classnames([
         'd-flex align-items-center',
-        'border-bottom pb-1 mb-2 text-bold',
-        isActive ? 'text-primary' : 'text-muted'
+        'border-bottom pb-1 mb-2',
+        isActive ? 'text-primary' : ''
     ]);
     var role = (
         'button'
