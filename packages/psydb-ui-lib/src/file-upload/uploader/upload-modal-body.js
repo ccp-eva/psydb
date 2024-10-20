@@ -20,6 +20,7 @@ const UploadModalBody = (ps) => {
 
     var [ isHighlighted, setIsHighlighted ] = useState(false);
     var [ isValidUpload, setIsValidUpload ] = useState(undefined);
+    var [ rejectedFiles, setRejectedFiles ] = useState([]);
 
     var write = useWriteRequest((agent, droppedFiles) => {
         return agent.uploadFiles({ files: droppedFiles })
@@ -34,6 +35,7 @@ const UploadModalBody = (ps) => {
     var bag = {
         isHighlighted: isHighlighted,
         isValidUpload,
+        rejectedFiles,
 
         accept,
         maxSize,
@@ -41,6 +43,7 @@ const UploadModalBody = (ps) => {
         onDrop: (acceptedFiles = [], rejectedFiles = []) => {
             if (rejectedFiles.length > 0) {
                 setIsValidUpload(false);
+                setRejectedFiles(rejectedFiles);
             }
             else if (acceptedFiles.length > 0) {
                 setIsValidUpload(true);
@@ -62,6 +65,7 @@ const TheDropzone = (ps) => {
     var {
         isValidUpload,
         isHighlighted,
+        rejectedFiles,
 
         accept,
         maxSize,
@@ -83,11 +87,14 @@ const TheDropzone = (ps) => {
             { ...downstream }
         >
             <CenteredContent>
-                {
-                    isValidUpload === false
-                    ? <Rejected { ...sharedBag } />
-                    : <Default { ...sharedBag } />
-                }
+                { isValidUpload === false ? (
+                    <Rejected
+                        { ...sharedBag }
+                        rejectedFiles={ rejectedFiles}
+                    />
+                ) : (
+                    <Default { ...sharedBag } />
+                )}
             </CenteredContent>
         </Dropzone>
     );
@@ -116,7 +123,14 @@ const Loading = () => (
     </CenteredContent>
 );
 
-const Rejected = ({ accept = '', maxSize }) => {
+const mbytes = (n) => (
+    (n / 1024 / 1024).toFixed(2)
+)
+
+const Rejected = (ps) => {
+    var { accept = '', maxSize, rejectedFiles } = ps;
+    console.log(rejectedFiles);
+
     var acceptedExtensions = (
         accept.split(',').map(str => str.replace(/^[^\/]+\//, ''))
     );
@@ -128,7 +142,16 @@ const Rejected = ({ accept = '', maxSize }) => {
                 {' '}
                 { acceptedExtensions.join(', ') }
                 <br />
-                Maximale Dateigrösse: { maxSize / 1024 / 1024 }MB
+                Maximale Dateigrösse: { mbytes(maxSize) }MB
+                <div className='border-top border-danger mt-2 pt-2'>
+                    { rejectedFiles.map((it, ix ) => (
+                        <div key={ ix } className='text-nowrap'>
+                            { it.name }
+                            {' '}
+                            ("{ it.type }"; { mbytes(it.size) }MB)
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
