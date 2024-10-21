@@ -150,12 +150,12 @@ var fetchRecordByFilter = async ({
             condition: queryFields && queryFields.length > 0,
             stages: () => futils.createMatchStages({
                 type: 'quick-search',
-                from: queryFields.map(it => ({
+                from: queryFields.map(({ field = {}, value }) => ({
                     definition: {
-                        systemType: it.systemType,
-                        pointer: it.dataPointer
+                        systemType: (field.systemType || field.type),
+                        pointer: (field.pointer || field.dataPointer)
                     },
-                    input: it.value,
+                    input: value,
                 })),
             }),
         }),
