@@ -9,6 +9,10 @@ import Table from './table';
 
 const OptionList = (ps) => {
     var {
+        className,
+        tableClassName,
+        bsTableProps,
+        
         collection = 'study',
         recordType = undefined,
         searchOptions,
@@ -30,7 +34,7 @@ const OptionList = (ps) => {
 
     var [ didFetch, fetched ] = useFetch((agent) => {
         var commonPayload = {
-            target: 'optionlist',
+            target: 'optionlist', searchOptions,
             constraints, filters, showHidden,
             extraIds, excludedIds,
             offset, limit,
@@ -83,13 +87,15 @@ const OptionList = (ps) => {
     ////////////////////////////////
 
     var tableBag = {
+        tableClassName, bsTableProps,
+
         records, related, definitions,
         sorter: tablefns.getSorter(),
         onSelectRecord,
     }
 
     return (
-        <div className='pt-5'>
+        <div className={ className }>
             <TableFNs
                 tablefns={ tablefns }
                 displayFieldData={ displayFieldData }
