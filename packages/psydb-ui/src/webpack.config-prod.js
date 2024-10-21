@@ -9,13 +9,8 @@ module.exports = {
     context: __dirname,
     entry: './index.js',
     
-    ...(enableReadableErrors ? {
-        mode: 'development',
-        devtool: 'source-map',
-    } : {
-        mode: 'production',
-        devtool: false,
-    }),
+    mode: 'production',
+    devtool: 'source-map',
     
     output: {
         //path: path.resolve(__dirname, 'dist'),

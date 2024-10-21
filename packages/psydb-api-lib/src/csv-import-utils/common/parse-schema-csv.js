@@ -12,7 +12,7 @@ var parseSchemaCSV = (bag) => {
         //deserializers = commonDeserializers,
     } = bag;
 
-    var { csvColumns, csvLines } = dumbParseCSV(csvData);
+    var { csvColumns = [], csvLines = [] } = dumbParseCSV(csvData);
 
     var parsed = dumbMakeObjects({
         csvColumns: maybeRemapColumns({ csvColumns, customColumnRemap }),
@@ -39,7 +39,7 @@ var parseSchemaCSV = (bag) => {
 }
 
 var maybeRemapColumns = (bag) => {
-    var { csvColumns, customColumnRemap } = bag;
+    var { csvColumns = [], customColumnRemap } = bag;
 
     if (customColumnRemap) {
         var remappedColumns = [];
