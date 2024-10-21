@@ -72,6 +72,8 @@ var fetchRecordByFilter = async ({
     offset = offset ||0;
     limit = limit || 0;
 
+    console.log(queryFields)
+
     var preCountStages = [
         ...(await maybeStages({
             condition: (
@@ -150,13 +152,23 @@ var fetchRecordByFilter = async ({
             condition: queryFields && queryFields.length > 0,
             stages: () => futils.createMatchStages({
                 type: 'quick-search',
-                from: queryFields.map(({ field = {}, value }) => ({
-                    definition: {
-                        systemType: (field.systemType || field.type),
-                        pointer: (field.pointer || field.dataPointer)
-                    },
-                    input: value,
-                })),
+                from: queryFields.map((it) => {
+                    var { field, value } = it;
+                    var systemType, pointer;
+                    if (it.field) {
+                        systemType = (field.systemType || field.type);
+                        pointer = (field.pointer || field.dataPointer);
+                    }
+                    else {
+                        systemType = (it.systemType || it.type);
+                        pointer = (it.pointer || it.dataPointer);
+                    }
+
+                    return {
+                        definition: { systemType, pointer },
+                        input: value,
+                    }
+                }),
             }),
         }),
     ];
