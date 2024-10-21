@@ -39,7 +39,7 @@ const Table = (ps) => {
         <BSTable
             style={{
                 borderCollapse: 'separate', borderSpacing: 0,
-                border: '1px solid red'
+                //border: '1px solid red'
             }}
             className={ tableClassName } { ...bsTableProps }
         >
