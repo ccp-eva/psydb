@@ -124,6 +124,7 @@ var RecordList = (ps) => {
         ].includes(collection)) {
             promise = agent.fetch(`/${collection}/list`, {
                 ...commonPayload,
+                ...(recordType && { recordType }),
             });
         }
         else {
