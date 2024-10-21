@@ -72,7 +72,7 @@ var fetchRecordByFilter = async ({
     offset = offset ||0;
     limit = limit || 0;
 
-    console.log(queryFields)
+    //console.log(queryFields)
 
     var preCountStages = [
         ...(await maybeStages({
