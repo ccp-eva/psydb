@@ -10,6 +10,7 @@ export {
 export { ErrorResponseModal } from './modals';
 
 export { default as RecordListContainer } from './record-list-container';
+export { default as ExtendedRecordList } from './extended-record-list';
 
 export { default as FormBox } from './form-box';
 export { default as RecordTypeNav } from './record-type-nav';

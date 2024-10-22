@@ -1,13 +1,17 @@
 import React from 'react';
 import { TableBodyCustomCols } from '@mpieva/psydb-custom-fields-ui';
 
+import {
+    StudyIconButton,
+} from '@mpieva/psydb-ui-layout';
+
 const TableRow = (ps) => {
     var { record, related, definitions, collection } = ps;
-    var { _isHidden = false, type = undefined } = record;
+    var { _id, _isHidden = false, type = undefined } = record;
 
     return (
         <tr
-            className={ _hidden && 'bg-light text-grey' }
+            className={ _isHidden && 'bg-light text-grey' }
             role='button'
         >
             <TableBodyCustomCols
@@ -17,7 +21,9 @@ const TableRow = (ps) => {
             />
             <td>
                 <div className='d-flex justify-content-end pb-0 pt-0'>
-                    AAAAAAAAAAAAa
+                    <StudyIconButton
+                        to={`/studies/${type}/${_id}`}
+                    />
                 </div>
             </td>
         </tr>

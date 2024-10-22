@@ -11,7 +11,9 @@ const TableBodyCustomCols = (ps) => {
         var { systemType, pointer } = it;
 
         var field = Fields[systemType];
-        var str = field.stringifyValue({ definition: it, record, i18n });
+        var str = field.stringifyValue({
+            definition: it, record, related, i18n
+        });
 
         out.push(
             <td key={ pointer }>{ str }</td>

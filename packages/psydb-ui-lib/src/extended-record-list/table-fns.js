@@ -1,7 +1,9 @@
 import React from 'react';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Pagination } from '@mpieva/psydb-ui-layout';
-import { CSVExtendedSearchExportButton } from '@mpieva/psydb-ui-lib';
+
+import CSVExtendedSearchExportButton
+    from '../csv-extended-search-export-button.js';
 
 const TableFNs = (ps) => {
     var { pagination, formData } = ps;
@@ -22,7 +24,7 @@ const TableFNs = (ps) => {
                         className='ml-3'
                         size='sm'
                         endpoint='study'
-                        searchData={ saneData }
+                        searchData={ formData }
                     />
                 )}
             </div>

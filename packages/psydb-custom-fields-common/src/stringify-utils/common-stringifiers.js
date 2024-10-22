@@ -44,8 +44,8 @@ var JustLocaleDate = (options = {}) => {
         
         return (
             timezone
-            ? formatInTimeZone(new Date(value), timezone, ...other)
-            : formatDate(new Date(value), ...other)
+            ? formatInTimeZone(new Date(value), timezone, format, { locale })
+            : formatDate(new Date(value), format, { locale })
         )
     }});
 }

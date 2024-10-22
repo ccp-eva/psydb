@@ -27,10 +27,20 @@ import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-b
 
 import sanitizeFormData from './sanitize-form-data';
 
+import { ExtendedRecordList } from '@mpieva/psydb-ui-lib';
+
 export const Results = (ps) => {
     var { schema, crtSettings, formData } = ps;
     var { fieldDefinitions } = crtSettings;
     var { columns } = formData;
+        
+    var saneData = sanitizeFormData(fieldDefinitions, formData);
+    return (
+        <ExtendedRecordList
+            crtSettings={ crtSettings }
+            formData={ saneData }
+        />
+    )
     
     var permissions = usePermissions();
     var canUseCSVExport = permissions.hasFlag('canUseCSVExport');
