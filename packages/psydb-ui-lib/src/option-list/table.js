@@ -4,8 +4,9 @@ import {
     Table as BSTable,
     TableHead,
     TableEmptyFallback,
-    TableHeadCustomCols,
 } from '@mpieva/psydb-ui-layout';
+
+import { TableBodyCustomCols } from '@mpieva/psydb-custom-fields-ui';
 
 import TableRow from './table-row';
 

@@ -1,16 +1,14 @@
 import React from 'react';
-import { OptionSelectIndicator } from '@mpieva/psydb-ui-layout';
 import { TableBodyCustomCols } from '@mpieva/psydb-custom-fields-ui';
 
 const TableRow = (ps) => {
-    var { record, related, definitions, onSelectRecord } = ps;
-    var { _isHidden } = record;
+    var { record, related, definitions, collection } = ps;
+    var { _isHidden = false, type = undefined } = record;
 
     return (
         <tr
             className={ _hidden && 'bg-light text-grey' }
             role='button'
-            onClick={ () => onSelectRecord(record) }
         >
             <TableBodyCustomCols
                 record={ record }
@@ -19,7 +17,7 @@ const TableRow = (ps) => {
             />
             <td>
                 <div className='d-flex justify-content-end pb-0 pt-0'>
-                    <OptionSelectIndicator record={ record } />
+                    AAAAAAAAAAAAa
                 </div>
             </td>
         </tr>

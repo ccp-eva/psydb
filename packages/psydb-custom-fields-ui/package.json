@@ -1,0 +1,17 @@
+{
+  "name": "@mpieva/psydb-custom-fields-ui",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "devDependencies": {
+    "react": "~17.0.2",
+    "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-custom-fields-common": "workspace:*",
+    "@mpieva/psydb-ui-contexts": "workspace:*",
+    "@mpieva/psydb-ui-layout": "workspace:*"
+  }
+}

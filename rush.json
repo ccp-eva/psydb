@@ -86,6 +86,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-custom-fields-ui",
+       "projectFolder": "packages/psydb-custom-fields-ui",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-rohrpost-utils",
        "projectFolder": "packages/psydb-rohrpost-utils",
        "reviewCategory": "production"
