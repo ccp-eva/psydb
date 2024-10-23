@@ -944,15 +944,13 @@ const createAgent = (options = {}) => {
     }
     agent.study = {
         list: dumpPOST({ url: '/api/study/list' }),
+        extendedSearch: dumpPOST({ url: '/api/extended-search/studies' }),
     };
     agent.helperSet = {
         list: dumpPOST({ url: '/api/helperSet/list' }),
     };
     agent.helperSetItem = {
         list: dumpPOST({ url: '/api/helperSetItem/list' }),
-    };
-    agent.study = {
-        extendedSearch: dumpPOST({ url: '/api/extended-search/studies' }),
     };
     
     // XXX

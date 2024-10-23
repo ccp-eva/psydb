@@ -6,7 +6,10 @@ import {
     TableEmptyFallback,
 } from '@mpieva/psydb-ui-layout';
 
-import { TableBodyCustomCols } from '@mpieva/psydb-custom-fields-ui';
+import {
+    TableHeadCustomCols,
+    TableBodyCustomCols,
+} from '@mpieva/psydb-custom-fields-ui';
 
 import TableRow from './table-row';
 
