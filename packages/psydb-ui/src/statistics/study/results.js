@@ -1,7 +1,7 @@
 import React from 'react';
 import { omit } from '@mpieva/psydb-core-utils';
 import { fieldStringifiers } from '@mpieva/psydb-common-lib';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     Table,
@@ -9,6 +9,8 @@ import {
     LoadingIndicator,
     StudyIconButton,
 } from '@mpieva/psydb-ui-layout';
+
+import { Fields } from '@mpieva/psydb-custom-fields-common';
 
 const StudyStatisticsResults = (ps) => {
     var { formData } = ps;
@@ -55,8 +57,9 @@ const TableHead = (ps) => {
     return (
         <thead><tr>
             <th>{ translate('Shorthand') }</th>
-            {/*<th>{ translate('_studyParticipations_short') }</th>*/}
-            <th>N</th>
+            <th>{ translate('Start') }</th>
+            <th>{ translate('End') }</th>
+            <th>{ translate('_studyParticipations_short') }</th>
             <th>{ translate('Lab Workflows') }</th>
             <th>{ translate('Age Ranges') }</th>
             <th></th>
@@ -106,16 +109,24 @@ const ResultTable = (ps) => {
 var Row = (ps) => {
     var { item } = ps;
     var {
-        _id, type, shorthand,
+        _id, type, shorthand, runningPeriod,
         labMethods, ageFrames, participationCounts
     } = item;
 
-    var translate = useUITranslation(); 
+    var [ i18n ] = useI18N();
     var uri = `/studies/${type}/${_id}`;
 
     return (
         <tr>
             <td>{ shorthand }</td>
+            
+            <td>{ Fields.DateOnlyServerSide.stringifyValue({
+                value: runningPeriod.start, i18n
+            }) }</td>
+            <td>{ Fields.DateOnlyServerSide.stringifyValue({
+                value: runningPeriod.end, i18n
+            }) }</td>
+
             <td>{ participationCounts.total }</td>
             <td>
                 <LabMethods
@@ -124,11 +135,7 @@ var Row = (ps) => {
                 />
             </td>
             <td>{ ageFrames.map(a => (
-                // FIXME: fieldStringifiers.AgeFrame
-                // cannot handle start/end being object
-                fieldStringifiers.AgeFrameBoundary(a.start)
-                + ' - ' +
-                fieldStringifiers.AgeFrameBoundary(a.end)
+                Fields.AgeFrameInterval.stringifyValue({ value: a, i18n })
             )).sort().join(' || ') }</td>
 
             <td className='d-flex justify-content-end'>

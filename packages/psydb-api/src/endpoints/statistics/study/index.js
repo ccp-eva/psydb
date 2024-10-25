@@ -78,7 +78,7 @@ var endpoint = async (context, next) => {
     var prefiltered = [];
     for (var it of studies) {
         var { _id: studyId, type, state } = it;
-        var { shorthand } = state;
+        var { shorthand, runningPeriod } = state;
 
         var matchingAgeFrames = ageFramesForStudy[studyId] || [];
         var matchingLabMethods = labMethodsForStudy[studyId] || [];
@@ -93,6 +93,7 @@ var endpoint = async (context, next) => {
                 _id: studyId,
                 type,
                 shorthand,
+                runningPeriod,
                 ageFrames: matchingAgeFrames,
                 labMethods: unique(matchingLabMethods)
             })

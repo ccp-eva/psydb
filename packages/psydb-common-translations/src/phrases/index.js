@@ -363,8 +363,8 @@ module.exports = [
     },
     {
         internal: '_studyParticipations_short',
-        en: 'P.',
-        de: 'T.',
+        en: 'Part.',
+        de: 'Teiln.',
     },
     {
         internal: 'unknown_short',
