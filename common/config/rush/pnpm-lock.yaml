@@ -1386,6 +1386,7 @@ importers:
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-translations': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
+      '@mpieva/psydb-custom-fields-ui': workspace:~0.1.0-alpha
       '@mpieva/psydb-date-interval-fns': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-creators': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-enums': workspace:~0.1.0-alpha
@@ -1447,6 +1448,7 @@ importers:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-common-translations': link:../psydb-common-translations
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
+      '@mpieva/psydb-custom-fields-ui': link:../psydb-custom-fields-ui
       '@mpieva/psydb-date-interval-fns': link:../psydb-date-interval-fns
       '@mpieva/psydb-schema-creators': link:../psydb-schema-creators
       '@mpieva/psydb-schema-enums': link:../psydb-schema-enums

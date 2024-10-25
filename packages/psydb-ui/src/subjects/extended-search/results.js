@@ -1,30 +1,32 @@
 import React from 'react';
-import { keyBy, jsonpointer } from '@mpieva/psydb-core-utils';
+import { __fixDefinitions, __fixRelated } from '@mpieva/psydb-common-compat';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetch,
     usePaginationURLSearchParams,
-    usePermissions,
 } from '@mpieva/psydb-ui-hooks';
 
 import {
-    Table,
+    Table as BSTable,
     Alert,
     LoadingIndicator,
-    Pagination,
     SubjectIconButton,
     LinkContainer,
 } from '@mpieva/psydb-ui-layout';
 
-import { CSVExtendedSearchExportButton } from '@mpieva/psydb-ui-lib';
-
-
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns'
 
-import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-head-cols';
-import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
+import {
+    TableHeadCustomCols,
+    TableBodyCustomCols,
+} from '@mpieva/psydb-custom-fields-ui';
+
+import {
+    TableFNs,
+    prepareSelectedColumnDefinitions
+} from '@mpieva/psydb-ui-lib/src/extended-record-list'
 
 import sanitizeFormData from './sanitize-form-data';
 
@@ -33,89 +35,64 @@ export const Results = (ps) => {
     var { fieldDefinitions } = crtSettings;
     var { columns } = formData;
     
-    var permissions = usePermissions();
-    var canUseCSVExport = permissions.hasFlag('canUseCSVExport');
+    var saneData = sanitizeFormData(fieldDefinitions, formData);
 
     var pagination = usePaginationURLSearchParams({ offset: 0, limit: 50 })
     var { offset, limit } = pagination;
     
-    var [ didFetch, fetched ] = useFetch((agent) => {
-        var saneData = sanitizeFormData(fieldDefinitions, formData);
-        return (
-            agent
-            .getAxios()
-            .post('/api/extended-search/subjects', {
-                ...saneData,
-                offset,
-                limit,
-                timezone: getSystemTimezone()
-            })
-            .then((response) => {
-                pagination.setTotal(response.data.data.recordsCount);
-                return response;
-            })
-        )
-    }, [ offset, limit ]);
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.fetch(`/subject/extendedSearch`, {
+            ...formData, offset, limit, timezone: getSystemTimezone(),
+        }).then((response) => {
+            pagination.setTotal(response.data.data.recordsCount);
+            return response;
+        })
+    ), [ offset, limit ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
 
-    var {
-        records,
-        recordsCount,
-        related,
-        displayFieldData,
-    } = fetched.data;
+    var { records, related, displayFieldData } = fetched.data;
+    var definitions = __fixDefinitions(displayFieldData);
+    related = __fixRelated(related, { isResponse: false });
 
-    var saneData = sanitizeFormData(fieldDefinitions, formData);
-
-    var selectedFieldData = displayFieldData.filter(it => (
-        columns.includes(it.dataPointer)
-    ));
-
-    var TableComponent = (
-        recordsCount > 0
-        ? RecordTable
-        : Fallback
-    );
+    var selectedColumnDefinitions = prepareSelectedColumnDefinitions({
+        columns, definitions
+    });
 
     return (
         <div>
-            <div className='sticky-top border-bottom d-flex align-items-center bg-light'>
-                <div className='flex-grow'>
-                    <Pagination { ...pagination } />
-                </div>
-                <div className='media-print-hidden'>
-                    { canUseCSVExport && (
-                        <CSVExtendedSearchExportButton
-                            className='ml-3'
-                            size='sm'
-                            endpoint='subject'
-                            searchData={ saneData }
-                        />
-                    )}
-                </div>
-            </div>
-
-            <TableComponent { ...({
-                columns,
-                selectedFieldData,
-                records,
-                related
-            })} />
+            <TableFNs
+                collection='subject'
+                pagination={ pagination }
+                formData={ saneData }
+            />
+            { records.length > 0 ? (
+                <Table
+                    definitions={ selectedColumnDefinitions }
+                    records={ records }
+                    related={ related }
+                    columns={ columns } // FIXME special cols
+                />
+            ) : (
+                <TableFallback
+                    definitions={ selectedColumnDefinitions }
+                    columns={ columns } // FIXME special cols
+                />
+            )}
         </div>
     )
 }
 
 
-const Fallback = (ps) => {
+const TableFallback = (ps) => {
     var translate = useUITranslation();
     return (
         <>
-            <Table>
+            <BSTable>
                 <TableHead { ...ps } />
-            </Table>
+            </BSTable>
             <Alert variant='info'>
                 <i>{ translate('No Records found.') }</i>
             </Alert>
@@ -123,26 +100,21 @@ const Fallback = (ps) => {
     )
 }
 
-const RecordTable = (ps) => {
+const Table = (ps) => {
     return (
-        <Table>
+        <BSTable>
             <TableHead { ...ps } />
             <TableBody { ...ps } />
-        </Table>
+        </BSTable>
     );
 }
 
 const TableHead = (ps) => {
-    var { columns, selectedFieldData } = ps;
+    var { columns, definitions } = ps;
     var translate = useUITranslation();
-    var keyed = keyBy({ items: selectedFieldData, byProp: 'dataPointer' });
     return (
         <thead><tr>
-            <FieldDataHeadCols { ...({
-                displayFieldData: (
-                    columns.map(it => keyed[it]).filter(it => !!it)
-                ),
-            })} />
+            <TableHeadCustomCols definitions={ definitions } />
             { columns.includes('/_specialAgeToday') && (
                 <th>{ translate('Age Today') }</th>
             )}
@@ -161,24 +133,20 @@ const TableHead = (ps) => {
 }
 
 const TableBody = (ps) => {
-    var { columns, selectedFieldData, records, related } = ps;
-    var keyed = keyBy({ items: selectedFieldData, byProp: 'dataPointer' });
+    var { columns, definitions, records, related } = ps;
 
     return (
         <tbody>
             { records.map(it => (
                 <tr
                     key={ it._id }
-                    className={ it._isHidden && 'bg-light text-grey' }
+                    className={ it._isHidden ? 'bg-light text-grey' : '' }
                 >
-                    <FieldDataBodyCols { ...({
-                        record: it,
-                        //displayFieldData: selectedFieldData,
-                        displayFieldData: (
-                            columns.map(it => keyed[it]).filter(it => !!it)
-                        ),
-                        ...related
-                    })} />
+                    <TableBodyCustomCols
+                        record={ it }
+                        related={ related }
+                        definitions={ definitions }
+                    />
                     { columns.includes('/_specialAgeToday') && (
                         <td>{ it._specialAgeToday }</td>
                     )}
@@ -222,66 +190,63 @@ const TableBody = (ps) => {
 
 const ParticipationColumn = (ps) => {
     var { participation, related } = ps;
-    var relatedStudies = related.relatedRecordLabels.study;
     return (
-        <td>
-            {
-                participation
-                .filter(it => it.status === 'participated')
-                .map(it => {
-                    var studyLabel = relatedStudies[it.studyId]._recordLabel;
-                    var date = datefns.format(new Date(it.timestamp), 'dd.MM.yyyy');
-                    return `${studyLabel} (${date})`;
-                })
-                .join('; ')
-            }
-        </td>
+        <td>{
+            participation
+            .filter(it => it.status === 'participated')
+            .map(it => {
+                var { studyId, timestamp } = it;
+                var date = datefns.format(new Date(timestamp), 'dd.MM.yyyy');
+                var label = (
+                    related.records.study?.[studyId]?._recordLabel
+                    || studyId
+                );
+
+                return `${label} (${date})`;
+            })
+            .join('; ')
+        }</td>
     )
 }
 
 const HistoricExperimentLocationsColumn = (ps) => {
     var { participation, related } = ps;
-    var relatedLocations = related.relatedRecordLabels.location;
     return (
-        <td>
-            {
-                participation
-                .filter(it => it.status === 'participated')
-                .map(it => {
-                    var locationLabel = (
-                        relatedLocations[it.locationId]._recordLabel
-                    );
-                    var date = datefns.format(
-                        new Date(it.timestamp), 'dd.MM.yyyy'
-                    );
-                    return `${locationLabel} (${date})`;
-                })
-                .join('; ')
-            }
-        </td>
+        <td>{
+            participation
+            .filter(it => it.status === 'participated')
+            .map(it => {
+                var { locationId, timestamp } = it;
+                var date = datefns.format(new Date(timestamp), 'dd.MM.yyyy');
+                var label = (
+                    related.records.location?.[locationId]?._recordLabel
+                    || locationId
+                );
+                return `${label} (${date})`;
+            })
+            .join('; ')
+        }</td>
     )
 }
 const ExperimentColumn = (ps) => {
     var { experiments, related } = ps;
-    var items = (
-        experiments
-        .map((it, index) => {
-            var date = datefns.format(
-                new Date(it.state.interval.start), 'dd.MM.yyyy'
-            );
-            return (
-                <LinkContainer to={ `/experiments/${it.type}/${it._id}` }>
-                    <a>{ it.state.studyLabel } ({date})</a>
-                </LinkContainer>
-            );
-        })
-    );
+    var items = experiments.map((it, ix) => {
+        var date = datefns.format(
+            new Date(it.state.interval.start), 'dd.MM.yyyy'
+        );
+        return (
+            <LinkContainer
+                key={ ix }
+                to={ `/experiments/${it.type}/${it._id}` }
+            >
+                <a>{ it.state.studyLabel } ({date})</a>
+            </LinkContainer>
+        );
+    });
     return (
         <td>
-            { items.map((it, index) => (
-                <div>
-                    { it }
-                </div>
+            { items.map((it, ix) => (
+                <div key={ ix }>{ it }</div>
             ))}
         </td>
     )

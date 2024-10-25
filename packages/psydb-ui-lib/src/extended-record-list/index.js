@@ -10,11 +10,12 @@ import {
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import TableFNs from './table-fns';
-import Table from './table';
 import TableFallback from './table-fallback';
+import Table from './table';
+import TableRow from './table-row';
 
 const ExtendedRecordList = (ps) => {
-    var { crtSettings, formData } = ps;
+    var { collection, crtSettings, formData } = ps;
     var { fieldDefinitions } = crtSettings;
     var { columns } = formData;
 
@@ -22,7 +23,7 @@ const ExtendedRecordList = (ps) => {
     var { offset, limit } = pagination;
 
     var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.fetch('/study/extendedSearch', {
+        agent.fetch(`/${collection}/extendedSearch`, {
             ...formData, offset, limit, timezone: getSystemTimezone(),
         }).then((response) => {
             pagination.setTotal(response.data.data.recordsCount);
@@ -47,12 +48,13 @@ const ExtendedRecordList = (ps) => {
             <TableFNs pagination={ pagination } formData={ formData } />
             { records.length > 0 ? (
                 <Table
+                    collection={ collection }
                     definitions={ selectedColumnDefinitions }
                     records={ records }
                     related={ related }
                 />
             ) : (
-                <TableFallback definitions={ selectedColumnDefinitions} />
+                <TableFallback definitions={ selectedColumnDefinitions } />
             )}
         </div>
     )
@@ -74,6 +76,14 @@ const prepareSelectedColumnDefinitions = (bag) => {
     }
     
     return selectedDefinitions;
+}
+
+export { 
+    TableFNs,
+    Table,
+    TableFallback,
+    TableRow,
+    prepareSelectedColumnDefinitions,
 }
 
 export default ExtendedRecordList;

@@ -1487,7 +1487,45 @@ module.exports = [
         en: 'Trial-P.',
         de: 'Trial-P.' // FIXME
     },
-    
+   
+    {
+        internal: '_BiologicalGender_male',
+        en: 'Male',
+        de: 'Männlich'
+    },
+    {
+        internal: '_BiologicalGender_female',
+        en: 'Female',
+        de: 'Weiblich'
+    },
+    {
+        internal: '_BiologicalGender_other',
+        en: 'Other',
+        de: 'Divers'
+    },
+    {
+        internal: '_BiologicalGender_unknown',
+        en: 'Unknown',
+        de: 'Unbekannt'
+    },
+
+    {
+        internal: '_ExtBool_yes',
+        en: 'Yes',
+        de: 'Ja'
+    },
+    {
+        internal: '_ExtBool_no',
+        en: 'No',
+        de: 'Nein'
+    },
+    {
+        internal: '_ExtBool_unknown',
+        en: 'Unknown',
+        de: 'Unbekannt'
+    },
+
+
     // Field sites
 
     {

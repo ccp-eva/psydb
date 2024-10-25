@@ -942,6 +942,9 @@ const createAgent = (options = {}) => {
         var fn = jsonpointer.get(agent, tag);
         return fn(payload);
     }
+    agent.subject = {
+        extendedSearch: dumpPOST({ url: '/api/extended-search/subjects' }),
+    };
     agent.study = {
         list: dumpPOST({ url: '/api/study/list' }),
         extendedSearch: dumpPOST({ url: '/api/extended-search/studies' }),

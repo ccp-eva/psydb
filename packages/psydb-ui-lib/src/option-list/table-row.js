@@ -8,7 +8,7 @@ const TableRow = (ps) => {
 
     return (
         <tr
-            className={ _isHidden && 'bg-light text-grey' }
+            className={ _isHidden ? 'bg-light text-grey' : '' }
             role='button'
             onClick={ () => onSelectRecord(record) }
         >

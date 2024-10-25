@@ -6,7 +6,7 @@ import CSVExtendedSearchExportButton
     from '../csv-extended-search-export-button.js';
 
 const TableFNs = (ps) => {
-    var { pagination, formData } = ps;
+    var { collection, pagination, formData } = ps;
 
     var permissions = usePermissions();
     var canUseCSVExport = permissions.hasFlag('canUseCSVExport');
@@ -23,7 +23,7 @@ const TableFNs = (ps) => {
                     <CSVExtendedSearchExportButton
                         className='ml-3'
                         size='sm'
-                        endpoint='study'
+                        endpoint={ collection }
                         searchData={ formData }
                     />
                 )}
