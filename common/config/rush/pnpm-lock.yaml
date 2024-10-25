@@ -348,6 +348,7 @@ importers:
       '@mpieva/psydb-schema-helpers': workspace:~0.1.0-alpha
       '@mpieva/psydb-timezone-helpers': workspace:~0.1.0-alpha
       chai: ~4.3.7
+      date-fns: ~2.30.0
       debug: ~4.3.4
       diacritic-regex: ~1.1.0
       escape-string-regexp: ~4.0.0
@@ -371,6 +372,7 @@ importers:
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
       '@mpieva/psydb-schema-helpers': link:../psydb-schema-helpers
       '@mpieva/psydb-timezone-helpers': link:../psydb-timezone-helpers
+      date-fns: 2.30.0
       debug: 4.3.7
       diacritic-regex: 1.1.0
       escape-string-regexp: 4.0.0

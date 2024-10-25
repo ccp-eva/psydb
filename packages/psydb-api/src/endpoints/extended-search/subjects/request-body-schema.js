@@ -46,6 +46,9 @@ RequestBodySchema.Full = () => ExactObject({
                 didNotParticipateIn: ForeignIdList({
                     collection: 'study',
                 }),
+                participationInterval: DateOnlyServerSideInterval({
+                    required: []
+                }),
                 hasTestingPermission: ExactObject({
                     properties: {
                         labMethod: { type: 'string' },

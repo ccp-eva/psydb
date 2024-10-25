@@ -42,7 +42,7 @@ export const Results = (ps) => {
     
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetch(`/subject/extendedSearch`, {
-            ...formData, offset, limit, timezone: getSystemTimezone(),
+            ...saneData, offset, limit, timezone: getSystemTimezone(),
         }).then((response) => {
             pagination.setTotal(response.data.data.recordsCount);
             return response;

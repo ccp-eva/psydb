@@ -65,6 +65,7 @@ const sanitizeSpecialFilters = (values) => {
         sequenceNumber,
         didParticipateIn,
         didNotParticipateIn,
+        participationInterval,
         ...pass
     } = values;
 
@@ -76,6 +77,16 @@ const sanitizeSpecialFilters = (values) => {
         }),
         ...(didNotParticipateIn && {
             didNotParticipateIn: didNotParticipateIn.filter(it => !!it)
+        }),
+        ...((participationInterval?.start || participationInterval?.end) && {
+            participationInterval: {
+                ...(participationInterval?.start && {
+                    start: participationInterval.start
+                }),
+                ...(participationInterval?.end && {
+                    end: participationInterval.end
+                })
+            }
         })
     }
     return sanitized;

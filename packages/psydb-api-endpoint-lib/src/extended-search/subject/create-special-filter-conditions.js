@@ -1,4 +1,5 @@
 'use strict';
+var datefns = require('date-fns');
 var { makeRX, timeshiftAgeFrame } = require('@mpieva/psydb-common-lib');
 
 var {
@@ -14,6 +15,7 @@ var createSpecialFilterConditions = (filters) => {
         sequenceNumber,
         didParticipateIn,
         didNotParticipateIn,
+        participationInterval,
         hasTestingPermission,
         isHidden,
         comment,
@@ -38,13 +40,43 @@ var createSpecialFilterConditions = (filters) => {
     }
     if (didParticipateIn && didParticipateIn.length > 0) {
         AND.push({ $expr: (
-            hasSubjectParticipatedIn({ studyIds: didParticipateIn })
+            hasSubjectParticipatedIn({
+                studyIds: didParticipateIn,
+                ...(participationInterval && {
+                    interval: participationInterval
+                })
+            })
         )});
     }
     if (didNotParticipateIn && didNotParticipateIn.length > 0) {
         AND.push({ $expr: { $not: (
             hasSubjectParticipatedIn({ studyIds: didNotParticipateIn })
         )}});
+    }
+    if (participationInterval?.start || participationInterval?.end) {
+        var PATH = '$scientific.state.internals.participatedInStudies';
+        AND.push({ $expr: {
+            $gt: [ { $size: { $filter: {
+                input: PATH,
+                cond: { $and: [
+                    { $in: [ '$$this.status', [ 'participated' ]] },
+                    { $and: [
+                        ...(participationInterval.start ? [
+                            { $gte: [
+                                '$$this.timestamp',
+                                participationInterval.start
+                            ]}
+                        ] : []),
+                        ...(participationInterval.end ? [
+                            { $lte: [
+                                '$$this.timestamp',
+                                datefns.endOfDay(participationInterval.end)
+                            ]}
+                        ] : [])
+                    ]}
+                ]}}
+            }}, 0 ]
+        }});
     }
 
     var { labMethod, researchGroupId } = (hasTestingPermission || {});
