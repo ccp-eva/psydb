@@ -16,6 +16,10 @@ var Schema = () => {
             'start': DateOnlyServerSide({ isNullable: true }),
             'end': DateOnlyServerSide({ isNullable: true }),
         }),
+        'participationInterval': MaxObject({
+            'start': DateOnlyServerSide({ isNullable: true }),
+            'end': DateOnlyServerSide({ isNullable: true }),
+        }),
         'labMethodKeys': ClosedObject({
             'logicGate': LogicGate(),
             'values': DefaultArray({

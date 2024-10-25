@@ -1,6 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:statistics:study');
 
+var datefns = require('date-fns');
 var { only, keyBy, groupBy, unique, ejson } = require('@mpieva/psydb-core-utils');
 var {
     ResponseBody,
@@ -34,11 +35,23 @@ var endpoint = async (context, next) => {
 
     var {
         runningPeriodOverlap,
+        participationInterval,
         labMethodKeys,
         researchGroupId,
         scientistId,
         ageFrameIntervalOverlap
     } = request.body;
+
+    if (runningPeriodOverlap?.end) {
+        runningPeriodOverlap.end = datefns.endOfDay(
+            runningPeriodOverlap.end
+        );
+    }
+    if (participationInterval?.end) {
+        participationInterval.end = datefns.endOfDay(
+            participationInterval.end
+        );
+    }
 
     var studies = await aggregateToArray({ db, study: SmartArray([
         ( researchGroupId && { $match: {
@@ -88,7 +101,7 @@ var endpoint = async (context, next) => {
 
     var participationCountsForStudy = await fetchGroupedParticipationCounts({
         db, studyIds: prefiltered.map(it => it._id),
-        overlapInterval: runningPeriodOverlap,
+        overlapInterval: participationInterval,
     });
 
     var final = [];

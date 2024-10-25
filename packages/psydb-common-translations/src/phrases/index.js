@@ -1227,6 +1227,10 @@ module.exports = [
         de: 'Bis',
     },
     {
+        en: 'Participation Range',
+        de: 'Teilnahme-Zeitraum'
+    },
+    {
         en: 'Date Range',
         de: 'Zeitraum'
     },
