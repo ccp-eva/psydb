@@ -5,7 +5,10 @@ import { Button } from '@mpieva/psydb-ui-layout';
 import {
     FormBox,
     DefaultForm,
-    ExtendedSearchFields as Fields
+    Fields as CoreFields,
+    ExtendedSearchFields as Fields,
+
+    withField
 } from '@mpieva/psydb-ui-lib';
 
 // TODO: filter undefined values from all id lists
@@ -56,6 +59,13 @@ export const Filters = (ps) => {
                 label={ translate('Has Not Participated in') }
                 collection='study'
             />
+
+            {/* XXX */}
+            <ParticipatedBetween
+                dataXPath='$.specialFilters.participationInterval'
+                label={ translate('Participated') }
+            />
+
             {(
                 !crtSettings.commentFieldIsSensitive
                 || permissions.hasFlag('canAccessSensitiveFields')
@@ -82,3 +92,27 @@ export const Filters = (ps) => {
         </FormBox>
     )
 }
+
+const ParticipatedBetween = withField({ Control: (ps) => {
+    var { dataXPath } = ps;
+
+    var translate = useUITranslation();
+    return (
+        <div className='d-flex border p-3'>
+            <div className='w-50 flex-grow'>
+                <CoreFields.DateOnlyServerSide
+                    dataXPath={ `${dataXPath}.start` }
+                    label={ translate('_range_from') }
+                    formGroupClassName='mb-0'
+                />
+            </div>
+            <div className='w-50 flex-grow'>
+                <CoreFields.DateOnlyServerSide
+                    dataXPath={ `${dataXPath}.end` }
+                    label={ translate('_range_to') }
+                    formGroupClassName='mb-0'
+                />
+            </div>
+        </div>
+    )
+}})
