@@ -29,6 +29,8 @@ module.exports = {
     dev_enableDevPanel: false,
     dev_copyNoticeGreyscale: true,
     //dev_enableForeignIdRefLinkInForms: true,
+
+    dev_enableDangerousCRTFieldOps: true,
     
     dev_enableCSVSubjectImport: true,
     dev_enableCSVParticipationImport: true,

@@ -44,6 +44,9 @@ var publicInitUI = async (context, next) => {
         '/dev_enableDevPanel',
         '/dev_copyNoticeGreyscale',
         '/dev_enableForeignIdRefLinkInForms',
+
+        '/dev_enableDangerousCRTFieldOps',
+
         '/dev_enableCSVSubjectImport',
         '/dev_enableCSVParticipationImport',
         '/dev_enableStatistics',
