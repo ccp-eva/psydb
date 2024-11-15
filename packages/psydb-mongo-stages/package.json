@@ -23,7 +23,7 @@
     "mocha": "~10.2.0",
     "chai": "~4.3.7",
     "@mpieva/psydb-fixtures": "workspace:*",
-    "@cdxoo/mongo-test-helpers": "~0.8.0",
+    "@cdxoo/mongo-test-helpers": "~0.7.1",
     "mongodb-memory-server": "~6.9.2"
   },
   "config": {

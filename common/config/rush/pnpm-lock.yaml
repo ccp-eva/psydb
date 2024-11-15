@@ -139,7 +139,7 @@ importers:
       '@cdxoo/check-ip-in-range': ~0.0.1
       '@cdxoo/inline-string': ~1.0.0
       '@cdxoo/inline-text': ~1.0.2
-      '@cdxoo/mongo-test-helpers': ~0.8.0
+      '@cdxoo/mongo-test-helpers': ~0.7.1
       '@cdxoo/mongodb-escape-keys': ~0.2.0-beta.0
       '@cdxoo/mongodb-restore': 2.0.0-alpha.2
       '@cdxoo/omit': ~1.0.1
@@ -274,7 +274,7 @@ importers:
       statuses: 2.0.1
       superagent-prefix: 0.0.2
     devDependencies:
-      '@cdxoo/mongo-test-helpers': 0.8.0
+      '@cdxoo/mongo-test-helpers': 0.7.1
       '@cdxoo/mongodb-restore': 2.0.0-alpha.2
       '@mpieva/psydb-api-mocha-test-tools': link:../psydb-api-mocha-test-tools
       '@mpieva/psydb-axios-test-wrapper': link:../psydb-axios-test-wrapper
@@ -286,7 +286,7 @@ importers:
 
   ../../packages/psydb-api-automation-scripts:
     specifiers:
-      '@cdxoo/mongo-test-helpers': ~0.8.0
+      '@cdxoo/mongo-test-helpers': ~0.7.1
       '@cdxoo/mongodb-restore': 2.0.0-alpha.2
       '@mpieva/psydb-api': workspace:*
       '@mpieva/psydb-api-lib': workspace:*
@@ -316,7 +316,7 @@ importers:
       debug: 4.3.7
       mongodb: 3.6.12
     devDependencies:
-      '@cdxoo/mongo-test-helpers': 0.8.0
+      '@cdxoo/mongo-test-helpers': 0.7.1
       '@mpieva/psydb-api': link:../psydb-api
       '@mpieva/psydb-api-lib': link:../psydb-api-lib
       '@mpieva/psydb-api-mocha-test-tools': link:../psydb-api-mocha-test-tools
@@ -433,7 +433,7 @@ importers:
 
   ../../packages/psydb-api-integration-test-helpers:
     specifiers:
-      '@cdxoo/mongo-test-helpers': ~0.8.0
+      '@cdxoo/mongo-test-helpers': ~0.7.1
       '@cdxoo/mongodb-restore': 2.0.0-alpha.2
       '@mpieva/psydb-api': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
@@ -444,7 +444,7 @@ importers:
       snap-shot-it: ~7.9.6
       supertest: ~6.0.1
     devDependencies:
-      '@cdxoo/mongo-test-helpers': 0.8.0
+      '@cdxoo/mongo-test-helpers': 0.7.1
       '@cdxoo/mongodb-restore': 2.0.0-alpha.2
       '@mpieva/psydb-api': link:../psydb-api
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
@@ -660,7 +660,8 @@ importers:
   ../../packages/psydb-api-message-handlers:
     specifiers:
       '@cdxoo/inline-text': ~1.0.2
-      '@cdxoo/mongo-test-helpers': ~0.8.0
+      '@cdxoo/mongo-test-helpers': ~0.7.1
+      '@cdxoo/mongodb-restore': ~2.0.1
       '@cdxoo/omit': ~1.0.1
       '@cdxoo/tiny-ejson': ~1.0.0
       '@mpieva/psydb-api-config': workspace:~0.1.0-alpha
@@ -729,7 +730,8 @@ importers:
       nodemailer: 6.9.15
       sift: 16.0.1
     devDependencies:
-      '@cdxoo/mongo-test-helpers': 0.8.0
+      '@cdxoo/mongo-test-helpers': 0.7.1
+      '@cdxoo/mongodb-restore': 2.0.1
       '@mpieva/psydb-api-mocha-test-tools': link:../psydb-api-mocha-test-tools
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.10
@@ -740,7 +742,7 @@ importers:
 
   ../../packages/psydb-api-mocha-test-tools:
     specifiers:
-      '@cdxoo/mongo-test-helpers': ~0.8.0
+      '@cdxoo/mongo-test-helpers': ~0.7.1
       '@cdxoo/mongodb-restore': ~2.0.1
       '@mpieva/psydb-api-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
@@ -750,7 +752,7 @@ importers:
       chai-subset: ~1.6.0
       mocha-chai-jest-snapshot: ~1.1.4
     dependencies:
-      '@cdxoo/mongo-test-helpers': 0.8.0
+      '@cdxoo/mongo-test-helpers': 0.7.1
       '@cdxoo/mongodb-restore': 2.0.1
       '@mpieva/psydb-api-config': link:../psydb-api-config
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
@@ -1205,7 +1207,7 @@ importers:
   ../../packages/psydb-mongo-stages:
     specifiers:
       '@cdxoo/inline-string': ~1.0.0
-      '@cdxoo/mongo-test-helpers': ~0.8.0
+      '@cdxoo/mongo-test-helpers': ~0.7.1
       '@mpieva/psydb-common-lib': workspace:*
       '@mpieva/psydb-core-utils': workspace:*
       '@mpieva/psydb-custom-fields-mongo': workspace:*
@@ -1226,7 +1228,7 @@ importers:
       jsonpointer: 5.0.1
       nanoid: 3.3.7
     devDependencies:
-      '@cdxoo/mongo-test-helpers': 0.8.0
+      '@cdxoo/mongo-test-helpers': 0.7.1
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.10
       jest: 29.7.0
@@ -3949,16 +3951,13 @@ packages:
       - snappy
     dev: false
 
-  /@cdxoo/mongo-test-helpers/0.8.0:
-    resolution: {integrity: sha512-o5B8mJX7jBRW9d8+XVfezJ+hVvNZrto/KA1MPdU0C8qE/wpQl7Kx7X5xEtMu2bXstC1ESpntVV83DmKlPfl+Iw==}
+  /@cdxoo/mongo-test-helpers/0.7.1:
+    resolution: {integrity: sha512-NmGO82GszR2QPiF0/LxORr2yR4NxOFQ9M4PeumufaWt3lw2Jp1xystn60SMWG0JMqyboXrfZme9gU9XrXfBRyg==}
     dependencies:
-      bson: 4.7.2
-      mongodb: 4.17.2
+      bson: 4.5.4
       mongodb-memory-server: 7.6.3
       nanoid: 3.3.7
     transitivePeerDependencies:
-      - '@aws-sdk/client-sso-oidc'
-      - aws-crt
       - aws4
       - bson-ext
       - kerberos
@@ -4030,7 +4029,6 @@ packages:
     transitivePeerDependencies:
       - '@aws-sdk/client-sso-oidc'
       - aws-crt
-    dev: false
 
   /@cdxoo/mongodb-utils/1.0.1:
     resolution: {integrity: sha512-1JwdEYoYXgxX54ufLw5nRow3JETx+DDf4puWQATHogkTKJ4gRyt4bi7pi9y3KjAZXfoaIE4ftGop9CBfVvyHYQ==}
@@ -5991,6 +5989,12 @@ packages:
   /bson/1.1.6:
     resolution: {integrity: sha512-EvVNVeGo4tHxwi8L6bPj3y3itEvStdwvvlojVxxbyYfoaxJ6keLgrTuKdyfEAszFK+H3olzBuafE0yoh0D1gdg==}
     engines: {node: '>=0.6.19'}
+
+  /bson/4.5.4:
+    resolution: {integrity: sha512-wIt0bPACnx8Ju9r6IsS2wVtGDHBr9Dxb+U29A1YED2pu8XOhS8aKjOnLZ8sxyXkPwanoK7iWWVhS1+coxde6xA==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      buffer: 5.7.1
 
   /bson/4.7.2:
     resolution: {integrity: sha512-Ry9wCtIZ5kGqkJoi6aD8KjxFZEx78guTQDnpXWiNthsxzrxAK/i8E6pCHAIZTbaEFWcOCvbecMukfK7XUvyLpQ==}
