@@ -12,10 +12,11 @@ var jsonify = (that) => (
 
 var RootHandler = require('../../src/');
 
-describe('csv-import/experiment/create-wkprc-evapecognition', function () {
+describe.only('csv-import/experiment/create-wkprc-apestudies-default', function () {
     var db, sendMessage, fileId;
     beforeEach(async function () {
-        await this.restore('2024-04-03__0435_wkprc-and-fs');
+        //await this.restore('2024-04-03__0435_wkprc-and-fs');
+        await this.restore('2024-07-12__0202_wkprc-fieldsite');
         
         db = this.getDbHandle();
         ([ sendMessage ] = this.createMessenger({
@@ -23,8 +24,13 @@ describe('csv-import/experiment/create-wkprc-evapecognition', function () {
             ...(await this.createFakeLogin({ email: 'root@example.com' }))
         }));
 
+        //var file = await this.createFakeFileUpload({
+        //    db, buffer: loadCSV('evapecognition/simple'),
+        //});
         var file = await this.createFakeFileUpload({
-            db, buffer: loadCSV('evapecognition/simple'),
+            db, buffer: loadCSV(
+                'experiment-csv/wkprc-apestudies-default/simple'
+            ),
         });
         fileId = file._id;
     });
@@ -39,14 +45,14 @@ describe('csv-import/experiment/create-wkprc-evapecognition', function () {
         ];
 
         var koaContext = await sendMessage({
-            type: 'csv-import/experiment/create-wkprc-evapecognition',
+            type: 'csv-import/experiment/create-wkprc-apestudies-default',
             timezone: 'Europe/Berlin',
             payload: jsonify({
                 subjectType,
                 studyId,
-                locationId,
+                //locationId,
                 fileId,
-                labOperatorIds
+                //labOperatorIds
             })
         });
 
@@ -57,6 +63,8 @@ describe('csv-import/experiment/create-wkprc-evapecognition', function () {
             { $match: { csvImportId }}
         ]});
         console.dir(ejson(experiments), { depth: null });
+        
+        return;
 
         var participations = await aggregateToArray({ db, subject: [
             { $project: {
