@@ -1,5 +1,5 @@
 'use strict';
-require('debug').enable('psydb*');
+//require('debug').enable('psydb*');
 var {
     expect, inline, jsonify, ejson, keys, omit, only, pathify, sift,
     ObjectId, RootHandler
