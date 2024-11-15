@@ -515,6 +515,7 @@ importers:
       diacritic-regex: ~1.1.0
       encodeurl: ~2.0.0
       escape-string-regexp: ~4.0.0
+      fast-clean: ~1.4.0
       json-schema-traverse: ~1.0.0
       jsonpointer: ~5.0.1
       koa-compose: ~4.1.0
@@ -568,6 +569,7 @@ importers:
       diacritic-regex: 1.1.0
       encodeurl: 2.0.0
       escape-string-regexp: 4.0.0
+      fast-clean: 1.4.0
       json-schema-traverse: 1.0.0
       jsonpointer: 5.0.1
       koa-compose: 4.1.0
@@ -885,7 +887,7 @@ importers:
 
   ../../packages/psydb-core-utils:
     specifiers:
-      '@cdxoo/flat': ~0.0.11
+      '@cdxoo/flat': ~0.1.0
       '@cdxoo/jsonpointer-to-objectpath': ~1.0.0
       '@cdxoo/objectpath-to-jsonpointer': ~1.0.0
       '@cdxoo/tiny-ejson': ~1.1.0
@@ -897,7 +899,7 @@ importers:
       jsonpointer: ~5.0.1
       mocha: ~10.2.0
     dependencies:
-      '@cdxoo/flat': 0.0.11
+      '@cdxoo/flat': 0.1.0
       '@cdxoo/jsonpointer-to-objectpath': 1.0.0
       '@cdxoo/objectpath-to-jsonpointer': 1.0.0
       '@cdxoo/tiny-ejson': 1.1.0
@@ -3850,6 +3852,13 @@ packages:
     resolution: {integrity: sha512-qvG4cFof/bdyywsXUXO9AouctMM+YTqPVcGMz7kwT9Sxvk1In00AQ3gHwHbcZ/LpnnyGB3j5CdAcdQSSEo2SzA==}
     dependencies:
       '@cdxoo/traverse': 0.0.2
+    dev: true
+
+  /@cdxoo/flat/0.1.0:
+    resolution: {integrity: sha512-Cdro7Q2x5JCW8swaxPLuitepjwV0m1GFYnf9MCJA0n0xvGTkHJtdLwz5uSsbN5eYbVrvyquKKwoN6laMq3KX8A==}
+    dependencies:
+      '@cdxoo/traverse': 0.0.2
+    dev: false
 
   /@cdxoo/formik-ajv-async/0.4.2_formik@2.4.6+react@17.0.2:
     resolution: {integrity: sha512-IspDO3DXE4PD8R2kBuGR9q2FUTFGatyVEN5yPG+04tEajxqY4Sx+nCDzmJ4tfjFoZsb78Wuc0+pmAW3peXIBeA==}
@@ -7504,6 +7513,10 @@ packages:
     resolution: {integrity: sha512-11Ndz7Nv+mvAC1j0ktTa7fAb0vLyGGX+rMHNBYQviQDGU0Hw7lhctJANqbPhu9nV9/izT/IntTgZ7Im/9LJs9g==}
     engines: {'0': node >=0.6.0}
     dev: true
+
+  /fast-clean/1.4.0:
+    resolution: {integrity: sha512-mweRAmVkEwSvyqsG2l8PYQ2l5D+ONMGYpIqx/PkNcX0uM4A1MzYAqpopTsmyBRZ990yvgEAf4NeXqDVFYRDjng==}
+    dev: false
 
   /fast-deep-equal/3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
