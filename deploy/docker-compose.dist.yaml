@@ -42,7 +42,7 @@ services:
     restart: "unless-stopped"
 
   psydb:
-    image: "cdxoo/psydb:0.1.0-alpha.202209030411"
+    image: "cdxoo/psydb:0.1.0-alpha.202411060233_mpiccp"
     ports:
       - "127.0.0.1:8080:8080"
     volumes:

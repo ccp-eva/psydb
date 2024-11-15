@@ -10,20 +10,6 @@ module.exports = {
         // for other available options
         useUnifiedTopology: true,
     },
-    // uses nodemailer under the hood
-    // see https://nodemailer.com/smtp/
-    // for other available options
-    // (configured for mailhog container by default)
-    smtp: {
-        senderEmail: 'psydb-noreply@example.com',
-        host: 'mailhog',
-        port: 1025,
-        secure: false,
-        //auth: {
-        //    user: 'my_user', // smtp user
-        //    pass: 'my_pass', // smtp password
-        //},
-    },
 
     // session options
     // see https://www.npmjs.com/package/koa-session for options
@@ -47,11 +33,25 @@ module.exports = {
         '----------------------------',
     ], digest: 'sha256' },
     
-    // options for internationalization
-    i18n: {
-        enableI18NSelect: true,
-        defaultLanguage: 'en',
-        defaultLocaleCode: 'en-US',
+    // uses nodemailer under the hood
+    // see https://nodemailer.com/smtp/
+    // for other available options
+    // (configured for mailhog container by default)
+    smtp: {
+        senderEmail: 'psydb-noreply@example.com',
+        host: 'mailhog',
+        port: 1025,
+        secure: false,
+        //auth: {
+        //    user: 'my_user', // smtp user
+        //    pass: 'my_pass', // smtp password
+        //},
+    },
+
+    // options for apiKeyAuth, IPs must be ipv6
+    apiKeyAuth: {
+        isEnabled: true,
+        allowedIps: [ '::/0' ]
     },
 
     // options for twoFactorAuth, currently only has 'isEnabled'
@@ -59,9 +59,34 @@ module.exports = {
         isEnabled: true
     },
 
-    // options for apiKeyAuth, IPs must be ipv6
-    apiKeyAuth: {
-        isEnabled: true,
-        allowedIps: [ '::/0' ]
-    }
+    // options for internationalization
+    i18n: {
+        enableI18NSelect: true,
+        defaultLanguage: 'en',
+        defaultLocaleCode: 'en-US',
+    },
+
+    enabledLabMethods: [
+        'inhouse',
+        'away-team',
+        //'online-video-call',
+        //'online-survey',
+        //'apestudies-wkprc-default',
+        //'manual-only-participation'
+    ],
+
+    branding: 'mpiccp',
+    disableLogoOverlay: false,
+
+    dev_enableStagingBanner: false,
+    dev_enableDevPanel: false,
+    dev_copyNoticeGreyscale: true,
+
+    dev_enableDangerousCRTFieldOps: false,
+
+    dev_enableCSVSubjectImport: false,
+    dev_enableCSVParticipationImport: false,
+
+    dev_enableStatistics: false,
+
 }
