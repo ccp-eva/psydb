@@ -12,7 +12,7 @@ var jsonify = (that) => (
 
 var RootHandler = require('../../src/');
 
-describe.only('csv-import/experiment/create-wkprc-apestudies-default', function () {
+describe('csv-import/experiment/create-wkprc-apestudies-default', function () {
     var db, sendMessage, fileId;
     beforeEach(async function () {
         //await this.restore('2024-04-03__0435_wkprc-and-fs');

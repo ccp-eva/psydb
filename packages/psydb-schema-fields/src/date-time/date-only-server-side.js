@@ -10,7 +10,7 @@ var DateOnlyServerSide = ({
             ? ['null', 'string']
             : 'string'
         ),
-        format: 'date-time',
+        format: 'date-only-server-side',
         // @rjsf treats this default as if the user has set it
         //default: '0000-00-00',
         //unmarshalDateOnlyServerSide: true,
