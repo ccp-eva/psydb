@@ -1,99 +1,92 @@
 'use strict';
+var PointerGen = require('./pointer-gen');
+
 module.exports = async (context) => {
-    var { apiKey, driver, cache, as } = context;
+    var { driver, cache, as } = context;
 
-    await driver.sendMessage({
-        type: `custom-record-types/create`,
-        payload: {
-            collection: 'study',
-            type: 'default',
-            props: { label: 'ChildLab Studien' }
-        },
-    }, { apiKey });
+    var definitions = FieldDefinitions({ cache });
+    var asPointers = PointerGen(definitions);
 
-    var crtId = cache.addId({ collection: 'customRecordType', as });
+    var crt = await driver.crt.create({
+        collection: 'study', key: 'lueneluettenStudy',
+        displayNames: {
+            'en': 'Lueneluetten Studies',
+            'de': 'Lueneluetten-Studien',
+        }
+    });
 
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'ForeignIdList',
-            key: 'assistents',
-            displayName: 'Betreuer:innen',
-            props: {
-                minItems: 1,
-                collection: 'personnel',
-                constraints: {},
-            }
-        }},
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'HelperSetItemIdList',
-            key: 'novels',
-            displayName: 'Novels',
-            props: {
-                minItems: 0,
-                setId: cache.get('/helperSet/novel')
-            }
-        }},
-    }, { apiKey });
-  
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'FullText',
-            key: 'description',
-            displayName: 'Beschreibung',
-            props: { minLength: 0 }
-        }},
-    }, { apiKey });
+    cache.addCRT(crt.meta);
+    var { _id: crtId } = crt.meta;
+
+    await crt.addManyFields({ definitions: Object.values(definitions) });
+    await crt.commitFields();
+
  
-
-    await driver.sendMessage({
-        type: `custom-record-types/commit-settings`,
-        payload: { id: crtId }
-    }, { apiKey });
-
-
-    await driver.sendMessage({
-        type: `custom-record-types/set-record-label-definition`,
-        payload: { id: crtId, props: {
+    await crt.setupDisplaySettings({
+        recordLabelDefinition: {
             format: '${#}',
-            tokens: [
-                '/state/shorthand',
-            ]
-        }}
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/set-display-fields`,
-        payload: {
-            id: crtId,
-            target: 'table',
-            fieldPointers: [
+            tokens: [ '/state/shorthand' ]
+        },
+        displayFields: {
+            'table': [
                 '/sequenceNumber',
                 '/state/shorthand',
                 '/state/name',
                 '/state/scientistIds',
                 '/state/runningPeriod/start',
                 '/state/runningPeriod/end',
-            ]
-        }
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/set-display-fields`,
-        payload: {
-            id: crtId,
-            target: 'optionlist',
-            fieldPointers: [
+            ],
+            'optionlist': [
                 '/sequenceNumber',
                 '/state/shorthand',
-            ]
-        }
-    }, { apiKey });
+            ],
+        },
+    })
+
+    await crt.updateGeneralSettings({
+        displayNames: {
+            'en': 'Lueneluetten Studies',
+            'de': 'Lueneluetten-Studien',
+        },
+        enableSubjectSelectionSettings: true,
+        enableLabTeams: true,
+    });
 
     return crtId;
 }
+
+var FieldDefinitions = ({ cache }) => ({
+    'assistents': {
+        type: 'ForeignIdList',
+        key: 'assistents',
+        displayName: 'RAs',
+        displayNameI18N: { 'de': 'Betreuer:innen' },
+        props: {
+            minItems: 1,
+            collection: 'personnel',
+            constraints: {},
+            displayEmptyAsUnknown: false,
+            addReferenceToTarget: false,
+            readOnly: false,
+        }
+    },
+  
+    'novels': {
+        type: 'HelperSetItemIdList',
+        key: 'novels',
+        displayName: 'Novels',
+        displayNameI18N: { 'de': 'Novels' },
+        props: {
+            minItems: 0,
+            setId: cache.get('/helperSet/novel')
+        }
+    },
+
+    'description': {
+        type: 'FullText',
+        key: 'description',
+        displayName: 'Description',
+        displayNameI18N: { 'de': 'Beschreibung' },
+        props: { minLength: 0 }
+    },
+});
