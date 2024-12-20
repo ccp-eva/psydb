@@ -41,7 +41,10 @@ var omitOne = (bag) => {
             out[key] = value;
         }
     }
-    return unflatten(out);
+
+    // FIXME: this is an issue in unflatten {} => undefined
+    var r = unflatten(out) || {};
+    return r;
 }
 
 module.exports = omit;
