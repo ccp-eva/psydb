@@ -72,9 +72,17 @@ const ResultTable = (ps) => {
     var translate = useUITranslation(); 
 
     var studyCount = aggregateItems.length;
-    var participationTotal = aggregateItems.reduce((acc, it) => (
-        acc + it.participationCounts.total
-    ), 0);
+    var totals = {};
+    for (var it of aggregateItems) {
+        for (var [ k, v ] of Object.entries(it.participationCounts)) {
+            if (!totals[k]) {
+                totals[k] = 0;
+            }
+            totals[k] += v;
+        }
+    }
+
+    var { total: participationTotal, ...workflowTotals } = totals;
 
     return (
         <>
@@ -87,10 +95,16 @@ const ResultTable = (ps) => {
                     {' '}
                     { studyCount }
                 </span>
-                <span style={{ width: '200px' }}>
-                    <b>{ translate('Study Participations') }:</b>
-                    {' '}
-                    { participationTotal }
+                <span>
+                    <b className='d-inline-block mr-3'>
+                        { translate('Study Participations') }:
+                    </b>
+                    <b>{ participationTotal } ({ translate('Total') })</b>
+                    {' - '}
+                    <LabMethods
+                        types={ Object.keys(workflowTotals) }
+                        counts={ workflowTotals }
+                    />
                 </span>
             </div>
 
