@@ -34,6 +34,7 @@ var fetchRelated = async (bag) => {
     var relatedHelperSetItems = await fetchHelperSetItemLabelsManual(
         db, todoHelperSetItemIds, { ...i18n, oldWrappedLabels: true }
     );
+    // TODO: related crts
     debug('done');
 
     return {
