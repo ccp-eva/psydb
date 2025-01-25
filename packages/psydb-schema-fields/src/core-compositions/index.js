@@ -9,4 +9,5 @@ module.exports = {
     OpenObject: require('./open-object'),
     ClosedObject: require('./closed-object'), // TODO: rename ExactObject
     MaxObject: require('./max-object'),
+    MinObject: require('./min-object'),
 }

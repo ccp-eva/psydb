@@ -1,25 +1,24 @@
 'use strict';
-var debug = require('debug')('psydb:api:endpoints:study:list');
-var { ejson, entries } = require('@mpieva/psydb-core-utils');
+var debug = require('debug')('psydb:api:endpoints:subject:listDuplicates');
+var {
+    ejson, entries, jsonpointer, convertPointerToPath, keyBy,
+} = require('@mpieva/psydb-core-utils');
+
 var { __fixRelated } = require('@mpieva/psydb-common-compat');
 
-var { match } = require('psydb-mongo-stages');
+var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
+var { match } = require('@mpieva/psydb-mongo-stages');
 
 var {
     ResponseBody,
     validateOrThrow,
-    convertFiltersToQueryPairs,
-
-    fetchRecordsByFilter,
+    fetchCRTSettings
 } = require('@mpieva/psydb-api-lib');
 
 var CoreBodySchema = require('./core-body-schema');
 var FullBodySchema = require('./full-body-schema');
 
-var gatherDisplayFields = require('./gather-display-fields');
-var gatherSharedDisplayFields = require('./gather-shared-display-fields');
-var gatherAvailableConstraints = require('./gather-available-constraints');
-var fetchRelated = require('./fetch-related');
+//var fetchRelated = require('./fetch-related');
 
 var listEndpoint = async (context, next) => {
     var { db, request, permissions } = context;
@@ -31,7 +30,7 @@ var listEndpoint = async (context, next) => {
     debug('start validating');
 
     validateOrThrow({
-        schema: BodySchema(),
+        schema: CoreBodySchema(),
         payload: request.body,
         //unmarshalClientTimezone: timezone,
     });
@@ -69,29 +68,86 @@ var listEndpoint = async (context, next) => {
     debug('done validating');
 
     var PROJECTION = {};
-    for (var pointer of inspectedFields) {
-        var path = convertPointerToPath(pointer);
+    for (var field of inspectedFields) {
+        var path = convertPointerToPath(field.pointer);
         PROJECTION[path] = true;
     }
 
     debug('>>>>>>>>> START FETCH');
-    var items = await aggregateToArray({ db, subject: [
+    var stages = [
         match.isNotRemoved({ hasSubChannels: true }),
         match.isNotDummy(),
 
-        { $match: { recordType }},
+        { $match: { type: recordType }},
         { $project: PROJECTION }
-    ]});
+    ];
+
+    var inspectableRecords = await aggregateToArray({ db, subject: stages });
     debug('<<<<<<<<< END FETCH')
 
+    var groupedIds = gatherDuplicateIdGroups({
+        records: inspectableRecords,
+        inspectedFields
+    });
+
+    var displayRecords = await aggregateToArray({ db, subject: [
+        { $match: { '_id': { $in: groupedIds.flat() }}},
+        // TODO: project something
+    ]});
+
+    var groupedRecords = populateDuplicateGroups({
+        groupedIds, records: displayRecords
+    });
+
+    //var __related = await fetchRelated({
+    //    db, records, definitions: displayFields, i18n
+    //});
+
+    context.body = ResponseBody({
+        data: {
+            aggregateItems: groupedRecords
+            //displayFieldData: displayFields,
+            //recordsCount: records.totalRecordCount,
+            
+            //related: __fixRelated(__related, { isResponse: false }),
+            //...(__related),
+        },
+    });
+
+    debug('next()');
+    await next();
+}
+
+var populateDuplicateGroups = (bag) => {
+    var { groupedIds, records } = bag;
+
+    var recordsById = keyBy({ items: records, byProp: '_id' });
+    var out = [];
+    for (var group of groupedIds) {
+        out.push(group.map(_id => recordsById[_id]))
+    }
+
+    return out;
+}
+
+var gatherDuplicateIdGroups = (bag) => {
+    var { records, inspectedFields } = bag;
+    
     var dups = {};
-    for (var [ baseIndex, baseItem ] of items.entries()) {
-        for (var [ compIndex, compItem ] of items.entries()) {
+    var foundDupIndices = [];
+    for (var [ baseIndex, baseItem ] of records.entries()) {
+        if (foundDupIndices.includes(baseIndex)) {
+            // skip item when we already marked the index as dup
+            continue;
+        }
+
+        for (var [ compIndex, compItem ] of records.entries()) {
             if (compIndex <= baseIndex) {
                 // skip everything before the current base index
                 // since we already inspected those items
                 continue;
             }
+            console.log({ compIndex, baseIndex });
 
             var matchCount = 0;
             for (var field of inspectedFields) {
@@ -109,29 +165,16 @@ var listEndpoint = async (context, next) => {
             if (matchCount === inspectedFields.length) {
                 // NOTE: this makes: { _id: [ baseItem, dup, dup, ... ] }
                 if (!dups[baseItem._id]) {
-                    dups[baseItem._id] = [ baseItem ];
+                    dups[baseItem._id] = [ baseItem._id ];
                 }
-                dups[baseItem._id].push(compItem)
+                dups[baseItem._id].push(compItem._id);
+                foundDupIndices.push(compIndex);
             }
         }
+        console.log('')
     }
 
-    //var __related = await fetchRelated({
-    //    db, records, definitions: displayFields, i18n
-    //});
-
-    context.body = ResponseBody({
-        data: {
-            records,
-            displayFieldData: displayFields,
-            recordsCount: records.totalRecordCount,
-            //related: __fixRelated(__related, { isResponse: false }),
-            ...(__related),
-        },
-    });
-
-    debug('next()');
-    await next();
+    return Object.values(dups);
 }
 
 module.exports = listEndpoint;
