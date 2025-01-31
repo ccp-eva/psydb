@@ -1,9 +1,17 @@
 import React from 'react';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { URL } from '@mpieva/psydb-ui-utils';
+import { Table, TableHead, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import {
+    TableHeadCustomCols,
+    TableBodyCustomCols
+} from '@mpieva/psydb-custom-fields-ui';
 
 const DuplicatesList = (ps) => {
     var { recordType } = ps;
+    var [{ translate }] = useI18N();
+
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.subject.listDuplicates({
             recordType,
@@ -21,37 +29,60 @@ const DuplicatesList = (ps) => {
         related
     } = fetched.data;
 
-    var sharedBag = { inspectedFields, related };
+    var sharedBag = { recordType, inspectedFields, related };
     return (
-        <div>
-            { aggregateItems.map((it, ix) => (
-                <DuplicateGroup key={ ix } items={ it } { ...sharedBag} />
-            ))}
-        </div>
+        <Table>
+            <TableHead showActionColumn={ false }>
+                <TableHeadCustomCols definitions={ inspectedFields } />
+                <th>
+                    { translate('Duplicates') }
+                </th>
+            </TableHead>
+            <tbody>
+                { aggregateItems.map((it, ix) => (
+                    <DuplicateGroup key={ ix } items={ it } { ...sharedBag} />
+                ))}
+            </tbody>
+        </Table>
     )
 
 }
 
 const DuplicateGroup = (ps) => {
-    var { items, inspectedFields, related } = ps;
+    var { items, recordType, inspectedFields, related } = ps;
 
     var sharedBag = { inspectedFields, related };
     return (
-        <div className='bg-light px-3 py-2 border'>
-            { items.map((it, ix) => (
-                <DuplicateItem key={ ix } item={ it } { ...sharedBag } />
-            ))}
-        </div>
+        <tr>
+            <TableBodyCustomCols
+                record={ items[0] }
+                related={ related }
+                definitions={ inspectedFields }
+            />
+            <td>
+                { items.map((it, ix) => (
+                    <b className='bg-light'>
+                        <a
+                            key={ ix }
+                            className='d-inline-lock border mr-2 px-2'
+                            href={`#/subjects/${recordType}/${it._id}`}
+                        >
+                            { it._label }
+                        </a>
+                    </b>
+                ))}
+            </td>
+        </tr>
     )
 }
 
-const DuplicateItem = (ps) => {
-    var { item, inspectedFields, related } = ps;
+const SubjectLink = (ps) => {
+    var { value, label } = ps;
 
     return (
-        <div>
-            { item._label }
-        </div>
+        <span className='d-inline-lock bg-light border mr-2 px-2'>
+            { label }
+        </span>
     )
 }
 
