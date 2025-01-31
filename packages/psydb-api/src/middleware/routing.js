@@ -124,6 +124,10 @@ var createRouting = (bag = {}) => {
         endpoints.search
     );
 
+    router.post('/subject/listDuplicates', ...withPostStages({
+        endpoint: endpoints_SPLIT.subject.listDuplicates,
+        enableApiKeyAuth: false,
+    }));
     router.post('/study/list', ...withPostStages({
         endpoint: endpoints_SPLIT.study.list,
         enableApiKeyAuth: true,

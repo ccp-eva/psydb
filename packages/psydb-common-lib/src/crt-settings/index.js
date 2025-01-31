@@ -124,7 +124,13 @@ var CRTSettings = ({ data }) => {
         }, {})
     }
     crt.getLabelForRecord = (bag) => {
-        var { record, timezone, language, locale } = bag;
+        var {
+            record,
+            timezone, language, locale,
+            // FIXME: corresponds to 'as' in projection, but name is dumb
+            from = undefined,
+        } = bag;
+
         var { format, tokens } = data.recordLabelDefinition;
 
         var label = format;
@@ -133,7 +139,11 @@ var CRTSettings = ({ data }) => {
         for (var [index, token] of tokens.entries()) {
             var { systemType, dataPointer } = token;
 
-            var value = jsonpointer.get(record, dataPointer);
+            var value = (
+                from
+                ? jsonpointer.get(record, from)[dataPointer]
+                : jsonpointer.get(record, dataPointer)
+            );
             if (value === undefined) {
                 value = '[REDACTED]';
                 tokensRedacted += 1;

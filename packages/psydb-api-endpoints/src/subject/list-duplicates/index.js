@@ -15,10 +15,10 @@ var {
     fetchCRTSettings
 } = require('@mpieva/psydb-api-lib');
 
+var { fetchRelated } = require('../../../__lib');
+
 var CoreBodySchema = require('./core-body-schema');
 var FullBodySchema = require('./full-body-schema');
-
-//var fetchRelated = require('./fetch-related');
 
 var listEndpoint = async (context, next) => {
     var { db, request, permissions } = context;
@@ -65,7 +65,6 @@ var listEndpoint = async (context, next) => {
     var inspectedFields = crt.findCustomFields({
         pointer: { $in: inspectedPointers }
     });
-    debug('done validating');
 
     var PROJECTION = {};
     for (var field of inspectedFields) {
@@ -73,7 +72,6 @@ var listEndpoint = async (context, next) => {
         PROJECTION[path] = true;
     }
 
-    debug('>>>>>>>>> START FETCH');
     var stages = [
         match.isNotRemoved({ hasSubChannels: true }),
         match.isNotDummy(),
@@ -81,36 +79,47 @@ var listEndpoint = async (context, next) => {
         { $match: { type: recordType }},
         { $project: PROJECTION }
     ];
+    var inspectableRecords = await aggregateToArray({
+        db, subject: stages
+    });
 
-    var inspectableRecords = await aggregateToArray({ db, subject: stages });
-    debug('<<<<<<<<< END FETCH')
-
-    var groupedIds = gatherDuplicateIdGroups({
+    var groupedIds = gatherDuplicatesIdGroups({
         records: inspectableRecords,
         inspectedFields
     });
 
     var displayRecords = await aggregateToArray({ db, subject: [
         { $match: { '_id': { $in: groupedIds.flat() }}},
-        // TODO: project something
+        { $project: {
+            ...PROJECTION,
+            ...crt.getRecordLabelProjection({ as: '_labelData' })
+        }}
     ]});
 
-    var groupedRecords = populateDuplicateGroups({
+    // TODO
+    // crt.convertRecordLabels({ records, from: '/_labelData' });
+    for (var it of displayRecords) {
+        it._label = crt.getLabelForRecord({
+            record: it, from: '/_labelData', ...i18n
+        });
+        delete it._labelData;
+    }
+
+    var groupedRecords = populateDuplicatesGroups({
         groupedIds, records: displayRecords
     });
 
-    //var __related = await fetchRelated({
-    //    db, records, definitions: displayFields, i18n
-    //});
+    var related = await fetchRelated({
+        db, records: displayRecords, definitions: inspectedFields, i18n
+    });
 
     context.body = ResponseBody({
         data: {
-            aggregateItems: groupedRecords
-            //displayFieldData: displayFields,
+            aggregateItems: groupedRecords,
+            inspectedFields,
             //recordsCount: records.totalRecordCount,
             
-            //related: __fixRelated(__related, { isResponse: false }),
-            //...(__related),
+            related: __fixRelated(related, { isResponse: false }),
         },
     });
 
@@ -118,7 +127,7 @@ var listEndpoint = async (context, next) => {
     await next();
 }
 
-var populateDuplicateGroups = (bag) => {
+var populateDuplicatesGroups = (bag) => {
     var { groupedIds, records } = bag;
 
     var recordsById = keyBy({ items: records, byProp: '_id' });
@@ -130,7 +139,7 @@ var populateDuplicateGroups = (bag) => {
     return out;
 }
 
-var gatherDuplicateIdGroups = (bag) => {
+var gatherDuplicatesIdGroups = (bag) => {
     var { records, inspectedFields } = bag;
     
     var dups = {};
@@ -147,7 +156,7 @@ var gatherDuplicateIdGroups = (bag) => {
                 // since we already inspected those items
                 continue;
             }
-            console.log({ compIndex, baseIndex });
+            //console.log({ compIndex, baseIndex });
 
             var matchCount = 0;
             for (var field of inspectedFields) {
@@ -156,7 +165,7 @@ var gatherDuplicateIdGroups = (bag) => {
                 var baseValue = jsonpointer.get(baseItem, pointer);
                 var compValue = jsonpointer.get(compItem, pointer);
 
-                // TODO
+                // TODO: properly handle dates, adress
                 if (String(baseValue) === String(compValue)) {
                     matchCount += 1;
                 }
@@ -171,7 +180,7 @@ var gatherDuplicateIdGroups = (bag) => {
                 foundDupIndices.push(compIndex);
             }
         }
-        console.log('')
+        //console.log('')
     }
 
     return Object.values(dups);

@@ -11,13 +11,14 @@ var {
     fetchRecordsByFilter,
 } = require('@mpieva/psydb-api-lib');
 
+var { fetchRelated } = require('../../../__lib');
+
 var CoreBodySchema = require('./core-body-schema');
 var FullBodySchema = require('./full-body-schema');
 
 var gatherDisplayFields = require('./gather-display-fields');
 var gatherSharedDisplayFields = require('./gather-shared-display-fields');
 var gatherAvailableConstraints = require('./gather-available-constraints');
-var fetchRelated = require('./fetch-related');
 
 var listEndpoint = async (context, next) => {
     var { db, request, permissions } = context;

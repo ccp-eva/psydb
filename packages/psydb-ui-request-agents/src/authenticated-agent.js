@@ -943,6 +943,7 @@ const createAgent = (options = {}) => {
         return fn(payload);
     }
     agent.subject = {
+        listDuplicates: dumpPOST({ url: '/api/subject/listDuplicates' }),
         extendedSearch: dumpPOST({ url: '/api/extended-search/subjects' }),
     };
     agent.study = {
