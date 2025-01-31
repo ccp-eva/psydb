@@ -1,7 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:subject:listDuplicates');
 var {
-    ejson, entries, jsonpointer, convertPointerToPath, keyBy,
+    ejson, jsonpointer, convertPointerToPath, keyBy
 } = require('@mpieva/psydb-core-utils');
 
 var { __fixRelated } = require('@mpieva/psydb-common-compat');
@@ -21,7 +21,19 @@ var CoreBodySchema = require('./core-body-schema');
 var FullBodySchema = require('./full-body-schema');
 
 var listEndpoint = async (context, next) => {
-    var { db, request, permissions } = context;
+    var { db, request, permissions, apiConfig } = context;
+    var {
+        dev_enableSubjectDuplicatesSearch,
+        dev_subjectDuplicatesSearchFields
+    } = apiConfig;
+
+    if (!dev_enableSubjectDuplicatesSearch) {
+        throw new ApiError(409, 'NotConfigured');
+    }
+    
+    if (!permissions.isRoot()) {
+        throw new ApiError(403);
+    }
 
     // TODO: check headers with ajv
     var { language = 'en', locale, timezone } = request.headers;
@@ -42,13 +54,10 @@ var listEndpoint = async (context, next) => {
     });
 
     var availableFields = crt.findCustomFields({
-        pointer: { $in: [
-            // TODO: from config
-            '/gdpr/state/custom/lastname'
-        ]}
+        pointer: { $in: (
+            dev_subjectDuplicatesSearchFields?.[recordType] || []
+        )}
     });
-
-    console.dir(ejson(availableFields), { depth: null });
 
     validateOrThrow({
         schema: FullBodySchema({ availableFields }),
@@ -117,8 +126,6 @@ var listEndpoint = async (context, next) => {
         data: {
             aggregateItems: groupedRecords,
             inspectedFields,
-            //recordsCount: records.totalRecordCount,
-            
             related: __fixRelated(related, { isResponse: false }),
         },
     });

@@ -37,4 +37,18 @@ module.exports = {
     
     dev_enableStatistics: true,
     dev_enableWKPRCPatches: false,
+
+    dev_enableSubjectDuplicatesSearch: true,
+    dev_subjectDuplicatesSearchFields: {
+        'child': [
+            '/gdpr/state/custom/lastname',
+            '/gdpr/state/custom/firstname',
+            '/gdpr/state/custom/fathersName',
+            '/gdpr/state/custom/mothersName',
+            //'/gdpr/state/custom/emails', // TODO: min 1
+            //'/gdpr/state/custom/phones',
+            //'/gdpr/state/custom/address', // TODO: just street and number
+            '/scientific/state/custom/dateOfBirth'
+        ]
+    }
 }

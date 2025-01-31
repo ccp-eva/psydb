@@ -51,6 +51,9 @@ var publicInitUI = async (context, next) => {
         '/dev_enableCSVParticipationImport',
         '/dev_enableStatistics',
         '/dev_enableWKPRCPatches',
+        
+        '/dev_enableSubjectDuplicatesSearch',
+        '/dev_subjectDuplicatesSearchFields',
     ]});
 
     var configHashSum = '';

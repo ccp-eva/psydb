@@ -15,7 +15,10 @@ const DuplicatesList = (ps) => {
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.subject.listDuplicates({
             recordType,
-            inspectedPointers: [ '/gdpr/state/custom/lastname' ]
+            inspectedPointers: [
+                '/gdpr/state/custom/lastname',
+                '/scientific/state/custom/dateOfBirth',
+            ]
         })
     ), [ recordType ]);
 
@@ -61,9 +64,8 @@ const DuplicateGroup = (ps) => {
             />
             <td>
                 { items.map((it, ix) => (
-                    <b className='bg-light'>
+                    <b className='bg-light' key={ ix }>
                         <a
-                            key={ ix }
                             className='d-inline-lock border mr-2 px-2'
                             href={`#/subjects/${recordType}/${it._id}`}
                         >
@@ -73,16 +75,6 @@ const DuplicateGroup = (ps) => {
                 ))}
             </td>
         </tr>
-    )
-}
-
-const SubjectLink = (ps) => {
-    var { value, label } = ps;
-
-    return (
-        <span className='d-inline-lock bg-light border mr-2 px-2'>
-            { label }
-        </span>
     )
 }
 
