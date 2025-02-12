@@ -1,6 +1,5 @@
 'use strict';
-var { entries, groupBy } = require('@mpieva/psydb-core-utils');
-var stringifiers = require('@mpieva/psydb-common-lib/src/field-stringifiers');
+var { groupBy } = require('@mpieva/psydb-core-utils');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var aggregateToArray = require('./aggregate-to-array');

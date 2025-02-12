@@ -54,9 +54,9 @@ var stringifyFieldValue = ({
         if (rawValue === null) {
             str = '';
         }
-        else if (relatedRecordLabels) {
+        else if (related.records) {
             str = (
-                relatedRecordLabels[props.collection][rawValue]?._recordLabel
+                related.records[props.collection]?.[rawValue]?._recordLabel
                 || rawValue
             );
         }
@@ -65,9 +65,9 @@ var stringifyFieldValue = ({
         }
     }
     else if (type === 'ForeignIdList') {
-        if (relatedRecordLabels) {
+        if (related.records) {
             str = (rawValue || []).map(id => {
-                var item = relatedRecordLabels[props.collection][id];
+                var item = related.records[props.collection]?.[id];
                 return item?._recordLabel || `[${id}]`
             }).join();
         }
@@ -79,8 +79,8 @@ var stringifyFieldValue = ({
         if (rawValue === null) {
             str = '';
         }
-        else if (relatedHelperSetItems) {
-            var relatedItem = related.helperSets[props.setId][rawValue];
+        else if (related.helperSets) {
+            var relatedItem = related.helperSets[props.setId]?.[rawValue];
             str = (
                 (relatedItem.state.displayNameI18N || {})[language]
                 || relatedItem.state.label
@@ -91,9 +91,9 @@ var stringifyFieldValue = ({
         }
     }
     else if (type === 'HelperSetItemIdList') {
-        if (relatedHelperSetItems) {
+        if (related.helperSets) {
             str = (rawValue || []).map(id => {
-                var relatedItem = related.helperSets[props.setId][id];
+                var relatedItem = related.helperSets[props.setId]?.[id];
                 return (
                     (relatedItem.state.displayNameI18N || {})[language]
                     || relatedItem.state.label
@@ -105,9 +105,9 @@ var stringifyFieldValue = ({
         }
     }
     else if (type === 'CustomRecordTypeKey') {
-        if (relatedCustomRecordTypeLabels) {
+        if (related.crts) {
             str = (
-                relatedCustomRecordTypeLabels[props.collection][rawValue].state.label
+                related.crts[props.collection]?.[rawValue]?.state.label
             );
         }
         else {
@@ -119,12 +119,12 @@ var stringifyFieldValue = ({
         str = stringify(rawValue, { timezone, locale });
     }
     else if (type === 'PersonnelResearchGroupSettingsList') {
-        if (relatedRecordLabels) {
+        if (related.records) {
             str = (rawValue || []).map(it => {
                 var { researchGroupId: rgid, systemRoleId: sid } = it;
-                var _rel = relatedRecordLabels;
-                var rg_label = _rel.researchGroup[rgid]._recordLabel;
-                var s_label = _rel.systemRole[sid]._recordLabel;
+                var _rel = related.records;
+                var rg_label = _rel.researchGroup?.[rgid]?._recordLabel;
+                var s_label = _rel.systemRole?.[sid]?._recordLabel;
 
                 return `${rg_label}=${s_label}`;
             }).join('; ');

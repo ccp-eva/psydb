@@ -15,24 +15,14 @@ var AgeFrameEdge = (value) => {
     return `${years}/${months}/${days}`;
 }
 
-var Address = (value) => Fields.Address.stringifyValue({ value });
-
-//var Address = (value) => (
-//    [
-//        value.street,
-//        value.housenumber,
-//        value.affix,
-//        value.postcode,
-//        value.city,
-//        // omitting country here,
-//    ]
-//    .filter(it => !!it)
-//    .join(' ') + 'AAAAAAAAAAAa'
-//);
-
-var SaneStringList = (value) => (
-    value.join(', ')
-);
+var wrap = (fn) => (value) => fn({ value });
+var out = {};
+for (var it of [
+    'Address',
+    'SaneStringList',
+]) {
+    out[it] = wrap(Fields[it].stringifyValue);
+}
 
 var URLStringList = (value) => (
     value.join(', ')
@@ -200,7 +190,7 @@ var DefaultBool = (value, { language } = {}) => {
 }
 
 module.exports = {
-    Address,
+    ...out,
     
     // FIXME: obsolete
     AgeFrameEdge,
@@ -209,7 +199,6 @@ module.exports = {
     AgeFrameBoundary,
     AgeFrameInterval,
 
-    SaneStringList,
     URLStringList,
     EmailList,
     PhoneWithTypeList,

@@ -1,6 +1,5 @@
 import React from 'react';
 import { omit } from '@mpieva/psydb-core-utils';
-import { fieldStringifiers } from '@mpieva/psydb-common-lib';
 import { useUITranslation, useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
