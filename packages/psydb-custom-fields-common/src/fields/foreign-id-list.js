@@ -1,6 +1,7 @@
 'use strict';
 var { Id } = require('@mpieva/psydb-schema-fields');
 var { createStringifyValue } = require('../stringify-utils');
+var ForeignId = require('./foreign-id');
 
 var createQuickSearchSchema = () => {
     return Id();
@@ -13,10 +14,7 @@ var stringifyValue = createStringifyValue({ fn: (bag) => {
 
     var labels = [];
     for (var _id of value) {
-        var label = related.records?.[collection]?.[_id]?._recordLabel;
-        if (!label) {
-            label = `[${_id}]`
-        }
+        var label = ForeignId.stringifyValue({ ...bag, value: _id });
         labels.push(label);
     }
 

@@ -1,17 +1,13 @@
 var ensure = require('@mpieva/psydb-schema-fields/ensure');
 
 var fields = {
+    ...require('./extra'),
     Address: require('./address'),
-
-    AgeFrameBoundary: require('./age-frame-boundary'),
-    AgeFrameInterval: require('./age-frame-interval'),
 
     BiologicalGender: require('./biological-gender'),
    
     DateOnlyServerSide: require('./date-only-server-side'),
-    DateOnlyServerSideInterval: require('./date-only-server-side-interval'),
     DateTime: require('./date-time'),
-    DateTimeInterval: require('./date-time-interval'),
 
     DefaultBool: require('./default-bool'),
     EmailList: require('./email-list'),
@@ -32,11 +28,8 @@ var fields = {
     PhoneWithTypeList: require('./phone-with-type-list'),
     SaneString: require('./sane-string'),
     SaneStringList: require('./sane-string-list'),
-    Timezone: require('./timezone'),
     URLString: require('./url-string'),
     URLStringList: require('./url-string-list'),
-
-    WeekdayBoolObject: require('./weekday-bool-object'),
 }
 
 var skipped = [

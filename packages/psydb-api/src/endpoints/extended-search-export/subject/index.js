@@ -4,7 +4,7 @@ var debug = require('debug')(
 );
 
 var { copy } = require('copy-anything');
-var { __fixRelated } = require('@mpieva/psydb-common-compat');
+var { __fixRelated, __fixDefinitions } = require('@mpieva/psydb-common-compat');
 
 var {
     jsonpointer,
@@ -14,7 +14,6 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
-    stringifyFieldValue,
     calculateAge,
     findCRTAgeFrameField
 } = require('@mpieva/psydb-common-lib');
@@ -34,7 +33,6 @@ var RequestBodySchema = require('./request-body-schema');
 
 var subjectExtendedSearchExport = async (context, next) => {
     var { db, permissions, request, i18n } = context;
-    var { timezone } = i18n;
 
     var precheckBody = copy(request.body);
     validateOrThrow({
@@ -100,6 +98,7 @@ var subjectExtendedSearchExport = async (context, next) => {
 
     // FIXME
     related = __fixRelated(related, { isResponse: false });
+    displayFieldData = __fixDefinitions(displayFieldData);
 
     var experiments = (
         await fetchUpcomingExperiments({ db, records })
@@ -127,7 +126,7 @@ var subjectExtendedSearchExport = async (context, next) => {
 
     var columnDefinitions = keyBy({
         items: displayFieldData,
-        byProp: 'dataPointer'
+        byProp: 'pointer'
     });
 
 
@@ -172,19 +171,14 @@ var subjectExtendedSearchExport = async (context, next) => {
                     });
                     break;
                 default:
-                    var fieldDefinition = columnDefinitions[pointer];
-                    var { dataPointer } = fieldDefinition;
-                    var rawValue = jsonpointer.get(record, dataPointer);
+                    var definition = columnDefinitions[pointer];
+                    var { systemType } = definition;
+
+                    var stringify = Fields[systemType]?.stringifyValue;
+                    var str = stringify ? (
+                        stringify({ record, definition, related, i18n })
+                    ) : '[!!ERROR!!]]';
                     
-                    var str = stringifyFieldValue({
-                        rawValue,
-                        fieldDefinition,
-                        related,
-
-                        record,
-                        timezone,
-                    });
-
                     return str;
             }
         }))

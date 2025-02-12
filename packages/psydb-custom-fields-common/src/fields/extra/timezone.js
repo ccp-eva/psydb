@@ -1,17 +1,20 @@
 'use strict';
 var { SaneString } = require('@mpieva/psydb-schema-fields');
-var { createStringifyValue } = require('../stringify-utils');
+var { JustString } = require('../../stringify-utils');
 
-var createQuickSearchSchema = undefined;
+var createQuickSearchSchema = undefined
+
+var stringifyValue = JustString();
 
 module.exports = {
     canBeCustomField: true,
     canBeDisplayField: true,
-    
-    canBeLabelToken: false, // XXX ??
-    canBeLabelField: false, // XXX ??
+
+    canBeLabelToken: true, // XXX ??
+    canBeLabelField: true, // XXX ??
 
     canSearch: false, // FIXME: rename: canQuickSearch
     
     createQuickSearchSchema,
+    stringifyValue,
 }

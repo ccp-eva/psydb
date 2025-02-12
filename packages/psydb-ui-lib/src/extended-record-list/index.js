@@ -45,7 +45,11 @@ const ExtendedRecordList = (ps) => {
 
     return (
         <div>
-            <TableFNs pagination={ pagination } formData={ formData } />
+            <TableFNs
+                collection={ collection }
+                formData={ formData }
+                pagination={ pagination }
+            />
             { records.length > 0 ? (
                 <Table
                     collection={ collection }

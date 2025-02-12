@@ -1,15 +1,11 @@
 'use strict';
-// FIXME: this should probably AgeFrameEdge but that also exists
+// FIXME: this should be moved to an extra-fields package
+// or, alternatively this paackage should be named data-fields
+
 var { SaneString } = require('@mpieva/psydb-schema-fields');
-var { createStringifyValue } = require('../stringify-utils');
+var { createStringifyValue } = require('../../stringify-utils');
 
 var createQuickSearchSchema = undefined;
-
-var stringifyValue = createStringifyValue({ fn: (bag) => {
-    var { value } = bag;
-    var { years, months, days } = value;
-    return `${years}/${months}/${days}`;
-}});
 
 module.exports = {
     canBeCustomField: true,
@@ -21,5 +17,4 @@ module.exports = {
     canSearch: false, // FIXME: rename: canQuickSearch
     
     createQuickSearchSchema,
-    stringifyValue
 }

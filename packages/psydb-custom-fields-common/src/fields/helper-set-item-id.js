@@ -14,12 +14,14 @@ var createLabelToken = (bag = {}) => {
 var stringifyValue = createStringifyValue({ fn: (bag) => {
     var { definition, value, related, i18n } = bag;
     var { props } = definition;
-    var { collection } = props;
+    var { setId } = props;
 
-    var relatedItem = related.records?.[collection]?.[value];
+    var { language } = i18n;
+
+    var relatedItem = related.helperSets?.[setId]?.[value];
     var label = (
         relatedItem?.state?.displayNameI18N?.[language]
-        || relatedItems?.state?.label
+        || relatedItem?.state?.label
     )
     if (!label) {
         label = `[${value}]`

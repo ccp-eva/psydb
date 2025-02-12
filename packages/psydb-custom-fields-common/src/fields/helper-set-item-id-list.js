@@ -1,6 +1,7 @@
 'use strict';
 var { Id } = require('@mpieva/psydb-schema-fields');
 var { createStringifyValue } = require('../stringify-utils');
+var HelperSetItemId = require('./helper-set-item-id');
 
 var createQuickSearchSchema = () => {
     return Id();
@@ -9,18 +10,13 @@ var createQuickSearchSchema = () => {
 var stringifyValue = createStringifyValue({ fn: (bag) => {
     var { definition, value, related, i18n } = bag;
     var { props } = definition;
-    var { collection } = props;
+    var { setId } = props;
 
     var labels = [];
     for (var _id of value) {
-        var relatedItem = related.records?.[collection]?.[_id];
-        var label = (
-            relatedItem?.state?.displayNameI18N?.[language]
-            || relatedItems?.state?.label
-        )
-        if (!label) {
-            label = `[${_id}]`
-        }
+        var label = HelperSetItemId.stringifyValue({
+            ...bag, value: _id
+        })
         labels.push(label);
     }
 

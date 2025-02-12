@@ -1,17 +1,18 @@
 'use strict';
+// FIXME: why is that called AgeFrameInterval? its just an AgeFrame
 var { SaneString } = require('@mpieva/psydb-schema-fields');
-var { createStringifyValue } = require('../stringify-utils');
-var DateOnlyServerSide = require('./date-only-server-side');
+var { createStringifyValue } = require('../../stringify-utils');
+var AgeFrameBoundary = require('./age-frame-boundary');
 
 var createQuickSearchSchema = undefined;
 
 var stringifyValue = createStringifyValue({ fn: (bag) => {
     var { value } = bag;
 
-    var start = DateOnlyServerSide.stringifyValue({
+    var start = AgeFrameBoundary.stringifyValue({
         ...bag, value: value.start
     });
-    var end = DateOnlyServerSide.stringifyValue({
+    var end = AgeFrameBoundary.stringifyValue({
         ...bag, value: value.end
     });
 
@@ -19,7 +20,7 @@ var stringifyValue = createStringifyValue({ fn: (bag) => {
 }});
 
 module.exports = {
-    canBeCustomField: true,
+    canBeCustomField: false,
     canBeDisplayField: true,
     
     canBeLabelToken: false, // XXX ??
