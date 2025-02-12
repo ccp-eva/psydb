@@ -1,17 +1,10 @@
 import React from 'react';
-import { entries, groupBy } from '@mpieva/psydb-core-utils';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
-
+import { groupBy } from '@mpieva/psydb-core-utils';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
-
-import {
-    stringifyFieldValue,
-    DefaultForm,
-    Fields
-} from '@mpieva/psydb-ui-lib';
+import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 
 import { createInitialValues } from '../utils';
-
 import { StudyPanel } from './study-panel';
 
 export const SelectionForm = (ps) => {
@@ -25,8 +18,7 @@ export const SelectionForm = (ps) => {
         onSubmit,
     } = ps;
 
-    var locale = useUILocale();
-    var translate = useUITranslation();
+    var [{ translate, locale }] = useI18N();
 
     var ageFramesForStudy = groupBy({
         items: ageFrameRecords,
