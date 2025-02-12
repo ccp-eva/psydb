@@ -5,6 +5,8 @@ var formatDate = __maybeUseESM(require('date-fns/format'));
 var { formatInTimeZone } = require('date-fns-tz');
 
 var { jsonpointer } = require('@mpieva/psydb-core-utils');
+var { Fields } = require('@mpieva/psydb-custom-fields-common');
+
 var ageFrameUtils = require('./age-frame-utils');
 var calculateAge = require('./calculate-age');
 
@@ -13,18 +15,20 @@ var AgeFrameEdge = (value) => {
     return `${years}/${months}/${days}`;
 }
 
-var Address = (value) => (
-    [
-        value.street,
-        value.housenumber,
-        value.affix,
-        value.postcode,
-        value.city,
-        // omitting country here,
-    ]
-    .filter(it => !!it)
-    .join(' ')
-);
+var Address = (value) => Fields.Address.stringifyValue({ value });
+
+//var Address = (value) => (
+//    [
+//        value.street,
+//        value.housenumber,
+//        value.affix,
+//        value.postcode,
+//        value.city,
+//        // omitting country here,
+//    ]
+//    .filter(it => !!it)
+//    .join(' ') + 'AAAAAAAAAAAa'
+//);
 
 var SaneStringList = (value) => (
     value.join(', ')

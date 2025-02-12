@@ -15,7 +15,7 @@ var {
     fetchCRTSettings
 } = require('@mpieva/psydb-api-lib');
 
-var { fetchRelated } = require('../../../__lib');
+var { fetchRelated } = require('@mpieva/psydb-api-endpoint-lib');
 
 var CoreBodySchema = require('./core-body-schema');
 var FullBodySchema = require('./full-body-schema');

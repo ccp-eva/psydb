@@ -9,7 +9,7 @@
   "pnpmOptions": {
       "useWorkspaces": true
   },
-  "nodeSupportedVersionRange": ">=14.21.0 <20.0.0",
+  "nodeSupportedVersionRange": ">=14.21.0 <21.0.0",
   "gitPolicy": {},
   "repository": {
     "url": "https://github.com/cdxOo/psydb",
@@ -218,6 +218,11 @@
     {
        "packageName": "@mpieva/psydb-api-lib",
        "projectFolder": "packages/psydb-api-lib",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-api-crt-utils",
+       "projectFolder": "packages/psydb-api-crt-utils",
        "reviewCategory": "production"
     },
     {

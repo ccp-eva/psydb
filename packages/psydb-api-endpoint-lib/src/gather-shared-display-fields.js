@@ -6,7 +6,7 @@ var gatherSharedDisplayFields = async (bag) => {
     var { db, collection, target } = bag;
 
     var crtSettingsList = await fetchAllCRTSettings(
-        db, [{ collection: 'study' }], { wrap: true, asTree: false }
+        db, [{ collection }], { wrap: true, asTree: false }
     );
 
     var sharedDisplayFields = undefined;

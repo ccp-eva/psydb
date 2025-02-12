@@ -11,14 +11,19 @@ var {
     fetchRecordsByFilter,
 } = require('@mpieva/psydb-api-lib');
 
-var { fetchRelated } = require('../../../__lib');
+var {
+    fetchRelated,
+    gatherDisplayFields,
+    gatherSharedDisplayFields,
+    gatherAvailableConstraints,
+} = require('@mpieva/psydb-api-endpoint-lib');
+
+var {
+    prepareOrThrow,
+} = require('@mpieva/psydb-api-endpoint-lib/crt-record-list');
 
 var CoreBodySchema = require('./core-body-schema');
 var FullBodySchema = require('./full-body-schema');
-
-var gatherDisplayFields = require('./gather-display-fields');
-var gatherSharedDisplayFields = require('./gather-shared-display-fields');
-var gatherAvailableConstraints = require('./gather-available-constraints');
 
 var listEndpoint = async (context, next) => {
     var { db, request, permissions } = context;
@@ -26,6 +31,11 @@ var listEndpoint = async (context, next) => {
     // TODO: check headers with ajv
     var { language = 'en', locale, timezone } = request.headers;
     var i18n = { language, locale, timezone };
+
+    var prepared = prepareOrThrow({
+        collection: 'study',
+        coreSchema: CoreBodySchema(),
+    })
 
     debug('start validating');
 
@@ -36,6 +46,11 @@ var listEndpoint = async (context, next) => {
     });
 
     var { target = 'table', recordType = undefined } = request.body;
+
+    var crtlist = await CRTSettingsList({ db, collection, recordType });
+    var displayFields = crtlist.gatherDisplayFields({ target });
+    var availableConstraints = crtlist.gatherAvailableConstraints();
+
 
     var displayFields = undefined;
     var availableConstraints = undefined;

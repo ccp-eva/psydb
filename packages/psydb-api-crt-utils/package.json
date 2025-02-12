@@ -1,0 +1,26 @@
+{
+  "name": "@mpieva/psydb-api-crt-utils",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "./src/index.js",
+  "scripts": {},
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "~4.3.4",
+    "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-common-lib": "workspace:*",
+    "@mpieva/psydb-api-lib": "workspace:*"
+  },
+  "devDependencies": {
+    "mocha": "~10.2.0",
+    "chai": "~4.3.7",
+    "mongodb-memory-server": "~6.9.2",
+    "@mpieva/psydb-fixtures": "workspace:*"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "downloadDir": "/tmp/mongodb-memory-server/"
+    }
+  }
+}
