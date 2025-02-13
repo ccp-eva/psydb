@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import GeneralInfo from '../general-info';
@@ -28,7 +28,7 @@ const ExperimentDetails = (ps) => {
     } = ps;
     var { type: experimentType } = experimentData.record;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
 
     var showFunctions = (
