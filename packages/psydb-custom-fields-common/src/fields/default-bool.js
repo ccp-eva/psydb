@@ -7,7 +7,7 @@ var createQuickSearchSchema = () => {
 };
 
 var stringifyValue = JustTranslate({
-    prefix: '_DefaultBool_', fallback: 'ERROR'
+    prefix: '_DefaultBool_', fallback: '[!!UNDEFINED!!]'
 });
 
 module.exports = {

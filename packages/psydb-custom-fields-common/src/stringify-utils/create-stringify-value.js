@@ -14,7 +14,7 @@ var createStringifyValue = (options) => {
             value = jsonpointer.get(record, pointer);
         }
 
-        if (!value) {
+        if (value === undefined || value === null) {
             return fallback;
         }
 

@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
-import {
-    useUILocale,
-    useUILanguage,
-    useUITranslation,
-} from '@mpieva/psydb-ui-contexts';
 import { useRouteMatch, useParams } from 'react-router-dom';
-
-import { keyBy } from '@mpieva/psydb-core-utils';
 import { __fixRelated, __fixDefinitions } from '@mpieva/psydb-common-compat';
-import { createDefaultFieldDataTransformer } from '@mpieva/psydb-common-lib';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetchAll,
@@ -37,11 +30,8 @@ const StudyParticipation = (ps) => {
     var { path, url } = useRouteMatch();
     var { id } = useParams();
 
+    var [{ translate, locale, language }] = useI18N();
     var revision = useRevision();
-
-    var locale = useUILocale();
-    var translate = useUITranslation();
-    var [ language ] = useUILanguage();
 
     var permissions = usePermissions();
     var canAddSubjects = permissions.hasFlag('canWriteParticipation');
@@ -105,12 +95,7 @@ const StudyParticipation = (ps) => {
         records = [],
         related = {},
     } = __fixRelated(dataBySubjectType[selectedSubjectType] || {});
-
-    var transformer = createDefaultFieldDataTransformer({
-        related,
-        //timezone,
-        locale
-    })
+    definitions = __fixDefinitions(definitions);
 
     var onSuccessfulUpdate = revision.up;
     var modalBag = { studyId: id, onSuccessfulUpdate };
@@ -170,7 +155,6 @@ const StudyParticipation = (ps) => {
                     records,
                     related,
                     definitions,
-                    transformer,
                     sorter,
                     onSuccessfulUpdate,
                 }) } />

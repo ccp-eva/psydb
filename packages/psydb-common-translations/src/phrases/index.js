@@ -1514,6 +1514,17 @@ module.exports = [
     },
 
     {
+        internal: '_DefaultBool_true',
+        en: 'Yes',
+        de: 'Ja'
+    },
+    {
+        internal: '_DefaultBool_false',
+        en: 'No',
+        de: 'Nein'
+    },
+
+    {
         internal: '_ExtBool_yes',
         en: 'Yes',
         de: 'Ja'
