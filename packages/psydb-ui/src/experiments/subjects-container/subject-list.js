@@ -3,22 +3,17 @@ import { __fixDefinitions, __fixRelated } from '@mpieva/psydb-common-compat';
 
 import { jsonpointer } from '@mpieva/psydb-core-utils';
 import { calculateAge } from '@mpieva/psydb-common-lib';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { 
-    Table,
-    //TableHeadCustomCols
-} from '@mpieva/psydb-ui-layout';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { Table } from '@mpieva/psydb-ui-layout';
 import {
     TableHeadCustomCols,
     TableBodyCustomCols
 } from '@mpieva/psydb-custom-fields-ui';
 
 import enums from '@mpieva/psydb-schema-enums';
-// FIXME
-import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
 
 const SubjectList = (ps) => {
-    var ps = __fixRelated(ps);
+    var ps = __fixRelated(ps); // FIXME
 
     var {
         experimentRecord,
@@ -34,8 +29,9 @@ const SubjectList = (ps) => {
         ...other
     } = ps;
 
+    // FIXME
     var definitions = __fixDefinitions(displayFieldData);
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var dateOfBirthField = displayFieldData.find(it => (
         it.props.isSpecialAgeFrameField
@@ -89,7 +85,7 @@ const SubjectListRow = (ps) => {
         ActionsComponent,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var experimentSubjectData = (
         experimentRecord.state.subjectData.find(it => (
