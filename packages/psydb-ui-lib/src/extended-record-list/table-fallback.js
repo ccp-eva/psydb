@@ -1,9 +1,7 @@
 import React from 'react';
 
-import {
-    TableEmptyFallback,
-    TableHeadCustomCols,
-} from '@mpieva/psydb-ui-layout';
+import { TableEmptyFallback } from '@mpieva/psydb-ui-layout';
+import { TableHeadCustomCols } from '@mpieva/psydb-custom-fields-ui';
 
 const TableFallback = (ps) => {
     var { definitions } = ps;
