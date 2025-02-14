@@ -60,9 +60,9 @@ module.exports = {
     ),
 
     calculateTestableIntervals: require('./calculate-testable-intervals'),
-    createDefaultFieldDataTransformer: (
-        require('./create-default-field-data-transformer')
-    ),
+    //createDefaultFieldDataTransformer: (
+    //    require('./create-default-field-data-transformer')
+    //),
    
     SmartArray: require('./smart-array'),
 }
