@@ -43,8 +43,8 @@ export * from './unexpected-response-error';
 
 export * from './table-empty-fallback';
 export * from './table-head';
-export * from './table-head-custom-cols';
-export * from './table-body-custom-cols';
+//export * from './table-head-custom-cols';
+//export * from './table-body-custom-cols';
 
 export * from './sortable-th';
 export * from './option-select-indicator';
