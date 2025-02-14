@@ -43,7 +43,7 @@ module.exports = {
 
     maybeGetValueWhenUnspread: require('./maybe-get-value-when-unspread'),
 
-    stringifyFieldValue: require('./stringify-field-value'),
+    //stringifyFieldValue: require('./stringify-field-value'),
     quicksort: require('./quicksort'),
     perceivedBrightness: require('./perceived-brightness'),
     range: require('./range'),
