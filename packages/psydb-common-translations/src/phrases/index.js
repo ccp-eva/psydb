@@ -13,6 +13,7 @@ module.exports = [
     ...require('./permissions'),
     ...require('./crt-editor'),
     ...require('./csv-imports'),
+    ...require('./duplicates'),
 
     ...require('./_fieldtype'),
     ...require('./_participationStatus'),
@@ -21,6 +22,7 @@ module.exports = [
     ...require('./_record_picker'),
     ...require('./_form_array'),
     ...require('./_stringify-fields'),
+
 
     {
         en: 'Calendars',

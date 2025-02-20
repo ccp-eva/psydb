@@ -146,10 +146,10 @@ const DuplicateGroup = (ps) => {
                 ))}
             </td>
             <td className='d-flex justify-content-right'>
-                <LinkQ64 href={`${hashurl}/inspect`} payload={
-                    items.map(it => it._id)
-                }>
-                    { translate('Inspect') }
+                <LinkQ64 href={`${hashurl}/inspect`} payload={{
+                    items, inspectedFields
+                }}>
+                    { translate('Details') }
                 </LinkQ64>
             </td>
         </tr>
