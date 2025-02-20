@@ -1,7 +1,6 @@
 'use strict';
 var { jsonpointer } = require('@mpieva/psydb-core-utils');
 var { Fields } = require('@mpieva/psydb-custom-fields-common');
-//var stringifiers = require('./field-stringifiers');
 
 var createRecordLabel = (bag) => {
     // NOTE: this 'from' parameter, we dont handle it in CRTSettings()!!!! 
@@ -47,12 +46,6 @@ var createRecordLabel = (bag) => {
             ) : '[!!STRINGIFY_ERROR!!]'; // FIXME: related maybe?
 
             value = str;
-            //var stringify = stringifiers[systemType];
-            //if (stringify) {
-            //    value = stringify(value, {
-            //        short: true, ...i18n
-            //    });
-            //}
         }
         label = label.replace('${#}', value);
     }
