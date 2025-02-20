@@ -55,7 +55,7 @@ const RecordTypeRouting = ({
             />
         </Route>
 
-        <Route exact path={`${path}/duplicates`}>
+        <Route path={`${path}/duplicates`}>
             <DuplicatesRouting recordType={ recordType } />
         </Route>
 

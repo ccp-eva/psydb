@@ -1,7 +1,7 @@
 import { entries } from '@mpieva/psydb-core-utils';
 
 var sanitize = (url = '') => (
-    url.endsWith('/') ? url.replace(/\/+$/) : url
+    url.endsWith('/') ? url.replace(/\/+$/, '') : url
 );
 
 var up = (url, levels = 0) => {

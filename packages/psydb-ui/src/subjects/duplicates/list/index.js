@@ -1,4 +1,6 @@
 import React from 'react';
+import { useRouteMatch } from 'react-router';
+import { JsonBase64 } from '@cdxoo/json-base64';
 import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSelectionReducer } from '@mpieva/psydb-ui-hooks';
 import { URL } from '@mpieva/psydb-ui-utils';
@@ -74,6 +76,7 @@ var FetchingTable = (ps) => {
                 <TableHead showActionColumn={ false }>
                     <TableHeadCustomCols definitions={ inspectedFields } />
                     <th>{ translate('Duplicates') }</th>
+                    <th></th>
                 </TableHead>
                 <tbody>
                     { aggregateItems.map((it, ix) => (
@@ -118,6 +121,10 @@ var FieldSelection = (ps) => {
 const DuplicateGroup = (ps) => {
     var { items, recordType, inspectedFields, related } = ps;
 
+    var { url } = useRouteMatch();
+    var [{ translate }] = useI18N();
+
+    var hashurl = URL.hashify(url);
     var sharedBag = { inspectedFields, related };
     return (
         <tr>
@@ -138,7 +145,25 @@ const DuplicateGroup = (ps) => {
                     </b>
                 ))}
             </td>
+            <td className='d-flex justify-content-right'>
+                <LinkQ64 href={`${hashurl}/inspect`} payload={
+                    items.map(it => it._id)
+                }>
+                    { translate('Inspect') }
+                </LinkQ64>
+            </td>
         </tr>
+    )
+}
+
+const LinkQ64 = (ps) => {
+    var { href, payload, children } = ps;
+    var q = JsonBase64.encode(payload);
+
+    return (
+        <a href={ `${href}/?q=${q}`}>
+            { children }
+        </a>
     )
 }
 
