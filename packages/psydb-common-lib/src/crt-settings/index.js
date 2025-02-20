@@ -8,7 +8,7 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var convertCRTRecordToSettings = require('../convert-crt-record-to-settings');
-var stringifiers = require('../field-stringifiers');
+var createRecordLabel = require('../create-record-label');
 
 var CRTSettings = ({ data }) => {
     var crt = {};
@@ -123,47 +123,22 @@ var CRTSettings = ({ data }) => {
             }
         }, {})
     }
+
     crt.getLabelForRecord = (bag) => {
         var {
-            record,
+            record, i18n,
             timezone, language, locale,
             // FIXME: corresponds to 'as' in projection, but name is dumb
             from = undefined,
         } = bag;
 
-        var { format, tokens } = data.recordLabelDefinition;
-
-        var label = format;
-        var tokensRedacted = 0;
-
-        for (var [index, token] of tokens.entries()) {
-            var { systemType, dataPointer } = token;
-
-            var value = (
-                from
-                ? jsonpointer.get(record, from)[dataPointer]
-                : jsonpointer.get(record, dataPointer)
-            );
-            if (value === undefined) {
-                value = '[REDACTED]';
-                tokensRedacted += 1;
-            }
-            else {
-                var stringify = stringifiers[systemType];
-                if (stringify) {
-                    value = stringify(value, {
-                        short: true,
-                        timezone, language, locale,
-                    });
-                }
-            }
-
-            label = label.replace('${#}', value);
+        if (!i18n) {
+            i18n = { timezone, language, locale }
         }
 
-        if (tokensRedacted === tokens.length) {
-            label = `${record._id} [REDACTED]`;
-        }
+        var definition = data.recordLabelDefinition;
+        var label = createRecordLabel({ definition, record, from, i18n });
+
         return label;
     }
 

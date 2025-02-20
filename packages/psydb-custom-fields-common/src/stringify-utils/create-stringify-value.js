@@ -7,6 +7,7 @@ var createStringifyValue = (options) => {
         var {
             definition, value, related,
             i18n = {}, record = undefined,
+            ...pass
         } = bag;
 
         if (record) {
@@ -18,7 +19,7 @@ var createStringifyValue = (options) => {
             return fallback;
         }
 
-        return fn({ definition, value, related, i18n });
+        return fn({ ...pass, definition, value, related, i18n });
     }
     return wrapped;
 }

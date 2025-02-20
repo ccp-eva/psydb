@@ -9,6 +9,7 @@ module.exports = {
     CRTSettings: require('./crt-settings'),
     CRTSettingsList: require('./crt-settings-list'),
     FieldDefinition: require('./field-definition'),
+    createRecordLabel: require('./create-record-label'),
 
     CSVColumnRemappers: require('./csv-column-remappers'),
 

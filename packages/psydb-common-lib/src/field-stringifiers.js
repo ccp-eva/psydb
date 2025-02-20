@@ -160,6 +160,7 @@ var ExtBool = (value, { short, language } = {}) => {
     }
 }
 
+// XXX: custom-fields-common cant handle that yet!!!!!!!!!!!!!!!!!!!!!!!
 var Lambda = (bag = {}) => {
     var { definition, record, timezone } = bag;
     var { fn, input } = definition.props;

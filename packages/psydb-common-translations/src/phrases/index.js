@@ -20,6 +20,7 @@ module.exports = [
     ...require('./_address'),
     ...require('./_record_picker'),
     ...require('./_form_array'),
+    ...require('./_stringify-fields'),
 
     {
         en: 'Calendars',
@@ -1492,55 +1493,6 @@ module.exports = [
         de: 'Trial-P.' // FIXME
     },
    
-    {
-        internal: '_BiologicalGender_male',
-        en: 'Male',
-        de: 'Männlich'
-    },
-    {
-        internal: '_BiologicalGender_female',
-        en: 'Female',
-        de: 'Weiblich'
-    },
-    {
-        internal: '_BiologicalGender_other',
-        en: 'Other',
-        de: 'Divers'
-    },
-    {
-        internal: '_BiologicalGender_unknown',
-        en: 'Unknown',
-        de: 'Unbekannt'
-    },
-
-    {
-        internal: '_DefaultBool_true',
-        en: 'Yes',
-        de: 'Ja'
-    },
-    {
-        internal: '_DefaultBool_false',
-        en: 'No',
-        de: 'Nein'
-    },
-
-    {
-        internal: '_ExtBool_yes',
-        en: 'Yes',
-        de: 'Ja'
-    },
-    {
-        internal: '_ExtBool_no',
-        en: 'No',
-        de: 'Nein'
-    },
-    {
-        internal: '_ExtBool_unknown',
-        en: 'Unknown',
-        de: 'Unbekannt'
-    },
-
-
     // Field sites
 
     {

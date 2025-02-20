@@ -158,20 +158,16 @@ var handleWithCRT = async (bag) => {
 
         related[collection] = {}
         for (var record of records) {
-            var label = createRecordLabel({
-                record,
-                definition: (
-                    allCRTSettings[collection][record.type]
-                    .getRecordLabelDefinition()
-                ),
-                from: '_labelProjection',
-                timezone, language, locale
+            var crt = allCRTSettings[collection][record.type];
+            var label = crt.getLabelForRecord({
+                record, from: '/_labelProjection',
+                i18n: { timezone, language, locale }
             });
             related[collection][record._id] = (
                 oldWrappedLabels
                 ? { _id: record._id, _recordLabel: label }
                 : label
-            )
+            );
         }
     }
     return related;

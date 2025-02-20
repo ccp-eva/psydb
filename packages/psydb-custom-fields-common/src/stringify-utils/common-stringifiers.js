@@ -31,8 +31,10 @@ var JustTranslate = (options = {}) => {
     var { prefix = '', ...pass } = options;
     
     return createStringifyValue({ ...pass, fn: (bag) => {
-        var { value, i18n: { language }} = bag;
-        return translate(language, `${prefix}${value}`);
+        var { value, i18n: { language }, short = false} = bag;
+        return translate(
+            language, `${prefix}${value}${short ? '_short' : ''}`
+        );
     }});
 }
 
