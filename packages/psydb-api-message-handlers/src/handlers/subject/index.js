@@ -21,6 +21,8 @@ var SubjectGroup = MessageHandlerGroup([
     require('./patch-manual-participation'),
     require('./remove-participation'),
     require('./remove'),
+    
+    require('./move-experiments-from-duplicate'),
 ]);
 
 module.exports = SubjectGroup;
