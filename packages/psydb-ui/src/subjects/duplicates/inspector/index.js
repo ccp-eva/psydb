@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useURLSearchParamsB64 } from '@mpieva/psydb-ui-hooks';
+import { useRevision, useURLSearchParamsB64 } from '@mpieva/psydb-ui-hooks';
 import { Grid } from '@mpieva/psydb-ui-layout';
 
 import DupGroupSummary from './dup-group-summary';
@@ -8,17 +8,18 @@ import SubjectContainer from './subject-container';
 
 const Inspector = (ps) => {
     var { recordType } = ps;
+
+    var revision = useRevision();
     var [ query, updateQuery ] = useURLSearchParamsB64();
 
     var { items } = query;
-
     var leftState = useState(items[0]._id);
     var rightState = useState(items[1]._id);
 
     var [ leftId ] = leftState;
     var [ rightId ] = rightState;
 
-    var containerBag = { dupGroup: query, recordType }
+    var containerBag = { dupGroup: query, recordType, revision }
     return (
         <>
             <div className='bg-light p-3 border mb-3'>

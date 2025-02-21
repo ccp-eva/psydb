@@ -2,21 +2,28 @@ import React from 'react';
 import { __fixRelated } from '@mpieva/psydb-common-compat';
 import { Fields } from '@mpieva/psydb-custom-fields-common';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-import { useRevision, useFetch } from '@mpieva/psydb-ui-hooks';
-import { Grid, Button, Alert } from '@mpieva/psydb-ui-layout';
+import { useRevision, useFetch, useSend } from '@mpieva/psydb-ui-hooks';
+import { Grid, AsyncButton, Button, Alert } from '@mpieva/psydb-ui-layout';
 import { RecordEditor } from '@mpieva/psydb-ui-record-views/subjects';
 
 import ItemSelect from './item-select';
 
 const SubjectContainer = (ps) => {
-    var { recordType, dupGroup, state, mergeTargetId, direction } = ps;
+    var {
+        recordType,
+        dupGroup,
+        state,
+        mergeTargetId,
+        direction,
+        revision,
+    } = ps;
     var [ id, setId ] = state;
 
     var [{ translate }] = useI18N();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchSubjectExperiments({ subjectId: id })
-    ), [ id ]);
+    ), [ id, revision.value ]);
 
     if (!didFetch) {
         return null;
@@ -43,23 +50,18 @@ const SubjectContainer = (ps) => {
             <div className='bg-light border p-3 mb-3'>
                 <SubjectEditor id={ id } recordType={ recordType } />
             </div>
-            { (past.length || future.length) ? (
-                <div className='bg-light border p-3'>
-                    <SubjectActions
-                        hasExperiments={ past.length || future.length }
-                        direction={ direction }
-                    />
-                    <SubjectExperiments
-                        past={ past } future={ future } related={ related }
-                    />
-                </div>
-            ) : (
-                <div className='justify-content-right'>
-                    <Button variant='danger'>
-                        { translate('Delete') }
-                    </Button>
-                </div>
-            )}
+            <div className='bg-light border p-3'>
+                <SubjectActions
+                    id={ id }
+                    mergeTargetId={ mergeTargetId }
+                    hasExperiments={ past.length || future.length }
+                    direction={ direction }
+                    onSuccessfulUpdate={ revision.up }
+                />
+                <SubjectExperiments
+                    past={ past } future={ future } related={ related }
+                />
+            </div>
         </>
     )
 }
@@ -108,19 +110,27 @@ const SubjectEditor = (ps) => {
 }
 
 const SubjectActions = (ps) => {
-    var { direction, hasExperiments } = ps;
+    var {
+        id, mergeTargetId, direction, hasExperiments,
+        onSuccessfulUpdate
+    } = ps;
     var [{ translate }] = useI18N();
+
+    var send = useSend(() => ({
+        type: 'subject/move-experiments-from-duplicate',
+        payload: { sourceSubjectId: id, targetSubjectId: mergeTargetId }
+    }), { onSuccessfulUpdate });
 
     var bag = { classname: 'px-3', size: 'sm' };
     var move = (
-        <Button
-            { ...bag }
+        <AsyncButton
+            { ...bag } { ...send.passthrough }
             disabled={ !hasExperiments}
         >
             { direction === 'left' && '<- ' }
             { translate('Move Over') }
             { direction === 'right' && ' ->' }
-        </Button>
+        </AsyncButton>
     );
     var rem = (
         <Button
