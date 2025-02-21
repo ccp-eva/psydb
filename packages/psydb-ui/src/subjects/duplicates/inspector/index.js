@@ -10,39 +10,35 @@ const Inspector = (ps) => {
     var { recordType } = ps;
     var [ query, updateQuery ] = useURLSearchParamsB64();
 
-    var { items, inspectedFields } = query;
+    var { items } = query;
 
-    var [ leftId, setLeftId ] = useState(items[0]._id);
-    var [ rightId, setRightId ] = useState(items[1]._id);
+    var leftState = useState(items[0]._id);
+    var rightState = useState(items[1]._id);
 
+    var [ leftId ] = leftState;
+    var [ rightId ] = rightState;
+
+    var containerBag = { dupGroup: query, recordType }
     return (
         <>
             <div className='bg-light p-3 border mb-3'>
                 <DupGroupSummary group={ query } />
             </div>
             <Grid cols={[ '1fr', '1fr' ]} gap='1rem'>
-                <div className='p-3 bg-light border'>
-                    <ItemSelect
-                        items={ items }
-                        value={ leftId }
-                        onChange={ setLeftId }
-                        disabledId={ rightId }
-                    />
+                <div className=''>
                     <SubjectContainer
-                        recordType={ recordType }
-                        id={ leftId }
+                        state={ leftState }
+                        mergeTargetId={ rightId }
+                        direction='right'
+                        { ...containerBag }
                     />
                 </div>
-                <div className='p-3 bg-light border'>
-                    <ItemSelect
-                        items={ items }
-                        value={ rightId }
-                        onChange={ setRightId }
-                        disabledId={ leftId }
-                    />
+                <div className=''>
                     <SubjectContainer
-                        recordType={ recordType }
-                        id={ rightId }
+                        state={ rightState }
+                        mergeTargetId={ leftId }
+                        direction='left'
+                        { ...containerBag }
                     />
                 </div>
             </Grid>

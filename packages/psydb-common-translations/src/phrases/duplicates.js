@@ -12,4 +12,8 @@ module.exports = [
         en: 'Inspected Fields',
         de: 'Untersuchte Felder'
     },
+    {
+        en: 'Move Over',
+        de: 'Überführen'
+    },
 ]

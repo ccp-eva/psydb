@@ -5,6 +5,7 @@ import { Grid } from '@mpieva/psydb-ui-layout';
 const DupGroupSummary = (ps) => {
     var { group } = ps;
     var { items, inspectedFields } = group;
+    
     var [{ translate }] = useI18N();
 
     return (
