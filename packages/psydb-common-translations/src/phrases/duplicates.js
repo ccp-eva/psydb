@@ -13,7 +13,19 @@ module.exports = [
         de: 'Untersuchte Felder'
     },
     {
-        en: 'Move Over',
-        de: 'Überführen'
+        en: 'Merge',
+        de: 'Zusammenführen'
+    },
+    {
+        en: 'Not a Duplicate',
+        de: 'Kein Duplikat'
+    },
+    {
+        en: 'No possible duplicates fond!',
+        de: 'Keine möglichen Duplikate gefunden!'
+    },
+    {
+        en: 'No possible duplicates left!',
+        de: 'Keine möglichen Duplikate übrig!'
     },
 ]

@@ -16,10 +16,12 @@ const SubjectContainer = (ps) => {
         mergeTargetId,
         direction,
         revision,
+        onSuccessfulMerge,
     } = ps;
-    var [ id, setId ] = state;
 
+    var [ id, setId ] = state;
     var [{ translate }] = useI18N();
+    //var revision = useRevision();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchSubjectExperiments({ subjectId: id })
@@ -39,16 +41,23 @@ const SubjectContainer = (ps) => {
 
     return (
         <>
-            <div className='bg-light border p-3 mb-3'>
+            <Grid
+                className='bg-light border p-3 mb-3'
+                cols={[ '1fr', '1fr' ]}
+            >
                 <ItemSelect
                     items={ dupGroup.items }
                     value={ id } onChange={ setId }
                     disabledId={ mergeTargetId }
                 />
                 <SubjectExperimentSummary past={ past } future={ future } />
-            </div>
+            </Grid>
             <div className='bg-light border p-3 mb-3'>
-                <SubjectEditor id={ id } recordType={ recordType } />
+                <SubjectEditor
+                    id={ id }
+                    recordType={ recordType }
+                    revision={ revision }
+                />
             </div>
             <div className='bg-light border p-3'>
                 <SubjectActions
@@ -57,6 +66,7 @@ const SubjectContainer = (ps) => {
                     hasExperiments={ past.length || future.length }
                     direction={ direction }
                     onSuccessfulUpdate={ revision.up }
+                    onSuccessfulMerge={ onSuccessfulMerge }
                 />
                 <SubjectExperiments
                     past={ past } future={ future } related={ related }
@@ -71,7 +81,7 @@ const SubjectExperimentSummary = (ps) => {
     var { past, future } = ps;
 
     return (
-        <div className='d-flex gapx-3 mt-3'>
+        <div className='d-flex gapx-3 align-items-center justify-content-end'>
             <b>{ past.length } Teilnahmen</b>
             <b>{ future.length } Termine</b>
         </div>
@@ -79,8 +89,7 @@ const SubjectExperimentSummary = (ps) => {
 }
 
 const SubjectEditor = (ps) => {
-    var { id, recordType, onSuccessfulUpdate } = ps;
-    var revision = useRevision();
+    var { id, recordType, revision, onSuccessfulUpdate } = ps;
     
     var providerBag = {
         id, recordType,
@@ -112,39 +121,43 @@ const SubjectEditor = (ps) => {
 const SubjectActions = (ps) => {
     var {
         id, mergeTargetId, direction, hasExperiments,
-        onSuccessfulUpdate
+        onSuccessfulUpdate, onSuccessfulMerge
     } = ps;
     var [{ translate }] = useI18N();
 
-    var send = useSend(() => ({
-        type: 'subject/move-experiments-from-duplicate',
+    var sendMerge = useSend(() => ({
+        type: 'subject/merge-duplicate',
         payload: { sourceSubjectId: id, targetSubjectId: mergeTargetId }
+    }), { onSuccessfulUpdate: () => (
+        onSuccessfulMerge({ mergedId: id })
+    ) });
+    
+    var sendMark = useSend(() => ({
+        type: 'subject/mark-no-duplicates',
+        payload: { subjectIds: [ id, mergeTargetId ]}
     }), { onSuccessfulUpdate });
 
-    var bag = { classname: 'px-3', size: 'sm' };
+    var bag = { className: 'px-3', size: 'sm' };
     var move = (
         <AsyncButton
-            { ...bag } { ...send.passthrough }
-            disabled={ !hasExperiments}
+            { ...bag } { ...sendMerge.passthrough }
         >
             { direction === 'left' && '<- ' }
-            { translate('Move Over') }
+            { translate('Merge') }
             { direction === 'right' && ' ->' }
         </AsyncButton>
     );
-    var rem = (
-        <Button
-            { ...bag }
-            variant='danger'
-            disabled={ hasExperiments}
-        >{ translate('Delete Subject') }</Button>
+    var nodup = (
+        <AsyncButton { ...bag } { ...sendMark.passthrough }>
+            { translate('Not a Duplicate') }
+        </AsyncButton>
     );
     
     var className = 'd-flex justify-content-between border-bottom mb-3 pb-3';
     return direction === 'right' ? (
-        <div className={ className }>{ rem }{ move }</div>
+        <div className={ className }>{ nodup }{ move }</div>
     ) : (
-        <div className={ className }>{ move }{ rem }</div>
+        <div className={ className }>{ move }{ nodup }</div>
     )
 }
 

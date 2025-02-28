@@ -90,7 +90,7 @@ var FetchingTable = (ps) => {
             { aggregateItems.length < 1 && (
                 <Alert variant='info'>
                     <i className='text-muted'>
-                        { translate('No duplicates found.') }
+                        { translate('No possible duplicates found.') }
                     </i>
                 </Alert>
             )}

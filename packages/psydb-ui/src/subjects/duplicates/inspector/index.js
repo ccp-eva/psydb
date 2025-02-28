@@ -1,46 +1,112 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
+import { without } from '@mpieva/psydb-core-utils';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useRevision, useURLSearchParamsB64 } from '@mpieva/psydb-ui-hooks';
-import { Grid } from '@mpieva/psydb-ui-layout';
+import { Grid, Alert } from '@mpieva/psydb-ui-layout';
 
 import DupGroupSummary from './dup-group-summary';
 import ItemSelect from './item-select';
 import SubjectContainer from './subject-container';
 
+const reducer = (state, action) => {
+    var { type, payload } = action;
+    switch (type) {
+        case 'set-left':
+            return { ...state, leftId: payload };
+        case 'set-right':
+            return { ...state, rightId: payload };
+        case 'set-items':
+            var { leftId, rightId } = state;
+
+            var next = { ...state, items: payload };
+            var ids = payload.map(it => it._id);
+
+            if (!ids.includes(state.leftId)) {
+                next.leftId = without(ids, rightId)[0];
+            }
+            if (!ids.includes(state.rightId)) {
+                next.rightId = without(ids, leftId)[0];
+            }
+            return next;
+    }
+}
+
 const Inspector = (ps) => {
     var { recordType } = ps;
 
+    var [{ translate }] = useI18N();
     var revision = useRevision();
     var [ query, updateQuery ] = useURLSearchParamsB64();
+    console.log(query);
 
-    var { items } = query;
-    var leftState = useState(items[0]._id);
-    var rightState = useState(items[1]._id);
+    var { items: queryItems } = query;
+    var [ state, dispatch ] = useReducer(reducer, {
+        items: queryItems,
+        leftId: queryItems[0]?._id,
+        rightId: queryItems[1]?._id 
+    });
+    
+    var { items, leftId, rightId } = state;
 
-    var [ leftId ] = leftState;
-    var [ rightId ] = rightState;
+    var leftState = [
+        leftId, (id) => dispatch({ type: 'set-left', payload: id })
+    ];
+    var rightState = [
+        rightId, (id) => dispatch({ type: 'set-right', payload: id })
+    ];
 
-    var containerBag = { dupGroup: query, recordType, revision }
+    var onSuccessfulMerge = ({ mergedId }) => {
+        var nextItems = [];
+        for (var it of items) {
+            if (it._id !== mergedId) {
+                nextItems.push(it)
+            }
+        }
+        
+        updateQuery({ ...query, items: nextItems }, { action: 'replace' });
+        dispatch({ type: 'set-items', payload: nextItems });
+        revision.up();
+        window.scrollTo(0, 0);
+    };
+
+    var dupGroup = { ...query, items };
+    var containerBag = {
+        dupGroup, recordType, revision,
+        onSuccessfulMerge,
+    }
     return (
         <>
             <div className='bg-light p-3 border mb-3'>
-                <DupGroupSummary group={ query } />
+                <DupGroupSummary group={ dupGroup } />
             </div>
             <Grid cols={[ '1fr', '1fr' ]} gap='1rem'>
                 <div className=''>
-                    <SubjectContainer
-                        state={ leftState }
-                        mergeTargetId={ rightId }
-                        direction='right'
-                        { ...containerBag }
-                    />
+                    { leftId ? (
+                        <SubjectContainer
+                            state={ leftState }
+                            mergeTargetId={ rightId }
+                            direction='right'
+                            { ...containerBag }
+                        />
+                    ) : (
+                        <Alert variant='info'><i>
+                            { translate('No possible duplicates left!') }
+                        </i></Alert>
+                    )}
                 </div>
                 <div className=''>
-                    <SubjectContainer
-                        state={ rightState }
-                        mergeTargetId={ leftId }
-                        direction='left'
-                        { ...containerBag }
-                    />
+                    { rightId ? (
+                        <SubjectContainer
+                            state={ rightState }
+                            mergeTargetId={ leftId }
+                            direction='left'
+                            { ...containerBag }
+                        />
+                    ) : (
+                        <Alert variant='info'><i>
+                            { translate('No possible duplicates left!') }
+                        </i></Alert>
+                    )}
                 </div>
             </Grid>
         </>

@@ -1,11 +1,14 @@
 import React from 'react';
 
 import { only } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Pair, FormBox } from '@mpieva/psydb-ui-layout';
-import { withRecordEditor } from '../lib';
-import MainForm from './main-form';
+import { withRecordEditor } from '../../lib';
+import MainForm from '../main-form';
 
+import SequenceNumber from './sequence-number';
+import OnlineId from './online-id';
+import DuplicateInfo from './duplicate-info';
 
 const EditForm = (ps) => {
     var {
@@ -23,7 +26,7 @@ const EditForm = (ps) => {
     var { record, crtSettings, related } = fetched;
     var { fieldDefinitions } = crtSettings;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var defaults = MainForm.createDefaults({
         fieldDefinitions,
@@ -67,7 +70,8 @@ const EditForm = (ps) => {
         onlineId
     } = record;
     
-    var isHidden = record.scientific.state.systemPermissions.isHidden;
+    var { isHidden } = record.scientific.state.systemPermissions;
+    var { mergedDuplicates = [] } = record.scientific.state.internals;
 
     var renderedContent = (
         <div>
@@ -79,22 +83,20 @@ const EditForm = (ps) => {
                     <hr />
                 </>
             )}
-            { showSequenceNumber && sequenceNumber && (
-                <Pair 
-                    label={ translate('ID No.') }
-                    wLeft={ 3 } wRight={ 9 } className='px-3'
-                >
-                    { sequenceNumber }
-                </Pair>
-            )}
-            { showOnlineId && onlineId && (
-                <Pair 
-                    label={ translate('Online ID Code') }
-                    wLeft={ 3 } wRight={ 9 } className='px-3'
-                >
-                    { onlineId }
-                </Pair>
-            )}
+            <SequenceNumber
+                show={ showSequenceNumber }
+                value={ sequenceNumber }
+            />
+            <OnlineId
+                show={ showOnlineId }
+                value={ onlineId }
+            />
+            <DuplicateInfo
+                mergedDuplicates={ mergedDuplicates }
+                showOnlineId={ showOnlineId }
+                showSequenceNumber={ showSequenceNumber }
+            />
+
             { (
                 (showSequenceNumber && sequenceNumber)
                 || (showOnlineId && onlineId)
