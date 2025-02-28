@@ -1,12 +1,17 @@
 'use strict';
-var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
+var { ejson } = require('@mpieva/psydb-core-utils');
+var {
+    aggregateToArray,
+    aggregateOne
+} = require('@mpieva/psydb-mongo-adapter');
+
 var RootHandler = require('../../../src/');
 
 var jsonify = (that) => (
     JSON.parse(JSON.stringify(that))
 );
 
-describe('subject/move-experiments-from-duplicate', function () {
+describe('subject/merge-duplicate', function () {
     var db;
     beforeEach(async function () {
         await this.restore('2025-02-21__0811');
@@ -27,7 +32,7 @@ describe('subject/move-experiments-from-duplicate', function () {
         
         
         var koaContext = await sendMessage({
-            type: 'subject/move-experiments-from-duplicate',
+            type: 'subject/merge-duplicate',
             timezone: 'Europe/Berlin',
             payload: jsonify({
                 sourceSubjectId: subjectMalloryId,
@@ -37,6 +42,13 @@ describe('subject/move-experiments-from-duplicate', function () {
 
         var { body } = koaContext.response;
 
+        var mallorySubject = await aggregateOne({ db, subject: [
+            { $match: { _id: subjectMalloryId }},
+        ]});
+        var bobSubject = await aggregateOne({ db, subject: [
+            { $match: { _id: subjectBobId }},
+        ]});
+
         var malloryExperiments = await aggregateToArray({ db, experiment: [
             { $match: { 'state.selectedSubjectIds': subjectMalloryId }},
             { $project: { _id: true }}
@@ -45,6 +57,9 @@ describe('subject/move-experiments-from-duplicate', function () {
             { $match: { 'state.selectedSubjectIds': subjectBobId }},
             { $project: { _id: true }}
         ]})
+
+        console.dir(ejson({ mallorySubject }), { depth: null });
+        console.dir(ejson({ bobSubject }), { depth: null });
 
         console.log({ malloryExperiments });
         console.log({ bobExperiments });

@@ -1,4 +1,5 @@
 'use strict';
+var { prefixify, only } = require('@mpieva/psydb-core-utils');
 var { withRetracedErrors } = require('@mpieva/psydb-api-lib');
 // FIXME
 //var { openChannel } = require('../../../lib/generic-record-handler-utils');
@@ -29,21 +30,26 @@ var executeSystemEvents = async (context) => {
     await withRetracedErrors(
         db.collection('subject').updateOne(
             { '_id': sourceSubject._id },
-            { $set: {
-                'scientific.state.internals.participatedInStudies': []
-            }}
+            { $set: prefixify({ values: {
+                'isDuplicateOfId': targetSubject._id,
+                'isRemoved': true,
+                'participatedInStudies': []
+            }, prefix: 'scientific.state.internals' }) },
         )
     );
 
     await withRetracedErrors(
         db.collection('subject').updateOne(
             { '_id': targetSubject._id },
-            { $push: {
-                'scientific.state.internals.participatedInStudies': { $each: (
+            { $push: prefixify({ values: {
+                'mergedDuplicates': only({ from: sourceSubject, keys: [
+                    '_id', 'sequenceNumber', 'onlineId'
+                ]}),
+                'participatedInStudies': { $each: (
                     sourceSubject.scientific
                     .state.internals.participatedInStudies
                 )}
-            }}
+            }, prefix: 'scientific.state.internals' }) },
         )
     );
 }

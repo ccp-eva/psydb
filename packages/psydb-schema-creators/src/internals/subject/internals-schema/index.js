@@ -43,9 +43,13 @@ var InternalsSchema = () => {
         'nonDuplicateIds': ForeignIdList({ collection: 'subject' })
     }
 
+    var optional = {
+        'isDuplicateOfId': ForeignId({ collection: 'subject' }),
+    };
+
     var schema = (
         ExactObject({
-            properties: { ...required },
+            properties: { ...required, ...optional },
             required: Object.keys(required),
         })
     );

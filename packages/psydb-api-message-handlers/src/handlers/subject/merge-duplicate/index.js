@@ -5,7 +5,7 @@ var {
 } = require('@mpieva/psydb-api-message-handler-compat');
 
 var handler = MessageHandler({
-    type: 'subject/move-experiments-from-duplicate',
+    type: 'subject/merge-duplicate',
     stages: {
         ...presets.default({
             createMessagePayloadSchema: require('./schema'),

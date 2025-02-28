@@ -22,7 +22,7 @@ var SubjectGroup = MessageHandlerGroup([
     require('./remove-participation'),
     require('./remove'),
     
-    require('./move-experiments-from-duplicate'),
+    require('./merge-duplicate'),
 ]);
 
 module.exports = SubjectGroup;
