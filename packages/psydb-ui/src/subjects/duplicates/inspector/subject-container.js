@@ -133,7 +133,7 @@ const SubjectActions = (ps) => {
     ) });
     
     var sendMark = useSend(() => ({
-        type: 'subject/mark-no-duplicates',
+        type: 'subject/mark-non-duplicates',
         payload: { subjectIds: [ id, mergeTargetId ]}
     }), { onSuccessfulUpdate });
 

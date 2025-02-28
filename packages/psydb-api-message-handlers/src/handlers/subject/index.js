@@ -23,6 +23,7 @@ var SubjectGroup = MessageHandlerGroup([
     require('./remove'),
     
     require('./merge-duplicate'),
+    require('./mark-non-duplicates'),
 ]);
 
 module.exports = SubjectGroup;
