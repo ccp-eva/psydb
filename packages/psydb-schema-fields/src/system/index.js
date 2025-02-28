@@ -16,6 +16,9 @@ module.exports = {
     MongoId: require('./id'), // NOTE: new
     MongoIdList: require('./id-list'), // NOTE: new
 
+    SequenceNumber: require('./sequence-number'),
+    OnlineId: require('./online-id'),
+
     IdentifierString: require('./identifier-string'),
     JsonPointer: require('./json-pointer'),
     LogicGate: require('./logic-gate'),

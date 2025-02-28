@@ -1,6 +1,7 @@
 'use strict';
 var {
     ClosedObject,
+    StringConst,
     ForeignId,
     DateTime,
     ParticipationStatus,
@@ -8,11 +9,7 @@ var {
 
 // FIXME: participation contains more fields now
 var ManualParticipation = () => ClosedObject({
-    'type': {
-        type: 'string',
-        const: 'manual',
-        default: 'manual'
-    },
+    'type': StringConst({ value: 'manual' }),
     'studyId': ForeignId({ collection: 'study' }),
     'locationId': ForeignId({ collection: 'location' }),
     'timestamp': DateTime(),
@@ -20,21 +17,14 @@ var ManualParticipation = () => ClosedObject({
 });
 
 var OnlineParticipation = () => ClosedObject({
-    'type': {
-        type: 'string',
-        const: 'online',
-    },
+    'type': StringConst({ value: 'online' }),
     'studyId': ForeignId({ collection: 'study' }),
     'timestamp': DateTime(),
     'status': ParticipationStatus(),
 });
 
 var ExperimentParticipation = ({ type }) => ClosedObject({
-    'type': {
-        type: 'string',
-        const: type,
-        default: type,
-    },
+    'type': StringConst({ value: type }),
     'studyId': ForeignId({ collection: 'study' }),
     'experimentId': ForeignId({ collection: 'experiment' }),
     'locationId': ForeignId({ collection: 'location' }),

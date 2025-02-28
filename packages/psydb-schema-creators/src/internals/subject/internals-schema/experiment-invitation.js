@@ -1,18 +1,14 @@
 'use strict';
 var {
     ClosedObject,
-    ExactObject,
+    StringConst,
     ForeignId,
     DateTime,
     InvitationStatus,
 } = require('@mpieva/psydb-schema-fields');
 
 var ExperimentInvitation = ({ type }) => ClosedObject({
-    'type': {
-        type: 'string',
-        const: type,
-        default: type,
-    },
+    'type': StringConst({ value: type }),
     'studyId': ForeignId({ collection: 'study' }),
     'experimentId': ForeignId({ collection: 'experiment' }),
     'timestamp': DateTime(),

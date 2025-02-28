@@ -1,10 +1,9 @@
 'use strict';
 var {
     ExactObject,
+    DefaultArray,
     ForeignId,
-    DateTime,
-    ParticipationStatus,
-    InvitationStatus,
+    ForeignIdList,
     DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
@@ -15,6 +14,7 @@ var {
 } = require('./participation-variants');
 
 var ExperimentInvitation = require('./experiment-invitation');
+var MergedDuplicatesList = require('./merged-duplicates-list');
 
 var InternalsSchema = () => {
     var required = {
@@ -24,20 +24,23 @@ var InternalsSchema = () => {
         // im not sure about that though (online has to be handled
         // differently i guess cuz that are too many)
         'invitedForExperiments': DefaultArray({
-            items: OneOf({ lazyResolveProp: 'type', branches: [
+            items: LazyOneOf({ lazyResolveProp: 'type', branches: [
                 ExperimentInvitation({ type: 'inhouse' }),
                 // TODO: should that be stored?
                 ExperimentInvitation({ type: 'away-team' }),
             ]})
         }),
         'participatedInStudies': DefaultArray({
-            items: OneOf({ lazyResolveProp: 'type', branches: [
+            items: LazyOneOf({ lazyResolveProp: 'type', branches: [
                 ManualParticipation(),
                 OnlineParticipation(),
                 ExperimentParticipation({ type: 'inhouse' }),
                 ExperimentParticipation({ type: 'away-team' }),
             ]})
         }),
+
+        'mergedDuplicates': MergedDuplicatesList(),
+        'nonDuplicateIds': ForeignIdList({ collection: 'subject' })
     }
 
     var schema = (
@@ -56,7 +59,7 @@ var LazyOneOf = (bag) => {
 
     var schema = {
         type: 'object',
-        lazyResolveProp: 'type',
+        lazyResolveProp,
         oneOf: branches
     }
 

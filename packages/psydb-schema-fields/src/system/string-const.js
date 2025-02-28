@@ -1,12 +1,15 @@
 'use strict';
+var StringConst = (bag = {}) => {
+    var { value, ...extraKeywords } = bag;
 
-var StringConst = ({
-    value,
-    ...additionalKeywords
-} = {}) => ({
-    type: 'string',
-    const: value,
-    ...additionalKeywords,
-});
+    var schema = {
+        type: 'string',
+        const: value,
+        default: value,
+        ...extraKeywords,
+    };
+
+    return schema;
+}
 
 module.exports = StringConst;
