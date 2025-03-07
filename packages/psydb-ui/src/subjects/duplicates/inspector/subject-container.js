@@ -17,8 +17,6 @@ const SubjectContainer = (ps) => {
         subjectRelated,
         subjectCRTSettings,
 
-        recordType,
-        dupGroup,
         state,
         mergeTargetId,
         direction,
@@ -52,26 +50,11 @@ const SubjectContainer = (ps) => {
 
     return (
         <>
-            <Grid
-                className='bg-light border p-3 mb-3'
-                cols={[ '1fr', '1fr' ]}
-            >
-                <ItemSelect
-                    items={ dupGroup.items }
-                    value={ id } onChange={ setId }
-                    disabledId={ mergeTargetId }
-                />
-                <SubjectExperimentSummary past={ past } future={ future } />
-            </Grid>
             <div className='bg-light border p-3 mb-3'>
                 <SubjectEditor
                     record={ subjectsById[id] }
                     related={ subjectRelated }
                     crtSettings={ subjectCRTSettings }
-
-                    id={ id }
-                    recordType={ recordType }
-                    revision={ revision }
                 />
             </div>
             <div className='bg-light border p-3'>

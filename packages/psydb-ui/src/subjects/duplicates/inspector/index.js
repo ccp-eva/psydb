@@ -1,136 +1,127 @@
-import React, { useState, useReducer } from 'react';
-import { keyBy, without } from '@mpieva/psydb-core-utils';
+import React from 'react';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-import {
-    useFetch, useRevision, useURLSearchParamsB64
-} from '@mpieva/psydb-ui-hooks';
+import { Grid, Alert } from '@mpieva/psydb-ui-layout';
 
-import { Grid, Alert, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import withInspectorComposition from './with-inspector-composition';
 
+import ActionBar from './action-bar';
 import DupGroupSummary from './dup-group-summary';
 import ItemSelect from './item-select';
 import SubjectContainer from './subject-container';
 
 
 const Inspector = (ps) => {
-    var { recordType } = ps;
+    var {
+        revision, inspectedFields,
+        subjectRecords, subjectRelated, subjectCRTSettings,
+        selection,
+        leftExperiments, rightExperiments,
+        onSuccessfulMerge,
+    } = ps;
+
+    var { leftId, rightId } = selection.state;
 
     var [{ translate }] = useI18N();
-    var revision = useRevision();
-    var [ query, updateQuery ] = useURLSearchParamsB64();
-    var { items: queryItems } = query;
-    var [ state, dispatch ] = useReducer(reducer, {
-        items: queryItems,
-        leftId: queryItems[0]?._id,
-        rightId: queryItems[1]?._id 
-    });
-
-    var subjectIds = queryItems.map(it => it._id);
-
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.readManySubjects({ ids: subjectIds })
-    ), [ subjectIds.join(','), revision.value ]);
-
-    if (!didFetch) {
-        return <LoadingIndicator size='xl' />
-    }
-
-    var { records, related, crtSettings } = fetched.data;
-    var { items, leftId, rightId } = state;
-
-    var leftState = [
-        leftId, (id) => dispatch({ type: 'set-left', payload: id })
-    ];
-    var rightState = [
-        rightId, (id) => dispatch({ type: 'set-right', payload: id })
-    ];
-
-    var onSuccessfulMerge = ({ mergedId }) => {
-        var nextItems = [];
-        for (var it of items) {
-            if (it._id !== mergedId) {
-                nextItems.push(it)
-            }
-        }
-        
-        updateQuery({ ...query, items: nextItems }, { action: 'replace' });
-        dispatch({ type: 'set-items', payload: nextItems });
-        revision.up();
-        window.scrollTo(0, 0);
-    };
-
-    var dupGroup = { ...query, items };
+    
     var containerBag = {
-        subjectRecords: records,
-        subjectRelated: related, 
-        subjectCRTSettings: crtSettings,
-
-        dupGroup,
-        recordType,
-        revision,
-        onSuccessfulMerge,
+        subjectRecords, subjectRelated, subjectCRTSettings,
+        revision, onSuccessfulMerge,
     }
     return (
         <>
             <div className='bg-light p-3 border mb-3'>
-                <DupGroupSummary group={ dupGroup } />
+                <DupGroupSummary
+                    inspectedFields={ inspectedFields }
+                    subjects={ subjectRecords }
+                />
             </div>
+            
             <Grid cols={[ '1fr', '1fr' ]} gap='1rem'>
-                <div className=''>
-                    { leftId ? (
-                        <SubjectContainer
-                            state={ leftState }
-                            mergeTargetId={ rightId }
-                            direction='right'
-                            { ...containerBag }
-                        />
-                    ) : (
-                        <Alert variant='info'><i>
-                            { translate('No possible duplicates left!') }
-                        </i></Alert>
-                    )}
-                </div>
-                <div className=''>
-                    { rightId ? (
-                        <SubjectContainer
-                            state={ rightState }
-                            mergeTargetId={ leftId }
-                            direction='left'
-                            { ...containerBag }
-                        />
-                    ) : (
-                        <Alert variant='info'><i>
-                            { translate('No possible duplicates left!') }
-                        </i></Alert>
-                    )}
-                </div>
+                <div>{ leftId ? (
+                    <SelectBar
+                        subjectRecords={ subjectRecords }
+                        experiments={ leftExperiments }
+                        state={ selection.left }
+                        mergeTargetId={ rightId }
+                    />
+                ) : (
+                    <Alert variant='info'><i>
+                        { translate('No possible duplicates left!') }
+                    </i></Alert>
+                )}</div>
+                
+                <div>{ leftId ? (
+                    <SelectBar
+                        subjectRecords={ subjectRecords }
+                        experiments={ rightExperiments }
+                        state={ selection.right }
+                        mergeTargetId={ leftId }
+                    />
+                ) : (
+                    <Alert variant='info'><i>
+                        { translate('No possible duplicates left!') }
+                    </i></Alert>
+                )}</div>
+            </Grid>
+
+            { (leftId && rightId) && (
+                <ActionBar
+                    subjectRecords={ subjectRecords }
+                    leftId={ leftId }
+                    rightId={ rightId }
+
+                    onSuccessfulMerge={ onSuccessfulMerge }
+                />
+            )}
+
+            <Grid cols={[ '1fr', '1fr' ]} gap='1rem'>
+                <div>{ leftId && (
+                    <SubjectContainer
+                        state={ selection.left }
+                        mergeTargetId={ rightId }
+                        direction='right'
+                        { ...containerBag }
+                    />
+                )}</div>
+                <div>{ rightId && (
+                    <SubjectContainer
+                        state={ selection.right }
+                        mergeTargetId={ leftId }
+                        direction='left'
+                        { ...containerBag }
+                    />
+                )}</div>
             </Grid>
         </>
     )
 }
 
-const reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'set-left':
-            return { ...state, leftId: payload };
-        case 'set-right':
-            return { ...state, rightId: payload };
-        case 'set-items':
-            var { leftId, rightId } = state;
+const SelectBar = (ps) => {
+    var { subjectRecords, experiments, state, mergeTargetId } = ps;
+    var { past, future } = experiments;
+    var [ id, setId ] = state;
 
-            var next = { ...state, items: payload };
-            var ids = payload.map(it => it._id);
-
-            if (!ids.includes(state.leftId)) {
-                next.leftId = without(ids, rightId)[0];
-            }
-            if (!ids.includes(state.rightId)) {
-                next.rightId = without(ids, leftId)[0];
-            }
-            return next;
-    }
+    return (
+        <Grid className='bg-light border p-3 mb-3' cols={[ '1fr', '1fr' ]}>
+            <ItemSelect
+                items={ subjectRecords } value={ id } onChange={ setId }
+                disabledId={ mergeTargetId }
+            />
+            <SubjectExperimentSummary past={ past } future={ future } />
+        </Grid>
+    )
 }
 
+const SubjectExperimentSummary = (ps) => {
+    var { past, future } = ps;
 
-export default Inspector;
+    return (
+        <div className='d-flex gapx-3 align-items-center justify-content-end'>
+            <b>{ past.length } Teilnahmen</b>
+            <b>{ future.length } Termine</b>
+        </div>
+    )
+}
+
+const ComposedInspector = withInspectorComposition(Inspector);
+export default ComposedInspector;

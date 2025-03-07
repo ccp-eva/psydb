@@ -3,8 +3,7 @@ import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Grid } from '@mpieva/psydb-ui-layout';
 
 const DupGroupSummary = (ps) => {
-    var { group } = ps;
-    var { items, inspectedFields } = group;
+    var { subjects, inspectedFields } = ps;
     
     var [{ translate }] = useI18N();
 
@@ -24,8 +23,8 @@ const DupGroupSummary = (ps) => {
                 { translate('Possible Duplicates') }
             </b>
             <div className='d-flex gapx-3'>
-                { items.map((it, ix) => (
-                    <span key={ ix }>{ it._label }</span>
+                { subjects.map((it, ix) => (
+                    <span key={ ix }>{ it._recordLabel }</span>
                 )) }
             </div>
         </Grid>

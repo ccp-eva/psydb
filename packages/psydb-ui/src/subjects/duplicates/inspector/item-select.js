@@ -6,7 +6,7 @@ const ItemSelect = (ps) => {
 
     var options = {};
     for (var it of items) {
-        options[it._id] = it._label;
+        options[it._id] = it._recordLabel;
     }
     return (
         <GenericEnum
