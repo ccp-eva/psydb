@@ -1,5 +1,5 @@
 # vim: syn=dockerfile
-FROM node:18.20.4-alpine3.20 as builder
+FROM node:22.14.0-alpine3.20 as builder
 LABEL stage=psydb-prebuild
 
 RUN mkdir -p /usr/src/app
