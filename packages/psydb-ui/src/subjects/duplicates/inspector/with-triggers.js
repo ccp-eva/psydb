@@ -2,7 +2,10 @@ import React from 'react';
 
 const withTriggers = () => (NextComponent) => {
     var WithTriggers = (ps) => {
-        var { query, updateQuery, selection, revision } = ps;
+        var {
+            query, updateQuery, selection,
+            fullRevision, subjectRevision
+        } = ps;
         
         var onSuccessfulMerge = ({ mergedId }) => {
             var next = [];
@@ -14,12 +17,18 @@ const withTriggers = () => (NextComponent) => {
             
             updateQuery({ ...query, items: next }, { action: 'replace' });
             selection.dispatch({ type: 'set-items', payload: next });
-            revision.up();
+            fullRevision.up();
             window.scrollTo(0, 0);
         };
 
+        var onSuccessfulMark = subjectRevision.up;
+        var onSuccessfulUnmark = subjectRevision.up;
+        var onSuccessfulEdit = subjectRevision.up;
         
-        var bag = { onSuccessfulMerge };
+        var bag = {
+            onSuccessfulMerge, onSuccessfulMark, onSuccessfulUnmark,
+            onSuccessfulEdit,
+        };
         return <NextComponent { ...ps } { ...bag } />
     }
      

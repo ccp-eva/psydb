@@ -33,14 +33,14 @@ const ActionBar = (ps) => {
         type: 'subject/merge-duplicate',
         payload: { sourceSubjectId: rightId, targetSubjectId: leftId }
     }), { onSuccessfulUpdate: () => (
-        onSuccessfulMerge({ mergedId: id })
+        onSuccessfulMerge({ mergedId: rightId })
     ) });
     
     var sendMergeRight = useSend(() => ({
         type: 'subject/merge-duplicate',
         payload: { sourceSubjectId: leftId, targetSubjectId: rightId }
     }), { onSuccessfulUpdate: () => (
-        onSuccessfulMerge({ mergedId: id })
+        onSuccessfulMerge({ mergedId: leftId })
     ) });
 
     var sendMark = useSend(() => ({
@@ -58,7 +58,7 @@ const ActionBar = (ps) => {
 
     return isMarkedNonDuplicate ? (
         <div className={ cls }>
-            <div>NOT A DUPLICATE</div>
+            <b className='text-primary'>MARKIERT: Keine Duplikat</b>
         </div>
     ) : (
         <div className={ cls }>
@@ -66,7 +66,7 @@ const ActionBar = (ps) => {
                 { translate('Merge') }
                 {' ->'}
             </AsyncButton>
-            <AsyncButton { ...bag } { ...sendMergeRight.passthrough }>
+            <AsyncButton { ...bag } { ...sendMark.passthrough }>
                 { translate('Not a Duplicate') }
             </AsyncButton>
             <AsyncButton { ...bag } { ...sendMergeLeft.passthrough }>

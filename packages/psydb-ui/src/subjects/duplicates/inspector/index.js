@@ -1,31 +1,37 @@
 import React from 'react';
+import { keyBy } from '@mpieva/psydb-core-utils';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Grid, Alert } from '@mpieva/psydb-ui-layout';
 
 import withInspectorComposition from './with-inspector-composition';
 
-import ActionBar from './action-bar';
 import DupGroupSummary from './dup-group-summary';
-import ItemSelect from './item-select';
+import SelectBar from './select-bar';
+import ActionBar from './action-bar';
 import SubjectContainer from './subject-container';
-
 
 const Inspector = (ps) => {
     var {
-        revision, inspectedFields,
+        inspectedFields,
         subjectRecords, subjectRelated, subjectCRTSettings,
         selection,
         leftExperiments, rightExperiments,
-        onSuccessfulMerge,
+        onSuccessfulMerge, onSuccessfulMark, onSuccessfulUnmark,
+        onSuccessfulEdit,
     } = ps;
-
-    var { leftId, rightId } = selection.state;
 
     var [{ translate }] = useI18N();
     
+    var { leftId, rightId } = selection.state;
+    var subjectsById = keyBy({ items: subjectRecords, byProp: '_id' });
+
+    var actionBag = {
+        subjectRecords, leftId, rightId,
+        onSuccessfulMerge, onSuccessfulMark, onSuccessfulUnmark
+    }
     var containerBag = {
-        subjectRecords, subjectRelated, subjectCRTSettings,
-        revision, onSuccessfulMerge,
+        subjectRelated, subjectCRTSettings,
+        onSuccessfulEdit,
     }
     return (
         <>
@@ -50,7 +56,7 @@ const Inspector = (ps) => {
                     </i></Alert>
                 )}</div>
                 
-                <div>{ leftId ? (
+                <div>{ rightId ? (
                     <SelectBar
                         subjectRecords={ subjectRecords }
                         experiments={ rightExperiments }
@@ -65,29 +71,21 @@ const Inspector = (ps) => {
             </Grid>
 
             { (leftId && rightId) && (
-                <ActionBar
-                    subjectRecords={ subjectRecords }
-                    leftId={ leftId }
-                    rightId={ rightId }
-
-                    onSuccessfulMerge={ onSuccessfulMerge }
-                />
+                <ActionBar { ...actionBag } />
             )}
 
             <Grid cols={[ '1fr', '1fr' ]} gap='1rem'>
                 <div>{ leftId && (
                     <SubjectContainer
-                        state={ selection.left }
-                        mergeTargetId={ rightId }
-                        direction='right'
+                        subjectRecord={ subjectsById[leftId] }
+                        experiments={ leftExperiments }
                         { ...containerBag }
                     />
                 )}</div>
                 <div>{ rightId && (
                     <SubjectContainer
-                        state={ selection.right }
-                        mergeTargetId={ leftId }
-                        direction='left'
+                        subjectRecord={ subjectsById[rightId] }
+                        experiments={ rightExperiments }
                         { ...containerBag }
                     />
                 )}</div>
@@ -96,32 +94,6 @@ const Inspector = (ps) => {
     )
 }
 
-const SelectBar = (ps) => {
-    var { subjectRecords, experiments, state, mergeTargetId } = ps;
-    var { past, future } = experiments;
-    var [ id, setId ] = state;
-
-    return (
-        <Grid className='bg-light border p-3 mb-3' cols={[ '1fr', '1fr' ]}>
-            <ItemSelect
-                items={ subjectRecords } value={ id } onChange={ setId }
-                disabledId={ mergeTargetId }
-            />
-            <SubjectExperimentSummary past={ past } future={ future } />
-        </Grid>
-    )
-}
-
-const SubjectExperimentSummary = (ps) => {
-    var { past, future } = ps;
-
-    return (
-        <div className='d-flex gapx-3 align-items-center justify-content-end'>
-            <b>{ past.length } Teilnahmen</b>
-            <b>{ future.length } Termine</b>
-        </div>
-    )
-}
 
 const ComposedInspector = withInspectorComposition(Inspector);
 export default ComposedInspector;

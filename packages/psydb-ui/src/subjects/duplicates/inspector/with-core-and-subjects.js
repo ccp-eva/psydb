@@ -8,7 +8,8 @@ import {
 
 const withCoreAndSubjects = () => (NextComponent) => {
     var WithCoreAndSubjects = (ps) => {
-        var revision = useRevision();
+        var fullRevision = useRevision();
+        var subjectRevision = useRevision();
         var [ query, updateQuery ] = useURLSearchParamsB64();
 
         var { inspectedFields, items } = query;
@@ -16,7 +17,11 @@ const withCoreAndSubjects = () => (NextComponent) => {
         
         var [ didFetch, fetched ] = useFetch((agent) => (
             agent.readManySubjects({ ids: subjectIds })
-        ), [ subjectIds.join(','), revision.value ]);
+        ), [
+            subjectIds.join(','),
+            fullRevision.value,
+            subjectRevision.value,
+        ]);
 
         if (!didFetch) {
             return <LoadingIndicator size='xl' />
@@ -25,7 +30,8 @@ const withCoreAndSubjects = () => (NextComponent) => {
         var { records, related, crtSettings } = fetched.data;
 
         var bag = {
-            query, updateQuery, revision, inspectedFields,
+            query, updateQuery, inspectedFields,
+            fullRevision, subjectRevision,
             subjectRecords: records, subjectRelated: related,
             subjectCRTSettings: crtSettings
         }
