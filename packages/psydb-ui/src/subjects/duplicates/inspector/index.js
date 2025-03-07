@@ -1,8 +1,11 @@
 import React, { useState, useReducer } from 'react';
-import { without } from '@mpieva/psydb-core-utils';
+import { keyBy, without } from '@mpieva/psydb-core-utils';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-import { useRevision, useURLSearchParamsB64 } from '@mpieva/psydb-ui-hooks';
-import { Grid, Alert } from '@mpieva/psydb-ui-layout';
+import {
+    useFetch, useRevision, useURLSearchParamsB64
+} from '@mpieva/psydb-ui-hooks';
+
+import { Grid, Alert, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import DupGroupSummary from './dup-group-summary';
 import ItemSelect from './item-select';
@@ -15,15 +18,24 @@ const Inspector = (ps) => {
     var [{ translate }] = useI18N();
     var revision = useRevision();
     var [ query, updateQuery ] = useURLSearchParamsB64();
-    console.log(query);
-
     var { items: queryItems } = query;
     var [ state, dispatch ] = useReducer(reducer, {
         items: queryItems,
         leftId: queryItems[0]?._id,
         rightId: queryItems[1]?._id 
     });
-    
+
+    var subjectIds = queryItems.map(it => it._id);
+
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.readManySubjects({ ids: subjectIds })
+    ), [ subjectIds.join(','), revision.value ]);
+
+    if (!didFetch) {
+        return <LoadingIndicator size='xl' />
+    }
+
+    var { records, related, crtSettings } = fetched.data;
     var { items, leftId, rightId } = state;
 
     var leftState = [
@@ -49,7 +61,13 @@ const Inspector = (ps) => {
 
     var dupGroup = { ...query, items };
     var containerBag = {
-        dupGroup, recordType, revision,
+        subjectRecords: records,
+        subjectRelated: related, 
+        subjectCRTSettings: crtSettings,
+
+        dupGroup,
+        recordType,
+        revision,
         onSuccessfulMerge,
     }
     return (

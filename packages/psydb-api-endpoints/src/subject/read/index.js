@@ -20,19 +20,15 @@ var Schema = require('./schema');
 var read = async (context, next) => {
     var { db, request, permissions, i18n } = context;
 
-    validateOrThrow({
-        schema: Schema(),
-        payload: request.body
-    });
-
+    validateOrThrow({ schema: Schema(), payload: request.body });
     var { id } = request.body;
 
     var stub = await aggregateOne({ db, subject: { _id: id }});
     if (!stub) {
         throw new ApiError(404, 'NoAccessibleRecordFound');
     }
+
     var { type } = stub;
-    
     // FIXME: fetch-record-type has a fixme here an im not sure why
     var crt = await fetchCRTSettings({
         db, collectionName: 'subject', recordType: type, wrap: true
@@ -68,7 +64,7 @@ var read = async (context, next) => {
     });
 
     context.body = ResponseBody({
-        data: { record, related }
+        data: { records, related, crtSettings: crt.getRaw() }
     });
 
     await next();

@@ -1,4 +1,5 @@
 import React from 'react';
+import { keyBy } from '@mpieva/psydb-core-utils';
 import { __fixRelated } from '@mpieva/psydb-common-compat';
 import { Fields } from '@mpieva/psydb-custom-fields-common';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
@@ -12,6 +13,10 @@ import SubjectExperiments from './subject-experiments';
 
 const SubjectContainer = (ps) => {
     var {
+        subjectRecords,
+        subjectRelated,
+        subjectCRTSettings,
+
         recordType,
         dupGroup,
         state,
@@ -20,6 +25,8 @@ const SubjectContainer = (ps) => {
         revision,
         onSuccessfulMerge,
     } = ps;
+
+    var subjectsById = keyBy({ items: subjectRecords, byProp: '_id' });
 
     var [ id, setId ] = state;
     var [{ translate }] = useI18N();
@@ -35,7 +42,9 @@ const SubjectContainer = (ps) => {
 
     var { records, related } = __fixRelated(fetched.data);
 
-    var now = new Date(); var past = []; var future = [];
+    var now = new Date();
+    var past = [];
+    var future = [];
     for (var it of records) {
         var { interval } = it.state;
         ((new Date(interval.end) < now) ? past : future).push(it);
@@ -56,6 +65,10 @@ const SubjectContainer = (ps) => {
             </Grid>
             <div className='bg-light border p-3 mb-3'>
                 <SubjectEditor
+                    record={ subjectsById[id] }
+                    related={ subjectRelated }
+                    crtSettings={ subjectCRTSettings }
+
                     id={ id }
                     recordType={ recordType }
                     revision={ revision }
