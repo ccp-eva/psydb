@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 import { jsonpointer } from '@mpieva/psydb-core-utils';
-import { CRTSettingsList } from '@mpieva/psydb-common-lib';
+import { CRTSettings, CRTSettingsList } from '@mpieva/psydb-common-lib';
 
 const createAgent = (options = {}) => {
     var { language, localeCode } = options;
@@ -83,6 +83,8 @@ const createAgent = (options = {}) => {
         id,
         collection,
         recordType,
+        wrap,
+        
         extraAxiosConfig,
     }) => {
         var url = undefined;
@@ -101,7 +103,13 @@ const createAgent = (options = {}) => {
             url = `/api/metadata/crt-settings/${collection}`
         }
 
-        return axios.get(url, extraAxiosConfig);
+        var p = axios.get(url, extraAxiosConfig);
+        
+        if (wrap) {
+            CRTSettings.wrapResponsePromise(p);
+        }
+
+        return p;
     }
 
     agent.fetchCollectionCRTs = ({

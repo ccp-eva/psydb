@@ -58,7 +58,9 @@ const ActionBar = (ps) => {
 
     return isMarkedNonDuplicate ? (
         <div className={ cls }>
-            <b className='text-primary'>MARKIERT: Keine Duplikat</b>
+            <b className='text-primary'>
+                { translate('MARKED: Not a Duplicate') }
+            </b>
         </div>
     ) : (
         <div className={ cls }>

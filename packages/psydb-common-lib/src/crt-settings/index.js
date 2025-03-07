@@ -191,4 +191,11 @@ CRTSettings.fromRecord = (record) => (
     CRTSettings({ data: convertCRTRecordToSettings(record) })
 )
 
+CRTSettings.wrapResponsePromise = (promise, options = {}) => {
+    promise.then(response => {
+        response.data.data = CRTSettings({ data: response.data.data });
+        return response;
+    })
+}
+
 module.exports = CRTSettings;
