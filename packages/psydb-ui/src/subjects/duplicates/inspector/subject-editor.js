@@ -3,7 +3,7 @@ import { RecordEditor } from '@mpieva/psydb-ui-record-views/subjects';
 
 const SubjectEditor = (ps) => {
     var { id, recordType, revision, onSuccessfulUpdate } = ps;
-    
+   
     var providerBag = {
         id, recordType,
         revision, onSuccessfulUpdate
