@@ -3,33 +3,21 @@ var compose = require('koa-compose'),
     KoaRouter = require('koa-router'),
     withKoaBody = require('koa-body'),
 
-    withSelfAuth = require('./self-auth'),
-    withPermissions = require('./permissions'),
+    withSelfAuth = require('../self-auth'),
+    withPermissions = require('../permissions'),
     
-    init = require('../init-endpoint'),
-    endpoints = require('../endpoints/');
+    init = require('../../init-endpoint'),
+    endpoints = require('../../endpoints/');
 
 var endpoints_SPLIT = require('@mpieva/psydb-api-endpoints');
 var inline = require('@cdxoo/inline-string');
 
-var withPostStages = ({
-    endpoint,
-    enableApiKeyAuth
-}) => ([
-    withSelfAuth({ enableApiKeyAuth }),
-    withPermissions(),
-    withKoaBody(),
-    endpoint
-]);
+var { withPostStages, withGetStages } = require('./stage-helpers');
 
-var withGetStages = ({
-    endpoint,
-    enableApiKeyAuth
-}) => ([
-    withSelfAuth({ enableApiKeyAuth }),
-    withPermissions(),
-    endpoint
-]);
+var addStudyRoutes = require('./add-study-routes');
+var addSubjectRoutes = require('./add-subject-routes');
+var addCSVImportRoutes = require('./add-csv-import-routes');
+var addAuditRoutes = require('./add-audit-routes');
 
 var createRouting = (bag = {}) => {
     var { prefix = '/' } = bag;
@@ -51,9 +39,7 @@ var createRouting = (bag = {}) => {
         withKoaBody(), endpoints.twoFactorCode.resend
     );
 
-    router.get('/init',
-        init
-    );
+    router.get('/init', init);
 
     // /api/foo/?apiKey=asdasdads
     router.post('/',
@@ -124,14 +110,6 @@ var createRouting = (bag = {}) => {
         endpoints.search
     );
 
-    router.post('/subject/listDuplicates', ...withPostStages({
-        endpoint: endpoints_SPLIT.subject.listDuplicates,
-        enableApiKeyAuth: false,
-    }));
-    router.post('/study/list', ...withPostStages({
-        endpoint: endpoints_SPLIT.study.list,
-        enableApiKeyAuth: true,
-    }));
     router.post('/helperSet/list', ...withPostStages({
         endpoint: endpoints_SPLIT.helperSet.list,
         enableApiKeyAuth: true,
@@ -472,23 +450,6 @@ var createRouting = (bag = {}) => {
         endpoints.opsTeam.relatedExperiments
     );
 
-    router.post('/subject/related-experiments',
-        withSelfAuth(),
-        withPermissions(),
-        withKoaBody(),
-        endpoints.subject.relatedExperiments
-    );
-
-    router.post('/subject/read-many',
-        withSelfAuth(),
-        withPermissions(),
-        withKoaBody(),
-        endpoints.subject.readMany
-    );
-    
-    router.post('/subject/read-for-invite-mail', ...withPostStages({
-        endpoint: endpoints.subject.readForInviteMail
-    }));
 
 
     // FIXME
@@ -506,13 +467,6 @@ var createRouting = (bag = {}) => {
         withPermissions(),
         withKoaBody(),
         endpoints.location.relatedExperiments
-    );
-
-    router.post('/subject/possible-test-intervals',
-        withSelfAuth(),
-        withPermissions(),
-        withKoaBody(),
-        endpoints.special.readSubjectTestability
     );
 
     router.post('/apiKey/search', ...withPostStages({
@@ -536,64 +490,6 @@ var createRouting = (bag = {}) => {
         endpoint: endpoints.file.read
     }));
     
-    router.post('/csv-import/preview/wkprc-apestudies-default',
-        withSelfAuth(),
-        withPermissions(),
-        withKoaBody(),
-        endpoints.csvImport.preview
-    );
-    router.post('/csv-import/experiment/search', ...withPostStages({
-        endpoint: endpoints.csvImport.experiment.search
-    }));
-    router.post('/csv-import/experiment/read', ...withPostStages({
-        endpoint: endpoints.csvImport.experiment.read
-    }));
-    router.post(
-        '/csv-import/experiment/related-experiments',
-        ...withPostStages({
-            endpoint: endpoints.csvImport.experiment.relatedExperiments
-        })
-    );
-    router.post(
-        '/csv-import/experiment/preview/wkprc-apestudies-default',
-        ...withPostStages({
-            endpoint: endpoints.csvImport.experiment.preview[
-                'wkprc-apestudies-default'
-            ]
-        })
-    );
-    router.post(
-        '/csv-import/experiment/preview/manual-only-participation',
-        ...withPostStages({
-            endpoint: endpoints.csvImport.experiment.preview[
-                'manual-only-participation'
-            ]
-        })
-    );
-    router.post(
-        '/csv-import/experiment/preview/online-survey',
-        ...withPostStages({
-            endpoint: endpoints.csvImport.experiment.preview[
-                'online-survey'
-            ]
-        })
-    );
-
-    router.post('/csv-import/subject/search', ...withPostStages({
-        endpoint: endpoints.csvImport.subject.search
-    }));
-    router.post('/csv-import/subject/read', ...withPostStages({
-        endpoint: endpoints.csvImport.subject.read
-    }));
-    router.post(
-        '/csv-import/subject/related-subjects',
-        ...withPostStages({
-            endpoint: endpoints.csvImport.subject.relatedSubjects
-        })
-    );
-    router.post('/csv-import/subject/preview', ...withPostStages({
-        endpoint: endpoints.csvImport.subject.preview
-    }));
 
     
     router.post('/statistics/study', ...withPostStages({
@@ -604,24 +500,6 @@ var createRouting = (bag = {}) => {
         endpoint: endpoints.researchGroup.searchMetadata
     }));
 
-    router.post('/study/read', ...withPostStages({
-        endpoint: endpoints.study.read
-    }));
-    router.post('/study/read-many', ...withPostStages({
-        endpoint: endpoints.study.readMany
-    }));
-    router.post('/study/subject-type-infos', ...withPostStages({
-        endpoint: endpoints.study.subjectTypeInfos
-    }));
-    router.post('/study/available-subject-crts', ...withPostStages({
-        endpoint: endpoints.study.availableSubjectCRTs
-    }));
-    router.post('/study/enabled-subject-crts', ...withPostStages({
-        endpoint: endpoints.study.enabledSubjectCRTs
-    }));
-    router.post('/study/enabled-csv-importers', ...withPostStages({
-        endpoint: endpoints.study.enabledCSVImporters
-    }));
     
     router.post('/experiment/read', ...withPostStages({
         endpoint: endpoints.experiment.read
@@ -630,39 +508,24 @@ var createRouting = (bag = {}) => {
         endpoint: endpoints.experiment.readSpooled
     }));
 
-    router.post('/subject/read', ...withPostStages({
-        endpoint: endpoints.subject.read
-    }));
-    router.post('/subject/read-spooled', ...withPostStages({
-        endpoint: endpoints.subject.readSpooled
-    }));
-
-    router.post('/audit/mq-message-history/list', ...withPostStages({
-        endpoint: endpoints.audit.mqMessageHistory.list
-    }));
-    router.post('/audit/mq-message-history/read', ...withPostStages({
-        endpoint: endpoints.audit.mqMessageHistory.read
-    }));
-    router.post('/audit/rohrpost-event/list', ...withPostStages({
-        endpoint: endpoints.audit.rohrpostEvent.list
-    }));
-    router.post('/audit/rohrpost-event/read', ...withPostStages({
-        endpoint: endpoints.audit.rohrpostEvent.read
-    }));
-
     // XXX
-    router.post('/fixed-event-details', ...withPostStages({
-        endpoint: endpoints.temp_fixesChecker.fixedEventDetails
-    }));
-    router.post('/fixed-add-event-list', ...withPostStages({
-        endpoint: endpoints.temp_fixesChecker.fixedAddEventList
-    }));
-    router.post('/fixed-import-event-list', ...withPostStages({
-        endpoint: endpoints.temp_fixesChecker.fixedImportEventList
-    }));
-    router.post('/fixed-patch-event-list', ...withPostStages({
-        endpoint: endpoints.temp_fixesChecker.fixedPatchEventList
-    }));
+    //router.post('/fixed-event-details', ...withPostStages({
+    //    endpoint: endpoints.temp_fixesChecker.fixedEventDetails
+    //}));
+    //router.post('/fixed-add-event-list', ...withPostStages({
+    //    endpoint: endpoints.temp_fixesChecker.fixedAddEventList
+    //}));
+    //router.post('/fixed-import-event-list', ...withPostStages({
+    //    endpoint: endpoints.temp_fixesChecker.fixedImportEventList
+    //}));
+    //router.post('/fixed-patch-event-list', ...withPostStages({
+    //    endpoint: endpoints.temp_fixesChecker.fixedPatchEventList
+    //}));
+
+    addStudyRoutes({ router });
+    addSubjectRoutes({ router });
+    addCSVImportRoutes({ router });
+    addAuditRoutes({ router });
 
     return compose([
         router.routes(),

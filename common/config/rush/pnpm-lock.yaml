@@ -607,6 +607,9 @@ importers:
       '@mpieva/psydb-mongo-stages':
         specifier: workspace:*
         version: link:../psydb-mongo-stages
+      '@mpieva/psydb-rohrpost-utils':
+        specifier: workspace:*
+        version: link:../psydb-rohrpost-utils
       '@mpieva/psydb-schema-fields':
         specifier: workspace:*
         version: link:../psydb-schema-fields
