@@ -4,6 +4,7 @@
   "description": "",
   "main": "./src/middleware/api",
   "scripts": {
+    "build": "",
     "test": "npx mocha --config mocha.config.json test/",
     "dev": "node src/server.js"
   },

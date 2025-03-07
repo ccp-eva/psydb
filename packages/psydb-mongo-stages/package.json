@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
+    "build": "",
     "test-jest": "npx jest",
     "test": "npx mocha --config mocha.config.json test"
   },

@@ -6,6 +6,7 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "scripts": {
+    "build": "",
     "test": "npx mocha --config ./mocha.config.json ./test"
   },
   "dependencies": {
