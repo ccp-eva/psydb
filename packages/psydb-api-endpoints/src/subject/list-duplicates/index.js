@@ -6,13 +6,14 @@ var {
 
 var { __fixRelated } = require('@mpieva/psydb-common-compat');
 
-var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
-var { match } = require('@mpieva/psydb-mongo-stages');
+var { aggregateToArray, aggregateToCursor } = require('@mpieva/psydb-mongo-adapter');
+var { match, expressions } = require('@mpieva/psydb-mongo-stages');
 
 var {
     ResponseBody,
     validateOrThrow,
-    fetchCRTSettings
+    fetchCRTSettings,
+    withRetracedErrors
 } = require('@mpieva/psydb-api-lib');
 
 var { fetchRelated } = require('@mpieva/psydb-api-endpoint-lib');
@@ -75,56 +76,90 @@ var listEndpoint = async (context, next) => {
         pointer: { $in: inspectedPointers }
     });
 
+    var PREMATCH = {};
+    var GROUP_ID = {};
     var PROJECTION = {};
     for (var field of inspectedFields) {
         var path = convertPointerToPath(field.pointer);
         PROJECTION[path] = true;
+        GROUP_ID[field.pointer] = `$${path}`;
+
+        PREMATCH[path] = { $ne: '' }
     }
 
     var stages = [
         match.isNotRemoved({ hasSubChannels: true }),
         match.isNotDummy(),
 
-        { $match: { type: recordType }},
-        { $project: PROJECTION }
-    ];
-    var inspectableRecords = await aggregateToArray({
-        db, subject: stages
-    });
-
-    var groupedIds = gatherDuplicatesIdGroups({
-        records: inspectableRecords,
-        inspectedFields
-    });
-
-    var displayRecords = await aggregateToArray({ db, subject: [
-        { $match: { '_id': { $in: groupedIds.flat() }}},
+        { $match: { type: recordType, ...PREMATCH }},
         { $project: {
             ...PROJECTION,
-            ...crt.getRecordLabelProjection({ as: '_labelData' })
-        }}
-    ]});
+            ...crt.getRecordLabelProjection({ as: '_labelData' }),
+            'scientific.state.internals.nonDuplicateIds': true,
+        }},
 
-    // TODO
-    // crt.convertRecordLabels({ records, from: '/_labelData' });
-    for (var it of displayRecords) {
-        it._label = crt.getLabelForRecord({
-            record: it, from: '/_labelData', ...i18n
-        });
-        delete it._labelData;
+        { $group: {
+            _id: GROUP_ID,
+            possibleDuplicates: { $push: '$$ROOT' },
+            
+            __possibleDuplicateIds: { $push: '$_id' },
+            __nonDuplicateIds: { $push: (
+                '$scientific.state.internals.nonDuplicateIds'
+            )}
+        }},
+
+        { $project: {
+            _id: true, possibleDuplicates: true,
+            
+            __size: { $size: '$__possibleDuplicateIds' },
+            __possibleDuplicateIds: true,
+            __nonDuplicateIds: { $reduce: {
+                input: "$__nonDuplicateIds",
+                initialValue: [],
+                in: { $concatArrays: [ "$$value", "$$this" ] }
+            }}
+        }},
+        
+        { $match: { $expr: expressions.hasIntersectionLength({
+            sets: [ '$__possibleDuplicateIds', '$__nonDuplicateIds' ],
+            $lt: '$__size'
+            //$eq: '$__size'
+        })}},
+
+        { $project: {
+            '__size': false,
+            '__possibleDuplicateIds': false,
+            '__nonDuplicateIds': false,
+        }},
+
+        { $match: {
+            'possibleDuplicates.1': { $exists: true }
+        }},
+        { $limit: 100 }
+    ];
+
+    var aggregateItems = await withRetracedErrors(
+        aggregateToCursor({
+            db, subject: stages
+        }).map(it => it.possibleDuplicates).toArray()
+    );
+
+    for (var group of aggregateItems) {
+        for (var dup of group) {
+            dup._label = crt.getLabelForRecord({
+                record: dup, from: '/_labelData', ...i18n
+            });
+            delete dup._labelData;
+        }
     }
-
-    var groupedRecords = populateDuplicatesGroups({
-        groupedIds, records: displayRecords
-    });
-
+    
     var related = await fetchRelated({
-        db, records: displayRecords, definitions: inspectedFields, i18n
+        db, records: aggregateItems.flat(), definitions: inspectedFields, i18n
     });
 
     context.body = ResponseBody({
         data: {
-            aggregateItems: groupedRecords,
+            aggregateItems,
             inspectedFields,
             related: __fixRelated(related, { isResponse: false }),
         },
@@ -132,65 +167,6 @@ var listEndpoint = async (context, next) => {
 
     debug('next()');
     await next();
-}
-
-var populateDuplicatesGroups = (bag) => {
-    var { groupedIds, records } = bag;
-
-    var recordsById = keyBy({ items: records, byProp: '_id' });
-    var out = [];
-    for (var group of groupedIds) {
-        out.push(group.map(_id => recordsById[_id]))
-    }
-
-    return out;
-}
-
-var gatherDuplicatesIdGroups = (bag) => {
-    var { records, inspectedFields } = bag;
-    
-    var dups = {};
-    var foundDupIndices = [];
-    for (var [ baseIndex, baseItem ] of records.entries()) {
-        if (foundDupIndices.includes(baseIndex)) {
-            // skip item when we already marked the index as dup
-            continue;
-        }
-
-        for (var [ compIndex, compItem ] of records.entries()) {
-            if (compIndex <= baseIndex) {
-                // skip everything before the current base index
-                // since we already inspected those items
-                continue;
-            }
-            //console.log({ compIndex, baseIndex });
-
-            var matchCount = 0;
-            for (var field of inspectedFields) {
-                var { pointer } = field;
-
-                var baseValue = jsonpointer.get(baseItem, pointer);
-                var compValue = jsonpointer.get(compItem, pointer);
-
-                // TODO: properly handle dates, adress
-                if (String(baseValue) === String(compValue)) {
-                    matchCount += 1;
-                }
-            }
-
-            if (matchCount === inspectedFields.length) {
-                // NOTE: this makes: { _id: [ baseItem, dup, dup, ... ] }
-                if (!dups[baseItem._id]) {
-                    dups[baseItem._id] = [ baseItem._id ];
-                }
-                dups[baseItem._id].push(compItem._id);
-                foundDupIndices.push(compIndex);
-            }
-        }
-        //console.log('')
-    }
-
-    return Object.values(dups);
 }
 
 module.exports = listEndpoint;

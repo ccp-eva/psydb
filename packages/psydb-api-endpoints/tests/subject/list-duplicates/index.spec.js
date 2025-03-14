@@ -1,6 +1,7 @@
 'use strict';
 var { ejson } = require('@mpieva/psydb-core-utils');
 var { expect } = require('@mpieva/psydb-api-mocha-test-tools/chai');
+var apiConfig = require('@mpieva/psydb-api-config');
 var endpoints = require('../../../src');
 
 var endpoint = endpoints.subject.listDuplicates;
@@ -15,7 +16,7 @@ describe('subject/list-duplicates', function () {
 
     it('stub', async function () {
         var koaContext = this.createKoaContext({
-            ...session,
+            ...session, apiConfig,
             request: {
                 headers: { language: 'en', locale: 'en', timezone: 'UTC' },
                 body: {

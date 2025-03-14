@@ -14,6 +14,7 @@ var inline = require('@cdxoo/inline-string');
 
 var { withPostStages, withGetStages } = require('./stage-helpers');
 
+var addCRTSettingsRoutes = require('./add-crt-settings-routes');
 var addStudyRoutes = require('./add-study-routes');
 var addSubjectRoutes = require('./add-subject-routes');
 var addCSVImportRoutes = require('./add-csv-import-routes');
@@ -522,6 +523,7 @@ var createRouting = (bag = {}) => {
     //    endpoint: endpoints.temp_fixesChecker.fixedPatchEventList
     //}));
 
+    addCRTSettingsRoutes({ router });
     addStudyRoutes({ router });
     addSubjectRoutes({ router });
     addCSVImportRoutes({ router });

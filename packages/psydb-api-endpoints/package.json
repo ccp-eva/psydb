@@ -36,6 +36,7 @@
   "devDependencies": {
     "mocha": "~10.2.0",
     "chai": "~4.3.7",
+    "@mpieva/psydb-api-config": "workspace:*",
     "@mpieva/psydb-api-mocha-test-tools": "workspace:*",
     "@mpieva/psydb-fixtures": "workspace:*"
   },
