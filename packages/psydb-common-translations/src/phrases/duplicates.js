@@ -1,6 +1,14 @@
 'use strict';
 module.exports = [
     {
+        en: 'Really merge subjects?',
+        de: 'Proband:innen wirklich zusammenführen?'
+    },
+    {
+        en: 'Undo',
+        de: 'Rückgängig'
+    },
+    {
         en: 'Duplicates',
         de: 'Duplikate'
     },

@@ -24,6 +24,7 @@ var SubjectGroup = MessageHandlerGroup([
     
     require('./merge-duplicate'),
     require('./mark-non-duplicates'),
+    require('./unmark-non-duplicates'),
 ]);
 
 module.exports = SubjectGroup;

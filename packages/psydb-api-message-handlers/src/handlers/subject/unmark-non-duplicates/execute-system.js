@@ -24,10 +24,10 @@ var executeSystemEvents = async (context) => {
 
         await dispatch({
             collection: 'subject', channelId: it, subChannelKey: 'scientific',
-            payload: { $push: {
-                'scientific.state.internals.nonDuplicateIds': { $each: (
+            payload: { $pullAll: {
+                'scientific.state.internals.nonDuplicateIds': (
                     nonDuplicateIds
-                )}
+                )
             }}
         });
     }
