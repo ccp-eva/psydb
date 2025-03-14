@@ -43,7 +43,7 @@ var createRecordLabel = (bag) => {
                     definition: token, value, i18n,
                     short: true, // NOTE: affects biologicalgender n such
                 })
-            ) : '[!!STRINGIFY_ERROR!!]'; // FIXME: related maybe?
+            ) : `[!!STRINGIFY_ERROR=${systemType}!!]`; // FIXME: related maybe?
 
             value = str;
         }

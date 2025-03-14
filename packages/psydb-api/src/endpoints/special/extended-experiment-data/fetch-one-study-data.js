@@ -9,7 +9,7 @@ var {
 } = require('@mpieva/psydb-api-lib');
 
 var fetchOneStudyData = async (options) => {
-    var { db, timezone, _id } = options;
+    var { db, i18n, _id } = options;
 
     debug('fetch study record');
     var studyRecord = await (
@@ -31,7 +31,7 @@ var fetchOneStudyData = async (options) => {
         db,
         collectionName: 'study',
         records: [ studyRecord ],
-        timezone,
+        ...i18n
     });
 
     return {

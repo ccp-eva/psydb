@@ -68,6 +68,8 @@ var fetchRecordByFilter = async ({
     
     sort,
     timezone,
+    language,
+    locale,
 }) => {
     offset = offset ||0;
     limit = limit || 0;
@@ -369,7 +371,7 @@ var fetchRecordByFilter = async ({
             it._recordLabel = createRecordLabel({
                 record: it._recordLabelDefinitionFields,
                 definition: recordLabelDefinition,
-                timezone,
+                timezone, language, locale,
             });
             delete it._recordLabelDefinitionFields;
         })

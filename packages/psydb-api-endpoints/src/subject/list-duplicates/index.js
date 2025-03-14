@@ -22,7 +22,7 @@ var CoreBodySchema = require('./core-body-schema');
 var FullBodySchema = require('./full-body-schema');
 
 var listEndpoint = async (context, next) => {
-    var { db, request, permissions, apiConfig } = context;
+    var { db, request, permissions, apiConfig, i18n } = context;
     var {
         dev_enableSubjectDuplicatesSearch,
         dev_subjectDuplicatesSearchFields
@@ -35,10 +35,6 @@ var listEndpoint = async (context, next) => {
     if (!permissions.isRoot()) {
         throw new ApiError(403);
     }
-
-    // TODO: check headers with ajv
-    var { language = 'en', locale, timezone } = request.headers;
-    var i18n = { language, locale, timezone };
 
     debug('start validating');
 
@@ -63,7 +59,7 @@ var listEndpoint = async (context, next) => {
     validateOrThrow({
         schema: FullBodySchema({ availableFields }),
         payload: request.body,
-        unmarshalClientTimezone: timezone,
+        unmarshalClientTimezone: i18n.timezone,
     });
 
     var {
