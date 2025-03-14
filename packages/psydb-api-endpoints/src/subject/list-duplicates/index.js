@@ -140,7 +140,7 @@ var listEndpoint = async (context, next) => {
 
     var aggregateItems = await withRetracedErrors(
         aggregateToCursor({
-            db, subject: stages
+            db, subject: stages, mongoSettings: { allowDiskUse: true }
         }).map(it => it.possibleDuplicates).toArray()
     );
 
