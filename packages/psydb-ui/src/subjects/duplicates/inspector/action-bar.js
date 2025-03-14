@@ -107,8 +107,6 @@ var MergeOrRemove = (ps) => {
         sourceExperiments?.past?.length === 0
         && sourceExperiments?.future?.length === 0
     );
-    console.log(sourceExperiments);
-    console.log({ canRemove });
 
     var bag = {
         className: 'px-3', size: 'sm',
@@ -162,6 +160,8 @@ var SafeRemoveModal = WithDefaultModal({
         
         var [{ translate }] = useI18N();
         
+        console.log({ onSuccessfulRemove });
+
         var sendRemove = useSend(() => ({
             type: 'subject/remove',
             payload: { id: subjectId }

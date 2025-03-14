@@ -83,7 +83,7 @@ var ReadManyStages = (bag) => {
 
     var stages = [
         { $match: { '_id': { $in: ids }}},
-        match.isNotRemoved({ subChannels: true }),
+        match.isNotRemoved({ hasSubChannels: true }),
         ...SystemPermissionStages({ collection: 'subject', permissions }),
     ];
     if (removedFields.length > 0) {

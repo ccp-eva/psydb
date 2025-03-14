@@ -7,10 +7,10 @@ const withTriggers = () => (NextComponent) => {
             fullRevision, subjectRevision
         } = ps;
 
-        var fullUpdate = (id) => {
+        var fullUpdate = (updatedId) => {
             var next = [];
             for (var it of selection.state.items) {
-                if (it._id !== mergedId) {
+                if (it._id !== updatedId) {
                     next.push(it)
                 }
             }
