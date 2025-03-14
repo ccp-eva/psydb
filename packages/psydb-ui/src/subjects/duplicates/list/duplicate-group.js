@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouteMatch } from 'react-router';
+import { useRouteMatch, useLocation } from 'react-router';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { URL } from '@mpieva/psydb-ui-utils';
 import { TableBodyCustomCols } from '@mpieva/psydb-custom-fields-ui';
@@ -10,6 +10,7 @@ const DuplicateGroup = (ps) => {
     var { items, recordType, inspectedFields, related } = ps;
 
     var { url } = useRouteMatch();
+    var { search } = useLocation();
     var [{ translate }] = useI18N();
 
     var hashurl = URL.hashify(url);
@@ -42,7 +43,10 @@ const DuplicateGroup = (ps) => {
                     <LinkQ64
                         className='btn btn-primary btn-sm m-0'
                         href={`${hashurl}/inspect`}
-                        payload={{ items, inspectedFields }}
+                        payload={{
+                            items, inspectedFields,
+                            backlink: `${url}${search}`
+                        }}
                     >
                         { translate('Inspect') }
                     </LinkQ64>

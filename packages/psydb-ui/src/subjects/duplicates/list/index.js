@@ -2,8 +2,15 @@ import React from 'react';
 import { useRouteMatch } from 'react-router';
 import { JsonBase64 } from '@cdxoo/json-base64';
 import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
-import { useFetch, useSelectionReducer } from '@mpieva/psydb-ui-hooks';
+
+import {
+    useFetch,
+    useSelectionReducer,
+    useURLSearchParamsB64
+} from '@mpieva/psydb-ui-hooks';
+
 import { URL } from '@mpieva/psydb-ui-utils';
+
 import {
     Table as BSTable,
     TableHead,
@@ -24,12 +31,21 @@ const DuplicatesList = (ps) => {
     var { recordType } = ps;
     var [{ translate }] = useI18N();
 
-    var selection = useSelectionReducer({
-        defaultSelection: [
+    var [ query, updateQuery ] = useURLSearchParamsB64();
+    var selection = {
+        value: query.fields || [
             '/gdpr/state/custom/lastname',
             '/scientific/state/custom/dateOfBirth',
-        ]
-    });
+        ],
+        toggle: (next) => {
+            var fields = selection.value;
+            fields.includes(next) ? (
+                updateQuery({ fields: fields.filter(it => it !== next) })
+            ) : (
+                updateQuery({ fields: [ ...fields, next ]})
+            )
+        }
+    }
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.readCRTSettings({

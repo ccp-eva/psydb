@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { LinkContainer } from 'react-router-bootstrap';
 
 export const Level3 = (ps) => {
     var {
@@ -18,7 +19,11 @@ export const Level3 = (ps) => {
     return (
         <>
             <h4 className={ titleClassName }>
-                { title }
+                <LinkContainer to={ titleLinkUrl }>
+                    <span role='button'>
+                        { title }
+                    </span>
+                </LinkContainer>
             </h4>
             { children }
         </>
