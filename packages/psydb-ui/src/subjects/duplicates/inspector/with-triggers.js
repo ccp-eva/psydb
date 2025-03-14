@@ -6,8 +6,8 @@ const withTriggers = () => (NextComponent) => {
             query, updateQuery, selection,
             fullRevision, subjectRevision
         } = ps;
-        
-        var onSuccessfulMerge = ({ mergedId }) => {
+
+        var fullUpdate = (id) => {
             var next = [];
             for (var it of selection.state.items) {
                 if (it._id !== mergedId) {
@@ -19,14 +19,18 @@ const withTriggers = () => (NextComponent) => {
             selection.dispatch({ type: 'set-items', payload: next });
             fullRevision.up();
             window.scrollTo(0, 0);
-        };
+        }
+
+        var onSuccessfulMerge = ({ mergedId }) => fullUpdate(mergedId);
+        var onSuccessfulRemove = ({ removedId }) => fullUpdate(removedId);
 
         var onSuccessfulMark = subjectRevision.up;
         var onSuccessfulUnmark = subjectRevision.up;
         var onSuccessfulEdit = subjectRevision.up;
         
         var bag = {
-            onSuccessfulMerge, onSuccessfulMark, onSuccessfulUnmark,
+            onSuccessfulMerge, onSuccessfulRemove,
+            onSuccessfulMark, onSuccessfulUnmark,
             onSuccessfulEdit,
         };
         return <NextComponent { ...ps } { ...bag } />

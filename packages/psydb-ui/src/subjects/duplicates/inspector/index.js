@@ -16,7 +16,9 @@ const Inspector = (ps) => {
         subjectRecords, subjectRelated, subjectCRTSettings,
         selection,
         leftExperiments, rightExperiments,
-        onSuccessfulMerge, onSuccessfulMark, onSuccessfulUnmark,
+
+        onSuccessfulMerge, onSuccessfulRemove,
+        onSuccessfulMark, onSuccessfulUnmark,
         onSuccessfulEdit,
     } = ps;
 
@@ -26,8 +28,11 @@ const Inspector = (ps) => {
     var subjectsById = keyBy({ items: subjectRecords, byProp: '_id' });
 
     var actionBag = {
-        subjectRecords, leftId, rightId,
-        onSuccessfulMerge, onSuccessfulMark, onSuccessfulUnmark
+        subjectRecords,
+        leftId, rightId,
+        leftExperiments, rightExperiments,
+        onSuccessfulMerge, onSuccessfulRemove,
+        onSuccessfulMark, onSuccessfulUnmark
     }
     var containerBag = {
         subjectRelated, subjectCRTSettings,

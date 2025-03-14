@@ -1,6 +1,10 @@
 'use strict';
 module.exports = [
     {
+        en: 'Really delete this subject?',
+        de: 'Diese Proband:in wirklich löschen?'
+    },
+    {
         en: 'Really merge subjects?',
         de: 'Proband:innen wirklich zusammenführen?'
     },

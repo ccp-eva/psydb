@@ -10,10 +10,14 @@ import {
 const ActionBar = (ps) => {
     var {
         subjectRecords,
+
         leftId,
+        leftExperiments,
         rightId,
+        rightExperiments,
 
         onSuccessfulMerge,
+        onSuccessfulRemove,
         onSuccessfulMark,
         onSuccessfulUnmark,
     } = ps;
@@ -33,20 +37,6 @@ const ActionBar = (ps) => {
         rightSubject.scientific
         .state.internals.nonDuplicateIds?.includes(leftId)
     );
-
-    var sendMergeLeft = useSend(() => ({
-        type: 'subject/merge-duplicate',
-        payload: { sourceSubjectId: rightId, targetSubjectId: leftId }
-    }), { onSuccessfulUpdate: () => (
-        onSuccessfulMerge({ mergedId: rightId })
-    ) });
-    
-    var sendMergeRight = useSend(() => ({
-        type: 'subject/merge-duplicate',
-        payload: { sourceSubjectId: leftId, targetSubjectId: rightId }
-    }), { onSuccessfulUpdate: () => (
-        onSuccessfulMerge({ mergedId: leftId })
-    ) });
 
     var sendMark = useSend(() => ({
         type: 'subject/mark-non-duplicates',
@@ -76,40 +66,131 @@ const ActionBar = (ps) => {
         </div>
     ) : (
         <div className={ cls }>
-            <SafeMergeModal
-                { ...mergeRightModal.passthrough }
-                sourceSubject={ leftSubject }
+            <MergeOrRemove
+                direction='right'
                 targetSubject={ rightSubject }
+                sourceSubject={ leftSubject }
+                sourceExperiments={ leftExperiments }
                 onSuccessfulMerge={ onSuccessfulMerge }
+                onSuccessfulRemove={ onSuccessfulRemove }
             />
-            <Button { ...bag } onClick={ mergeRightModal.handleShow }>
-                { translate('Merge') }
-                {' '}
-                <Icons.ChevronDoubleRight style={{
-                    width: '18px', height: '18px', marginTop: '-2px'
-                }} />
-            </Button>
 
             <AsyncButton { ...bag } { ...sendMark.passthrough }>
                 { translate('Not a Duplicate') }
             </AsyncButton>
             
-            <SafeMergeModal
-                { ...mergeLeftModal.passthrough }
-                sourceSubject={ rightSubject }
+            <MergeOrRemove
+                direction='left'
                 targetSubject={ leftSubject }
+                sourceSubject={ rightSubject }
+                sourceExperiments={ rightExperiments }
                 onSuccessfulMerge={ onSuccessfulMerge }
+                onSuccessfulRemove={ onSuccessfulRemove }
             />
-            <Button { ...bag } onClick={ mergeLeftModal.handleShow }>
-                <Icons.ChevronDoubleLeft style={{
-                    width: '18px', height: '18px', marginTop: '-2px'
-                }} />
-                {' '}
-                { translate('Merge') }
-            </Button>
         </div>
     )
 }
+
+var MergeOrRemove = (ps) => {
+    var {
+        direction,
+        targetSubject, sourceSubject, sourceExperiments,
+        onSuccessfulMerge, onSuccessfulRemove,
+    } = ps;
+
+    var [{ translate }] = useI18N();
+   
+    var mergeModal = useModalReducer();
+    var removeModal = useModalReducer();
+
+    var canRemove = (
+        sourceExperiments?.past?.length === 0
+        && sourceExperiments?.future?.length === 0
+    );
+    console.log(sourceExperiments);
+    console.log({ canRemove });
+
+    var bag = {
+        className: 'px-3', size: 'sm',
+        variant: canRemove ? 'danger': 'primary'
+    };
+    return canRemove ? (
+        <>
+            <SafeRemoveModal
+                { ...removeModal.passthrough }
+                subject={ sourceSubject }
+                onSuccessfulRemove={ onSuccessfulRemove }
+            />
+            <Button { ...bag } onClick={ removeModal.handleShow }>
+                { translate('Delete') }
+            </Button>
+        </>
+    ) : (
+        <>
+            <SafeMergeModal
+                { ...mergeModal.passthrough }
+                sourceSubject={ sourceSubject }
+                targetSubject={ targetSubject }
+                onSuccessfulMerge={ onSuccessfulMerge }
+            />
+            { direction === 'right' ? (
+                <Button { ...bag } onClick={ mergeModal.handleShow }>
+                    { translate('Merge') }
+                    {' '}
+                    <Icons.ChevronDoubleRight style={{
+                        width: '18px', height: '18px', marginTop: '-2px'
+                    }} />
+                </Button>
+            ) : (
+                <Button { ...bag } onClick={ mergeModal.handleShow }>
+                    <Icons.ChevronDoubleLeft style={{
+                        width: '18px', height: '18px', marginTop: '-2px'
+                    }} />
+                    {' '}
+                    { translate('Merge') }
+                </Button>
+            )}
+        </>
+    )
+}
+
+var SafeRemoveModal = WithDefaultModal({
+    title: 'Delete',
+    Body: (ps) => {
+        var { onHide, subject, onSuccessfulRemove } = ps;
+        var { _id: subjectId, _recordLabel: label } = subject;
+        
+        var [{ translate }] = useI18N();
+        
+        var sendRemove = useSend(() => ({
+            type: 'subject/remove',
+            payload: { id: subjectId }
+        }), { onSuccessfulUpdate: [
+            () => onSuccessfulRemove({ removedId: subjectId }),
+            onHide
+        ] });
+
+        return (
+            <div>
+                <div>
+                    { translate('Really delete this subject?') }
+                </div>
+                <div>
+                    <b>{ label }</b>
+                </div>
+                <hr />
+                <SmallFormFooter>
+                    <AsyncButton
+                        size='sm' variant='danger'
+                        { ...sendRemove.passthrough }
+                    >
+                        { translate('Delete') }
+                    </AsyncButton>
+                </SmallFormFooter>
+            </div>
+        )
+    }
+})
 
 var SafeMergeModal = WithDefaultModal({
     title: 'Merge',
