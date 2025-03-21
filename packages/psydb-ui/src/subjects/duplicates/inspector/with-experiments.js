@@ -50,8 +50,11 @@ const split = (bag) => {
     var past = [];
     var future = [];
     for (var it of records) {
-        var { interval } = it.state;
-        ((new Date(interval.end) < now) ? past : future).push(it);
+        var { interval, isPostprocessed } = it.state;
+        var target = (
+            new Date(interval.end) < now && isPostprocessed
+            ? past : future
+        ).push(it);
     }
 
     return { past, future }

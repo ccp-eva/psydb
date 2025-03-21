@@ -1,6 +1,14 @@
 'use strict';
 module.exports = [
     {
+        en: 'Please select at least one field.',
+        de: 'Bitte mindestens ein Feld wählen.',
+    },
+    {
+        en: 'No possible duplicates found.',
+        de: 'Keine möglichen Duplikate gefunden.',
+    },
+    {
         en: 'Really delete this subject?',
         de: 'Diese Proband:in wirklich löschen?'
     },
