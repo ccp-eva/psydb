@@ -51,7 +51,10 @@ const DuplicatesList = (ps) => {
         agent.readCRTSettings({
             collection: 'subject', recordType, wrap: true
         })
-    ), [ recordType ]);
+    ), {
+        dependencies: [ recordType ],
+        resetDidFetchOnDependencyChange: true
+    });
 
     if (!didFetch) {
         return <LoadingIndicator size='xl' />

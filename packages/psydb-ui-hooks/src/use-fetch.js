@@ -26,7 +26,8 @@ const useFetch = (...args) => {
     var {
         init = defaultInit,
         dependencies,
-        extraEffect
+        extraEffect,
+        resetDidFetchOnDependencyChange = false,
     } = options;
 
     var contextAgent = useContext(AgentContext);
@@ -37,6 +38,10 @@ const useFetch = (...args) => {
     if (options.useEffect) {
         var wrappedCreatePromise = () => {
             dispatch({ type: 'set-transmitting' });
+            if (resetDidFetchOnDependencyChange) {
+                dispatch({ type: 'start-fetch' });
+            }
+            
             var promise = createPromise(contextAgent);
             if (promise) {
                 promise
@@ -68,6 +73,10 @@ const useFetch = (...args) => {
     else {
         var exec = () => {
             dispatch({ type: 'set-transmitting' });
+            if (resetDidFetchOnDependencyChange) {
+                dispatch({ type: 'start-fetch' });
+            }
+            
             return createPromise(contextAgent).then((response) => {
                 //console.log(response);
                 dispatch({ type: 'init-data', payload: {
@@ -94,6 +103,11 @@ const createReducer = (init) => (state, action) => {
             return ({
                 ...state,
                 isTransmitting: true,
+            })
+        case 'start-fetch':
+            return ({
+                ...state,
+                didFetch: false
             })
         case 'init-data':
             return ({
