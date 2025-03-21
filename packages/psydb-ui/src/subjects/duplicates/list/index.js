@@ -1,12 +1,18 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router';
 import { JsonBase64 } from '@cdxoo/json-base64';
+import {
+    convertPointerToPath,
+    convertPathToPointer
+} from '@mpieva/psydb-core-utils';
+
 import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetch,
     useSelectionReducer,
-    useURLSearchParamsB64
+    useSortReducer,
+    useURLSearchParamsB64,
 } from '@mpieva/psydb-ui-hooks';
 
 import { URL } from '@mpieva/psydb-ui-utils';
@@ -90,12 +96,30 @@ var FetchingTable = (ps) => {
     var { recordType, selection } = ps;
     var [{ translate }] = useI18N();
     
+    var defaultSortPath = convertPointerToPath(selection.value[0]);
+    var sorter = useSortReducer({
+        sortPath: defaultSortPath,
+        sortDirection: 'asc'
+    }); // FIXME: create a raw sorter that is not a reducer
+    var { sortPath, sortDirection } = sorter;
+
+    if (sortPath) {
+        var sortPointer = convertPathToPointer(sortPath)
+        if (!selection.value.includes(sortPointer)) {
+            sortPath = defaultSortPath;
+        }
+    }
+    else {
+        sortPath = defaultSortPath;
+    }
+    
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.subject.listDuplicates({
             recordType,
-            inspectedPointers: selection.value
+            inspectedPointers: selection.value,
+            sort: { path: sortPath, direction: sortDirection || 'asc' },
         })
-    ), [ recordType, selection.value.join() ]);
+    ), [ recordType, selection.value.join(), sortPath, sortDirection ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
@@ -112,7 +136,10 @@ var FetchingTable = (ps) => {
         <>
             <BSTable className='mb-2'>
                 <TableHead showActionColumn={ false }>
-                    <TableHeadCustomCols definitions={ inspectedFields } />
+                    <TableHeadCustomCols
+                        definitions={ inspectedFields }
+                        sorter={ sorter } canSort={ true }
+                    />
                     <th>{ translate('Duplicates') }</th>
                     <th></th>
                 </TableHead>

@@ -23,7 +23,11 @@ describe('subject/list-duplicates', function () {
                     recordType: 'child',
                     inspectedPointers: [
                         '/gdpr/state/custom/lastname'
-                    ]
+                    ],
+                    sort: {
+                        path: 'gdpr.state.custom.lastname',
+                        direction: 'asc'
+                    }
                 }
             }
         });

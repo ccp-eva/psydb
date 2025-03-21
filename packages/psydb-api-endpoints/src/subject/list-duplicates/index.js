@@ -1,7 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:subject:listDuplicates');
 var {
-    ejson, jsonpointer, convertPointerToPath, keyBy
+    ejson, jsonpointer, convertPointerToPath, convertPathToPointer, keyBy
 } = require('@mpieva/psydb-core-utils');
 
 var { __fixRelated } = require('@mpieva/psydb-common-compat');
@@ -13,7 +13,8 @@ var {
     ResponseBody,
     validateOrThrow,
     fetchCRTSettings,
-    withRetracedErrors
+    withRetracedErrors,
+    SmartArray,
 } = require('@mpieva/psydb-api-lib');
 
 var { fetchRelated } = require('@mpieva/psydb-api-endpoint-lib');
@@ -65,7 +66,7 @@ var listEndpoint = async (context, next) => {
     var {
         inspectedPointers,
         //offset, limit,
-        //sort,
+        sort,
     } = request.body;
 
     var inspectedFields = crt.findCustomFields({
@@ -83,7 +84,7 @@ var listEndpoint = async (context, next) => {
         PREMATCH[path] = { $ne: '' }
     }
 
-    var stages = [
+    var stages = SmartArray([
         match.isNotRemoved({ hasSubChannels: true }),
         match.isNotDummy(),
 
@@ -103,6 +104,13 @@ var listEndpoint = async (context, next) => {
                 '$scientific.state.internals.nonDuplicateIds'
             )}
         }},
+        
+        ( sort && { $sort: {
+            ['_id.' + convertPathToPointer(sort.path)]: (
+                sort.direction === 'asc' ? 1 : -1
+            )
+        }}),
+        
 
         { $project: {
             _id: true, possibleDuplicates: true,
@@ -131,8 +139,9 @@ var listEndpoint = async (context, next) => {
         { $match: {
             'possibleDuplicates.1': { $exists: true }
         }},
+        
         { $limit: 100 }
-    ];
+    ]);
 
     var aggregateItems = await withRetracedErrors(
         aggregateToCursor({

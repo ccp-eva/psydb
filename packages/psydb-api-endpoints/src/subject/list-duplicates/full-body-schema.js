@@ -4,6 +4,10 @@ var {
     IdentifierString, StringEnum
 } = require('@mpieva/psydb-schema-fields');
 
+var {
+    Sort: SimpleMongodbSort
+} = require('@mpieva/psydb-schema-fields-special');
+
 var FullBodySchema = (bag) => {
     var { availableFields } = bag;
 
@@ -16,6 +20,7 @@ var FullBodySchema = (bag) => {
                     ...availableFields.map(it => it.pointer)
                 ])
             }),
+            'sort': SimpleMongodbSort(),
         },
         required: [
             'recordType',
