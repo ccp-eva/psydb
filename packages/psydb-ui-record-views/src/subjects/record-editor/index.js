@@ -5,10 +5,7 @@ import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Pair, FormBox } from '@mpieva/psydb-ui-layout';
 import { withRecordEditor } from '../../lib';
 import MainForm from '../main-form';
-
-import SequenceNumber from './sequence-number';
-import OnlineId from './online-id';
-import DuplicateInfo from './duplicate-info';
+import { SequenceNumber, OnlineId, DuplicateInfo } from '../shared-static';
 
 const EditForm = (ps) => {
     var {

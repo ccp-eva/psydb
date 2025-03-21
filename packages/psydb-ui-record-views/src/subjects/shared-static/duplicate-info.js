@@ -3,7 +3,11 @@ import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Grid, PaddedText } from '@mpieva/psydb-ui-layout';
 
 const DuplicateInfo = (ps) => {
-    var { mergedDuplicates, showSequenceNumber, showOnlineId } = ps;
+    var {
+        mergedDuplicates, showSequenceNumber, showOnlineId,
+        cols = [ '1fr', '3fr' ], className = 'px-3'
+    } = ps;
+
     var [{ translate }] = useI18N();
 
     if (mergedDuplicates.length < 1) {
@@ -16,8 +20,8 @@ const DuplicateInfo = (ps) => {
     return (
         <Grid 
             label={ translate('Duplicates') }
-            cols={[ '1fr', '3fr' ]}
-            className='px-3'
+            cols={ cols }
+            className={ className }
         >
             <PaddedText>{ translate('Duplicates') }</PaddedText>
             <PaddedText>
