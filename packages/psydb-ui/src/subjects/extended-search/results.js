@@ -1,4 +1,5 @@
 import React from 'react';
+import { jsonpointer } from '@mpieva/psydb-core-utils';
 import { __fixDefinitions, __fixRelated } from '@mpieva/psydb-common-compat';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
@@ -115,6 +116,15 @@ const TableHead = (ps) => {
     return (
         <thead><tr>
             <TableHeadCustomCols definitions={ definitions } />
+            { columns.includes('/_mergedDuplicateSequenceNumber') && (
+                <th>{ translate('ID No. (from Duplicate)') }</th>
+            )}
+            { columns.includes('/_mergedDuplicateOnlineId') && (
+                <th>{ translate('Online ID Code (from Duplicate)') }</th>
+            )}
+            { columns.includes('/_mergedDuplicateId') && (
+                <th>{ translate('Internal ID (from Duplicate)') }</th>
+            )}
             { columns.includes('/_specialAgeToday') && (
                 <th>{ translate('Age Today') }</th>
             )}
@@ -147,6 +157,21 @@ const TableBody = (ps) => {
                         related={ related }
                         definitions={ definitions }
                     />
+                    { columns.includes('/_mergedDuplicateSequenceNumber') && (
+                        <MergedDuplicateColumn
+                            record={ it } prop='sequenceNumber'
+                        />
+                    )}
+                    { columns.includes('/_mergedDuplicateOnlineId') && (
+                        <MergedDuplicateColumn
+                            record={ it } prop='onlineId'
+                        />
+                    )}
+                    { columns.includes('/_mergedDuplicateId') && (
+                        <MergedDuplicateColumn
+                            record={ it } prop='_id'
+                        />
+                    )}
                     { columns.includes('/_specialAgeToday') && (
                         <td>{ it._specialAgeToday }</td>
                     )}
@@ -186,6 +211,14 @@ const TableBody = (ps) => {
             ))}
         </tbody>
     )
+}
+
+const MergedDuplicateColumn = (ps) => {
+    var { record, prop } = ps;
+    var pointer = '/scientific/state/internals/mergedDuplicates';
+    var list = jsonpointer.get(record, pointer) || [];
+
+    return <td>{ list.map(it => it[prop]).join(', ') }</td>
 }
 
 const ParticipationColumn = (ps) => {

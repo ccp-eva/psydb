@@ -1,7 +1,7 @@
 import React from 'react';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { Button } from '@mpieva/psydb-ui-layout';
+import { Button, Grid } from '@mpieva/psydb-ui-layout';
 import {
     FormBox,
     DefaultForm,
@@ -21,20 +21,43 @@ export const Filters = (ps) => {
     
     return (
         <FormBox title={ translate('_extended_search_filters_tab') }>
-            <Fields.SaneString
-                dataXPath='$.specialFilters.sequenceNumber'
-                label={ translate('ID No.') }
-            />
-            <Fields.SaneString
-                dataXPath='$.specialFilters.onlineId'
-                label={ translate('Online ID Code') }
-            />
-            { permissions.isRoot() && (
+            <Grid cols={[ '1fr', '1fr' ]}>
                 <Fields.SaneString
-                    dataXPath='$.specialFilters.subjectId'
-                    label={ translate('Internal ID') }
+                    dataXPath='$.specialFilters.sequenceNumber'
+                    label={ translate('ID No.') }
+                    uiSplit={[ 4,8 ]}
                 />
-            )}
+                <Fields.SaneString
+                    dataXPath='$.specialFilters.mergedDuplicateSequenceNumber'
+                    label={ translate('ID No. (from Duplicate)') }
+                    uiSplit={[ 4,8 ]}
+                />
+                <Fields.SaneString
+                    dataXPath='$.specialFilters.onlineId'
+                    label={ translate('Online ID Code') }
+                    uiSplit={[ 4,8 ]}
+                />
+                <Fields.SaneString
+                    dataXPath='$.specialFilters.mergedDuplicateOnlineId'
+                    label={ translate('Online ID Code (from Duplicate)') }
+                    uiSplit={[ 4,8 ]}
+                />
+                { permissions.isRoot() && (
+                    <Fields.SaneString
+                        dataXPath='$.specialFilters.subjectId'
+                        label={ translate('Internal ID') }
+                        uiSplit={[ 4,8 ]}
+                    />
+                )}
+                { permissions.isRoot() && (
+                    <Fields.SaneString
+                        dataXPath='$.specialFilters.mergedDuplicateId'
+                        label={ translate('Internal ID (from Duplicate)') }
+                        uiSplit={[ 4,8 ]}
+                    />
+                )}
+            </Grid>
+
             <Fields.Custom
                 dataXPath='$.customGdprFilters'
                 subChannelKey='gdpr'

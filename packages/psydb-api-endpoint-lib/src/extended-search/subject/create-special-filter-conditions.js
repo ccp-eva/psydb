@@ -13,6 +13,11 @@ var createSpecialFilterConditions = (filters) => {
         subjectId,
         onlineId,
         sequenceNumber,
+
+        mergedDuplicateId,
+        mergedDuplicateOnlineId,
+        mergedDuplicateSequenceNumber,
+
         didParticipateIn,
         didNotParticipateIn,
         participationInterval,
@@ -22,22 +27,10 @@ var createSpecialFilterConditions = (filters) => {
     } = filters;
 
     var AND = [];
-    if (subjectId) {
-        AND.push({ '_id': makeRX(subjectId) });
-    }
-    if (onlineId) {
-        AND.push({ 'onlineId': makeRX(onlineId) });
-    }
-    if (sequenceNumber !== undefined) {
-        AND.push({ $expr: {
-            $regexMatch: {
-                input: { $convert: {
-                    input: '$sequenceNumber', to: 'string'
-                }},
-                regex: makeRX(String(sequenceNumber)),
-            }
-        }});
-    }
+
+    addBaseIdConditions(AND, filters);
+    addMergedDuplicateConditions(AND, filters);
+
     if (didParticipateIn && didParticipateIn.length > 0) {
         AND.push({ $expr: (
             hasSubjectParticipatedIn({
@@ -134,6 +127,56 @@ var createSpecialFilterConditions = (filters) => {
         ? { $and: AND }
         : undefined
     )
+}
+
+var addBaseIdConditions = (AND, filters) => {
+    var {
+        subjectId,
+        onlineId,
+        sequenceNumber,
+    } = filters;
+
+    if (subjectId) {
+        AND.push({ '_id': makeRX(subjectId) });
+    }
+    if (onlineId) {
+        AND.push({ 'onlineId': makeRX(onlineId) });
+    }
+    if (sequenceNumber !== undefined) {
+        AND.push({ $expr: {
+            $regexMatch: {
+                input: { $convert: {
+                    input: '$sequenceNumber', to: 'string'
+                }},
+                regex: makeRX(String(sequenceNumber)),
+            }
+        }});
+    }
+}
+
+var addMergedDuplicateConditions = (AND, filters) => {
+    var {
+        mergedDuplicateId,
+        mergedDuplicateOnlineId,
+        mergedDuplicateSequenceNumber,
+    } = filters;
+    
+    var prefix = 'scientific.state.internals.mergedDuplicates';
+    if (mergedDuplicateId) {
+        AND.push({ [`${prefix}._id`]: (
+            makeRX(mergedDuplicateId)
+        )});
+    }
+    if (mergedDuplicateOnlineId) {
+        AND.push({ [`${prefix}.onlineId`]: (
+            makeRX(mergedDuplicateOnlineId)
+        )});
+    }
+    if (mergedDuplicateSequenceNumber) {
+        AND.push({ [`${prefix}.sequenceNumber`]: (
+            makeRX(mergedDuplicateSequenceNumber)
+        )});
+    }
 }
 
 

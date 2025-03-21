@@ -564,8 +564,28 @@ module.exports = [
         de: 'Bedingungen'
     },
     {
+        en: 'Internal ID',
+        de: 'Interne ID',
+    },
+    {
+        en: 'Internal ID (from Duplicate)',
+        de: 'Interne ID (von Duplikat)',
+    },
+    {
         en: 'ID No.',
         de: 'ID Nr.'
+    },
+    {
+        en: 'ID No. (from Duplicate)',
+        de: 'ID Nr. (von Duplikat)'
+    },
+    {
+        en: 'Online ID Code',
+        de: 'Online ID Code'
+    },
+    {
+        en: 'Online ID Code (from Duplicate)',
+        de: 'Online ID Code (von Duplikat)'
     },
     {
         internal: '_designation',
@@ -867,10 +887,6 @@ module.exports = [
         de: 'Proband:innen aus dieser Location herausnehmen (z.B. bei Kindergärten)'
     },
     {
-        en: 'Online ID Code',
-        de: 'Online ID Code'
-    },
-    {
         en: 'Save and Unhide',
         de: 'Speichern und Einblenden'
     },
@@ -1151,10 +1167,6 @@ module.exports = [
         internal: '_statistics_results_tab',
         en: 'Result List',
         de: 'Ergebnisliste',
-    },
-    {
-        en: 'Internal ID',
-        de: 'Interne ID',
     },
     {
         en: 'Has Participation Permission',
