@@ -55,12 +55,23 @@ var listEndpoint = async (context, next) => {
         db, collectionName: 'subject', recordType, wrap: true
     });
 
-    var availablePointers = (
+    var pointerConfig = (
         dev_subjectDuplicatesSearchFields?.[recordType] || []
     );
-    var allPrimaryPointers = availablePointers.map(it => arrify(it)[0]);
+    
+    var allPointers = pointerConfig.flat();
+    var allPrimaryPointers = pointerConfig.map(it => arrify(it)[0]);
+
+    var allFields = crt.findCustomFields({
+        pointer: { $in: allPointers }
+    });
     var allPrimaryFields = crt.findCustomFields({
-        pointer: { $in: allPrimaryPointers}
+        pointer: { $in: allPrimaryPointers }
+    });
+
+    var fieldsByPointer = keyBy({ items: allFields, byProp: 'pointer' });
+    var primaryFieldsByPointer = keyBy({
+        items: allPrimaryFields, byProp: 'pointer'
     });
 
     validateOrThrow({
@@ -83,13 +94,23 @@ var listEndpoint = async (context, next) => {
     var GROUP_ID = {};
     var PROJECTION = {};
     for (var it of inspectedPointers) {
-        var pair = availablePointers.map(arrify).find(a => a[0] === it);
+        var pair = pointerConfig.map(arrify).find(a => a[0] === it);
         var [ primaryPointer, fallbackPointer ] = pair;
 
         var primaryPath = convertPointerToPath(primaryPointer);
+        var primaryField = primaryFieldsByPointer[primaryPointer];
+        var { systemType: primaryType } = primaryField;
 
         if (fallbackPointer) {
             var fallbackPath = convertPointerToPath(fallbackPointer);
+            //var fallbackField = fieldsByPointer[fallbackPointer];
+            //var { systemType: fallbackType } = fallbackField;
+
+            PROJECTION['g' + primaryPointer] = { $cond: {
+                if: { $eq: [ `$${primaryPath}`, '' ] },
+                then: `$${fallbackPath}`,
+                else: `$${primaryPath}`
+            }}
             PROJECTION[primaryPath] = { $cond: {
                 if: { $eq: [ `$${primaryPath}`, '' ] },
                 then: `$${fallbackPath}`,
@@ -97,11 +118,26 @@ var listEndpoint = async (context, next) => {
             }}
         }
         else {
+            if (primaryType === 'Address') {
+                PROJECTION['g' + primaryPointer] = { $concat: [
+                    `$${primaryPath}.street`,
+                    ' ',
+                    `$${primaryPath}.housenumber`,
+                ]}
+            }
+            //else if (primaryType === 'EmailList') {
+            //}
+            //else if (primaryType === 'PhoneWithTypeList') {
+            //}
+            else {
+                PROJECTION['g' + primaryPointer] = `$${primaryPath}`;
+            }
+            
             PROJECTION[primaryPath] = true;
         }
 
-        GROUP_ID[primaryPointer] = `$${primaryPath}`;
-        PREMATCH[primaryPath] = { $ne: '' }
+        PREMATCH['g' + primaryPointer] = { $nin: [ '', null ]}
+        GROUP_ID[primaryPointer] = `$g${primaryPointer}`;
     }
 
     var stages = SmartArray([
@@ -171,6 +207,9 @@ var listEndpoint = async (context, next) => {
             db, subject: stages, mongoSettings: { allowDiskUse: true }
         }).map(it => it.possibleDuplicates).toArray()
     );
+
+    console.dir(ejson(stages), { depth: null });
+    console.log(aggregateItems);
 
     for (var group of aggregateItems) {
         for (var dup of group) {

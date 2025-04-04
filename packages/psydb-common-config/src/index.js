@@ -53,7 +53,7 @@ module.exports = {
             ],
             //'/gdpr/state/custom/emails', // TODO: min 1
             //'/gdpr/state/custom/phones',
-            //'/gdpr/state/custom/address', // TODO: just street and number
+            '/gdpr/state/custom/address', // includes only street and number
             '/scientific/state/custom/dateOfBirth'
         ]
     }

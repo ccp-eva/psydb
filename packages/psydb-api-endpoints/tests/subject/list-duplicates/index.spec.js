@@ -23,7 +23,8 @@ describe('subject/list-duplicates', function () {
                     recordType: 'child',
                     inspectedPointers: [
                         //'/gdpr/state/custom/lastname'
-                        '/gdpr/state/custom/mothersName'
+                        //'/gdpr/state/custom/mothersName'
+                        '/gdpr/state/custom/address'
                     ],
                     sort: {
                         path: 'gdpr.state.custom.mother',

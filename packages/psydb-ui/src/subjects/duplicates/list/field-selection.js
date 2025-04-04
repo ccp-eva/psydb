@@ -1,4 +1,5 @@
 import React from 'react';
+import { arrify } from '@mpieva/psydb-core-utils';
 import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
 
@@ -8,7 +9,9 @@ const FieldSelection = (ps) => {
     var [{ translate }] = useI18N();
 
     var definitions = crtSettings.findCustomFields({
-        pointer: { $in: dev_subjectDuplicatesSearchFields.child }
+        pointer: { $in: dev_subjectDuplicatesSearchFields.child.map(
+            it => arrify(it)[0]
+        )}
     });
 
     return (
