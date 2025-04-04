@@ -24,7 +24,9 @@ describe('subject/list-duplicates', function () {
                     inspectedPointers: [
                         //'/gdpr/state/custom/lastname'
                         //'/gdpr/state/custom/mothersName'
-                        '/gdpr/state/custom/address'
+                        //'/gdpr/state/custom/address'
+                        //'/gdpr/state/custom/emails'
+                        '/gdpr/state/custom/phones'
                     ],
                     sort: {
                         path: 'gdpr.state.custom.mother',

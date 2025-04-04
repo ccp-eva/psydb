@@ -125,10 +125,28 @@ var listEndpoint = async (context, next) => {
                     `$${primaryPath}.housenumber`,
                 ]}
             }
-            //else if (primaryType === 'EmailList') {
-            //}
-            //else if (primaryType === 'PhoneWithTypeList') {
-            //}
+            else if (primaryType === 'EmailList') {
+                PROJECTION['g' + primaryPointer] = {
+                    $first: {
+                        $filter: {
+                            input: `$${primaryPath}`,
+                            as: 'it',
+                            cond: { $eq: [ '$$it.isPrimary', true ]}
+                        }
+                    }
+                }
+            }
+            else if (primaryType === 'PhoneWithTypeList') {
+                PROJECTION['g' + primaryPointer] = {
+                    $first: {
+                        $map: {
+                            input: `$${primaryPath}`,
+                            as: 'it',
+                            in: '$$it.number'
+                        }
+                    }
+                }
+            }
             else {
                 PROJECTION['g' + primaryPointer] = `$${primaryPath}`;
             }
