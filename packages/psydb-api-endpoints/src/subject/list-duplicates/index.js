@@ -1,12 +1,16 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:subject:listDuplicates');
 var {
-    ejson, jsonpointer, convertPointerToPath, convertPathToPointer, keyBy
+    ejson, jsonpointer, keyBy, arrify,
+    convertPointerToPath, convertPathToPointer,
 } = require('@mpieva/psydb-core-utils');
 
 var { __fixRelated } = require('@mpieva/psydb-common-compat');
 
-var { aggregateToArray, aggregateToCursor } = require('@mpieva/psydb-mongo-adapter');
+var {
+    aggregateToArray,
+    aggregateToCursor
+} = require('@mpieva/psydb-mongo-adapter');
 var { match, expressions } = require('@mpieva/psydb-mongo-stages');
 
 var {
@@ -51,14 +55,16 @@ var listEndpoint = async (context, next) => {
         db, collectionName: 'subject', recordType, wrap: true
     });
 
-    var availableFields = crt.findCustomFields({
-        pointer: { $in: (
-            dev_subjectDuplicatesSearchFields?.[recordType] || []
-        )}
+    var availablePointers = (
+        dev_subjectDuplicatesSearchFields?.[recordType] || []
+    );
+    var allPrimaryPointers = availablePointers.map(it => arrify(it)[0]);
+    var allPrimaryFields = crt.findCustomFields({
+        pointer: { $in: allPrimaryPointers}
     });
 
     validateOrThrow({
-        schema: FullBodySchema({ availableFields }),
+        schema: FullBodySchema({ availableFields: allPrimaryFields }),
         payload: request.body,
         unmarshalClientTimezone: i18n.timezone,
     });
@@ -76,25 +82,42 @@ var listEndpoint = async (context, next) => {
     var PREMATCH = {};
     var GROUP_ID = {};
     var PROJECTION = {};
-    for (var field of inspectedFields) {
-        var path = convertPointerToPath(field.pointer);
-        PROJECTION[path] = true;
-        GROUP_ID[field.pointer] = `$${path}`;
+    for (var it of inspectedPointers) {
+        var pair = availablePointers.map(arrify).find(a => a[0] === it);
+        var [ primaryPointer, fallbackPointer ] = pair;
 
-        PREMATCH[path] = { $ne: '' }
+        var primaryPath = convertPointerToPath(primaryPointer);
+
+        if (fallbackPointer) {
+            var fallbackPath = convertPointerToPath(fallbackPointer);
+            PROJECTION[primaryPath] = { $cond: {
+                if: { $eq: [ `$${primaryPath}`, '' ] },
+                then: `$${fallbackPath}`,
+                else: `$${primaryPath}`
+            }}
+        }
+        else {
+            PROJECTION[primaryPath] = true;
+        }
+
+        GROUP_ID[primaryPointer] = `$${primaryPath}`;
+        PREMATCH[primaryPath] = { $ne: '' }
     }
 
     var stages = SmartArray([
         match.isNotRemoved({ hasSubChannels: true }),
         match.isNotDummy(),
 
-        { $match: { type: recordType, ...PREMATCH }},
+        { $match: { type: recordType }},
+        
         { $project: {
             ...PROJECTION,
             ...crt.getRecordLabelProjection({ as: '_labelData' }),
             'scientific.state.internals.nonDuplicateIds': true,
         }},
-
+        
+        { $match: PREMATCH },
+        
         { $group: {
             _id: GROUP_ID,
             possibleDuplicates: { $push: '$$ROOT' },

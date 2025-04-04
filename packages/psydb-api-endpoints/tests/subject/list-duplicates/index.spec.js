@@ -22,10 +22,11 @@ describe('subject/list-duplicates', function () {
                 body: {
                     recordType: 'child',
                     inspectedPointers: [
-                        '/gdpr/state/custom/lastname'
+                        //'/gdpr/state/custom/lastname'
+                        '/gdpr/state/custom/mothersName'
                     ],
                     sort: {
-                        path: 'gdpr.state.custom.lastname',
+                        path: 'gdpr.state.custom.mother',
                         direction: 'asc'
                     }
                 }
