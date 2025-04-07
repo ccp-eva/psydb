@@ -69,6 +69,7 @@ module.exports = [
         de: 'System-Rollen'
     },
     {
+        internal: '_sidenav_custom-record-types',
         en: 'Record Types',
         de: 'Datensatz-Typen'
     },
@@ -1516,6 +1517,7 @@ module.exports = [
 
     // audit
     {
+        internal: '_sidenav_audit',
         en: 'Audit',
         de: 'Audit'
     },
@@ -1701,6 +1703,7 @@ module.exports = [
     },
 
     {
+        internal: '_sidenav_api-keys',
         en: 'API Keys',
         de: 'API-Keys'
     },

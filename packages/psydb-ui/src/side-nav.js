@@ -21,6 +21,7 @@ const SideNav = (ps) => {
     var translate = useUITranslation();
     
     var {
+        sideNav,
         dev_enableWKPRCPatches = false,
         dev_enableCSVSubjectImport = false,
         dev_enableCSVParticipationImport = false,
@@ -35,7 +36,7 @@ const SideNav = (ps) => {
         })
         || permissions.hasFlag('canViewReceptionCalendar')
     );
-    
+
     return (
         <>
             <Logo />
@@ -246,6 +247,70 @@ const SideNav = (ps) => {
             </Nav>
         </>
     )
+}
+
+var getNavItemLabel = (bag) => {
+    return label = '_sidenav_' + path.slice(1);
+}
+
+var checkNavItemAllowed = (bag) => {
+    var { path, permissions } = bag;
+    var { hasSomeFlags, isRoot } = permissions;
+
+    if (isRoot()) {
+        return true;
+    }
+    
+    switch (path) {
+        '/subjects':
+            return hasSomeFlags([
+                'canReadSubjects',
+                'canWriteSubjects'
+            ]);
+        '/studies':
+            return hasSomeFlags([
+                'canReadStudies',
+                'canWriteStudies'
+            ]);
+        '/external-persons':
+            return hasSomeFlags([
+                'canReadExternalPersons',
+                'canWriteExternalPersons'
+            ]);
+        '/external-organizations':
+            return hasSomeFlags([
+                'canReadExternalOrganizations',
+                'canWriteExternalOrganizations'
+            ]);
+        '/subject-groups':
+            return hasSomeFlags([
+                'canReadSubjectGroups',
+                'canWriteSubjectGroups'
+            ]);
+        '/study-topics':
+            return hasSomeFlags([
+                'canReadStudyTopics',
+                'canWriteStudyTopics'
+            ]);
+        '/helper-sets':
+            return hasSomeFlags([
+                'canReadHelperSets',
+                'canWriteHelperSets'
+            ]);
+        '/personnel':
+            return hasSomeFlags([
+                'canReadPersonnel',
+                'canWritePersonnel'
+            ]);
+        '/statistics':
+        '/csv-imports':
+        '/research-groups':
+        '/system-roles':
+        '/custom-record-types':
+        '/api-keys':
+        '/audit':
+            return false;
+    }
 }
 
 export default SideNav;

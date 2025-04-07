@@ -5,6 +5,26 @@ module.exports = {
         defaultLanguage: 'en',
         defaultLocaleCode: 'en-US',
     },
+
+    // apedb
+    customNav: [
+        { key: 'csv-imports' },
+        { key: 'subjects' },
+        { key: 'studies' },
+        '=======',
+        { key: 'locations' },
+        { key: 'subject-groups' },
+        { key: 'study-topics' },
+        { key: 'helper-tables' },
+        { key: 'staff-members' },
+        '=======',
+        { key: 'research-groups' },
+        { key: 'system-roles' },
+        { key: 'record-types' },
+        { key: 'api-keys' },
+        { key: 'audit' },
+    ],
+    
     enabledLabMethods: [
         'inhouse',
         'away-team',

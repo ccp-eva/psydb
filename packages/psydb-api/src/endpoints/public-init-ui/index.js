@@ -40,6 +40,8 @@ var publicInitUI = async (context, next) => {
         '/branding',
         '/disableLogoOverlay',
 
+        '/sideNav',
+
         '/dev_enableStagingBanner',
         '/dev_enableDevPanel',
         '/dev_copyNoticeGreyscale',
