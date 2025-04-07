@@ -6,9 +6,5 @@ export { default as URL } from './url-helper';
 export { default as bwTextColorForBackground } from './bw-text-color-for-background.js';
 export { default as check1970 } from './check-1970';
 
-// TODO: fix the underlying code
-export { default as fixRelated } from './fix-related';
-export { default as __fixDefinitions } from './fix-definitions';
-
 // META
 export { default as classnames } from 'classnames';

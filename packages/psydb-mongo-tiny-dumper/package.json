@@ -6,6 +6,7 @@
     "author": "Jan Schwalbe",
     "license": "MIT",
     "scripts": {
+        "build": "",
         "test": "echo 'NO TESTS'"
     },
     "dependencies": {

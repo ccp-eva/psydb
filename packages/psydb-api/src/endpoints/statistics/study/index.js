@@ -1,6 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:statistics:study');
 
+var datefns = require('date-fns');
 var { only, keyBy, groupBy, unique, ejson } = require('@mpieva/psydb-core-utils');
 var {
     ResponseBody,
@@ -34,11 +35,23 @@ var endpoint = async (context, next) => {
 
     var {
         runningPeriodOverlap,
+        participationInterval,
         labMethodKeys,
         researchGroupId,
         scientistId,
         ageFrameIntervalOverlap
     } = request.body;
+
+    if (runningPeriodOverlap?.end) {
+        runningPeriodOverlap.end = datefns.endOfDay(
+            runningPeriodOverlap.end
+        );
+    }
+    if (participationInterval?.end) {
+        participationInterval.end = datefns.endOfDay(
+            participationInterval.end
+        );
+    }
 
     var studies = await aggregateToArray({ db, study: SmartArray([
         ( researchGroupId && { $match: {
@@ -65,7 +78,7 @@ var endpoint = async (context, next) => {
     var prefiltered = [];
     for (var it of studies) {
         var { _id: studyId, type, state } = it;
-        var { shorthand } = state;
+        var { shorthand, runningPeriod } = state;
 
         var matchingAgeFrames = ageFramesForStudy[studyId] || [];
         var matchingLabMethods = labMethodsForStudy[studyId] || [];
@@ -80,6 +93,7 @@ var endpoint = async (context, next) => {
                 _id: studyId,
                 type,
                 shorthand,
+                runningPeriod,
                 ageFrames: matchingAgeFrames,
                 labMethods: unique(matchingLabMethods)
             })
@@ -88,7 +102,7 @@ var endpoint = async (context, next) => {
 
     var participationCountsForStudy = await fetchGroupedParticipationCounts({
         db, studyIds: prefiltered.map(it => it._id),
-        overlapInterval: runningPeriodOverlap,
+        overlapInterval: participationInterval,
     });
 
     var final = [];

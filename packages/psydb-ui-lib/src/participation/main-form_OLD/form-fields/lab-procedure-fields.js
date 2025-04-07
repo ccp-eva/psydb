@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { keyBy } from '@mpieva/psydb-core-utils';
-import { fixRelated } from '@mpieva/psydb-ui-utils';
+import { __fixRelated } from '@mpieva/psydb-common-compat';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 
@@ -101,7 +101,7 @@ export const LabProcedureFields = (ps) => {
     var { record: study } = fetchedStudy.data;
     var { record: subject } = fetchedSubject.data;
 
-    var { records, related } = fixRelated(fetchedSettings.data);
+    var { records, related } = __fixRelated(fetchedSettings.data);
 
     var settingsByType = keyBy({ items: records, byProp: 'type' });
     var types = Object.keys(settingsByType);

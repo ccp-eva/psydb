@@ -1,5 +1,6 @@
 import React from 'react';
 import { omit, only } from '@mpieva/psydb-core-utils';
+import { useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import MainForm from './main-form';
@@ -9,6 +10,8 @@ const EditFieldForm = (ps) => {
     var hasSubChannels = (
         record.state.settings.subChannelFields
     );
+
+    var { dev_enableDangerousCRTFieldOps = false } = useUIConfig();
 
     var send = useSend((formData) => ({
         type: 'custom-record-types/patch-field-definition',
@@ -31,7 +34,7 @@ const EditFieldForm = (ps) => {
             }}
             onSubmit={ send.exec }
             hasSubChannels={ hasSubChannels }
-            isUnrestricted={ false }
+            isUnrestricted={ dev_enableDangerousCRTFieldOps }
             // TODO
             //isUnrestricted={ field.isNew }
         />

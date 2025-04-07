@@ -78,6 +78,7 @@ module.exports = {
     // FIXME: make this include go away and use core-utils instead
     convertPointerToPath: require('@mpieva/psydb-core-utils').convertPointerToPath,
 
+    convertFiltersToQueryPairs: require('./convert-filters-to-query-pairs'),
     convertFiltersToQueryFields: require('./convert-filters-to-query-fields'),
     convertConstraintsToMongoPath: require('./convert-constraints-to-mongo-path'),
     

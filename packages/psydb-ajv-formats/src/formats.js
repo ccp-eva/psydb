@@ -61,6 +61,9 @@ module.exports = {
     },
     timeHM: {
         validate: regexes.timeHM,
+    },
+    dateOnlyServerSide: {
+        validate: regexes.dateOnlyServerSide,
     }
     /*dateTime: {
         validate: dateTime,

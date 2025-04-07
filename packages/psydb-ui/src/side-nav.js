@@ -21,6 +21,7 @@ const SideNav = (ps) => {
     var translate = useUITranslation();
     
     var {
+        dev_enableWKPRCPatches = false,
         dev_enableCSVSubjectImport = false,
         dev_enableCSVParticipationImport = false,
         dev_enableStatistics = false,
@@ -85,7 +86,7 @@ const SideNav = (ps) => {
                         </b></Link>
                     </WhenAllowed>
 
-                    {/* canViewAnyCalendar && (
+                    { (!dev_enableWKPRCPatches && canViewAnyCalendar) && (
                         <>
                             <Link to='/calendars'><b>
                                 { translate('Calendars') }
@@ -125,9 +126,9 @@ const SideNav = (ps) => {
                                 </WhenAllowed>
                             </Nav>
                         </>
-                    )*/}
+                    )}
 
-                    {/*<WhenAllowed labFlags={[
+                    { !dev_enableWKPRCPatches && <WhenAllowed labFlags={[
                         'canWriteReservations',
                         'canSelectSubjectsForExperiments',
                         'canConfirmSubjectInvitation',
@@ -162,7 +163,7 @@ const SideNav = (ps) => {
                                 </Link>
                             </WhenAllowed>
                         </Nav>
-                    </WhenAllowed>*/}
+                    </WhenAllowed> }
 
                     <div className='border-top mt-2 mb-2' />
 
@@ -173,20 +174,20 @@ const SideNav = (ps) => {
                             { translate('Locations') }
                         </Link>
                     </WhenAllowed>
-                    {/*<WhenAllowed flags={[
+                    { !dev_enableWKPRCPatches && <WhenAllowed flags={[
                         'canReadExternalPersons', 'canWriteExternalPersons'
                     ]}>
                         <Link to='/external-persons'>
                             { translate('External Persons') }
                         </Link>
-                    </WhenAllowed>*/}
-                    {/*<WhenAllowed flags={[
+                    </WhenAllowed>}
+                    { !dev_enableWKPRCPatches && <WhenAllowed flags={[
                         'canReadExternalOrganizations', 'canWriteExternalOrganizations'
                     ]}>
                         <Link to='/external-organizations'>
                             { translate('External Organizations') }
                         </Link>
-                    </WhenAllowed>*/}
+                    </WhenAllowed>}
                     <WhenAllowed flags={[
                         'canReadSubjectGroups', 'canWriteSubjectGroups'
                     ]}>

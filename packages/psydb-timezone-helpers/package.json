@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "npx jest"
+    "test": "npx jest",
+    "build": ""
   },
   "author": "Jan Schwalbe",
   "license": "MIT",

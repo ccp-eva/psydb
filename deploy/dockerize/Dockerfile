@@ -1,5 +1,5 @@
 # vim: syn=dockerfile
-FROM node:18.17.1-alpine3.18 as builder
+FROM node:22.14.0-alpine3.20 as builder
 LABEL stage=psydb-prebuild
 
 RUN mkdir -p /usr/src/app
@@ -25,7 +25,7 @@ RUN NODE_ENV=production \
 COPY packages/psydb-ui/dist/ deploy/packages/psydb-ui/dist
 
 # NEW STAGE
-FROM node:18.17.1-alpine
+FROM node:18.20.4-alpine3.20
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -34,7 +34,7 @@ COPY --from=builder /usr/src/app/deploy/common common
 COPY --from=builder /usr/src/app/deploy/packages packages
 
 # FIXME: not sure if we want UTC instead
-RUN apk add --no-cache tzdata
+RUN apk add --no-cache tzdata gcompat
 ENV TZ="UTC"
 
 EXPOSE 8080

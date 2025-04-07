@@ -13,6 +13,7 @@ module.exports = [
     ...require('./permissions'),
     ...require('./crt-editor'),
     ...require('./csv-imports'),
+    ...require('./duplicates'),
 
     ...require('./_fieldtype'),
     ...require('./_participationStatus'),
@@ -20,6 +21,8 @@ module.exports = [
     ...require('./_address'),
     ...require('./_record_picker'),
     ...require('./_form_array'),
+    ...require('./_stringify-fields'),
+
 
     {
         en: 'Calendars',
@@ -363,8 +366,8 @@ module.exports = [
     },
     {
         internal: '_studyParticipations_short',
-        en: 'P.',
-        de: 'T.',
+        en: 'Part.',
+        de: 'Teiln.',
     },
     {
         internal: 'unknown_short',
@@ -561,8 +564,28 @@ module.exports = [
         de: 'Bedingungen'
     },
     {
+        en: 'Internal ID',
+        de: 'Interne ID',
+    },
+    {
+        en: 'Internal ID (from Duplicate)',
+        de: 'Interne ID (von Duplikat)',
+    },
+    {
         en: 'ID No.',
         de: 'ID Nr.'
+    },
+    {
+        en: 'ID No. (from Duplicate)',
+        de: 'ID Nr. (von Duplikat)'
+    },
+    {
+        en: 'Online ID Code',
+        de: 'Online ID Code'
+    },
+    {
+        en: 'Online ID Code (from Duplicate)',
+        de: 'Online ID Code (von Duplikat)'
     },
     {
         internal: '_designation',
@@ -864,10 +887,6 @@ module.exports = [
         de: 'Proband:innen aus dieser Location herausnehmen (z.B. bei Kindergärten)'
     },
     {
-        en: 'Online ID Code',
-        de: 'Online ID Code'
-    },
-    {
         en: 'Save and Unhide',
         de: 'Speichern und Einblenden'
     },
@@ -1150,10 +1169,6 @@ module.exports = [
         de: 'Ergebnisliste',
     },
     {
-        en: 'Internal ID',
-        de: 'Interne ID',
-    },
-    {
         en: 'Has Participation Permission',
         de: 'Hat Teilnahme-Erlaubnis',
     },
@@ -1197,8 +1212,20 @@ module.exports = [
         de: 'Keine Bedingungen',
     },
     {
+        en: 'Specific Values',
+        de: 'Spezifische Werte',
+    },
+    {
         en: 'Not with theese Values',
         de: 'Nicht mit diesen Werten',
+    },
+    {
+        en: 'Has Any Value',
+        de: 'Mit beliebigem Wert',
+    },
+    {
+        en: 'Has No Value',
+        de: 'Mit keinem Wert',
     },
     {
         en: 'Values',
@@ -1213,6 +1240,10 @@ module.exports = [
         internal: '_range_to',
         en: 'To',
         de: 'Bis',
+    },
+    {
+        en: 'Participation Range',
+        de: 'Teilnahme-Zeitraum'
     },
     {
         en: 'Date Range',
@@ -1475,7 +1506,7 @@ module.exports = [
         en: 'Trial-P.',
         de: 'Trial-P.' // FIXME
     },
-    
+   
     // Field sites
 
     {

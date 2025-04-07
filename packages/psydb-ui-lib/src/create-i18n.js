@@ -1,3 +1,4 @@
+import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 import { createTranslate } from '@mpieva/psydb-common-translations';
 
 // FIXME: i dont like this beeing here i think
@@ -20,8 +21,9 @@ const createI18N = (bag) => {
 
     var locale = localesByCode[localeCode] || enUSLocale;
     var translate = createTranslate(language);
+    var timezone = getSystemTimezone();
 
-    return { language, translate, localeCode, locale }
+    return { language, translate, localeCode, locale, timezone }
 }
 
 export default createI18N;

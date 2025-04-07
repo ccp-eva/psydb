@@ -1,12 +1,9 @@
 import React from 'react';
-import {
-    useUILanguage,
-    useUILocale,
-    useUITranslation
-} from '@mpieva/psydb-ui-contexts';
-
+import { __fixRelated } from '@mpieva/psydb-common-compat';
+import { Fields } from '@mpieva/psydb-custom-fields-common';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Alert } from '@mpieva/psydb-ui-layout';
-import { stringifyFieldValue, Fields } from '@mpieva/psydb-ui-lib';
+import { Fields as FormFields } from '@mpieva/psydb-ui-lib';
 
 import {
     escapeJsonPointer,
@@ -21,8 +18,8 @@ export const StudyPanel = (ps) => {
         ageFrameRecords = [],
         ageFrameRelated
     } = ps;
-    
-    var translate = useUITranslation();
+   
+    var [{ translate }] = useI18N();
 
     return (
         <div>
@@ -63,12 +60,11 @@ const AgeFrame = (ps) => {
         conditions
     } = state;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var formKey = createAgeFrameKey(ageFrameRecord);
 
-    var stringifiedAgeFrame = stringifyFieldValue({
-        rawValue: interval,
-        fieldDefinition: { type: 'AgeFrameInterval' }
+    var stringifiedAgeFrame = Fields.AgeFrameInterval.stringifyValue({
+        value: interval
     });
 
     var title = `${translate('Age Range')}  ${stringifiedAgeFrame}`;
@@ -76,7 +72,7 @@ const AgeFrame = (ps) => {
     return (
         <div className='p-3 mb-3 border bg-white'>
             <header className='pb-1 mb-3 border-bottom'>
-                <Fields.PlainCheckbox
+                <FormFields.PlainCheckbox
                     dataXPath={ `$.filters.${formKey}` }
                     label={ title }
                 />
@@ -106,12 +102,11 @@ const Condition = (ps) => {
         ageFrameRelated,
         subjectCRT,
     } = ps;
+    
+    var [{ translate, language, locale }] = useI18N();
 
     var { pointer, values } = condition;
-    
-    var [ language ] = useUILanguage();
-
-    var [ fieldDefinition ] = subjectCRT.findCustomFields({
+    var [ definition ] = subjectCRT.findCustomFields({
         'pointer': pointer
     });
 
@@ -119,28 +114,25 @@ const Condition = (ps) => {
     formKey = `${formKey}/${condKey}`;
 
     // FIXME: maybe we can just cut the "List" suffix via regex
-    if (fieldDefinition.type === 'HelperSetItemIdList') {
-        fieldDefinition.type = 'HelperSetItemId';
+    if (definition.systemType === 'HelperSetItemIdList') {
+        definition.systemType = 'HelperSetItemId';
     }
-    if (fieldDefinition.type === 'ForeignIdList') {
-        fieldDefinition.type = 'ForeignId';
+    if (definition.systemType === 'ForeignIdList') {
+        definition.systemType = 'ForeignId';
     }
 
+    // FIXME
+    var related = __fixRelated(ageFrameRelated, { isResponse: false });
+    
     return (
         <div className='d-flex'>
             <div style={{ width: '20%' }}>
-                { 
-                    fieldDefinition.displayNameI18N[language]
-                    || fieldDefinition.displayName
-                }:
+                { translate.fieldDefinition(definition) }:
             </div>
             <div className='flex-grow'>
                 { values.map((value, index) => (
                     <ConditionValue key={ index } { ...({
-                        formKey,
-                        value,
-                        fieldDefinition,
-                        ageFrameRelated,
+                        formKey, value, definition, related
                     })} />
                 ))}
             </div>
@@ -149,30 +141,23 @@ const Condition = (ps) => {
 }
 
 const ConditionValue = (ps) => {
-    var {
-        formKey,
-        value,
-        fieldDefinition,
-        ageFrameRelated,
-    } = ps;
-
-    var [ language ] = useUILanguage();
-    var locale = useUILocale();
+    var { formKey, value, definition, related } = ps;
+    var { systemType } = definition;
+    var [{ language, locale }] = useI18N();
 
     // FIXME: maybe escape certain values?
     formKey = `${formKey}/${value}`;
 
-    var label = stringifyFieldValue({
-        rawValue: value,
-        fieldDefinition,
-        ...ageFrameRelated,
-
-        language,
-        locale,
-    });
+    var stringify = Fields[systemType]?.stringifyValue;
+    var label = stringify ? (
+        stringify({
+            value, definition, related,
+            i18n: { language, locale }
+        })
+    ) : '[!!ERROR!!]';
 
     return (
-        <Fields.PlainCheckbox
+        <FormFields.PlainCheckbox
             dataXPath={ `$.filters.${formKey}` }
             label={ label }
         />

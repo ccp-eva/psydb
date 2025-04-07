@@ -2,9 +2,14 @@ module.exports = {
     sift: require('sift'),
     inlineText: require('@cdxoo/inline-text'),
 
+    excapeRX: require('./escape-rx'),
+    makeRX: require('./make-rx'),
+    makeDiaRX: require('./make-dia-rx'),
+
     CRTSettings: require('./crt-settings'),
     CRTSettingsList: require('./crt-settings-list'),
     FieldDefinition: require('./field-definition'),
+    createRecordLabel: require('./create-record-label'),
 
     CSVColumnRemappers: require('./csv-column-remappers'),
 
@@ -39,7 +44,6 @@ module.exports = {
 
     maybeGetValueWhenUnspread: require('./maybe-get-value-when-unspread'),
 
-    stringifyFieldValue: require('./stringify-field-value'),
     quicksort: require('./quicksort'),
     perceivedBrightness: require('./perceived-brightness'),
     range: require('./range'),
@@ -56,10 +60,6 @@ module.exports = {
     ),
 
     calculateTestableIntervals: require('./calculate-testable-intervals'),
-    createDefaultFieldDataTransformer: (
-        require('./create-default-field-data-transformer')
-    ),
    
     SmartArray: require('./smart-array'),
-    fixRelated: require('./fix-related'),
 }

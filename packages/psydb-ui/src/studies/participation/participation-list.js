@@ -1,21 +1,17 @@
 import React from 'react';
 import { convertPointerToPath, hasNone } from '@mpieva/psydb-core-utils';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
+
+import { useModalReducer, usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
-    useUIConfig,
-    useUITranslation
-} from '@mpieva/psydb-ui-contexts';
-
-import {
-    useModalReducer,
-    usePermissions,
-} from '@mpieva/psydb-ui-hooks';
+    TableHeadCustomCols,
+    TableBodyCustomCols,
+} from '@mpieva/psydb-custom-fields-ui';
 
 import {
     Table,
     TableHead,
-    TableHeadCustomCols,
-    TableBodyCustomCols,
     TableEmptyFallback,
 
     SortableTH,
@@ -38,14 +34,19 @@ const ParticipationList = (ps) => {
         records,
         related,
         definitions,
-        transformer,
         sorter,
 
         className,
         onSuccessfulUpdate,
     } = ps;
 
-    var translate = useUITranslation();
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
+    // FIXME
+    definitions = definitions.filter(it => (
+        IS_WKPRC ? it.key !== 'locationId' : true
+    ))
+
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
     
     var editModal = useModalReducer();
@@ -95,7 +96,6 @@ const ParticipationList = (ps) => {
                             record,
                             related,
                             definitions,
-                            transformer,
                             dateOfBirthField,
 
                             onEdit: editModal.handleShow,
@@ -117,14 +117,13 @@ const TableHeadCols = (ps) => {
     } = ps;
 
     var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
-    var translate = useUITranslation();
+    var [ i18n ] = useI18N();
+    var { translate } = i18n;
 
     return (
         <>
             <TableHeadCustomCols
-                definitions={ definitions.filter(it => (
-                    IS_WKPRC ? it.key !== 'locationId' : true
-                )) }
+                definitions={ definitions }
                 sorter={ sorter }
                 canSort={ canSort }
             />
@@ -137,7 +136,7 @@ const TableHeadCols = (ps) => {
                 <SortableTH
                     label={ translate('T-Age') }
                     sorter={ sorter }
-                    path={ convertPointerToPath( dateOfBirthField.pointer )}
+                    path={ convertPointerToPath(dateOfBirthField.pointer)}
                 />
             )}
             <th>
@@ -167,7 +166,6 @@ const ParticipationListRow = (ps) => {
         record,
         related,
         definitions,
-        transformer,
         dateOfBirthField,
 
         onEdit,
@@ -175,7 +173,7 @@ const ParticipationListRow = (ps) => {
     } = ps;
 
     var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var showEdit = permissions.hasFlag('canWriteParticipation');
     var showRemove = permissions.hasFlag('canWriteParticipation');
@@ -203,13 +201,11 @@ const ParticipationListRow = (ps) => {
 
     return (
         <tr>
-            <TableBodyCustomCols { ...({
-                record,
-                definitions: definitions.filter(it => (
-                    IS_WKPRC ? it.key !== 'locationId' : true
-                )),
-                transformer,
-            }) } />
+            <TableBodyCustomCols
+                record={ record }
+                related={ related }
+                definitions={ definitions }
+            />
             <TimestampAndMaybeAge { ...({
                 timestamp,
                 record,

@@ -10,7 +10,7 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
         if (col === 'experiment_name') {
             return 'experimentName';
         }
-        if (col === 'daily_running_No') {
+        if (col === 'daily_running_No' || col === 'daily_running_no') {
             return 'intradaySeqNumber';
         }
         if (col === 'year') {
@@ -31,15 +31,15 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
         if (col === 'experimenter_id') {
             return 'experimentOperatorIds[0]';
         }
-        if (/^subject/.test(col)) {
+        if (/^subject(_\d+)?/.test(col)) {
             var [ _unused, ix = 0 ] = col.split('_');
             return `subjectData[${ix}].subjectId`;
         }
-        if (/^role/.test(col)) {
+        if (/^role(_\d+?)/.test(col)) {
             var [ _unused, ix = 0 ] = col.split('_');
             return `subjectData[${ix}].role`;
         }
-        if (/^comment/.test(col)) {
+        if (/^comment(_\d?)/.test(col)) {
             var [ _unused, ix = 0 ] = col.split('_');
             return `subjectData[${ix}].comment`;
         }

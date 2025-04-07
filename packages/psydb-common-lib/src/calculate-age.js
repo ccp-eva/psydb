@@ -1,6 +1,6 @@
 'use strict';
-var maybeUseESM = require('./maybe-use-esm');
-var intervalToDuration = maybeUseESM(require('date-fns/intervalToDuration'));
+var { __maybeUseESM } = require('@mpieva/psydb-common-compat');
+var intervalToDuration = __maybeUseESM(require('date-fns/intervalToDuration'));
 
 var calculateAge = (bag) => {
     var {

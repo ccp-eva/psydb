@@ -28,50 +28,57 @@ RequestBodySchema.Core = () => OpenObject({
 
 RequestBodySchema.Full = () => ExactObject({
     properties: {
-        subjectType: CustomRecordTypeKey({ collection: 'subject' }),
-        customGdprFilters: { type: 'object' },
-        customScientificFilters: {
-            type: 'object',
-        },
+        'subjectType': CustomRecordTypeKey({ collection: 'subject' }),
+        // XXX
+        'customGdprFilters': { type: 'object' },
+        'customScientificFilters': { type: 'object' },
         
-        specialFilters: ExactObject({
+        'specialFilters': ExactObject({
             properties: {
-                subjectId: SaneString(),
-                onlineId: SaneString(),
-                sequenceNumber: SaneString(),
-                didParticipateIn: ForeignIdList({
+                'subjectId': SaneString(),
+                'onlineId': SaneString(),
+                'sequenceNumber': SaneString(),
+
+                'mergedDuplicateId': SaneString(),
+                'mergedDuplicateOnlineId': SaneString(),
+                'mergedDuplicateSequenceNumber': SaneString(),
+
+                'didParticipateIn': ForeignIdList({
                     collection: 'study'
                 }),
-                didNotParticipateIn: ForeignIdList({
+                'didNotParticipateIn': ForeignIdList({
                     collection: 'study',
                 }),
-                hasTestingPermission: ExactObject({
+                'participationInterval': DateOnlyServerSideInterval({
+                    required: []
+                }),
+                'hasTestingPermission': ExactObject({
                     properties: {
-                        labMethod: { type: 'string' },
-                        researchGroupId: ForeignId({
+                        'labMethod': { type: 'string' },
+                        'researchGroupId': ForeignId({
                             collection: 'researchGroup'
                         })
                     },
                 }),
-                comment: FullText(),
-                isHidden: StringEnum([ 'any', 'only-true', 'only-false' ])
+                'comment': FullText(),
+                'isHidden': StringEnum([ 'any', 'only-true', 'only-false' ])
             }
         }),
 
-        columns: DefaultArray({
+        'columns': DefaultArray({
             items: JsonPointer(),
             minItems: 1,
         }),
-        sort: ExactObject({
+        'sort': ExactObject({
             properties: {
-                column: JsonPointer(),
-                direction: StringEnum([ 'asc', 'desc' ]),
+                'column': JsonPointer(),
+                'direction': StringEnum([ 'asc', 'desc' ]),
             },
             required: [],
         }),
-        offset: Integer({ minimum: 0 }),
-        limit: Integer({ maximum: 1000 }),
-        timezone: Timezone(),
+        'offset': Integer({ minimum: 0 }),
+        'limit': Integer({ maximum: 1000 }),
+        'timezone': Timezone(),
     },
     required: [
         'subjectType',

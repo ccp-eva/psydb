@@ -61,7 +61,7 @@ var extendedExperimentData = async (context, next) => {
         db,
         permissions,
         params,
-        timezone,
+        i18n,
     } = context;
 
     validateOrThrow({
@@ -76,7 +76,7 @@ var extendedExperimentData = async (context, next) => {
 
     var experimentData = await fetchOneExperimentData({
         db,
-        timezone,
+        i18n,
         permissions,
         experimentType,
         experimentId,
@@ -143,12 +143,12 @@ var extendedExperimentData = async (context, next) => {
     //////////////////////////////////7
 
     var studyData = await fetchOneStudyData({
-        db, timezone,
+        db, i18n,
         _id: studyId,
     });
 
     var labProcedureSettingData = await fetchLabProcedureSettingData({
-        db, timezone,
+        db, i18n,
         match: {
             type: experimentType,
             studyId: studyId,
@@ -241,7 +241,7 @@ var extendedExperimentData = async (context, next) => {
             //offset,
             //limit
             disablePermissionCheck: true,
-            timezone,
+            ...i18n
         });
 
         debug('fetching subject related labels');
@@ -250,7 +250,7 @@ var extendedExperimentData = async (context, next) => {
             collectionName: 'subject',
             recordType: typeKey,
             records,
-            timezone,
+            ...i18n,
         });
         
         var availableDisplayFieldDataByPointer = keyBy({

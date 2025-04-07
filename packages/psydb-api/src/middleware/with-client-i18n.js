@@ -13,11 +13,13 @@ var localesByCode = [
 }), {});
 
 var withClientI18N = () => async (context, next) => {
-    var { request } = context;
+    var { request, timezone } = context;
     var { language = 'en', locale = 'en-US' } = request.header;
    
     context.language = language;
     context.locale = localesByCode[locale] || enUSLocale;
+
+    context.i18n = { language, locale: context.locale, timezone };
 
     await next();
 }

@@ -1,6 +1,5 @@
 'use strict';
-var jsonpointer = require('jsonpointer');
-var { entries } = require('@mpieva/psydb-core-utils');
+var { ejson, entries, jsonpointer } = require('@mpieva/psydb-core-utils');
 
 var UNSET = (channel, opData) => {
     for (var [ pointer, value ] of entries(opData)) {

@@ -1,13 +1,17 @@
-import React from 'react';
-import { keyBy, jsonpointer } from '@mpieva/psydb-core-utils';
-import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import React, { Fragment } from 'react';
+import { __fixRelated, __fixDefinitions } from '@mpieva/psydb-common-compat';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetch,
     usePaginationURLSearchParams,
     usePermissions,
 } from '@mpieva/psydb-ui-hooks';
+
+import {
+    TableHeadCustomCols,
+    TableBodyCustomCols,
+} from '@mpieva/psydb-custom-fields-ui';
 
 import {
     Table,
@@ -20,18 +24,14 @@ import {
 
 import { CSVExtendedSearchExportButton } from '@mpieva/psydb-ui-lib';
 
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns'
-
-import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-head-cols';
-import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
-
 import sanitizeFormData from './sanitize-form-data';
 
 export const Results = (ps) => {
     var { schema, crtSettings, formData } = ps;
     var { fieldDefinitions } = crtSettings;
     var { columns } = formData;
-    
+
+    var [{ timezone }] = useI18N();
     var permissions = usePermissions();
     var canUseCSVExport = permissions.hasFlag('canUseCSVExport');
 
@@ -44,10 +44,7 @@ export const Results = (ps) => {
             agent
             .getAxios()
             .post('/api/extended-search/locations', {
-                ...saneData,
-                offset,
-                limit,
-                timezone: getSystemTimezone()
+                ...saneData, offset, limit, timezone,
             })
             .then((response) => {
                 pagination.setTotal(response.data.data.recordsCount);
@@ -67,17 +64,30 @@ export const Results = (ps) => {
         recordsCount,
         related,
         displayFieldData,
-    } = fetched.data;
+    } = __fixRelated(fetched.data); // FIXME
 
-    var selectedFieldData = displayFieldData.filter(it => (
-        columns.includes(it.dataPointer)
-    ));
+    // FIXME
+    var displayFieldData = __fixDefinitions(displayFieldData);
+   
+    // NOTE: there are specail columns that dont appear in
+    // definitions
+    // FIXME: this is ugly
+    var definitions = [];
+    var specials = [];
+    for (var it of columns) {
+        if (it.startsWith('/_special')) {
+            specials.push(it)
+        }
+        else {
+            definitions.push(
+                displayFieldData.find(def => (def.pointer === it))
+            )
+        }
+    }
 
     var TableComponent = (
-        recordsCount > 0
-        ? RecordTable
-        : Fallback
-    )
+        recordsCount > 0 ? RecordTable : Fallback
+    );
 
     return (
         <div>
@@ -98,10 +108,10 @@ export const Results = (ps) => {
             </div>
 
             <TableComponent { ...({
-                columns,
-                selectedFieldData,
+                definitions,
                 records,
-                related
+                related,
+                specials,
             })} />
         </div>
     )
@@ -109,7 +119,7 @@ export const Results = (ps) => {
 
 
 const Fallback = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <>
             <Table>
@@ -132,17 +142,12 @@ const RecordTable = (ps) => {
 }
 
 const TableHead = (ps) => {
-    var { columns, selectedFieldData } = ps;
-    var translate = useUITranslation();
-    var keyed = keyBy({ items: selectedFieldData, byProp: 'dataPointer' });
+    var { definitions, specials } = ps;
+    var [{ translate }] = useI18N();
     return (
         <thead><tr>
-            <FieldDataHeadCols { ...({
-                displayFieldData: (
-                    columns.map(it => keyed[it]).filter(it => !!it)
-                ),
-            })} />
-            { columns.includes('/_specialStudyReverseRefs') && (
+            <TableHeadCustomCols definitions={ definitions } />
+            { specials.includes('/_specialStudyReverseRefs') && (
                 <th>{ translate('Assigned Studies') }</th>
             )}
             <th></th>
@@ -151,46 +156,40 @@ const TableHead = (ps) => {
 }
 
 const TableBody = (ps) => {
-    var { columns, selectedFieldData, records, related } = ps;
-    var keyed = keyBy({ items: selectedFieldData, byProp: 'dataPointer' });
+    var { definitions, records, related, specials } = ps;
 
     return (
-        <tbody>
-            { records.map(it => (
-                <tr
-                    key={ it._id }
-                    className={ it._isHidden && 'bg-light text-grey' }
-                >
-                    <FieldDataBodyCols { ...({
-                        record: it,
-                        //displayFieldData: selectedFieldData,
-                        displayFieldData: (
-                            columns.map(it => keyed[it]).filter(it => !!it)
-                        ),
-                        ...related
-                    })} />
-                    { columns.includes('/_specialStudyReverseRefs') && (
-                        <td>
-                            { (it._specialStudyReverseRefs || []).map((it, index) => (
-                                <>
-                                    { index > 0 && ', ' }
-                                    <a href={ `#/studies/${it.type}/${it._id}` }>
-                                        { it.state.shorthand }
-                                    </a>
-                                </>
-                            )) }
-                        </td>
-                    )}
+        <tbody>{ records.map(it => (
+            <tr
+                key={ it._id }
+                className={ it._isHidden && 'bg-light text-grey' }
+            >
+                <TableBodyCustomCols
+                    definitions={ definitions }
+                    record={ it }
+                    related={ related }
+                />
+                { specials.includes('/_specialStudyReverseRefs') && (
                     <td>
-                        <div className='d-flex justify-content-end'>
-                            <LocationIconButton
-                                to={`/locations/${it.type}/${it._id}`}
-                            />
-                        </div>
+                        { (it._specialStudyReverseRefs || []).map((it, ix) => (
+                            <Fragment key={ ix }>
+                                { ix > 0 && ', ' }
+                                <a href={ `#/studies/${it.type}/${it._id}` }>
+                                    { it.state.shorthand }
+                                </a>
+                            </Fragment>
+                        )) }
                     </td>
-                </tr>
-            ))}
-        </tbody>
+                )}
+                <td>
+                    <div className='d-flex justify-content-end'>
+                        <LocationIconButton
+                            to={`/locations/${it.type}/${it._id}`}
+                        />
+                    </div>
+                </td>
+            </tr>
+        ))}</tbody>
     )
 }
 

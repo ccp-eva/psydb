@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
+    "build": "",
     "test": "npx mocha --config ./mocha.config.json ./src"
   },
   "repository": {
@@ -30,7 +31,7 @@
     "react-router": "~5.2.0",
     "@cdxoo/omit": "~1.0.1",
     "@cdxoo/json-base64": "~1.0.0",
-    "@cdxoo/react-router-url-search-params": "~1.2.0",
+    "@cdxoo/react-router-url-search-params": "~2.0.0",
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ui-utils": "workspace:~0.1.0-alpha",

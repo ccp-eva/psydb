@@ -1,11 +1,14 @@
 import React from 'react';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { Button } from '@mpieva/psydb-ui-layout';
+import { Button, Grid } from '@mpieva/psydb-ui-layout';
 import {
     FormBox,
     DefaultForm,
-    ExtendedSearchFields as Fields
+    Fields as CoreFields,
+    ExtendedSearchFields as Fields,
+
+    withField
 } from '@mpieva/psydb-ui-lib';
 
 // TODO: filter undefined values from all id lists
@@ -18,20 +21,43 @@ export const Filters = (ps) => {
     
     return (
         <FormBox title={ translate('_extended_search_filters_tab') }>
-            <Fields.SaneString
-                dataXPath='$.specialFilters.sequenceNumber'
-                label={ translate('ID No.') }
-            />
-            <Fields.SaneString
-                dataXPath='$.specialFilters.onlineId'
-                label={ translate('Online ID Code') }
-            />
-            { permissions.isRoot() && (
+            <Grid cols={[ '1fr', '1fr' ]}>
                 <Fields.SaneString
-                    dataXPath='$.specialFilters.subjectId'
-                    label={ translate('Internal ID') }
+                    dataXPath='$.specialFilters.sequenceNumber'
+                    label={ translate('ID No.') }
+                    uiSplit={[ 4,8 ]}
                 />
-            )}
+                <Fields.SaneString
+                    dataXPath='$.specialFilters.mergedDuplicateSequenceNumber'
+                    label={ translate('ID No. (from Duplicate)') }
+                    uiSplit={[ 4,8 ]}
+                />
+                <Fields.SaneString
+                    dataXPath='$.specialFilters.onlineId'
+                    label={ translate('Online ID Code') }
+                    uiSplit={[ 4,8 ]}
+                />
+                <Fields.SaneString
+                    dataXPath='$.specialFilters.mergedDuplicateOnlineId'
+                    label={ translate('Online ID Code (from Duplicate)') }
+                    uiSplit={[ 4,8 ]}
+                />
+                { permissions.isRoot() && (
+                    <Fields.SaneString
+                        dataXPath='$.specialFilters.subjectId'
+                        label={ translate('Internal ID') }
+                        uiSplit={[ 4,8 ]}
+                    />
+                )}
+                { permissions.isRoot() && (
+                    <Fields.SaneString
+                        dataXPath='$.specialFilters.mergedDuplicateId'
+                        label={ translate('Internal ID (from Duplicate)') }
+                        uiSplit={[ 4,8 ]}
+                    />
+                )}
+            </Grid>
+
             <Fields.Custom
                 dataXPath='$.customGdprFilters'
                 subChannelKey='gdpr'
@@ -56,6 +82,13 @@ export const Filters = (ps) => {
                 label={ translate('Has Not Participated in') }
                 collection='study'
             />
+
+            {/* XXX */}
+            <ParticipatedBetween
+                dataXPath='$.specialFilters.participationInterval'
+                label={ translate('Participated') }
+            />
+
             {(
                 !crtSettings.commentFieldIsSensitive
                 || permissions.hasFlag('canAccessSensitiveFields')
@@ -82,3 +115,27 @@ export const Filters = (ps) => {
         </FormBox>
     )
 }
+
+const ParticipatedBetween = withField({ Control: (ps) => {
+    var { dataXPath } = ps;
+
+    var translate = useUITranslation();
+    return (
+        <div className='d-flex border p-3'>
+            <div className='w-50 flex-grow'>
+                <CoreFields.DateOnlyServerSide
+                    dataXPath={ `${dataXPath}.start` }
+                    label={ translate('_range_from') }
+                    formGroupClassName='mb-0'
+                />
+            </div>
+            <div className='w-50 flex-grow'>
+                <CoreFields.DateOnlyServerSide
+                    dataXPath={ `${dataXPath}.end` }
+                    label={ translate('_range_to') }
+                    formGroupClassName='mb-0'
+                />
+            </div>
+        </div>
+    )
+}})

@@ -88,6 +88,8 @@ const RecordListContainer = (ps) => {
 
         enableExtendedSearch,
         enableCSVExport,
+        
+        enableDuplicatesSearch,
 
         enableSelectRecords,
         showSelectionIndicator,
@@ -118,7 +120,7 @@ const RecordListContainer = (ps) => {
     var canCreate = permissions.hasCollectionFlag(collection, 'write');
     var canUseExtendedSearch = permissions.hasFlag('canUseExtendedSearch');
     var canUseCSVExport = permissions.hasFlag('canUseCSVExport');
-
+    
     var extQuery = createExtendedSearchQuery(query);
     var extQueryUrl = (
         extQuery
@@ -126,6 +128,9 @@ const RecordListContainer = (ps) => {
         : `${url}/extended-search`
     );
     //var [ showHidden, setShowHidden ] = useState(false);
+
+    var canUseDuplicatesSearch = permissions.isRoot(); // FIXME
+    var duplicatesUrl = `${url}/duplicates/`;
 
     return (
         <div className={ className }>
@@ -135,7 +140,12 @@ const RecordListContainer = (ps) => {
                         { translate('New Record') }
                     </LinkButton>
                 )}
-                <div>
+                <div className='d-flex gapx-3'>
+                    { enableDuplicatesSearch && canUseDuplicatesSearch && (
+                        <LinkButton to={ duplicatesUrl }>
+                            { translate('Duplicates') }
+                        </LinkButton>
+                    )}
                     { enableExtendedSearch && canUseExtendedSearch && (
                         <LinkButton to={ extQueryUrl }>
                             { translate('Advanced Search') }
@@ -143,8 +153,6 @@ const RecordListContainer = (ps) => {
                     )}
                     { enableCSVExport && canUseCSVExport && (
                         <CSVSearchExportButton { ...({
-                            className: 'ml-3',
-
                             collection,
                             recordType,
                             constraints,

@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 
 import { jsonpointer } from '@mpieva/psydb-core-utils';
-import { fixRelated } from '@mpieva/psydb-common-lib';
+import { __fixRelated } from '@mpieva/psydb-common-compat';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     useFetchAll,
@@ -117,7 +117,7 @@ const ParticipationByType = (ps) => {
         participationByStudyType
     } = participationData;
 
-    var related = fixRelated(subjectData, { isResponse: false });
+    var related = __fixRelated(subjectData, { isResponse: false });
 
     var translate = useUITranslation();
 

@@ -5,18 +5,18 @@ var inlineString = require('@cdxoo/inline-string');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var { ejson, arrify, isPromise } = require('@mpieva/psydb-core-utils');
+var { SmartArray } = require('@mpieva/psydb-common-lib');
+var futils = require('@mpieva/psydb-custom-fields-mongo');
 
 var {
     SystemPermissionStages,
     ProjectDisplayFieldsStage,
     SeperateRecordLabelDefinitionFieldsStage,
     StripEventsStage,
-    QuickSearchStages,
     MatchConstraintsStage,
 } = require('../fetch-record-helpers');
 
 var convertPointerToPath = require('../convert-pointer-to-path');
-var fieldTypeConversions = require('../mongodb-field-type-conversions');
 var createRecordLabel = require('../create-record-label');
 var fromFacets = require('../from-facets');
 var maybeStages = require('../maybe-stages');
@@ -68,9 +68,13 @@ var fetchRecordByFilter = async ({
     
     sort,
     timezone,
+    language,
+    locale,
 }) => {
     offset = offset ||0;
     limit = limit || 0;
+
+    //console.log(queryFields)
 
     var preCountStages = [
         ...(await maybeStages({
@@ -148,11 +152,27 @@ var fetchRecordByFilter = async ({
 
         ...maybeStages({
             condition: queryFields && queryFields.length > 0,
-            stages: () => QuickSearchStages({
-                queryFields,
-                fieldTypeConversions,
-            })
-        })
+            stages: () => futils.createMatchStages({
+                type: 'quick-search',
+                from: queryFields.map((it) => {
+                    var { field, value } = it;
+                    var systemType, pointer;
+                    if (it.field) {
+                        systemType = (field.systemType || field.type);
+                        pointer = (field.pointer || field.dataPointer);
+                    }
+                    else {
+                        systemType = (it.systemType || it.type);
+                        pointer = (it.pointer || it.dataPointer);
+                    }
+
+                    return {
+                        definition: { systemType, pointer },
+                        input: value,
+                    }
+                }),
+            }),
+        }),
     ];
 
     //console.dir(ejson(preCountStages), { depth: null });
@@ -351,7 +371,7 @@ var fetchRecordByFilter = async ({
             it._recordLabel = createRecordLabel({
                 record: it._recordLabelDefinitionFields,
                 definition: recordLabelDefinition,
-                timezone,
+                timezone, language, locale,
             });
             delete it._recordLabelDefinitionFields;
         })

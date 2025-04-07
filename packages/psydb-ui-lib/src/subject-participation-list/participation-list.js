@@ -17,9 +17,6 @@ import {
 import datefns from '../date-fns';
 import calculateAge from '../calculate-age';
 
-import FieldDataHeadCols from '../record-list/field-data-head-cols';
-import FieldDataBodyCols from '../record-list/field-data-body-cols';
-
 import {
     EditModal,
     RemoveModal
@@ -68,9 +65,6 @@ const ParticipationList = (ps) => {
             <Table className='bg-white border'>
                 <thead>
                     <tr>
-                        {/*<FieldDataHeadCols
-                            displayFieldData={ displayFieldData }
-                        />*/}
                         <SortableTH
                             label={ translate('Study') }
                             sorter={ sorter }

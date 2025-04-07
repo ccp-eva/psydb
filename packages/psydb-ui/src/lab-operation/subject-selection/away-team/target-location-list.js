@@ -8,8 +8,9 @@ import {
 } from 'react-router-dom';
 
 import { without, omit } from '@mpieva/psydb-core-utils';
+import { __fixRelated, __fixDefinitions } from '@mpieva/psydb-common-compat';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     useFetch,
     useRevision,
@@ -60,7 +61,7 @@ const TargetLocationList = (ps) => {
         )
     }
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { value: revision, up: increaseRevision } = useRevision();
 
     var pagination = usePaginationReducer({
@@ -169,6 +170,15 @@ const TargetLocationList = (ps) => {
         locationExperimentMetadata,
         locationCount,
     } = fetched.data;
+
+    subjectMetadata = __fixRelated(subjectMetadata);
+    subjectMetadata.definitions = __fixDefinitions(
+        subjectMetadata.displayFieldData
+    );
+    locationMetadata = __fixRelated(locationMetadata);
+    locationMetadata.definitions = __fixDefinitions(
+        locationMetadata.displayFieldData
+    );
 
     return (
         <>

@@ -51,6 +51,11 @@ describe('csv-import/subject/create-default fs-malaysia', function () {
         expect(ejson(subjects[1].gdpr.state)).to.eql({
             custom: { name: 'Alice' }
         });
+        
+        expect(ejson(subjects[0].scientific.state.custom.dateOfBirth))
+            .to.eql({ $date: '2012-12-29T00:00:00.000Z' });
+        expect(ejson(subjects[1].scientific.state.custom.dateOfBirth))
+            .to.eql({ $date: '2012-11-29T00:00:00.000Z' });
     });
     
     it('full import with all only required columns', async function () {
@@ -141,6 +146,7 @@ describe('csv-import/subject/create-default fs-malaysia', function () {
 
             var info = e.getInfo();
             expect(info.apiStatus).to.eql('NoSubjectsAreImportable');
+            //console.log(e.getInfo());
         }
     });
     
@@ -187,6 +193,55 @@ describe('csv-import/subject/create-default fs-malaysia', function () {
         expect(ejson(subjects[1].gdpr.state)).to.eql({
             custom: { name: 'Alice' }
         });
+    });
+
+    it('coerces bool types', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({
+            db, buffer: loadCSV('subject-import/fs-malaysia-coerce-bool'),
+        });
+
+        var koaContext = await sendMessage({
+            type: 'csv-import/subject/create-default',
+            timezone: 'UTC',
+            payload: jsonify({ researchGroupId, subjectType, fileId })
+        });
+
+        var { csvImportId } = koaContext.response.body.data;
+        var subjects = await aggregateToArray({ db, subject: [
+            { $match: { csvImportId }},
+        ]});
+        expect(subjects.length).to.eql(3);
+        expect(ejson(subjects[0].gdpr.state)).to.eql({
+            custom: { name: 'Bob' }
+        });
+        expect(ejson(subjects[1].gdpr.state)).to.eql({
+            custom: { name: 'Alice' }
+        });
+        expect(ejson(subjects[2].gdpr.state)).to.eql({
+            custom: { name: 'Eve' }
+        });
+    });
+
+    it('accepts short dates', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({
+            db, buffer: loadCSV('subject-import/fs-malaysia-short-date'),
+        });
+
+        var koaContext = await sendMessage({
+            type: 'csv-import/subject/create-default',
+            timezone: 'UTC',
+            payload: jsonify({ researchGroupId, subjectType, fileId })
+        });
+
+        var { csvImportId } = koaContext.response.body.data;
+        var subjects = await aggregateToArray({ db, subject: [
+            { $match: { csvImportId }},
+        ]});
+        expect(subjects.length).to.eql(2);
+        expect(ejson(subjects[0].scientific.state.custom.dateOfBirth))
+            .to.eql({ $date: '2012-12-29T00:00:00.000Z' });
+        expect(ejson(subjects[1].scientific.state.custom.dateOfBirth))
+            .to.eql({ $date: '2012-11-29T00:00:00.000Z' });
     });
 
     it.skip('full import with 1000 lines', async function () {

@@ -14,7 +14,7 @@ var postprocess = async (bag) => {
 
         now,
         interval,
-        timezone,
+        i18n,
         ageFrameFilters,
        
         studyRecords,
@@ -41,11 +41,11 @@ var postprocess = async (bag) => {
         subjectRecords,
         desiredTestInterval: interval,
         dobFieldPointer,
-        clientTimezone: timezone
+        clientTimezone: i18n.timezone
     });
     
     postprocessSubjectRecords({
-        timezone,
+        i18n,
         subjectRecords,
         subjectRecordType: subjectTypeKey,
         studyRecords,

@@ -6,6 +6,7 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "scripts": {
+    "build": "",
     "test": "npx mocha --config ./mocha.config.json ./test"
   },
   "dependencies": {
@@ -16,8 +17,8 @@
     "@cdxoo/jsonpointer-to-objectpath": "~1.0.0",
     "@cdxoo/objectpath-to-jsonpointer": "~1.0.0",
     "@cdxoo/traverse": "~0.0.2",
-    "@cdxoo/flat": "~0.0.11",
-    "@cdxoo/tiny-ejson": "~1.0.0"
+    "@cdxoo/flat": "~0.1.0",
+    "@cdxoo/tiny-ejson": "~1.1.0"
   },
   "devDependencies": {
     "mocha": "~10.2.0",

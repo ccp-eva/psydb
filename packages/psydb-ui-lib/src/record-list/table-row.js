@@ -1,6 +1,8 @@
 import React from 'react';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { classnames } from '@mpieva/psydb-ui-utils';
-import { LinkButton, TableBodyCustomCols } from '@mpieva/psydb-ui-layout';
+import { TableBodyCustomCols } from '@mpieva/psydb-custom-fields-ui';
+import { LinkButton } from '@mpieva/psydb-ui-layout';
 
 import CheckColumn from '../check-column';
 
@@ -8,7 +10,7 @@ const TableRow = (ps) => {
     var {
         record,
         definitions,
-        transformer,
+        related,
         
         enableView,
         enableEdit_old,
@@ -56,7 +58,7 @@ const TDs = (ps) => {
     var {
         record,
         definitions,
-        transformer,
+        related,
         
         enableView,
         enableEdit_old,
@@ -82,9 +84,7 @@ const TDs = (ps) => {
                 }) } />
             )}
             <TableBodyCustomCols { ...({
-                record,
-                definitions,
-                transformer,
+                record, definitions, related,
                 ...(enableRecordRowLink && {
                     wrapAsLinkTo: `#${linkBaseUrl}/${record._id}`
                 })

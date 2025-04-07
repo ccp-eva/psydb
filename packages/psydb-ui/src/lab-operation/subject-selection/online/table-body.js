@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import {
     Button,
@@ -8,13 +7,14 @@ import {
     Icons,
 } from '@mpieva/psydb-ui-layout';
 
+import { TableBodyCustomCols } from '@mpieva/psydb-custom-fields-ui';
+
 import {
     formatDateInterval,
     SubjectTestableIntervals,
 } from '@mpieva/psydb-ui-lib';
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 
-import { FieldDataBodyCols } from '@mpieva/psydb-ui-lib/src/record-list';
 //import UpcomingExperiments from '../upcoming-experiments';
 
 const TableBody = (ps) => {
@@ -32,6 +32,7 @@ const TableBody = (ps) => {
     } = ps;
 
     var { records, ...subjectMetadata } = subjectData;
+    var { definitions, related } = subjectMetadata;
     
     var permissions = usePermissions();
     var canWriteSubjects = permissions.hasFlag('canWriteSubjects');
@@ -47,6 +48,9 @@ const TableBody = (ps) => {
 
                         subjectType,
                         record,
+                        related,
+                        definitions,
+                        
                         subjectMetadata,
                         subjectExperimentMetadata,
                         
@@ -63,22 +67,27 @@ const TableBody = (ps) => {
     );
 }
 
-const TableRow = ({
-    inviteType,
-    desiredTestInterval,
+const TableRow = (ps) => {
+    var {
+        inviteType,
+        desiredTestInterval,
 
-    index,
-    subjectType,
-    record,
-    subjectMetadata,
-    subjectExperimentMetadata,
+        index,
+        subjectType,
+        
+        record,
+        related,
+        definitions,
 
-    canWriteSubjects,
+        subjectMetadata,
+        subjectExperimentMetadata,
 
-    selectedSubjectIds,
-    onSelectSubject,
-    onViewSubject
-}) => {
+        canWriteSubjects,
+
+        selectedSubjectIds,
+        onSelectSubject,
+        onViewSubject
+    } = ps;
     var isRed = (
         record._upcomingExperiments.length > 0
     );
@@ -86,23 +95,12 @@ const TableRow = ({
     var isEven = (index % 2) === 0;
     var className = (
         isRed
-        ? (
-            isEven
-            ? 'bg-medium-red'
-            : 'bg-light-red'
-        )
-        : (
-            isEven
-            ? 'bg-light'
-            : ''
-        )
+        ? ( isEven ? 'bg-medium-red' : 'bg-light-red' )
+        : ( isEven ? 'bg-light' : '' )
     );
     return (
         <>
-            <tr
-                key={record._id}
-                className={ className }
-            >
+            <tr className={ className }>
                 <td>
                     <span
                         className='text-primary d-flex gapx-2 align-items-center'
@@ -117,10 +115,11 @@ const TableRow = ({
                         { record._recordLabel }
                     </span>
                 </td>
-                <FieldDataBodyCols { ...({
-                    record,
-                    ...subjectMetadata
-                }) }/>
+                <TableBodyCustomCols
+                    record={ record }
+                    definitions={ definitions }
+                    related={ related }
+                />
                 <td>
                     { calculateAge({
                         base: record._ageFrameField,
@@ -246,7 +245,7 @@ const Participation = (ps) => {
     var { record, subjectMetadata, className } = ps;
     var { participatedInStudies } = record.scientific.state.internals;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var filtered = (
         participatedInStudies
@@ -294,8 +293,7 @@ const UpcomingExperiments = (ps) => {
         className,
     } = ps;
 
-    var translate = useUITranslation();
-    var locale = useUILocale();
+    var [{ translate, locale }] = useI18N();
 
     var upcoming = (
         records.length > 0
@@ -384,7 +382,7 @@ const ActionButtons = (ps) => {
         onViewSubject
     } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>

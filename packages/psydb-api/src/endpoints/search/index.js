@@ -51,7 +51,8 @@ var search = async (context, next) => {
     var { 
         db,
         permissions,
-        request
+        request,
+        i18n
     } = context;
 
     var isValid = false;
@@ -196,6 +197,8 @@ var search = async (context, next) => {
         // TODO remove this as soon as we
         // can properly quicksearch and search for fk
         //disablePermissionCheck: (target === 'optionlist' ? true : false)
+
+        ...i18n,
     });
     debug('<<<<<<<<< END')
 
@@ -206,6 +209,7 @@ var search = async (context, next) => {
         collectionName,
         recordType,
         records: records,
+        ...i18n
     });
 
     var availableDisplayFieldDataByPointer = keyBy({

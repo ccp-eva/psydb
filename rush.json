@@ -4,12 +4,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
 
-  "rushVersion": "5.86.0",
-  "pnpmVersion": "6.32.7",
+  "rushVersion": "5.149.0",
+  "pnpmVersion": "8.15.9",
   "pnpmOptions": {
       "useWorkspaces": true
   },
-  "nodeSupportedVersionRange": ">=14.21.0 <20.0.0",
+  "nodeSupportedVersionRange": ">=14.21.0 <23.0.0",
   "gitPolicy": {},
   "repository": {
     "url": "https://github.com/cdxOo/psydb",
@@ -73,6 +73,21 @@
     {
        "packageName": "@mpieva/psydb-mongo-stages",
        "projectFolder": "packages/psydb-mongo-stages",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-custom-fields-common",
+       "projectFolder": "packages/psydb-custom-fields-common",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-custom-fields-mongo",
+       "projectFolder": "packages/psydb-custom-fields-mongo",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-custom-fields-ui",
+       "projectFolder": "packages/psydb-custom-fields-ui",
        "reviewCategory": "production"
     },
     {
@@ -206,6 +221,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-api-crt-utils",
+       "projectFolder": "packages/psydb-api-crt-utils",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-api-self-auth",
        "projectFolder": "packages/psydb-api-self-auth",
        "reviewCategory": "production"
@@ -218,6 +238,11 @@
     {
        "packageName": "@mpieva/psydb-api-endpoint-lib",
        "projectFolder": "packages/psydb-api-endpoint-lib",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-api-endpoints",
+       "projectFolder": "packages/psydb-api-endpoints",
        "reviewCategory": "production"
     },
     {
@@ -258,6 +283,11 @@
     {
        "packageName": "@mpieva/psydb-date-interval-fns",
        "projectFolder": "packages/psydb-date-interval-fns",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-common-compat",
+       "projectFolder": "packages/psydb-common-compat",
        "reviewCategory": "production"
     },
     {

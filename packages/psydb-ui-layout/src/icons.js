@@ -5,6 +5,7 @@ export {
     ArrowDownShort,
     ArrowUp,
     ArrowDown,
+    ArrowCounterclockwise,
    
     ChevronLeft,
     ChevronRight,
