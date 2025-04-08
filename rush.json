@@ -276,6 +276,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-calculate-age",
+       "projectFolder": "packages/psydb-calculate-age",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-interval-fns",
        "projectFolder": "packages/psydb-interval-fns",
        "reviewCategory": "production"

@@ -1,0 +1,19 @@
+{
+  "name": "@mpieva/psydb-calculate-age",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "./src/index.js",
+  "scripts": {
+    "build": ""
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {
+    "date-fns": "~2.30.0",
+    "@mpieva/psydb-common-compat": "workspace:*"
+  },
+  "devDependencies": {
+    "mocha": "~10.2.0",
+    "chai": "~4.3.7"
+  }
+}

@@ -11,6 +11,7 @@
   "dependencies": {
     "date-fns": "~2.30.0",
     "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-calculate-age": "workspace:*",
     "@mpieva/psydb-common-compat": "workspace:*",
     "@mpieva/psydb-custom-fields-common": "workspace:*",
     "@mpieva/psydb-interval-fns": "workspace:*",
