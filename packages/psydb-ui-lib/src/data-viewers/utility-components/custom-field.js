@@ -26,7 +26,7 @@ export const CustomField = (ps) => {
     var { definition, value, record, related } = ps;
     var {
         displayName,
-        displayNameI18N = {},
+        displayNameI18N = {}, // FIXME: in apedb this does not fall back
         type,
         props
     } = definition;
