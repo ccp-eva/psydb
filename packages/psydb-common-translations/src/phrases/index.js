@@ -45,7 +45,7 @@ module.exports = [
         de: 'Reservierung'
     },
     {
-        internal: '_sidenav_lab-operation_postprocessing',
+        internal: '_sidenav_lab-operation_experiment-postprocessing',
         en: 'Postprocessing',
         de: 'Nachbereitung'
     },

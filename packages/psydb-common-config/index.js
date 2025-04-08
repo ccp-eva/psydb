@@ -7,22 +7,22 @@ module.exports = {
     },
 
     // apedb
-    customNav: [
-        { key: 'csv-imports' },
-        { key: 'subjects' },
-        { key: 'studies' },
+    sideNav: [
+        { path: '/csv-imports' },
+        { path: '/subjects' },
+        { path: '/studies' },
         '=======',
-        { key: 'locations' },
-        { key: 'subject-groups' },
-        { key: 'study-topics' },
-        { key: 'helper-tables' },
-        { key: 'staff-members' },
+        { path: '/locations' },
+        { path: '/subject-groups' },
+        { path: '/study-topics' },
+        { path: '/helper-sets' },
+        { path: '/personnel' },
         '=======',
-        { key: 'research-groups' },
-        { key: 'system-roles' },
-        { key: 'record-types' },
-        { key: 'api-keys' },
-        { key: 'audit' },
+        { path: '/research-groups' },
+        { path: '/system-roles' },
+        { path: '/custom-record-types' },
+        { path: '/api-keys' },
+        { path: '/audit' },
     ],
     
     enabledLabMethods: [
