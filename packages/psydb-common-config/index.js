@@ -5,6 +5,26 @@ module.exports = {
         defaultLanguage: 'en',
         defaultLocaleCode: 'en-US',
     },
+
+    // apedb
+    sideNav: [
+        { path: '/csv-imports' },
+        { path: '/subjects' },
+        { path: '/studies' },
+        '=======',
+        { path: '/locations' },
+        { path: '/subject-groups' },
+        { path: '/study-topics' },
+        { path: '/helper-sets' },
+        { path: '/personnel' },
+        '=======',
+        { path: '/research-groups' },
+        { path: '/system-roles' },
+        { path: '/custom-record-types' },
+        { path: '/api-keys' },
+        { path: '/audit' },
+    ],
+    
     enabledLabMethods: [
         'inhouse',
         'away-team',

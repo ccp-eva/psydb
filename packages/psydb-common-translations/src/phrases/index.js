@@ -25,22 +25,27 @@ module.exports = [
 
 
     {
+        internal: '_sidenav_calendars',
         en: 'Calendars',
         de: 'Kalender'
     },
     {
+        internal: '_sidenav_calendars_reception',
         en: 'Reception',
         de: 'Rezeption',
     },
     {
+        internal: '_sidenav_lab-operation',
         en: 'Lab Operation',
         de: 'Studienbetrieb'
     },
     {
+        internal: '_sidenav_lab-operation_reservation',
         en: 'Reservation',
         de: 'Reservierung'
     },
     {
+        internal: '_sidenav_lab-operation_experiment-postprocessing',
         en: 'Postprocessing',
         de: 'Nachbereitung'
     },
@@ -49,26 +54,32 @@ module.exports = [
         de: 'Nachbereitung (${subject} - ${study})',
     },
     {
+        internal: '_sidenav_external-persons',
         en: 'External Persons',
         de: 'Externe Personen'
     },
     {
+        internal: '_sidenav_study-topics',
         en: 'Study Topics',
         de: 'Themengebiete'
     },
     {
+        internal: '_sidenav_personnel',
         en: 'Staff Members',
         de: 'Mitarbeiter:innen'
     },
     {
+        internal: '_sidenav_research-groups',
         en: 'Research Groups',
         de: 'Forschungsgruppen'
     },
     {
+        internal: '_sidenav_system-roles',
         en: 'System Roles',
         de: 'System-Rollen'
     },
     {
+        internal: '_sidenav_custom-record-types',
         en: 'Record Types',
         de: 'Datensatz-Typen'
     },
@@ -339,6 +350,7 @@ module.exports = [
         de: 'Status'
     },
     {
+        internal: '_sidenav_statistics',
         en: 'Statistics',
         de: 'Statistiken'
     },
@@ -1072,6 +1084,7 @@ module.exports = [
         de: 'Dieses Team wirklich ausblenden?'
     },
     {
+        internal: '_sidenav_csv-imports',
         en: 'CSV Import',
         de: 'CSV-Import'
     },
@@ -1516,6 +1529,7 @@ module.exports = [
 
     // audit
     {
+        internal: '_sidenav_audit',
         en: 'Audit',
         de: 'Audit'
     },
@@ -1701,6 +1715,7 @@ module.exports = [
     },
 
     {
+        internal: '_sidenav_api-keys',
         en: 'API Keys',
         de: 'API-Keys'
     },
