@@ -1,6 +1,7 @@
 'use strict';
 module.exports = [
     {
+        internal: '_sidenav_studies',
         en: 'Studies',
         de: 'Studien',
     },

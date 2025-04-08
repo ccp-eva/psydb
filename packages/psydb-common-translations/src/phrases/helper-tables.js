@@ -1,6 +1,7 @@
 'use strict';
 module.exports = [
     {
+        internal: '_sidenav_helper-tables',
         en: 'Helper Tables',
         de: 'Hilfstabellen'
     },

@@ -1,6 +1,5 @@
 import React from 'react';
-import { createTranslate } from '@mpieva/psydb-common-translations';
-import { useUIConfig, useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Nav, LinkContainer } from '@mpieva/psydb-ui-layout';
 import { WhenAllowed } from '@mpieva/psydb-ui-lib';
@@ -18,17 +17,17 @@ const Link = ({
 )
 
 const SideNav = (ps) => {
-    var translate = useUITranslation();
-    
+    var config = useUIConfig();
+    var permissions = usePermissions();
+    var [{ translate }] = useI18N();
     var {
         sideNav,
         dev_enableWKPRCPatches = false,
         dev_enableCSVSubjectImport = false,
         dev_enableCSVParticipationImport = false,
         dev_enableStatistics = false,
-    } = useUIConfig();
+    } = config;
 
-    var permissions = usePermissions();
     var canViewAnyCalendar = (
         permissions.hasSomeLabOperationFlags({
             types: 'any',
@@ -36,6 +35,10 @@ const SideNav = (ps) => {
         })
         || permissions.hasFlag('canViewReceptionCalendar')
     );
+
+    var items = generateNavItems({
+        items: sideNav, config, permissions, translate
+    });
 
     return (
         <>
@@ -45,6 +48,11 @@ const SideNav = (ps) => {
                 as='nav'
             >
                 <div className='navbar-nav'>
+
+                    { items }
+
+                    <hr />
+                    <hr />
                     
                     { dev_enableStatistics && (
                         <WhenAllowed isRoot>
@@ -249,68 +257,174 @@ const SideNav = (ps) => {
     )
 }
 
+var generateNavItems = (ps) => {
+    var { items, prefix = '', permissions, config, translate } = ps;
+    var pass = { permissions, config, translate };
+
+    var out = [];
+    for (var it of items) {
+        if (typeof it === 'string') {
+            out.push(
+                <div className='border-top mt-2 mb-2' />
+            )
+            continue;
+        }
+
+        console.log(it);
+        var { path, subnav } = it;
+        if (prefix) {
+            path = prefix + path
+        }
+
+        var label = getNavItemLabel({ path });
+
+        if (subnav) {
+            var subitems = generateNavItems({
+                items: subnav, prefix: path, ...pass
+            });
+            if (subitems.length > 0) {
+                out.push(
+                    <Link to={ path }><b>{ translate(label) }</b></Link>
+                )
+                out.push(
+                    <Nav className='flex-column pl-3'>{ subitems }</Nav>
+                );
+            }
+        }
+        else {
+            var show = (
+                checkNavItemEnabled({ path, config })
+                && checkNavItemAllowed({ path, permissions })
+            );
+            if (show) {
+                out.push(
+                    <Link to={ path }>{ translate(label) }</Link>
+                )
+            }
+        }
+    }
+    return out;
+}
+
 var getNavItemLabel = (bag) => {
-    return label = '_sidenav_' + path.slice(1);
+    var { path } = bag;
+    return '_sidenav' + path.replace(/\//g, '_');
+}
+
+var checkNavItemEnabled = (bag) => {
+    var { path, config } = bag;
+    var {
+        dev_enableCSVSubjectImport = false,
+        dev_enableCSVParticipationImport = false,
+        dev_enableStatistics = false,
+    } = config;
+
+    switch (path) {
+        case '/statistics':
+            return dev_enableStatistics;
+        case '/csv-imports':
+            return (
+                dev_enableCSVSubjectImport
+                || dev_enableCSVParticipationImport
+            );
+        default:
+            return true;
+    }
 }
 
 var checkNavItemAllowed = (bag) => {
     var { path, permissions } = bag;
-    var { hasSomeFlags, isRoot } = permissions;
+    var { hasSomeLabOperationLags, hasSomeFlags, isRoot } = permissions;
 
     if (isRoot()) {
         return true;
     }
     
     switch (path) {
-        '/subjects':
+        case '/calendars/inhouse-appointments':
+            return hasSomeLabOperationFlags({
+                types: [ 'inhouse' ],
+                flags: [ 'canViewExperimentCalendar' ]
+            });
+        case '/calendars/away-team-appointments':
+            return hasSomeLabOperationFlags({
+                types: [ 'away-team' ],
+                flags: [ 'canViewExperimentCalendar' ]
+            });
+        case '/calendars/video-appointments':
+            return hasSomeLabOperationFlags({
+                types: [ 'online-video-call' ],
+                flags: [ 'canViewExperimentCalendar' ]
+            });
+
+        case '/lab-operation/reservation':
+            return hasSomeLabOperationFlags({ types: 'any', flags: [
+                'canWriteResevations'
+            ]});
+        case '/lab-operation/subject-selection':
+            return hasSomeLabOperationFlags({ types: 'any', flags: [
+                'canSelectSubjectsForExperiments'
+            ]});
+        case '/lab-operation/invite-confirmation':
+            return hasSomeLabOperationFlags({ types: 'any', flags: [
+                'canConfirmSubjectInvitation'
+            ]});
+        case '/lab-operation/experiment-postprocessing':
+            return hasSomeLabOperationFlags({ types: 'any', flags: [
+                'canPostprocessExperiments',
+            ]});
+
+        case '/subjects':
             return hasSomeFlags([
                 'canReadSubjects',
                 'canWriteSubjects'
             ]);
-        '/studies':
+        case '/studies':
             return hasSomeFlags([
                 'canReadStudies',
                 'canWriteStudies'
             ]);
-        '/external-persons':
+        case '/external-persons':
             return hasSomeFlags([
                 'canReadExternalPersons',
                 'canWriteExternalPersons'
             ]);
-        '/external-organizations':
+        case '/external-organizations':
             return hasSomeFlags([
                 'canReadExternalOrganizations',
                 'canWriteExternalOrganizations'
             ]);
-        '/subject-groups':
+        case '/subject-groups':
             return hasSomeFlags([
                 'canReadSubjectGroups',
                 'canWriteSubjectGroups'
             ]);
-        '/study-topics':
+        case '/study-topics':
             return hasSomeFlags([
                 'canReadStudyTopics',
                 'canWriteStudyTopics'
             ]);
-        '/helper-sets':
+        case '/helper-sets':
             return hasSomeFlags([
                 'canReadHelperSets',
                 'canWriteHelperSets'
             ]);
-        '/personnel':
+        case '/personnel':
             return hasSomeFlags([
                 'canReadPersonnel',
                 'canWritePersonnel'
             ]);
-        '/statistics':
-        '/csv-imports':
-        '/research-groups':
-        '/system-roles':
-        '/custom-record-types':
-        '/api-keys':
-        '/audit':
+        case '/statistics':
+        case '/csv-imports':
+        case '/research-groups':
+        case '/system-roles':
+        case '/custom-record-types':
+        case '/api-keys':
+        case '/audit':
             return false;
     }
+
+    return false;
 }
 
 export default SideNav;

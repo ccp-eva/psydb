@@ -1,6 +1,7 @@
 'use strict';
 module.exports = [
     {
+        internal: '_sidenav_calendars_inhouse-appointments',
         en: 'Inhouse Appointments',
         de: 'Interne Termine'
     },
@@ -9,14 +10,17 @@ module.exports = [
         de: 'Externer Termin'
     },
     {
+        internal: '_sidenav_calendars_external-appointments',
         en: 'External Appointments',
         de: 'Externe Termine'
     },
     {
+        internal: '_sidenav_calendars_video-appointments',
         en: 'Video Appointments',
         de: 'Video-Termine',
     },
     {
+        internal: '_sidenav_lab-operation_confirm-appointments',
         en: 'Confirm Appointments',
         de: 'Terminbestätigung'
     },
