@@ -82,8 +82,6 @@ var fetchRecordByFilter = async (bag) => {
         dev_showDummyRecordsAsTopOptions = false,
     } = apiConfig;
 
-    console.log({ dev_showDummyRecordsAsTopOptions });
-
     //console.log(queryFields)
 
     var preCountStages = [
@@ -191,7 +189,7 @@ var fetchRecordByFilter = async (bag) => {
         }),
     ];
 
-    //console.dir(ejson(preCountStages), { depth: null });
+    console.dir(ejson(preCountStages), { depth: null });
     //showHidden = showHidden || (queryFields && queryFields.length > 0);
 
     var index = {

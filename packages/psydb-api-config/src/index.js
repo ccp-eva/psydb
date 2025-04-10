@@ -9,7 +9,6 @@ var config = undefined;
 console.log(userConfigPath);
 if (fs.existsSync(userConfigPath) && fs.lstatSync(userConfigPath).isFile()) {
     config = require('../../../config/config.js');
-    console.log(config);
 }
 else {
     console.warn('no config found using fallback');
