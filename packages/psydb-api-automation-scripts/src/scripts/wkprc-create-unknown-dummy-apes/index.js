@@ -47,7 +47,7 @@ module.exports = async (bag) => {
 }
 
 var createUnknownParent = async (bag) => {
-    var { apiKey, driver, cache, type, ix } = bag;
+    var { apiKey, driver, cache, type, ix, biologicalGender } = bag;
     var researchGroupId = String(cache.get('/researchGroup/WKPRC'));
 
     await driver.sendMessage({
@@ -61,7 +61,7 @@ var createUnknownParent = async (bag) => {
                 scientific: {
                     custom: {
                         name: 'Unknown',
-                        biologicalGender: 'unknown',
+                        biologicalGender,
                         wkprcIdCode: '-',
                         dateOfBirth: null,
                         subSpeciesId: null,
