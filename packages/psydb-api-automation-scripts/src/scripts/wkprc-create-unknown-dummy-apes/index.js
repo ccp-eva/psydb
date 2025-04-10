@@ -31,10 +31,15 @@ module.exports = async (bag) => {
     var ix = 0;
     for (var it of subjectCRTs) {
         var type = 'wkprc_' + it.type;
+        
         await createUnknownParent({
-            apiKey, driver, type, cache, ix
+            apiKey, driver, type, cache, ix, biologicalGender: 'female',
         });
-
+        ix += 1;
+        
+        await createUnknownParent({
+            apiKey, driver, type, cache, ix, biologicalGender: 'male',
+        });
         ix += 1;
     }
     
@@ -68,7 +73,7 @@ var createUnknownParent = async (bag) => {
                         arrivalDate: null,
                         arrivedFrom: '',
                         locationId: null,
-                        sensitiveComment: '',
+                        sensitive_comment: '',
                     },
                     comment: 'dummy ape to be used when parent is unknown',
                     systemPermissions: {
