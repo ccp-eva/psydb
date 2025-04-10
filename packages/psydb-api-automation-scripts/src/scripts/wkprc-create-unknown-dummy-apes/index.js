@@ -54,7 +54,7 @@ var createUnknownParent = async (bag) => {
         type: `subject/${type}/create`,
         payload: {
             id: String(ix).padStart(24, '0'),
-            sequenceNumber: '0',
+            sequenceNumber: String((ix % 2) * -1),
             isDummy: true,
             props: {
                 gdpr: { custom: {}},

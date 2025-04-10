@@ -37,7 +37,7 @@ module.exports = async (context) => {
                 cache.get('/helperSet/wkprc_chimpanzeeSubSpecies'),
                 cache.get('/helperSet/wkprc_bonoboSubSpecies'),
                 cache.get('/helperSet/wkprc_gorillaSubSpecies'),
-                cache.get('/helperSet/wkprc_orangutanSubSpecies'),
+                cache.get('/helperSet/wkprc_orang_utanSubSpecies'),
                 cache.get('/helperSet/wkprc_origin'),
                 cache.get('/helperSet/wkprc_rearingHistory'),
             ],

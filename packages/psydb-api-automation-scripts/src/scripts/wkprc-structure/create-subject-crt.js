@@ -246,9 +246,9 @@ var FieldDefinitions = ({ cache, type }) => ({
 });
 
 var FieldDefinitionsExtra = ({ cache, type }) => ({
-    'sensitiveComment': {
+    'sensitive_comment': {
         type: 'FullText',
-        key: 'sensitiveComment', // sensitive_comment
+        key: 'sensitive_comment', // sensitive_comment
         displayName: 'Sensitive Comment',
         displayNameI18N: { de: 'Geschützter Kommentar' },
         props: {
