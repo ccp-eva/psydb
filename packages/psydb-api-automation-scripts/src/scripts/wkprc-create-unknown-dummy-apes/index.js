@@ -8,8 +8,8 @@ var prepareCache = require('./prepare-cache');
 var subjectCRTs = [
     { type: 'bonobo' },
     { type: 'chimpanzee' },
-    //{ type: 'gorilla' },
-    //{ type: 'orang_utan' },
+    { type: 'gorilla' },
+    { type: 'orang_utan' },
 ];
 
 module.exports = async (bag) => {
