@@ -56,6 +56,7 @@ module.exports = {
     dev_enableCSVParticipationImport: true,
     
     dev_enableStatistics: true,
+    dev_showDummyRecordsAsTopOptions: true,
     dev_enableWKPRCPatches: false,
 
     dev_enableSubjectDuplicatesSearch: true,

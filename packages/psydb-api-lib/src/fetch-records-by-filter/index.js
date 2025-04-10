@@ -3,6 +3,7 @@ var debug = require('debug')('psydb:api:lib:fetch-records-by-filter');
 
 var inlineString = require('@cdxoo/inline-string');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
+var apiConfig = require('@mpieva/psydb-api-config');
 
 var { ejson, arrify, isPromise } = require('@mpieva/psydb-core-utils');
 var { SmartArray } = require('@mpieva/psydb-common-lib');
@@ -42,37 +43,44 @@ var defaultMongoExtraOptions = {
     }
 }
 
-var fetchRecordByFilter = async ({
-    db,
-    collectionName,
-    recordType,
-    permissions,
-    hasSubChannels,
+var fetchRecordByFilter = async (bag) => {
+    var {
+        db,
+        collectionName,
+        recordType,
+        permissions,
+        hasSubChannels,
 
-    enableResearchGroupFilter = true,
-    onlyIds,
-    extraIds, // TODO: how to best handle extraIds ?
-    excludedIds,
-    constraints,
-    queryFields,
+        enableResearchGroupFilter = true,
+        onlyIds,
+        extraIds, // TODO: how to best handle extraIds ?
+        excludedIds,
+        constraints,
+        queryFields,
 
-    displayFields,
-    recordLabelDefinition,
-    additionalPreprocessStages,
-    additionalProjection,
+        displayFields,
+        recordLabelDefinition,
+        additionalPreprocessStages,
+        additionalProjection,
 
-    disablePermissionCheck,
-    showHidden,
-    offset,
-    limit,
-    
-    sort,
-    timezone,
-    language,
-    locale,
-}) => {
-    offset = offset ||0;
+        target,
+        disablePermissionCheck,
+        showHidden,
+        offset,
+        limit,
+        
+        sort,
+        timezone,
+        language,
+        locale,
+    } = bag;
+
+    offset = offset || 0;
     limit = limit || 0;
+
+    var {
+        dev_showDummyRecordsAsTopOptions = false,
+    } = apiConfig;
 
     //console.log(queryFields)
 
@@ -106,7 +114,13 @@ var fetchRecordByFilter = async ({
             ])
         }),
 
-        isNotDummyStage(),
+        ...maybeStages({
+            condition: (
+                !(target === 'optionlist' && dev_showDummyRecordsAsTopOptions)
+            ),
+            stages: [ isNotDummyStage() ],
+        }),
+
         isNotRemovedStage({ hasSubChannels }),
 
         ...maybeStages({
@@ -274,11 +288,12 @@ var fetchRecordByFilter = async ({
             //name: 'manualSortIndex__' + sort.path.replace('.', '_'),
         });
 
-        sortStage = {
-            $sort: {
-                [sort.path]: sort.direction === 'desc' ? -1 : 1
-            }
-        };
+        sortStage = { $sort: {
+            ...(target === 'optionlist' && dev_showDummyRecordsAsTopOptions && {
+                isDummy: -1,
+            }),
+            [sort.path]: sort.direction === 'desc' ? -1 : 1
+        }};
     }
     else {
         if (displayFields && displayFields.length > 0) {
@@ -296,9 +311,12 @@ var fetchRecordByFilter = async ({
                 ...defaultMongoExtraOptions
             });
 
-            sortStage = {
-                $sort: { [sortPath]: 1 }
-            };
+            sortStage = { $sort: {
+                ...(target === 'optionlist' && dev_showDummyRecordsAsTopOptions && {
+                    isDummy: -1,
+                }),
+                [sortPath]: 1
+            }};
         }
     }
 
