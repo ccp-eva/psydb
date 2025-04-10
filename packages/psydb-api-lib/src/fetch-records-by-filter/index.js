@@ -82,6 +82,8 @@ var fetchRecordByFilter = async (bag) => {
         dev_showDummyRecordsAsTopOptions = false,
     } = apiConfig;
 
+    console.log({ dev_showDummyRecordsAsTopOptions });
+
     //console.log(queryFields)
 
     var preCountStages = [
