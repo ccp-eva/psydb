@@ -193,6 +193,7 @@ var search = async (context, next) => {
         limit,
         sort,
 
+        target,
         showHidden,
         // TODO remove this as soon as we
         // can properly quicksearch and search for fk

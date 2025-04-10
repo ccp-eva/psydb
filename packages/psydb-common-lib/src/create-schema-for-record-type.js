@@ -5,8 +5,8 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 var {
     ExactObject,
     Id,
-    Integer,
     DefaultBool,
+    SaneString,
 } = require('@mpieva/psydb-schema-fields');
 
 var createSchemaForRecordType = ({
@@ -205,7 +205,7 @@ var FullRecordSchemaCreator = ({
                     isDummy: DefaultBool(),
 
                     ...(enableSequenceNumber && {
-                        sequenceNumber: Integer()
+                        sequenceNumber: SaneString()
                     }),
 
                     ...(enableOnlineId && {
@@ -240,7 +240,7 @@ var FullRecordSchemaCreator = ({
                     isDummy: DefaultBool(),
 
                     ...(enableSequenceNumber && {
-                        sequenceNumber: Integer()
+                        sequenceNumber: SaneString()
                     }),
                     ...(enableOnlineId && {
                         onlineId: {
@@ -291,7 +291,7 @@ var FullRecordSchemaCreator = ({
                     isDummy: DefaultBool(),
 
                     ...(enableSequenceNumber && {
-                        sequenceNumber: Integer()
+                        sequenceNumber: SaneString()
                     }),
                     ...(enableOnlineId && {
                         onlineId: {
@@ -314,7 +314,7 @@ var FullRecordSchemaCreator = ({
                     isDummy: DefaultBool(),
                     
                     ...(enableSequenceNumber && {
-                        sequenceNumber: Integer()
+                        sequenceNumber: SaneString()
                     }),
                     ...(enableOnlineId && {
                         onlineId: {
