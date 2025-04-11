@@ -1,14 +1,14 @@
 'use strict';
-var compose = require('koa-compose'),
-    
-    withMongoMQ = require('@cdxoo/koa-mongo-mq'),
-    withRohrpost = require('@cdxoo/koa-mongo-rohrpost'),
+var compose = require('koa-compose');
 
-    prepareContext = require('./prepare-context'),
-    checkMessage = require('./check-message'),
-    run = require('./run'),
+var withMongoMQ = require('@cdxoo/koa-mongo-mq');
+var MongoRohrpost = require('@cdxoo/mongo-rohrpost');
 
-    MessageHandlerGroup = require('../helpers/message-handler-group');
+var prepareContext = require('./prepare-context');
+var checkMessage = require('./check-message');
+var run = require('./run');
+
+var MessageHandlerGroup = require('../helpers/message-handler-group');
 
 var {
     defaultMqSettings,
@@ -16,13 +16,15 @@ var {
 } = require('./defaults');
 
 
-var createMessageHandling = ({
-    enableMessageChecks = true,
-    availableMessageHandlers,
+var createMessageHandling = (bag) => {
+    var {
+        enableMessageChecks = true,
+        availableMessageHandlers,
 
-    mqSettings,
-    rohrpostSettings,
-}) => {
+        mqSettings,
+        rohrpostSettings,
+    } = bag;
+
     mqSettings = {
         ...defaultMqSettings,
         ...mqSettings
@@ -58,10 +60,21 @@ var createMessageHandling = ({
             await next();
         },
 
-        withRohrpost(rohrpostSettings),
+        withMongoRohrpost(rohrpostSettings),
         
         run(),
     ])
+}
+
+var withMongoRohrpost = (options) => async (context, next) => {
+    var { mongoClient, mongoDbName, correlationId } = context;
+
+    context.rohrpost = MongoRohrpost({
+        client: mongoClient, dbName: mongoDbName, correlationId,
+        ...options
+    })
+
+    await next();
 }
 
 module.exports = createMessageHandling;
