@@ -8,8 +8,8 @@ var prepareCache = require('./prepare-cache');
 var subjectCRTs = [
     { type: 'bonobo' },
     { type: 'chimpanzee' },
-    //{ type: 'gorilla' },
-    //{ type: 'orang_utan' },
+    { type: 'gorilla' },
+    { type: 'orang_utan' },
 ];
 
 module.exports = async (bag) => {
@@ -31,10 +31,15 @@ module.exports = async (bag) => {
     var ix = 0;
     for (var it of subjectCRTs) {
         var type = 'wkprc_' + it.type;
+        
         await createUnknownParent({
-            apiKey, driver, type, cache, ix
+            apiKey, driver, type, cache, ix, biologicalGender: 'female',
         });
-
+        ix += 1;
+        
+        await createUnknownParent({
+            apiKey, driver, type, cache, ix, biologicalGender: 'male',
+        });
         ix += 1;
     }
     
@@ -42,21 +47,21 @@ module.exports = async (bag) => {
 }
 
 var createUnknownParent = async (bag) => {
-    var { apiKey, driver, cache, type, ix } = bag;
+    var { apiKey, driver, cache, type, ix, biologicalGender } = bag;
     var researchGroupId = String(cache.get('/researchGroup/WKPRC'));
 
     await driver.sendMessage({
         type: `subject/${type}/create`,
         payload: {
             id: String(ix).padStart(24, '0'),
-            sequenceNumber: '0',
+            sequenceNumber: String((ix % 2) * -1),
             isDummy: true,
             props: {
                 gdpr: { custom: {}},
                 scientific: {
                     custom: {
                         name: 'Unknown',
-                        biologicalGender: 'unknown',
+                        biologicalGender,
                         wkprcIdCode: '-',
                         dateOfBirth: null,
                         subSpeciesId: null,
@@ -68,7 +73,7 @@ var createUnknownParent = async (bag) => {
                         arrivalDate: null,
                         arrivedFrom: '',
                         locationId: null,
-                        sensitiveComment: '',
+                        sensitive_comment: '',
                     },
                     comment: 'dummy ape to be used when parent is unknown',
                     systemPermissions: {
