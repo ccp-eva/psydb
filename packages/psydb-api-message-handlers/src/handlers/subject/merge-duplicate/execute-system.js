@@ -50,7 +50,9 @@ var updateExperiments = async (context) => {
         messages: [{
             personnelId,
             payload: mongoEscapeDeep(update),
-            arrayFilters: arrayFilters.map(mongoEscapeDeep)
+            arrayFilters: arrayFilters.map(it => (
+                mongoEscapeDeep(it, { traverseArrays: true })
+            ))
         }],
         mongoExtraOp: { update, arrayFilters }
     });
