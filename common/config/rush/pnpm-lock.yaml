@@ -1614,12 +1614,9 @@ importers:
       '@cdxoo/koa-mongo-mq':
         specifier: ~1.4.0
         version: 1.4.0
-      '@cdxoo/koa-mongo-rohrpost':
-        specifier: ~3.3.0
-        version: 3.3.0
       '@cdxoo/mongo-rohrpost':
-        specifier: ~3.3.0
-        version: 3.3.0
+        specifier: ~3.4.0
+        version: 3.4.0
       '@cdxoo/tiny-ejson':
         specifier: ~1.0.0
         version: 1.0.0
@@ -4564,19 +4561,6 @@ packages:
       - snappy
     dev: false
 
-  /@cdxoo/koa-mongo-rohrpost@3.3.0:
-    resolution: {integrity: sha512-I2B2m0vflXUu0dximo/S1K1KcnJgrLarRFrov7MpwAZeq3ns+ZsHqpOfuQLBB2RdRnZ6T1Dw7+uUysklUwq2dQ==}
-    dependencies:
-      '@cdxoo/mongo-rohrpost': 3.3.0
-    transitivePeerDependencies:
-      - aws4
-      - bson-ext
-      - kerberos
-      - mongodb-client-encryption
-      - mongodb-extjson
-      - snappy
-    dev: false
-
   /@cdxoo/mongo-mq@1.4.0:
     resolution: {integrity: sha512-7FtVgsRQBCdz0WkMJfiDjrXNNOC4RFtgm5Ld/lTPO6myJraRxb1g8kX1vauE5B8gmNn0Kw1D+byDJi3Pa88U4g==}
     dependencies:
@@ -4590,8 +4574,8 @@ packages:
       - snappy
     dev: false
 
-  /@cdxoo/mongo-rohrpost@3.3.0:
-    resolution: {integrity: sha512-Dv36xIta2/OadHFGUASmHHR25HzU07rUcx9SoGuSCkW7ZgLIXhu5DSQNwHkB3LMn4uqmNUBxlPZkEEP4t0OTrA==}
+  /@cdxoo/mongo-rohrpost@3.4.0:
+    resolution: {integrity: sha512-p5pvqGdUOzSj8hNs9f5OLYqHL9KECg/4JMs79MVo5CPaLc9RFdgUwfNWL7iUbcCw2OfaY0GP0h0CaQN13j3iHw==}
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       mongodb: 3.6.12

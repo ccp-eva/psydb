@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Base64 } from 'js-base64';
 import { useRouteMatch } from 'react-router-dom';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     usePermissions,
     useURLSearchParams,
@@ -105,8 +105,9 @@ const RecordListContainer = (ps) => {
     } = ps;
 
     var { path, url } = useRouteMatch();
-    var translate = useUITranslation();
+    var uiConfig = useUIConfig();
     var permissions = usePermissions();
+    var [{ translate }] = useI18N();
     
     var [ query, updateQuery ] = (
         (target === 'table' || !target)
@@ -129,7 +130,10 @@ const RecordListContainer = (ps) => {
     );
     //var [ showHidden, setShowHidden ] = useState(false);
 
-    var canUseDuplicatesSearch = permissions.isRoot(); // FIXME
+    var canUseDuplicatesSearch = (
+        uiConfig.dev_enableSubjectDuplicatesSearch
+        && permissions.isRoot() // FIXME
+    )
     var duplicatesUrl = `${url}/duplicates/`;
 
     return (

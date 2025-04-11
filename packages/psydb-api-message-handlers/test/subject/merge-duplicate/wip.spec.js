@@ -2,7 +2,8 @@
 var { ejson } = require('@mpieva/psydb-core-utils');
 var {
     aggregateToArray,
-    aggregateOne
+    aggregateOne,
+    ObjectId,
 } = require('@mpieva/psydb-mongo-adapter');
 
 var RootHandler = require('../../../src/');
@@ -63,5 +64,11 @@ describe('subject/merge-duplicate', function () {
 
         console.log({ malloryExperiments });
         console.log({ bobExperiments });
+
+        var events = await aggregateToArray({ db, rohrpostEvents: [
+            { $match: { channelId: ObjectId('67ad549843fa18578e9760fa') }}
+        ]});
+        
+        console.dir(ejson({ events }), { depth: null });
     })
 })
