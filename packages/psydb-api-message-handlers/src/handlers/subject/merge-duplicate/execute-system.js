@@ -44,7 +44,7 @@ var updateExperiments = async (context) => {
         'state.selectedSubjectIds': sourceSubject._id,
     }});
 
-    await rohrpost._expermiental_dispatchMultiplexed({
+    await rohrpost._experimental_dispatchMultiplexed({
         collection: 'experiment',
         channelIds: experimentIds,
         messages: [{
@@ -80,8 +80,8 @@ var updateSourceSubject = async (context) => {
     });
 }
 
-var updateTargetSubject = (context) => {
-    var { db, rohrpost, personnelId, cache } = context;
+var updateTargetSubject = async (context) => {
+    var { db, dispatch, personnelId, cache } = context;
     var { sourceSubject, targetSubject } = cache.get();
 
     var UPDATE = { $push: prefixify({ values: {

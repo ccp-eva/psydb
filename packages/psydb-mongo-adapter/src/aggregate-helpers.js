@@ -31,7 +31,7 @@ var aggregateCount = async (bag) => {
 var aggregateToIds = (...args) => (
     withRetracedErrors(
         aggregateToCursor(...args).map(it => it._id).toArray()
-    );
+    )
 )
 
 module.exports = {
