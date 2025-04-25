@@ -180,7 +180,8 @@ var addApestudiesWKPRCDefaultExtraData = async (context, next) => {
     } = cache.get();
 
     var pass = only({ from: message.payload, keys: [
-        'subjectGroupId', 'experimentName', 'roomOrEnclosure',
+        'subjectGroupId',
+        'experimentName', 'conditionName', 'roomOrEnclosure',
         'intradaySeqNumber', 'totalSubjectCount',
     ]})
 

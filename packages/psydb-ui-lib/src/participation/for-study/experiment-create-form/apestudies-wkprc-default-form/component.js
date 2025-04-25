@@ -125,6 +125,11 @@ const FormBody = (ps) => {
                         dataXPath='$.experimentName'
                         required
                     />
+                    <Fields.SaneString
+                        label={ translate('_wkprc_conditionName') }
+                        dataXPath='$.conditionName'
+                        required
+                    />
 
                     <Fields.GenericEnum
                         label={ translate('_wkprc_roomOrEnclosure') }

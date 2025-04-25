@@ -1487,7 +1487,12 @@ module.exports = [
     {
         internal: '_wkprc_experimentName',
         en: 'Experiment Name',
-        de: 'Test-Bezeichnung'
+        de: 'Name des Experiments'
+    },
+    {
+        internal: '_wkprc_conditionName',
+        en: 'Condition Name',
+        de: 'Name der Condition'
     },
     {
         internal: '_wkprc_roomOrEnclosure',

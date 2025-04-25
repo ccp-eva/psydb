@@ -1,11 +1,9 @@
 'use strict';
 //require('debug').enable('psydb*');
-var {
-    expect, inline, jsonify, ejson, omit,
-    ObjectId, RootHandler
-} = require('./utils');
+var { expect, inline, jsonify, RootHandler } = require('./utils');
 
-var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
+var { ejson } = require('@mpieva/psydb-core-utils');
+var { ObjectId, aggregateOne } = require('@mpieva/psydb-mongo-adapter');
 var { BaselineDeltas } = require('@mpieva/psydb-mocha-baseline-deltas');
 
 describe('experiment/create-manual apestudies-wkprc-default', function () {
@@ -78,6 +76,7 @@ describe('experiment/create-manual apestudies-wkprc-default', function () {
                 ],
                 roomOrEnclosure: 'Outdoor Enclosure',
                 experimentName: 'the exp name',
+                conditionName: 'the condition name',
                 intradaySeqNumber: 1,
                 totalSubjectCount: 10,
                 
@@ -99,6 +98,7 @@ describe('experiment/create-manual apestudies-wkprc-default', function () {
             'state': {
                 'color': '#000000',
                 'experimentName': 'the exp name',
+                'conditionName': 'the condition name',
                 'experimentOperatorIds': [ labOperatorId ],
                 'experimentOperatorTeamId': null,
                 'generalComment': '',
@@ -167,6 +167,7 @@ describe('experiment/create-manual apestudies-wkprc-default', function () {
             experimentOperatorIds: [ labOperatorId ],
             subjectGroupId: subjectGroupId,
             experimentName: 'the exp name',
+            conditionName: 'the condition name',
             roomOrEnclosure: 'Outdoor Enclosure',
             intradaySeqNumber: 1,
             totalSubjectCount: 10
