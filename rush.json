@@ -181,6 +181,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-mocha-baseline-deltas",
+       "projectFolder": "packages/psydb-mocha-baseline-deltas",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-api-mocha-test-tools",
        "projectFolder": "packages/psydb-api-mocha-test-tools",
        "reviewCategory": "production"

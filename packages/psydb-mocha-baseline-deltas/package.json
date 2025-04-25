@@ -1,0 +1,17 @@
+{
+  "name": "@mpieva/psydb-mocha-baseline-deltas",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "./src/index.js",
+  "scripts": {
+    "build": ""
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {
+    "chai": "~4.3.7",
+    "@cdxoo/assert-baseline-deltas": "~0.0.7",
+    "@mpieva/psydb-core-utils": "workspace:*"
+  },
+  "devDependencies": {}
+}

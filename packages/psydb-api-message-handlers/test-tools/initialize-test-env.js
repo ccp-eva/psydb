@@ -169,6 +169,11 @@ var beforeAll = async function () {
         return record._id;
     }
     
+    this.fetchAllRecords = (collection) => {
+        var db = this.getDbHandle();
+        return db.collection(collection).find().toArray();
+    }
+    
     this.createFakeFileUpload = async (bag) => {
         var {
             buffer,

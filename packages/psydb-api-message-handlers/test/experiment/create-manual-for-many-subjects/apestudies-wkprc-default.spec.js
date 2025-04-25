@@ -5,12 +5,15 @@ var {
     ObjectId, RootHandler
 } = require('./utils');
 
+var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
+
 describe(inline`
     experiment/create-manual-for-many-subjects apestudies-wkprc-default
 `, function () {
     var db;
     beforeEach(async function () {
-        await this.restore('2022-12-10__1635-wkprc');
+        //await this.restore('2022-12-10__1635-wkprc');
+        await this.restore('init-apedb-with-dummy-data');
         db = this.getDbHandle();
     });
 
@@ -18,58 +21,63 @@ describe(inline`
         var [ sendMessage ] = this.createMessenger({ RootHandler });
 
         var studyId = await this.getId('study', {
-            shorthand: 'WKPRC TEST A'
+            shorthand: 'TEST'
         });
         
         var locationId = await this.getId('location', {
-            name: 'Schimpansen Aussengehege'
+            name: 'Chimfushi Sanctuary'
         });
+       
+        var { _id: subjectGroupId } = await aggregateOne({ db, subjectGroup: {
+            'subjectType': 'wkprc_chimpanzee',
+            'state.locationId': locationId,
+            'state.name': 'G1'
+        }})
         
         var subjectStarId = await this.getId('subject', {
             name: 'Star'
         }, { subChannels: true });
 
-        var subjectSarahId = await this.getId('subject', {
-            name: 'Sarah'
+        var subjectJaroId = await this.getId('subject', {
+            name: 'Jaro'
         }, { subChannels: true });
         
         var labOperatorId = await this.getId('personnel', {
-            firstname: 'bob'
+            firstname: 'Bob', lastname: 'WKPRC Experimenter'
         }, { subChannels: true });
-        
-        var studyTopicIds = [
-            await this.getId('studyTopic', {
-                name: 'Collaboration'
-            }),
-            await this.getId('studyTopic', {
-                name: 'Self-Awareness'
-            })
-        ];
         
         var koaContext = await sendMessage({
             type: 'experiment/create-manual-for-many-subjects',
             timezone: 'Europe/Berlin',
             payload: jsonify({
                 labMethod: 'apestudies-wkprc-default',
+                timestamp: new Date('2024-12-09T12:30:00.000Z'),
                 studyId,
                 locationId,
+                subjectGroupId,
                 subjectData: [
                     {
                         subjectId: subjectStarId,
+                        role: 'Focal',
                         status: 'participated',
-                        timestamp: new Date('2022-12-09T12:30:00Z'),
                         excludeFromMoreExperimentsInStudy: false,
+                        comment: 'some comment',
                     },
                     {
                         subjectId: subjectSarahId,
+                        role: 'Stooge',
                         status: 'participated',
-                        timestamp: new Date('2022-12-10T14:45:00Z'),
                         excludeFromMoreExperimentsInStudy: false,
+                        comment: '',
                     }
                 ],
+                
+                roomOrEnclosure: 'Outdoor Enclosure',
+                experimentName: 'the exp name',
+                intradaySeqNumber: 1,
+                totalSubjectCount: 10,
+                
                 labOperatorIds: [ labOperatorId ],
-                studyTopicIds,
-                experimentName: 'the exp name'
             })
         });
 
@@ -171,5 +179,5 @@ describe(inline`
             fromItems: sarahParticipations,
             paths: [ '_id', 'experimentId' ]
         }))).toMatchSnapshot()
-    })    
+    });
 })

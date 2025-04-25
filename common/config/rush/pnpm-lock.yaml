@@ -971,49 +971,49 @@ importers:
         specifier: ~1.0.0
         version: 1.0.0
       '@mpieva/psydb-api-config':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-api-config
       '@mpieva/psydb-api-lib':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-api-lib
       '@mpieva/psydb-api-message-handler-compat':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-api-message-handler-compat
       '@mpieva/psydb-api-message-handler-lib':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-api-message-handler-lib
       '@mpieva/psydb-common-lib':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-common-lib
       '@mpieva/psydb-common-verify-helpers':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-common-verify-helpers
       '@mpieva/psydb-core-utils':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-core-utils
       '@mpieva/psydb-koa-event-middleware':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-koa-event-middleware
       '@mpieva/psydb-mongo-adapter':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-mongo-adapter
       '@mpieva/psydb-schema-creators':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-schema-creators
       '@mpieva/psydb-schema-enums':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-schema-enums
       '@mpieva/psydb-schema-fields':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-schema-fields
       '@mpieva/psydb-schema-fields-special':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-schema-fields-special
       '@mpieva/psydb-schema-helpers':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-schema-helpers
       '@mpieva/psydb-timezone-helpers':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-timezone-helpers
       bcrypt:
         specifier: ~5.1.1
@@ -1059,11 +1059,14 @@ importers:
         specifier: ~2.0.1
         version: 2.0.1
       '@mpieva/psydb-api-mocha-test-tools':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-api-mocha-test-tools
       '@mpieva/psydb-fixtures':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-fixtures
+      '@mpieva/psydb-mocha-baseline-deltas':
+        specifier: workspace:*
+        version: link:../psydb-mocha-baseline-deltas
       chai:
         specifier: ~4.3.7
         version: 4.3.10
@@ -1711,6 +1714,18 @@ importers:
       supertest:
         specifier: ~6.0.1
         version: 6.0.1
+
+  ../../packages/psydb-mocha-baseline-deltas:
+    dependencies:
+      '@cdxoo/assert-baseline-deltas':
+        specifier: ~0.0.7
+        version: 0.0.7
+      '@mpieva/psydb-core-utils':
+        specifier: workspace:*
+        version: link:../psydb-core-utils
+      chai:
+        specifier: ~4.3.7
+        version: 4.3.10
 
   ../../packages/psydb-mongo-adapter:
     dependencies:
@@ -4466,6 +4481,14 @@ packages:
 
   /@bcoe/v8-coverage@0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
+
+  /@cdxoo/assert-baseline-deltas@0.0.7:
+    resolution: {integrity: sha512-48UAMWIFzoq2hcwNX7Mm/p9IY1hXqFg9+RxxmzUd5uin/rkpT2ySw0g6s/jiao9gD9Hs858KOeIvDShzw+rs1Q==}
+    dependencies:
+      '@cdxoo/flat': 0.1.0
+      '@cdxoo/objectpath-to-jsonpointer': 1.0.0
+      jsonpointer: 5.0.1
+    dev: false
 
   /@cdxoo/block-quote@1.0.1:
     resolution: {integrity: sha512-VDMjQuGRJdz9jxU85/srmZg3ePjhQTNOcMQuziecvqSwPrNMmBApMSbC45IAoxqAW9fVVhacMBFdzMtf81o+EQ==}
