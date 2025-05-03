@@ -48,7 +48,6 @@ var BaselineDeltas_Extended = (options) => {
                 );
             }
         }
-
         return base.test({ expected, ...pass });
     }
 
