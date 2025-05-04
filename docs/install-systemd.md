@@ -1,89 +1,124 @@
+# Deployment Overview
+
+There are two variants for setting up **PsyDB**:
+
+1. **Docker (Recommended)**
+   Uses `docker-compose` for containerized deployment.
+
+2. **Manual SystemD Installation**
+   Installs PsyDB directly onto the host system using `systemd` service files.
+
+## Database
+
+- **MongoDB** is used as the backend database.
+
+## HTTPS and SSL
+
+- PsyDB **does not handle SSL encryption** directly.
+- It is designed to run **behind an HTTPS reverse proxy**, such as **Nginx**.
+
+## Email Support
+
+- To send emails (e.g. for new account registration), you must **provide an SMTP server**.
+
+## Deployment Files Structure
+
+The `deploy/` directory contains all relevant tools and helpers for setting up PsyDB.
+
+- `docker/`: files related to **docker-based installation**
+- `systemd/`: files related to **manual systemd installation**
+- `common/`: files shared between both installation methods, including:
+  - distribution configuration files
+  - initializer data dumps
+  - general helper scripts
+
+
 # Installation
 
-* there are 2 variants to get psydb set up
-    * via docker via docker-compose (recommended)
-    * via manual systemd installation
+## SystemD-Based Deployment
 
-* mongodb is used as database
-* psydb itself does not handle ssl encryption instead it relies on an https
-  reverse proxy such as nginx
-* for sending e-mails (such as for newly created accounts)
-  a smtp server needs to be provided
+### System Requirements
 
-* relevant helpers and tools are located in the "deploy/" folder
-* the docker folder contains files related to the installation via docker
-* the systemd folder contains files related to the installation via systemd
-* the common folder contains files that are related to both variants
-    * dist configs
-    * initializer dumps
-    * general helpers
+| Component         | Recommended Option                   |
+| ----------------- | ------------------------------------ |
+| Operating System  | Ubuntu 22.04 LTS                     |
+| Runtime           | Node.js 18.x LTS                     |
+| Database          | MongoDB 6.x / 5.x / 4.x              |
+| Reverse Proxy     | Nginx 1.25.x                         |
 
+### Setup Instructions
 
-## System-D
+#### 1. Clone the Repository
 
-### Requirements
-
-| Platform          | Options                               |
-| ----------------- | ------------------------------------- |
-| Operating System  | * Ubuntu 22.04 LTS (recommended)      |
-| ----------------- | ------------------------------------- |
-| Runtime           | * NodeJS 18.x LTS (recommended)       |
-| ----------------- | ------------------------------------- |
-| Database          | * MongoDB 6.x, 5.x, 4.x               | 
-| ----------------- | ------------------------------------- |
-| Reverse Proxy     | * Nginx 1.25.x (recommended)          | 
-| ----------------- | ------------------------------------- |
-
-### Setup
-
-clone this git repository
-```
-    git clone git@github.com:ccp-eva/psydb.git psydb-repo
+```sh
+git clone git@github.com:ccp-eva/psydb.git psydb-repo
 ```
 
-for ubuntu an install script is located in psydb-src/deploy/systemd
-on execution it will setup the deployment in /src/psydb-deployment
+#### 2. Run the Installation Script
 
-the script contains the following steps
-    * installs mongodb and configures the default port to "47017"
-    * installs nodejs
-    * installs nginx and copies the nossl config from the dist folder to /etc
-    * creates /src/psydb-deployment folder and copies the repo there
-    * creates psydb group and user
-    * copies the psydb.service file to /sur/lib/systemd/system
-    * performs node package installation and ui build
-    * enables psydb and nginx services in systemd and starts them
-    * copies initializer dumps as well as make-dump/restore-dump scripts
-      to psydb-deployment for convenience
+For Ubuntu, an installation script is located at:
+
+```
+psydb-repo/deploy/systemd/install-ubuntu.sh
+```
+
+This script performs the following setup steps:
+
+- installs MongoDB and sets the default port to `47017`
+- installs Node.js
+- installs Nginx and copies the no-SSL config from the `dist/` folder to `/etc`
+- creates the `/srv/psydb-deployment` directory and copies the repository there
+- creates a `psydb` system group and user
+- copies `psydb.service` to `/usr/lib/systemd/system`
+- installs Node.js packages and builds the UI
+- enables the `psydb` and `nginx` services via `systemd`
+- copies initializer dumps and helper scripts (`make-dump.sh`, `restore-dump.sh`)
+- copies distribution configuration files to their appropriate locations
+
 
 execute the script via
-```
-./psydb-repo/deploy/systemd/install-ubuntu.sh
+```sh
+./psydb-repo/deploy/systemd/install-ubuntu.sh /srv/psydb-deployment
 ```
 
-for further information regarding the configuration of
-nginx (e.g. for ssl) or mongodb please refer to the official documentation
+> **Note**: For further configuration (e.g., enabling SSL in Nginx or tuning MongoDB), please consult the official documentation for those components.
 
-restore an initializer dump
-```
+#### 3. Initialize the Database
+
+To perform a minimal initialization with only an admin account:
+
+```sh
 cd /srv/psydb-deployment
 ./restore-dump.sh ./mongodb-dumps/init-minimal
 ```
 
-this will do the most minimal initialization with only an admin account
-if you want to create a testing instance that has some data in it
-use 'init-childlab-with-dummy-data' instead
+To create a testing instance with dummy data:
 
-copy psydb dist config to target
+```sh
+./restore-dump.sh ./mongodb-dumps/init-childlab-with-dummy-data
 ```
-    cp -av ./psydb-src/deploy/common/dist-configs/psydb/config.js \
-        ./psydb-src/config.js
-    sed -i 's/mongodb:27017/127.0.0.1:47017/g' ./psydb-src/config.js
+
+#### 4. Configuration
+
+Edit the configuration file:
+
+```sh
+$EDITOR ./psydb-src/config/config.js
+```
+> **Note**: For more information refer to the configuration section
+
+#### 5. Start Services
+
+After configuration, start the remaining services:
+
+```sh
+systemctl start psydb
+systemctl start nginx
 ```
 
 #### TL;DR
 
-```
+```sh
     cd ~/
     git clone git@github.com:ccp-eva/psydb.git ./psydb-repo
     ./psydb-repo/deploy/systemd/install-ubuntu.sh /srv/psydb-deployment
@@ -91,11 +126,7 @@ copy psydb dist config to target
     cd /srv/psydb-deployment
     ./restore-dump.sh ./mongodb-dumps/init-minimal
     
-    cp -v ./psydb-src/deploy/common/dist-configs/psydb/config.js \
-        ./psydb-src/config.js
-    sed -i 's/mongodb:27017/127.0.0.1:47017/g' ./psydb-src/config.js
-
-    $EDITOR ./psydb-src/config.js
+    $EDITOR ./psydb-src/config/config.js
 
     # systemctl start psydb
     # systemctl start nginx
@@ -104,14 +135,14 @@ copy psydb dist config to target
 ## Docker
 
 create initial folders
-```
+```sh
     mkdir psydb-deployment && cd psydb-deployment
     mkdir -p ./psydb-data ./psydb-config/nginx ./psydb-config/psydb
     mkdir -p ./psydb-ssl # optional
 ```
 
 download docker compose dist config and modify it as needed
-```
+```sh
     curl -L -O github.com/cdxOo/psydb/raw/master/deploy/docker-compose.dist.yaml
     mv -v docker-compose{.dist,}.yaml
 
