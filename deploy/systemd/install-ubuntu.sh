@@ -1,7 +1,12 @@
 #!/bin/bash
-# git clone git@github.com:cdxOo/psydb.git psydb-src
+# git clone git@github.com:ccp-eva/psydb.git psydb-src
 
 SCRIPT_DIR=$(realpath $(dirname "$0"))
+TARGET=$1
+
+if [ -z "$TARGET" ]; then
+    echo "provide target folder"
+fi
 
 ### mongodb
 ### https://www.mongodb.com/docs/v6.0/tutorial/install-mongodb-on-ubuntu/
@@ -58,7 +63,7 @@ sudo apt install -y nginx
 # FIXME: there is an issue when not waiting here a little
 sleep 2
 
-sudo cp -v $SCRIPT_DIR/../dist-configs/nginx/default.nossl-conf \
+sudo cp -v $SCRIPT_DIR/../common/dist-configs/nginx/default.nossl-conf \
     /etc/nginx/conf.d/default.conf
 
 sudo sed -i -e 's/psydb:8080/127.0.0.1:8080/g' /etc/nginx/conf.d/default.conf
@@ -66,10 +71,10 @@ sudo sed -i -e 's/psydb:8080/127.0.0.1:8080/g' /etc/nginx/conf.d/default.conf
 ### psydb
 ###
 sudo groupadd psydb
-sudo mkdir /srv/psydb-deployment
-sudo useradd -M -d /srv/psydb-deployment -s /sbin/nologin psydb -g psydb
+sudo mkdir -p $TARGET
+sudo useradd -M -d $TARGET -s /sbin/nologin psydb -g psydb
 
-cd /srv/psydb-deployment
+cd $TARGET
 sudo cp -a $SCRIPT_DIR/../../ ./psydb-src
 
 sudo cp -v ./psydb-src/deploy/systemd/psydb.service /usr/lib/systemd/system/
@@ -82,11 +87,18 @@ node ./common/scripts/install-run-rush.js update
 cd ./packages/psydb-ui
 npm run build
 
-cd /srv/psydb-deployment
+cd $TARGET
 
-sudo systemctl enable --now psydb
-sudo systemctl enable --now nginx
+sudo systemctl enable psydb
+sudo systemctl enable nginx
 
-sudo cp -a ./psydb-src/deploy/mongodb-initializer-dumps/ ./mongodb-dumps
-sudo cp -a ./psydb-src/deploy/make-dump.sh ./
-sudo cp -a ./psydb-src/deploy/restore-dump.sh ./
+sudo cp -av ./psydb-src/deploy/common/mongodb-initializer-dumps/ \
+    ./mongodb-dumps
+sudo cp -av ./psydb-src/deploy/common/helpers/make-dump.sh ./
+sudo cp -av ./psydb-src/deploy/common/helpers/restore-dump.sh ./
+
+cp -av ./psydb-src/deploy/common/dist-configs/psydb/config.js \
+    ./psydb-src/config/
+
+sed -i -e 's/mongodb:27017/127.0.0.1:47017/g' ./psydb-src/config/config.js
+

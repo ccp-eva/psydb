@@ -58,7 +58,7 @@ the script contains the following steps
 
 execute the script via
 ```
-sudo ./psydb-repo/deploy/systemd/install-ubuntu.sh
+./psydb-repo/deploy/systemd/install-ubuntu.sh
 ```
 
 for further information regarding the configuration of
@@ -76,7 +76,7 @@ use 'init-childlab-with-dummy-data' instead
 
 copy psydb dist config to target
 ```
-    cp -v ./psydb-src/deploy/common/dist-configs/psydb/config.js \
+    cp -av ./psydb-src/deploy/common/dist-configs/psydb/config.js \
         ./psydb-src/config.js
     sed -i 's/mongodb:27017/127.0.0.1:47017/g' ./psydb-src/config.js
 ```
@@ -86,7 +86,7 @@ copy psydb dist config to target
 ```
     cd ~/
     git clone git@github.com:ccp-eva/psydb.git ./psydb-repo
-    sudo ./psydb-repo/deploy/systemd/install-ubuntu.sh /srv/psydb-deployment
+    ./psydb-repo/deploy/systemd/install-ubuntu.sh /srv/psydb-deployment
     
     cd /srv/psydb-deployment
     ./restore-dump.sh ./mongodb-dumps/init-minimal
@@ -96,6 +96,9 @@ copy psydb dist config to target
     sed -i 's/mongodb:27017/127.0.0.1:47017/g' ./psydb-src/config.js
 
     $EDITOR ./psydb-src/config.js
+
+    # systemctl start psydb
+    # systemctl start nginx
 ```
 
 ## Docker
