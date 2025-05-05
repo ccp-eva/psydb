@@ -1,4 +1,4 @@
-# Deployment Overview
+## Deployment Overview
 
 There are two variants for setting up **PsyDB**:
 
@@ -8,20 +8,20 @@ There are two variants for setting up **PsyDB**:
 2. **Manual SystemD Installation**
    Installs PsyDB directly onto the host system using `systemd` service files.
 
-## Database
+### Database
 
 - **MongoDB** is used as the backend database.
 
-## HTTPS and SSL
+### HTTPS and SSL
 
 - PsyDB **does not handle SSL encryption** directly.
 - It is designed to run **behind an HTTPS reverse proxy**, such as **Nginx**.
 
-## Email Support
+### Email Support
 
 - To send emails (e.g. for new account registration), you must **provide an SMTP server**.
 
-## Deployment Files Structure
+### Deployment Files Structure
 
 The `deploy/` directory contains all relevant tools and helpers for setting up PsyDB.
 
@@ -33,11 +33,11 @@ The `deploy/` directory contains all relevant tools and helpers for setting up P
   - general helper scripts
 
 
-# Installation
+## Installation
 
-## SystemD-Based Deployment
+### SystemD-Based Deployment
 
-### System Requirements
+#### System Requirements
 
 | Component         | Recommended Option                   |
 | ----------------- | ------------------------------------ |
@@ -46,15 +46,15 @@ The `deploy/` directory contains all relevant tools and helpers for setting up P
 | Database          | MongoDB 6.x / 5.x / 4.x              |
 | Reverse Proxy     | Nginx 1.25.x                         |
 
-### Setup Instructions
+#### Setup Instructions
 
-#### 1. Clone the Repository
+##### 1. Clone the Repository
 
 ```sh
 git clone git@github.com:ccp-eva/psydb.git psydb-repo
 ```
 
-#### 2. Run the Installation Script
+##### 2. Run the Installation Script
 
 For Ubuntu, an installation script is located at:
 
@@ -83,7 +83,7 @@ execute the script via
 
 > **Note**: For further configuration (e.g., enabling SSL in Nginx or tuning MongoDB), please consult the official documentation for those components.
 
-#### 3. Initialize the Database
+##### 3. Initialize the Database
 
 To perform a minimal initialization with only an admin account:
 
@@ -98,7 +98,7 @@ To create a testing instance with dummy data:
 ./restore-dump.sh ./mongodb-dumps/init-childlab-with-dummy-data
 ```
 
-#### 4. Configuration
+##### 4. Configuration
 
 Edit the configuration file:
 
@@ -107,7 +107,7 @@ $EDITOR ./psydb-src/config/config.js
 ```
 > **Note**: For more information refer to the configuration section
 
-#### 5. Start Services
+##### 5. Start Services
 
 After configuration, start the remaining services:
 
@@ -116,7 +116,7 @@ systemctl start psydb
 systemctl start nginx
 ```
 
-#### TL;DR
+##### TL;DR
 
 ```sh
     cd ~/
@@ -132,22 +132,6 @@ systemctl start nginx
     # systemctl start nginx
 ```
 
-## Docker
+### Docker
 
-create initial folders
-```sh
-    mkdir psydb-deployment && cd psydb-deployment
-    mkdir -p ./psydb-data ./psydb-config/nginx ./psydb-config/psydb
-    mkdir -p ./psydb-ssl # optional
-```
-
-download docker compose dist config and modify it as needed
-```sh
-    curl -L -O github.com/cdxOo/psydb/raw/master/deploy/docker-compose.dist.yaml
-    mv -v docker-compose{.dist,}.yaml
-
-    $EDITOR docker-compose.yaml
-```
-
-by default the dist config uses mailhog as smtp mail sink for testing
-purposes you probably want to remove that
+**TODO**
