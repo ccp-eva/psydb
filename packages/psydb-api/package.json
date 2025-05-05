@@ -83,7 +83,9 @@
     "@cdxoo/mongodb-escape-keys": "~0.2.0-beta.0",
     "@cdxoo/check-ip-in-range": "~0.0.1",
     "keygrip": "~1.1.0",
-    "koa-encrypted-session": "~3.0.7"
+    "koa-encrypted-session": "~3.0.7",
+    "js-base64": "~3.7.5",
+    "mime-types": "~3.0.1"
   },
   "devDependencies": {
     "mocha": "~10.2.0",

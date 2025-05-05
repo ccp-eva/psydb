@@ -1,7 +1,6 @@
 import React from 'react';
 import { useUIConfig, useUILanguage } from '@mpieva/psydb-ui-contexts';
 import { Nav, LinkContainer } from '@mpieva/psydb-ui-layout';
-import branding from './branding';
 
 //import logoOrb from './ccp-orb.svg';
 //import logoOrgWireframe from './ccp-orb-monochrome-white.svg';
@@ -17,8 +16,7 @@ const TextColor = () => {
     var config = useUIConfig();
     var [ language ] = useUILanguage();
 
-    var theBranding = config.branding || 'mpiccp';
-    var { logos, style } = branding[theBranding].sidenav;
+    var { logos, style } = config.branding.sidenav;
 
     return (
         <h2

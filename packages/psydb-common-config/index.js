@@ -42,7 +42,7 @@ module.exports = {
     },
     //branding: 'sunway',
     //disableLogoOverlay: true,
-    branding: 'mpiccp',
+    branding: require('./psydb-default-branding'),
     disableLogoOverlay: false,
 
     dev_enableStagingBanner: true,
