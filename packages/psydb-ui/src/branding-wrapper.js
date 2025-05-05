@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { entries } from '@mpieva/psydb-core-utils';
 import { useUIConfig } from '@mpieva/psydb-ui-contexts';
 
-//import branding from './branding';
 import DevPanel from './dev-panel';
 
 const BrandingWrapper = (ps) => {

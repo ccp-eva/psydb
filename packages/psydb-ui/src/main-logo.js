@@ -2,10 +2,6 @@ import React from 'react';
 import { useUIConfig, useUILanguage } from '@mpieva/psydb-ui-contexts';
 import { Nav, LinkContainer } from '@mpieva/psydb-ui-layout';
 
-//import logoOrb from './ccp-orb.svg';
-//import logoOrgWireframe from './ccp-orb-monochrome-white.svg';
-//import logoTextMono from './mp-logo-graustufen-negativ-rgb.svg';
-
 const Link = ({
     to, ...pass
 }) => (
