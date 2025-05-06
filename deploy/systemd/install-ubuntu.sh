@@ -97,6 +97,7 @@ sudo cp -av ./psydb-src/deploy/common/mongodb-initializer-dumps/ \
 sudo cp -av ./psydb-src/deploy/common/helpers/make-dump.sh ./
 sudo cp -av ./psydb-src/deploy/common/helpers/restore-dump.sh ./
 
+mkdir -p ./psydb-src/config/
 cp -av ./psydb-src/deploy/common/dist-configs/psydb/config.js \
     ./psydb-src/config/
 
