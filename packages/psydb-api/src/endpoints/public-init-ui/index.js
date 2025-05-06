@@ -6,7 +6,6 @@ var { Permissions } = require('@mpieva/psydb-common-lib');
 var { ApiError, ResponseBody } = require('@mpieva/psydb-api-lib');
 var { performSelfAuth } = require('@mpieva/psydb-api-self-auth');
 
-
 var publicInitUI = async (context, next) => {
     var { db, session, request, apiConfig } = context;
 
@@ -40,14 +39,22 @@ var publicInitUI = async (context, next) => {
         '/branding',
         '/disableLogoOverlay',
 
+        '/sideNav',
+
         '/dev_enableStagingBanner',
         '/dev_enableDevPanel',
         '/dev_copyNoticeGreyscale',
         '/dev_enableForeignIdRefLinkInForms',
+
+        '/dev_enableDangerousCRTFieldOps',
+
         '/dev_enableCSVSubjectImport',
         '/dev_enableCSVParticipationImport',
         '/dev_enableStatistics',
         '/dev_enableWKPRCPatches',
+        
+        '/dev_enableSubjectDuplicatesSearch',
+        '/dev_subjectDuplicatesSearchFields',
     ]});
 
     var configHashSum = '';

@@ -8,7 +8,7 @@ import {
 } from '../utility-components';
 
 const TestingPermissions = (ps) => {
-    var { value, related } = ps;
+    var { value = [], related } = ps;
     var translate = useUITranslation();
 
     if (value.length < 1) {

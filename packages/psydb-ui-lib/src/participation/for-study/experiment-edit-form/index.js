@@ -2,7 +2,7 @@ import React from 'react';
 import inline from '@cdxoo/inline-text';
 
 import { merge, unique, only } from '@mpieva/psydb-core-utils';
-import { fixRelated } from '@mpieva/psydb-ui-utils';
+import { __fixRelated } from '@mpieva/psydb-common-compat';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 import {
@@ -124,17 +124,17 @@ var fromHooks = (ps) => {
     var {
         record: experiment,
         related: experimentRelated,
-    } = fixRelated(fetched.data.experimentData);
+    } = __fixRelated(fetched.data.experimentData);
 
     var {
         record: study,
         related: studyRelated
-    } = fixRelated(fetched.data.studyData);
+    } = __fixRelated(fetched.data.studyData);
 
     var {
         records: labMethodSettings,
         related: labMethodSettingsRelated
-    } = fixRelated(fetched.data.labProcedureSettingData);
+    } = __fixRelated(fetched.data.labProcedureSettingData);
 
     var subjectTypes = unique(experiment.state.subjectData.map(it => (
         it.subjectType

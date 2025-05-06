@@ -8,7 +8,8 @@
     "build": "npm run purge-dist && npm run compile-bundle",
     "purge-dist": "npx rimraf --glob dist/*",
     "compile-bundle": "npx webpack --progress -c src/webpack.config-prod.js",
-    "dev": "npx webpack serve -c src/webpack.config.js"
+    "dev": "npx webpack serve -c src/webpack.config.js",
+    "dev-isolation": "npx webpack serve -c src/webpack.config-isolation.js"
   },
   "repository": {
     "type": "git",
@@ -53,6 +54,7 @@
     "@mpieva/psydb-timezone-helpers": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-date-interval-fns": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-common-compat": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-translations": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "workspace:~0.1.0-alpha",
@@ -60,6 +62,8 @@
     "@mpieva/psydb-schema-enums": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-creators": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-api-endpoint-schemas": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-custom-fields-common": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-custom-fields-ui": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ui-request-agents": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ui-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ui-contexts": "workspace:~0.1.0-alpha",

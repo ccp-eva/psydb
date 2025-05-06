@@ -22,30 +22,31 @@ var {
 
 var ApestudiesWKPRCDefaultSchema = (handlerType) => {
     var { properties, required } = requireify({
-        experimentId: ForeignId({ collection: 'experiment' }),
+        'experimentId': ForeignId({ collection: 'experiment' }),
         
-        timestamp: DateTime(), // FIXME: date only server side?
-        locationId: ForeignId({ collection: 'location' }),
-        subjectGroupId: ForeignId({ collection: 'subjectGroup' }),
+        'timestamp': DateTime(), // FIXME: date only server side?
+        'locationId': ForeignId({ collection: 'location' }),
+        'subjectGroupId': ForeignId({ collection: 'subjectGroup' }),
 
-        subjectData: DefaultArray({
+        'subjectData': DefaultArray({
             items: ExactObject(requireify({
-                subjectId: ForeignId({ collection: 'subject' }),
-                role: SaneString({ minLength: 1 }),
-                status: ParticipationStatus(),
-                comment: SaneString(),
-                excludeFromMoreExperimentsInStudy: DefaultBool(),
+                'subjectId': ForeignId({ collection: 'subject' }),
+                'role': SaneString({ minLength: 1 }),
+                'status': ParticipationStatus(),
+                'comment': SaneString(),
+                'excludeFromMoreExperimentsInStudy': DefaultBool(),
             })),
             minItems: 1,
             //maxItems: 1, // NOTE: no multi subject experiments (ask wkprc)
         }),
 
-        roomOrEnclosure: SaneString({ minLength: 1 }),
-        experimentName: SaneString({ minLength: 1 }),
-        intradaySeqNumber: Integer({ minimum: 1 }),
-        totalSubjectCount: Integer({ minimum: 1 }),
+        'roomOrEnclosure': SaneString({ minLength: 1 }),
+        'experimentName': SaneString({ minLength: 1 }),
+        'conditionName': SaneString({ minLength: 1 }),
+        'intradaySeqNumber': Integer({ minimum: 1 }),
+        'totalSubjectCount': Integer({ minimum: 1 }),
 
-        labOperatorIds: ForeignIdList({
+        'labOperatorIds': ForeignIdList({
             collection: 'experimentOperatorIds',
             minItems: 1,
         }),

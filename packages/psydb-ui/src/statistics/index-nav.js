@@ -12,10 +12,10 @@ const IndexNav = (ps) => {
             label: translate('Study Statistics'),
             linkUrl: `${baseUrl}/study/filters`,
         },
-        { 
+        /*{ 
             label: translate('Subject Statistics'),
             linkUrl: `${baseUrl}/subject/filters`,
-        },
+        },*/
     ];
 
     return (

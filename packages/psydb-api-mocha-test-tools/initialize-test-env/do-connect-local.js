@@ -20,6 +20,8 @@ var doConnectLocal = async function (bag = {}) {
         dbName,
         dbHandle,
     };
+
+    return dbHandle;
 }
 
 module.exports = doConnectLocal;

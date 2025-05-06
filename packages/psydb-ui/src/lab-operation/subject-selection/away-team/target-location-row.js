@@ -1,12 +1,10 @@
 import React from 'react';
 
 import { entries } from '@mpieva/psydb-core-utils';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { datefns, formatDateInterval } from '@mpieva/psydb-ui-lib';
 
-import {
-    FieldDataBodyCols,
-} from '@mpieva/psydb-ui-lib/src/record-list';
+import { TableBodyCustomCols } from '@mpieva/psydb-custom-fields-ui';
 
 import UncollapseButton from './uncollapse-button';
 import DetailContainer from './detail-container';
@@ -31,7 +29,8 @@ const TargetLocationRow = (ps) => {
         onCreateExperiment
     } = ps;
 
-    var colspan = locationMetadata.displayFieldData.length + 2;
+    var { related, definitions } = locationMetadata;
+    var colspan = definitions.length + 2;
     var showDetails = selectedLocationId === record._id;
 
     var isRed = (
@@ -40,13 +39,12 @@ const TargetLocationRow = (ps) => {
 
     return (
         <>
-            <tr
-                className={ isRed ? 'bg-light-red' : '' }
-            >
-                <FieldDataBodyCols { ...({
-                    record,
-                    ...locationMetadata,
-                })} />
+            <tr className={ isRed ? 'bg-light-red' : '' }>
+                <TableBodyCustomCols
+                    record={ record }
+                    definitions={ definitions }
+                    related={ related }
+                />
                 <td>{ record._subjectRecords.length }</td>
                 <td />
             </tr>
@@ -114,8 +112,7 @@ const UpcomingExperiments = (ps) => {
         className,
     } = ps;
 
-    var locale = useUILocale();
-    var translate = useUITranslation();
+    var [{ translate, locale }] = useI18N();
 
     var upcoming = (
         records.length > 0
@@ -154,8 +151,7 @@ const PastStudies = (ps) => {
         relatedCustomRecordTypeLabels,
     } = ps;
 
-    var locale = useUILocale();
-    var translate = useUITranslation();
+    var [{ translate, locale }] = useI18N();
 
     var past = (
         records.length > 0
@@ -190,8 +186,7 @@ const PastStudies = (ps) => {
 const ExcludedWeekdays = (ps) => {
     var { excluded } = ps;
 
-    var translate = useUITranslation();
-    var locale = useUILocale();
+    var [{ translate, locale }] = useI18N();
 
     var dayLabels = (
         entries([ 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun' ])

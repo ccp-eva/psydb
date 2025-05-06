@@ -3,10 +3,10 @@ var debug = require('debug')(
     'psydb:api:endpoints:extended-search-export:studies'
 );
 
-var jsonpointer = require('jsonpointer');
 var { copy } = require('copy-anything');
-var { keyBy } = require('@mpieva/psydb-core-utils');
-var { stringifyFieldValue } = require('@mpieva/psydb-common-lib');
+var { __fixRelated, __fixDefinitions } = require('@mpieva/psydb-common-compat');
+var { jsonpointer, keyBy } = require('@mpieva/psydb-core-utils');
+var { Fields } = require('@mpieva/psydb-custom-fields-common');
 
 var {
     CSV,
@@ -19,11 +19,7 @@ var RequestBodySchema = require('./request-body-schema');
 
 
 var studyExtendedSearchExport = async (context, next) => {
-    var {
-        db,
-        permissions,
-        request
-    } = context;
+    var { db, permissions, request, i18n } = context;
 
     var precheckBody = copy(request.body);
     validateOrThrow({
@@ -50,8 +46,6 @@ var studyExtendedSearchExport = async (context, next) => {
 
         columns,
         sort,
-
-        timezone,
     } = request.body;
 
     var {
@@ -74,9 +68,13 @@ var studyExtendedSearchExport = async (context, next) => {
         ),
     });
 
+    // FIXME
+    related = __fixRelated(related, { isResponse: false });
+    displayFieldData = __fixDefinitions(displayFieldData);
+
     var columnDefinitions = keyBy({
         items: displayFieldData,
-        byProp: 'dataPointer'
+        byProp: 'pointer'
     });
 
     displayFieldData = columns.map(pointer => columnDefinitions[pointer]);
@@ -84,18 +82,14 @@ var studyExtendedSearchExport = async (context, next) => {
     var csv = CSV();
     csv.addLine(displayFieldData.map(it => it.displayName));
     for (var record of records) {
-        csv.addLine(displayFieldData.map(fieldDefinition => {
-            var { dataPointer } = fieldDefinition;
-            var rawValue = jsonpointer.get(record, dataPointer);
+        csv.addLine(displayFieldData.map(definition => {
+            var { systemType } = definition;
+
+            var stringify = Fields[systemType]?.stringifyValue;
+            var str = stringify ? (
+                stringify({ record, definition, related, i18n })
+            ) : '[!!ERROR!!]]';
             
-            var str = stringifyFieldValue({
-                rawValue,
-                fieldDefinition,
-                ...related,
-
-                timezone,
-            });
-
             return str;
         }))
     }

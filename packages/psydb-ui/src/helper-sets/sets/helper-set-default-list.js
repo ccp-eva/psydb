@@ -57,12 +57,9 @@ const HelperSetDefaultList = (ps) => {
 
         var { showHidden: realShowHidden, ...realFilters } = filters;
 
-        return agent.searchRecords({
+        return agent.fetch('/helperSet/list', {
             target: 'table',
-            collection: 'helperSet',
-            offset: (
-                didChangeFilters ? 0 : offset
-            ),
+            offset: didChangeFilters ? 0 : offset,
             limit,
             filters: realFilters,
             sort: (

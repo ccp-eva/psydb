@@ -8,12 +8,7 @@ describe('public-online-form', function () {
     beforeEach(async function () {
         await this.restore('init-humankind-with-dummy-data');
         await this.setupInbox({ fixtures: [
-            //'regform-mail-01',
-            //'regform-mail-02',
-            //'regform-mail-03',
-            //'regform-mail-04',
-            //'regform-mail-05',
-            'regform-mail-07',
+            'regform-mail-08-final',
         ]});
 
         this.createKoaApi();

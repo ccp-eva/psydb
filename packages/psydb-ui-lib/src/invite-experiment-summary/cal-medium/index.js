@@ -1,18 +1,10 @@
 import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
-
-import {
-    useUITranslation,
-    useUILanguage,
-    useUILocale
-} from '@mpieva/psydb-ui-contexts';
-
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer, useSend } from '@mpieva/psydb-ui-hooks';
 import { ColoredBox } from '@mpieva/psydb-ui-layout';
 
-import applyValueToDisplayFields from '../../apply-value-to-display-fields';
 import ExperimentDropdown from '../../experiment-dropdown';
-import ExperimentSubjectDropdown from '../../experiment-subject-dropdown';
 
 import { CalendarItemInterval } from '../../calendar-item-interval';
 import { CalendarPostprocessingStatus } from '../../calendar-postprocessing-status';
@@ -32,6 +24,8 @@ import {
     SubjectListContainer,
 } from '../shared';
 
+import SubjectItem from './subject-item';
+
 const ExperimentSummaryMedium = (ps) => {
     var {
         experimentRecord,
@@ -46,7 +40,7 @@ const ExperimentSummaryMedium = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var moveExperimentModal = useModalReducer({ show: false });
     var changeTeamModal = useModalReducer({ show: false });
@@ -250,9 +244,6 @@ const ExperimentSummaryMedium = (ps) => {
                             subjectRelated,
                             subjectDisplayFieldData,
     
-                            experimentRecord,
-                            experimentRelated,
-
                             onClickComment: commentPerSubjectModal.handleShow,
 
                             onClickMove: moveSubjectModal.handleShow,
@@ -287,114 +278,5 @@ const ExperimentSummaryMedium = (ps) => {
     )
 }
 
-const SubjectItem = ({
-    inviteType,
-    subjectDataItem,
-    experimentOperatorTeamRecords,
-    subjectRecordsById,
-    subjectRelated,
-    subjectDisplayFieldData,
-    
-    experimentRecord,
-
-    onClickComment,
-    onClickMove,
-    onClickFollowUp,
-    onClickRemove,
-
-    onClickConfirm,
-    onClickMailbox,
-    onClickContactFailed,
-}) => {
-    var [ language ] = useUILanguage();
-    var locale = useUILocale();
-    var translate = useUITranslation();
-
-    var {
-        subjectId,
-        invitationStatus,
-        comment,
-    } = subjectDataItem;
-
-    var subjectRecord = subjectRecordsById[subjectId];
-
-    var withValue = applyValueToDisplayFields({
-        displayFieldData: (
-            Array.isArray(subjectDisplayFieldData)
-            ? subjectDisplayFieldData
-            : subjectDisplayFieldData[subjectRecord.type]
-        ),
-        record: subjectRecord,
-        ...subjectRelated,
-
-        language,
-        locale,
-    });
-
-    return (
-        <li>
-            <div className='d-flex mb-1'>
-                <div className='flex-grow'>
-                    { withValue.map(it => (
-                        it.value === undefined || it.value === ''
-                        ? null
-                        : (
-                            <div className='d-flex' key={ it.key }>
-                                <span style={{ width: '90px' }}>
-                                    { 
-                                        (it.displayNameI18N || {})[language]
-                                        || it.displayName
-                                    }
-                                </span>
-                                <b className='flex-grow ml-3'>{ it.value }</b>
-                            </div>
-                        )
-                    )) }
-                    { comment && (
-                        <div className='d-flex'>
-                            <span style={{ width: '90px' }}>
-                                { translate('Comment') }
-                            </span>
-                            <i className='flex-grow ml-3'>{ comment }</i>
-                        </div>
-                    )}
-                </div>
-                <div
-                    style={{ width: '35px' }}
-                    className='d-flex flex-column align-items-center'
-                >
-                    <ExperimentSubjectDropdown { ...({
-                        experimentType: inviteType,
-                        variant: 'calendar',
-                        subjectRecord,
-                        
-                        onClickComment,
-                        onClickMove,
-                        onClickFollowUp,
-                        onClickRemove,
-
-                        onClickConfirm,
-                        onClickMailbox,
-                        onClickContactFailed,
-                    }) } />
-                    { invitationStatus !== 'scheduled' && (
-                        <b 
-                            className='pl-2 pr-2'
-                            style={{ fontSize: '120%', border: '1px solid' }}
-                        >
-                            { translate(invitationStatusLabels[invitationStatus] )}
-                        </b>
-                    )}
-                </div>
-            </div>
-        </li>
-    )
-}
-
-const invitationStatusLabels = {
-    'confirmed': 'confirmed_icon',
-    'mailbox': 'mailbox_icon',
-    'contact-failed': 'contact-failed_icon',
-}
 
 export default ExperimentSummaryMedium;

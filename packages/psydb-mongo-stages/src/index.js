@@ -8,4 +8,5 @@ module.exports = {
 
     expressions: require('./expressions'),
     match: require('./match'),
+    projections: require('./projections'),
 }

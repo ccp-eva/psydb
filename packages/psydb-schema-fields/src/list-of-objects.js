@@ -1,21 +1,40 @@
 'use strict';
-var DefaultArray = require('./default-array'),
-    ExactObject = require('./exact-object');
+var { DefaultArray, ExactObject } = require('./core-compositions');
+
+var {
+    DateTime,
+    DateOnlyServerSide
+} = require('./date-time');
+
+var {
+    BiologicalGender,
+    Email,
+    Phone,
+    ExtBool,
+    SaneString,
+    FullText,
+    ForeignId,
+    HelperSetItemId,
+    DefaultBool,
+    
+    Address,
+} = require('./common');
 
 var allowedFields = {
-    DateTime: require('./date-time'),
-    DateOnlyServerSide: require('./date-only-server-side'),
-    BiologicalGender: require('./biological-gender'),
-    Email: require('./email'),
-    Phone: require('./phone'),
-    ExtBool: require('./ext-bool'),
-    SaneString: require('./sane-string'),
-    FullText: require('./full-text'),
-    ForeignId: require('./foreign-id'),
-    HelperSetItemId: require('./helper-set-item-id'),
-    DefaultBool: require('./default-bool'),
+    DateTime,
+    DateOnlyServerSide,
+    
+    BiologicalGender,
+    Email,
+    Phone,
+    ExtBool,
+    SaneString,
+    FullText,
+    ForeignId,
+    HelperSetItemId,
+    DefaultBool,
 
-    Address: require('./address'),
+    Address,
 }
 
 var ListOfObjects = ({

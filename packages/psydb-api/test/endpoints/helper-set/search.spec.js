@@ -10,9 +10,7 @@ var picard = ObjectId("6312720d8dde11df80a50aa2");
 describe('endpoints/helper-set/search', function () {
     var db, agent;
     beforeEach(async function () {
-        await this.restore(
-            '2023-10-16__2324'
-        );
+        await this.restore('2024-10-13__1818');
         
         this.createKoaApi();
         await this.signIn();
@@ -32,6 +30,7 @@ describe('endpoints/helper-set/search', function () {
         var response = await (
             agent.post('/helperSet/search', jsonify({
                 filters: {
+                    '/state/label': 'Ak'
                     //'/state/displayNameI18N/de': 'de2'
                 },
                 constraints: {

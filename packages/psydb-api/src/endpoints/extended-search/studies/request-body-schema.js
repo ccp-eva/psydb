@@ -30,6 +30,7 @@ RequestBodySchema.Core = () => OpenObject({
 var NegatableForeignIdList = (bag) => {
     return ExactObject({
         properties: {
+            any: DefaultBool(),
             negate: DefaultBool(),
             values: ForeignIdList({
                 ...bag

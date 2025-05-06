@@ -7,9 +7,7 @@ var createScientistRole = require('./create-scientist-role');
 var createHiwiRole = require('./create-hiwi-role');
 var createReceptionRole = require('./create-reception-role');
 
-var createLanguageSet = require('./create-language-set');
-var createNovelSet = require('./create-novel-set');
-var createAcquisitionSet = require('./create-acquisition-set');
+var createHelperSets = require('./create-helper-sets');
 
 var createKigaUmbrellaOrgCRT = require('./create-kiga-umbrella-org-crt');
 var createKigaCRT = require('./create-kiga-crt');
@@ -28,9 +26,7 @@ module.exports = async (bag) => {
     await createHiwiRole({ ...context, as: 'hiwi' });
     await createReceptionRole({ ...context, as: 'reception' });
 
-    await createLanguageSet({ ...context, as: 'language' });
-    await createNovelSet({ ...context, as: 'novel' });
-    await createAcquisitionSet({ ...context, as: 'acquisition' });
+    await createHelperSets({ ...context });
 
     await createKigaUmbrellaOrgCRT({ ...context, as: 'kigaUmbrellaOrg' });
 

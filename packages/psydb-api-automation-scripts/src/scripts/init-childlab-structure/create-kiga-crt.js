@@ -1,183 +1,150 @@
 'use strict';
-module.exports = async ({ apiKey, driver, cache, as }) => {
-    await driver.sendMessage({
-        type: `custom-record-types/create`,
-        payload: {
-            collection: 'location',
-            type: 'kiga',
-            props: { label: 'Kindergärten' }
-        },
-    }, { apiKey });
+var PointerGen = require('./pointer-gen');
 
-    var crtId = cache.addId({ collection: 'customRecordType', as });
+module.exports = async (context) => {
+    var { driver, cache } = context;
 
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'SaneString',
-            key: 'name',
-            displayName: 'Bezeichnung',
-            props: { minLength: 1 }
-        }},
-    }, { apiKey });
- 
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'Address',
-            key: 'address',
-            displayName: 'Adresse',
-            props: {
-                isStreetRequired: true,
-                isHousenumberRequired: true,
-                isAffixRequired: false,
-                isPostcodeRequired: true,
-                isCityRequired: true,
-                isCountryRequired: true,
-            }
-        }},
-    }, { apiKey });
+    var definitions = FieldDefinitions({ cache });
+    var asPointers = PointerGen(definitions);
 
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'SaneString',
-            key: 'head',
-            displayName: 'Leiter:in',
-            props: { minLength: 0 }
-        }},
-    }, { apiKey });
- 
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'SaneString',
-            key: 'vice',
-            displayName: 'Stellvertreter:in',
-            props: { minLength: 0 }
-        }},
-    }, { apiKey });
- 
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'ForeignId',
-            key: 'supervisorId',
-            displayName: 'Betreuer:in',
-            props: {
-                collection: 'personnel',
-                isNullable: true,
-                constraints: {},
-            }
-        }},
-    }, { apiKey });
+    var crt = await driver.crt.create({
+        collection: 'location', key: 'kiga',
+        displayNames: {
+            'en': 'Kindergardens',
+            'de': 'Kindergärten',
+        }
+    });
 
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'PhoneWithTypeList',
-            key: 'phones',
-            displayName: 'Telefon',
-            props: { minItems: 0 }
-        }},
-    }, { apiKey });
+    cache.addCRT(crt.meta);
+    var { _id: crtId } = crt.meta;
 
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'PhoneList',
-            key: 'faxes',
-            displayName: 'Fax',
-            props: { minItems: 0 }
-        }},
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'EmailList',
-            key: 'emails',
-            displayName: 'Email',
-            props: { minItems: 0 }
-        }},
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'ForeignId',
-            key: 'kigaUmbrellaOrgId',
-            displayName: 'Betreuer:in',
-            props: {
-                collection: 'externalOrganization',
-                recordType: 'kigaUmbrellaOrg',
-                isNullable: false,
-                constraints: {},
-            }
-        }},
-    }, { apiKey });
+    await crt.addManyFields({ definitions: Object.values(definitions) });
+    await crt.commitFields();
 
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'SaneString',
-            key: 'roomName',
-            displayName: 'Raum',
-            props: { minLength: 0 }
-        }},
-    }, { apiKey });
- 
-    await driver.sendMessage({
-        type: `custom-record-types/commit-settings`,
-        payload: { id: crtId }
-    }, { apiKey });
-
-
-    await driver.sendMessage({
-        type: `custom-record-types/set-record-label-definition`,
-        payload: { id: crtId, props: {
+    await crt.setupDisplaySettings({
+        recordLabelDefinition: {
             format: '${#}',
-            tokens: [
-                '/state/custom/address',
-            ]
-        }}
-    }, { apiKey });
+            tokens: asPointers([ 'address' ])
+        },
+        displayFields: {
+            'table': [ '/sequenceNumber', ...asPointers([
+                'name', 'address', 'head', 'phones',
+            ])],
+            'optionlist': [ '/sequenceNumber', ...asPointers([
+                'address'
+            ])],
+        },
+    })
 
-    await driver.sendMessage({
-        type: `custom-record-types/set-display-fields`,
-        payload: {
-            id: crtId,
-            target: 'table',
-            fieldPointers: [
-                '/sequenceNumber',
-                '/state/custom/name',
-                '/state/custom/address',
-                '/state/custom/head',
-                '/state/custom/phones',
-            ]
-        }
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/set-display-fields`,
-        payload: {
-            id: crtId,
-            target: 'optionlist',
-            fieldPointers: [
-                '/sequenceNumber',
-                '/state/custom/address',
-            ]
-        }
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/set-general-data`,
-        payload: {
-            id: crtId,
-            label: 'Kindergärten',
-            reservationType: 'away-team',
-        }
-    }, { apiKey });
+    await crt.updateGeneralSettings({
+        displayNames: {
+            'en': 'Kindergardens',
+            'de': 'Kindergärten',
+        },
+        reservationType: 'away-team',
+    });
 
     return crtId;
 }
+
+var FieldDefinitions = ({ cache }) => ({
+    'name': {
+        type: 'SaneString',
+        key: 'name',
+        displayName: 'Name',
+        displayNameI18N: { 'de': 'Bezeichnung' },
+        props: { minLength: 1 }
+    },
+
+    'address': {
+        type: 'Address',
+        key: 'address',
+        displayName: 'Address',
+        displayNameI18N: { 'de': 'Adresse' },
+        props: {
+            isStreetRequired: true,
+            isHousenumberRequired: true,
+            isAffixRequired: false,
+            isPostcodeRequired: true,
+            isCityRequired: true,
+            isCountryRequired: true,
+        }
+    },
+
+    'head': {
+        type: 'SaneString',
+        key: 'head',
+        displayName: 'Head',
+        displayNameI18N: { 'de': 'Leiter:in' },
+        props: { minLength: 0 }
+    },
+
+    'vice': {
+        type: 'SaneString',
+        key: 'vice',
+        displayName: 'Vice',
+        displayNameI18N: { 'de': 'Stellvertreter:in' },
+        props: { minLength: 0 }
+    },
+
+    'supervisorId': {
+        type: 'ForeignId',
+        key: 'supervisorId',
+        displayName: 'Assigned RA',
+        displayNameI18N: { 'de': 'Betreuer:in' },
+        props: {
+            collection: 'personnel',
+            isNullable: true,
+            constraints: {},
+            displayEmptyAsUnknown: false,
+            addReferenceToTarget: false,
+        }
+    },
+
+    'phones': {
+        type: 'PhoneWithTypeList',
+        key: 'phones',
+        displayName: 'Phone',
+        displayNameI18N: { 'de': 'Telefon' },
+        props: { minItems: 0 }
+    },
+
+    'faxes': {
+        type: 'PhoneList',
+        key: 'faxes',
+        displayName: 'Fax',
+        displayNameI18N: { 'de': 'Fax' },
+        props: { minItems: 0 }
+    },
+   
+    'emails': {
+        type: 'EmailList',
+        key: 'emails',
+        displayName: 'E-Mail',
+        displayNameI18N: { 'de': 'E-Mail' },
+        props: { minItems: 0 }
+    },
+   
+    'kigaUmbrellaOrgId': {
+        type: 'ForeignId',
+        key: 'kigaUmbrellaOrgId',
+        displayName: 'Umrella Org',
+        displayNameI18N: { 'de': 'Träger' },
+        props: {
+            collection: 'externalOrganization',
+            recordType: 'kigaUmbrellaOrg',
+            isNullable: true,
+            constraints: {},
+            displayEmptyAsUnknown: false,
+            addReferenceToTarget: false,
+        }
+    },
+
+    'roomInfo': {
+        type: 'SaneString',
+        key: 'roomInfo',
+        displayName: 'Room Info',
+        displayNameI18N: { 'de': 'Raum Info' },
+        props: { minLength: 0 }
+    },
+})

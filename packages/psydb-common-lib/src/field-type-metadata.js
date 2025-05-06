@@ -107,7 +107,7 @@ module.exports = {
     },
 
     Id: {
-        canBeCustomField: true,
+        canBeCustomField: true, // FIXME this is wrong isnt it?
         canBeDisplayField: true,
         canBeLabelField: true,
         canSearch: false,

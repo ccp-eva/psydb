@@ -22,10 +22,11 @@ export { default as RoutedTabNav } from './routed-tab-nav';
 export { default as SideNav } from './side-nav';
 export { default as RoutedSideNav } from './routed-side-nav';
 
-export { default as PaddedText } from './padded-text';
-export { default as Split } from './split';
+export * from './grid';
 export * from './split-partitioned';
+export { default as Split } from './split';
 export { default as Pair } from './pair';
+export { default as PaddedText } from './padded-text';
 
 export { default as DetailsBox } from './details-box';
 export { default as DetailsBoxPlain } from './details-box-plain';
@@ -43,8 +44,6 @@ export * from './unexpected-response-error';
 
 export * from './table-empty-fallback';
 export * from './table-head';
-export * from './table-head-custom-cols';
-export * from './table-body-custom-cols';
 
 export * from './sortable-th';
 export * from './option-select-indicator';

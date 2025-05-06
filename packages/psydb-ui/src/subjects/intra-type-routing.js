@@ -8,6 +8,7 @@ import {
 
 import { LinkContainer } from '@mpieva/psydb-ui-layout';
 import ExtendedSearch from './extended-search';
+import DuplicatesRouting from './duplicates';
 
 const RecordTypeRouting = ({
     collection,
@@ -32,6 +33,7 @@ const RecordTypeRouting = ({
                     collection={ collection }
                     recordType={ recordType }
                     enableView={ false }
+                    enableDuplicatesSearch={ true }
                     enableExtendedSearch={ true }
                     enableCSVExport={ true }
                     enableNew={ true }
@@ -51,6 +53,10 @@ const RecordTypeRouting = ({
                     ({ id }) => history.push(`${url}/${id}`)
                 }
             />
+        </Route>
+
+        <Route path={`${path}/duplicates`}>
+            <DuplicatesRouting recordType={ recordType } />
         </Route>
 
         <Route path={`${path}/extended-search/`}>

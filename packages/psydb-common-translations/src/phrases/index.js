@@ -13,6 +13,7 @@ module.exports = [
     ...require('./permissions'),
     ...require('./crt-editor'),
     ...require('./csv-imports'),
+    ...require('./duplicates'),
 
     ...require('./_fieldtype'),
     ...require('./_participationStatus'),
@@ -20,24 +21,31 @@ module.exports = [
     ...require('./_address'),
     ...require('./_record_picker'),
     ...require('./_form_array'),
+    ...require('./_stringify-fields'),
+
 
     {
+        internal: '_sidenav_calendars',
         en: 'Calendars',
         de: 'Kalender'
     },
     {
+        internal: '_sidenav_calendars_reception',
         en: 'Reception',
         de: 'Rezeption',
     },
     {
+        internal: '_sidenav_lab-operation',
         en: 'Lab Operation',
         de: 'Studienbetrieb'
     },
     {
+        internal: '_sidenav_lab-operation_reservation',
         en: 'Reservation',
         de: 'Reservierung'
     },
     {
+        internal: '_sidenav_lab-operation_experiment-postprocessing',
         en: 'Postprocessing',
         de: 'Nachbereitung'
     },
@@ -46,26 +54,32 @@ module.exports = [
         de: 'Nachbereitung (${subject} - ${study})',
     },
     {
+        internal: '_sidenav_external-persons',
         en: 'External Persons',
         de: 'Externe Personen'
     },
     {
+        internal: '_sidenav_study-topics',
         en: 'Study Topics',
         de: 'Themengebiete'
     },
     {
+        internal: '_sidenav_personnel',
         en: 'Staff Members',
         de: 'Mitarbeiter:innen'
     },
     {
+        internal: '_sidenav_research-groups',
         en: 'Research Groups',
         de: 'Forschungsgruppen'
     },
     {
+        internal: '_sidenav_system-roles',
         en: 'System Roles',
         de: 'System-Rollen'
     },
     {
+        internal: '_sidenav_custom-record-types',
         en: 'Record Types',
         de: 'Datensatz-Typen'
     },
@@ -336,6 +350,7 @@ module.exports = [
         de: 'Status'
     },
     {
+        internal: '_sidenav_statistics',
         en: 'Statistics',
         de: 'Statistiken'
     },
@@ -363,8 +378,8 @@ module.exports = [
     },
     {
         internal: '_studyParticipations_short',
-        en: 'P.',
-        de: 'T.',
+        en: 'Part.',
+        de: 'Teiln.',
     },
     {
         internal: 'unknown_short',
@@ -561,8 +576,28 @@ module.exports = [
         de: 'Bedingungen'
     },
     {
+        en: 'Internal ID',
+        de: 'Interne ID',
+    },
+    {
+        en: 'Internal ID (from Duplicate)',
+        de: 'Interne ID (von Duplikat)',
+    },
+    {
         en: 'ID No.',
         de: 'ID Nr.'
+    },
+    {
+        en: 'ID No. (from Duplicate)',
+        de: 'ID Nr. (von Duplikat)'
+    },
+    {
+        en: 'Online ID Code',
+        de: 'Online ID Code'
+    },
+    {
+        en: 'Online ID Code (from Duplicate)',
+        de: 'Online ID Code (von Duplikat)'
     },
     {
         internal: '_designation',
@@ -864,10 +899,6 @@ module.exports = [
         de: 'Proband:innen aus dieser Location herausnehmen (z.B. bei Kindergärten)'
     },
     {
-        en: 'Online ID Code',
-        de: 'Online ID Code'
-    },
-    {
         en: 'Save and Unhide',
         de: 'Speichern und Einblenden'
     },
@@ -1053,6 +1084,7 @@ module.exports = [
         de: 'Dieses Team wirklich ausblenden?'
     },
     {
+        internal: '_sidenav_csv-imports',
         en: 'CSV Import',
         de: 'CSV-Import'
     },
@@ -1150,10 +1182,6 @@ module.exports = [
         de: 'Ergebnisliste',
     },
     {
-        en: 'Internal ID',
-        de: 'Interne ID',
-    },
-    {
         en: 'Has Participation Permission',
         de: 'Hat Teilnahme-Erlaubnis',
     },
@@ -1197,8 +1225,20 @@ module.exports = [
         de: 'Keine Bedingungen',
     },
     {
+        en: 'Specific Values',
+        de: 'Spezifische Werte',
+    },
+    {
         en: 'Not with theese Values',
         de: 'Nicht mit diesen Werten',
+    },
+    {
+        en: 'Has Any Value',
+        de: 'Mit beliebigem Wert',
+    },
+    {
+        en: 'Has No Value',
+        de: 'Mit keinem Wert',
     },
     {
         en: 'Values',
@@ -1213,6 +1253,10 @@ module.exports = [
         internal: '_range_to',
         en: 'To',
         de: 'Bis',
+    },
+    {
+        en: 'Participation Range',
+        de: 'Teilnahme-Zeitraum'
     },
     {
         en: 'Date Range',
@@ -1443,7 +1487,12 @@ module.exports = [
     {
         internal: '_wkprc_experimentName',
         en: 'Experiment Name',
-        de: 'Test-Bezeichnung'
+        de: 'Name des Experiments'
+    },
+    {
+        internal: '_wkprc_conditionName',
+        en: 'Condition Name',
+        de: 'Name der Condition'
     },
     {
         internal: '_wkprc_roomOrEnclosure',
@@ -1475,7 +1524,7 @@ module.exports = [
         en: 'Trial-P.',
         de: 'Trial-P.' // FIXME
     },
-    
+   
     // Field sites
 
     {
@@ -1485,6 +1534,7 @@ module.exports = [
 
     // audit
     {
+        internal: '_sidenav_audit',
         en: 'Audit',
         de: 'Audit'
     },
@@ -1670,6 +1720,7 @@ module.exports = [
     },
 
     {
+        internal: '_sidenav_api-keys',
         en: 'API Keys',
         de: 'API-Keys'
     },

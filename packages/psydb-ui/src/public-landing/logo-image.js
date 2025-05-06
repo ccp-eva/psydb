@@ -1,13 +1,11 @@
 import React from 'react';
 import { useUIConfig, useUILanguage } from '@mpieva/psydb-ui-contexts';
-import branding from '../branding';
 
 const LogoImage = (ps) => {
     var config = useUIConfig();
     var [ language ] = useUILanguage();
 
-    var theBranding = config.branding || 'mpiccp';
-    var { logos, style } = branding[theBranding].landing;
+    var { logos, style } = config.branding.landing;
 
     return (
         <img

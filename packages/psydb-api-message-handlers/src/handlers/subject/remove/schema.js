@@ -13,6 +13,7 @@ var Schema = () => {
         payload: ExactObject({
             properties: {
                 id: Id(),
+                // FIXME: compat
                 lastKnownSubChannelEventIds: ExactObject({
                     properties: {
                         gdpr: EventId(),
@@ -26,7 +27,7 @@ var Schema = () => {
             },
             required: [
                 'id',
-                'lastKnownSubChannelEventIds',
+                //'lastKnownSubChannelEventIds',
             ]
         })
     });

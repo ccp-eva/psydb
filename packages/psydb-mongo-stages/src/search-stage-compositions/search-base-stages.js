@@ -1,9 +1,9 @@
 'use strict';
 var { hasSome } = require('@mpieva/psydb-core-utils');
 var { SmartArray } = require('@mpieva/psydb-common-lib');
+var futils = require('@mpieva/psydb-custom-fields-mongo');
 
 var {
-    QuickSearchStages,
     MatchConstraintsStage,
 
     isNotDummyStage,
@@ -15,8 +15,8 @@ var {
 // maybe FilterStages or MatcherStages?
 var SearchBaseStages = (bag = {}) => {
     var {
-        queryFields = [],
-        fieldTypeConversions,
+        //queryFields = [],
+        definedQuickSearch = [],
 
         constraints = {},
         onlyIds = undefined,
@@ -46,8 +46,11 @@ var SearchBaseStages = (bag = {}) => {
             })
         ),
 
-        hasSome(queryFields) && (
-            QuickSearchStages({ queryFields, fieldTypeConversions })
+        hasSome(definedQuickSearch) && (
+            futils.createMatchStages({
+                type: 'quick-search',
+                from: definedQuickSearch,
+            })
         ),
     ], { spreadArrayItems: true })
 }

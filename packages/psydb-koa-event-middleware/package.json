@@ -3,7 +3,9 @@
   "version": "0.1.0-alpha",
   "description": "",
   "main": "./src/index.js",
-  "scripts": {},
+  "scripts": {
+    "build": ""
+  },
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
@@ -13,8 +15,7 @@
     "map-obj": "~4.3.0",
     "@cdxoo/inline-text": "~1.0.2",
     "@cdxoo/koa-mongo-mq": "~1.4.0",
-    "@cdxoo/koa-mongo-rohrpost": "~3.3.0",
-    "@cdxoo/mongo-rohrpost": "~3.3.0",
+    "@cdxoo/mongo-rohrpost": "~3.4.0",
     "deepmerge": "~4.2.2",
     "@mpieva/psydb-api-lib": "workspace:~0.1.0-alpha",
     "@cdxoo/tiny-ejson": "~1.0.0",

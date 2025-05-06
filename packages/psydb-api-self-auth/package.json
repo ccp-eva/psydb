@@ -4,6 +4,7 @@
   "description": "",
   "main": "./src/index",
   "scripts": {
+    "build": "",
     "test": "npx mocha --config mocha.config.json test/"
   },
   "repository": {

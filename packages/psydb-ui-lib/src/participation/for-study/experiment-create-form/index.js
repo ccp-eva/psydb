@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { only, unique, hasOnlyOne } from '@mpieva/psydb-core-utils';
-import { fixRelated } from '@mpieva/psydb-ui-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, FormHelpers } from '@mpieva/psydb-ui-layout';

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useUIConfig } from '@mpieva/psydb-ui-contexts';
 
-import ccporb from '../ccp-orb-grayscale2.svg';
 import CopyNotice from '../copy-notice';
 
 import CenterBox from './center-box';
