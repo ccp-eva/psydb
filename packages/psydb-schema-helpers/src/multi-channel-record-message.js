@@ -6,7 +6,7 @@ var {
     OpenObject,
     Id,
     EventId,
-    Integer,
+    SaneString,
     DefaultBool
 } = require('@mpieva/psydb-schema-fields');
 
@@ -88,7 +88,8 @@ var MultiChannelRecordCreateMessage = (bag) => {
         payload: ExactObject({
             properties: {
                 id: Id(), // user can optionally force create id
-                sequenceNumber: Integer(), // user can optionally force it
+                sequenceNumber: SaneString(), // user can optionally force it
+                isDummy: DefaultBool(),
                 props: payloadPropsSchema,
 
                 ...staticCreatePropSchemas,

@@ -111,9 +111,23 @@ export const Columns = (ps) => {
     var columnBlocks = [
         [
             { pointer: '/sequenceNumber', label: translate('ID No.') },
+            { 
+                pointer: '/_mergedDuplicateSequenceNumber',
+                label: translate('ID No. (from Duplicate)')
+            },
+
             { pointer: '/onlineId', label: translate('Online ID Code') },
+            {
+                pointer: '/_mergedDuplicateOnlineId',
+                label: translate('Online ID Code (from Duplicate)')
+            },
+
             ...(permissions.isRoot() ? [
-                { pointer: '/_id', label: translate('Internal ID') }
+                { pointer: '/_id', label: translate('Internal ID') },
+                {
+                    pointer: '/_mergedDuplicateId',
+                    label: translate('Internal ID (from Duplicate)')
+                },
             ] : []),
         ],
         customColumns,

@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
+    "build": "",
     "test": "npx mocha --config mocha.config.json test/"
   },
   "author": "Jan Schwalbe",

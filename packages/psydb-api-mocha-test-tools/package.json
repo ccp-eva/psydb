@@ -4,14 +4,16 @@
   "description": "",
   "main": "./index.js",
   "scripts": {
+    "build": ""
   },
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
     "chai": "~4.3.7",
     "chai-subset": "~1.6.0",
+    "date-fns": "~2.30.0",
     "mocha-chai-jest-snapshot": "~1.1.4",
-    "@cdxoo/mongodb-restore": "2.0.0-alpha.4",
+    "@cdxoo/mongodb-restore": "~2.0.1",
     "@cdxoo/mongo-test-helpers": "~0.7.1",
     "@mpieva/psydb-fixtures": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",

@@ -21,7 +21,7 @@ var fetchOneExperimentData = async (options) => {
         experimentType,
         experimentId,
         permissions,
-        timezone,
+        i18n,
     } = options;
 
     debug('fetch experiment record');
@@ -62,7 +62,7 @@ var fetchOneExperimentData = async (options) => {
         db,
         collectionName: 'experiment',
         records: [ experimentRecord ],
-        timezone,
+        ...i18n,
     });
 
     return {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Base64 } from 'js-base64';
 import { useRouteMatch } from 'react-router-dom';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     usePermissions,
     useURLSearchParams,
@@ -88,6 +88,8 @@ const RecordListContainer = (ps) => {
 
         enableExtendedSearch,
         enableCSVExport,
+        
+        enableDuplicatesSearch,
 
         enableSelectRecords,
         showSelectionIndicator,
@@ -103,8 +105,9 @@ const RecordListContainer = (ps) => {
     } = ps;
 
     var { path, url } = useRouteMatch();
-    var translate = useUITranslation();
+    var uiConfig = useUIConfig();
     var permissions = usePermissions();
+    var [{ translate }] = useI18N();
     
     var [ query, updateQuery ] = (
         (target === 'table' || !target)
@@ -118,7 +121,7 @@ const RecordListContainer = (ps) => {
     var canCreate = permissions.hasCollectionFlag(collection, 'write');
     var canUseExtendedSearch = permissions.hasFlag('canUseExtendedSearch');
     var canUseCSVExport = permissions.hasFlag('canUseCSVExport');
-
+    
     var extQuery = createExtendedSearchQuery(query);
     var extQueryUrl = (
         extQuery
@@ -126,6 +129,12 @@ const RecordListContainer = (ps) => {
         : `${url}/extended-search`
     );
     //var [ showHidden, setShowHidden ] = useState(false);
+
+    var canUseDuplicatesSearch = (
+        uiConfig.dev_enableSubjectDuplicatesSearch
+        && permissions.isRoot() // FIXME
+    )
+    var duplicatesUrl = `${url}/duplicates/`;
 
     return (
         <div className={ className }>
@@ -135,7 +144,12 @@ const RecordListContainer = (ps) => {
                         { translate('New Record') }
                     </LinkButton>
                 )}
-                <div>
+                <div className='d-flex gapx-3'>
+                    { enableDuplicatesSearch && canUseDuplicatesSearch && (
+                        <LinkButton to={ duplicatesUrl }>
+                            { translate('Duplicates') }
+                        </LinkButton>
+                    )}
                     { enableExtendedSearch && canUseExtendedSearch && (
                         <LinkButton to={ extQueryUrl }>
                             { translate('Advanced Search') }
@@ -143,8 +157,6 @@ const RecordListContainer = (ps) => {
                     )}
                     { enableCSVExport && canUseCSVExport && (
                         <CSVSearchExportButton { ...({
-                            className: 'ml-3',
-
                             collection,
                             recordType,
                             constraints,

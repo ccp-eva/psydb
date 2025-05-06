@@ -55,9 +55,9 @@ var {
 var searchGrouped = async (context, next) => {
     var { 
         db,
-        timezone,
         permissions,
         request,
+        i18n,
 
         experimentVariant,
     } = context;
@@ -249,7 +249,7 @@ var searchGrouped = async (context, next) => {
 
     debug('postprocessing subjects');
     postprocessSubjectRecords({
-        timezone,
+        i18n,
         subjectRecords: flatSubjects,
         subjectRecordType: subjectTypeKey,
         studyRecords,

@@ -141,8 +141,8 @@ var fetchRecordById = async ({
     if (['helperSet', 'helperSetItem'].includes(collectionName)) {
         record._recordLabel = (
             translationExists({ language })
-            ? record.state.displayNameI18N[language]
-            : record.state.label
+            && record?.state?.displayNameI18N?.[language]
+            || record.state.label
         );
     }
     else {

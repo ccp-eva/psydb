@@ -3,11 +3,12 @@ var fs = require('fs');
 var fspath = require('path');
 var userConfigPath = fspath.resolve(__dirname, '../../../config/config.js');
 
+var defaultSideNav = require('@mpieva/psydb-common-config/default-side-nav');
+
 var config = undefined;
 console.log(userConfigPath);
 if (fs.existsSync(userConfigPath) && fs.lstatSync(userConfigPath).isFile()) {
-    config = require('../../../config/config.js');
-    console.log(config);
+    config = require(userConfigPath);
 }
 else {
     console.warn('no config found using fallback');
@@ -45,6 +46,10 @@ else {
             secure: false,
         },
     }
+}
+
+if (!config.sideNav) {
+    config.sideNav = defaultSideNav;
 }
 
 module.exports = config;

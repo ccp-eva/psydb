@@ -20,6 +20,8 @@ var splitISO = (value) => {
     return { date, time, fraction };
 }
 
+var HOUR = 60 * 60 * 1000;
+
 var unmarshalDateOnlyServerSide = {
     modifying: true,
     schema: false,
@@ -39,7 +41,10 @@ var unmarshalDateOnlyServerSide = {
 
         //console.log(data, dataPath, parentData, parentDataProperty);
         if (serverTimezone && clientTimezone) {
-            var received = new Date(data);
+            var received = new Date(
+                /z$/i.test(data) ? data : `${data}T00:00:00Z`
+            );
+            received = new Date(received.getTime() + 12 * HOUR); // XXX bs
             // FIXME:
             // on 1894-04-01 something wird happened
             // als all dates before 100 AD cannot be timezone corrected properly

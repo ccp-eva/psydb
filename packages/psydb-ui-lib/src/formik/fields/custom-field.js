@@ -24,7 +24,7 @@ export const CustomField = (ps) => {
     var { dataXPath, definition, related, extraTypeProps } = ps;
     var {
         displayName,
-        displayNameI18N = {},
+        displayNameI18N = {}, // FIXME: in apedb this does not fall back
         type,
         props
     } = definition;
@@ -72,7 +72,7 @@ export const CustomField = (ps) => {
     return (
         <Component
             dataXPath={ dataXPath }
-            label={ displayNameI18N[language] || displayName }
+            label={ displayNameI18N?.[language] || displayName }
             related={ related }
             required={ isRequired }
             extraContentWrapperProps={{ ...props, ...extraTypeProps[type] }}

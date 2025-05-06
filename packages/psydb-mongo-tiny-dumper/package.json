@@ -1,0 +1,22 @@
+{
+    "name": "@mpieva/psydb-mongo-tiny-dumper",
+    "version": "0.0.1",
+    "main": "./index.js",
+    "description": "",
+    "author": "Jan Schwalbe",
+    "license": "MIT",
+    "scripts": {
+        "build": "",
+        "test": "echo 'NO TESTS'"
+    },
+    "dependencies": {
+        "co": "^4.6.0",
+        "commander": "^12.0.0",
+        "mongodb": "4.x",
+        "bson": "4.x",
+        "relaxed-json": "^1.0.3",
+        "@cdxoo/mongodb-dump": "0.1.0-alpha.5"
+    },
+    "devDependencies": {},
+    "type": "commonjs"
+}

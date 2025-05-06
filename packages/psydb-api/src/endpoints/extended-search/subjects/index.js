@@ -3,9 +3,14 @@ var debug = require('debug')(
     'psydb:api:endpoints:extendedSearch:subjects'
 );
 
-var jsonpointer = require('jsonpointer');
 var { copy } = require('copy-anything');
-var { groupBy, convertPointerToPath } = require('@mpieva/psydb-core-utils');
+var {
+    jsonpointer,
+    groupBy,
+    convertPointerToPath,
+    ejson
+} = require('@mpieva/psydb-core-utils');
+
 var {
     calculateAge,
     findCRTAgeFrameField
@@ -23,11 +28,7 @@ var { extendedSearch } = require('@mpieva/psydb-api-endpoint-lib');
 var RequestBodySchema = require('./request-body-schema');
 
 var subjectExtendedSearch = async (context, next) => {
-    var {
-        db,
-        permissions,
-        request
-    } = context;
+    var { db, permissions, request, i18n } = context;
 
     var precheckBody = copy(request.body);
     validateOrThrow({
@@ -35,16 +36,14 @@ var subjectExtendedSearch = async (context, next) => {
         payload: precheckBody
     });
 
-    var {
-        subjectType
-    } = precheckBody;
+    var { subjectType } = precheckBody;
 
     var crtSettings = await fetchCRTSettings({
         db, collectionName: 'subject', recordType: subjectType,
     });
 
     validateOrThrow({
-        schema: RequestBodySchema.Full(crtSettings),
+        schema: RequestBodySchema.Full({ crtSettings }),
         payload: request.body
     });
 
@@ -91,9 +90,21 @@ var subjectExtendedSearch = async (context, next) => {
             }),
             ...(dobFieldPointer && columns.includes('/_specialAgeToday') && {
                 [convertPointerToPath(dobFieldPointer)]: true
+            }),    
+
+            ...(columns.includes('/_mergedDuplicateSequenceNumber') && {
+                'scientific.state.internals.mergedDuplicates.sequenceNumber': true
+            }),
+            ...(columns.includes('/_mergedDuplicateOnlineId') && {
+                'scientific.state.internals.mergedDuplicates.onlineId': true
+            }),
+            ...(columns.includes('/_mergedDuplicateId') && {
+                'scientific.state.internals.mergedDuplicates._id': true
             }),
         }
     });
+
+    console.dir(ejson(records), { depth: null });
 
     var now = new Date();
     if (dobFieldPointer && columns.includes('/_specialAgeToday')) {

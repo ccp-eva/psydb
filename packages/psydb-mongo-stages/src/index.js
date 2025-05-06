@@ -7,4 +7,6 @@ module.exports = {
     ...require('./search-stage-compositions'),
 
     expressions: require('./expressions'),
+    match: require('./match'),
+    projections: require('./projections'),
 }

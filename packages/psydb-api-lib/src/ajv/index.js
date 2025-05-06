@@ -49,6 +49,7 @@ var AjvWrapper = (bag = {}) => {
     ajv.addFormat('phone-number', mergedFormats.germanPhoneNumber);
     ajv.addFormat('hex-color', mergedFormats.hexColor);
     ajv.addFormat('time-hm', mergedFormats.timeHM);
+    ajv.addFormat('date-only-server-side', mergedFormats.dateOnlyServerSide);
     
     ajvKeywords(ajv, [
         'uniqueItemProperties',

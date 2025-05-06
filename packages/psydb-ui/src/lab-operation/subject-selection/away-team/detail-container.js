@@ -1,10 +1,8 @@
 import React from 'react';
-
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     Table,
-    TableHeadCustomCols,
     Button,
     Pair,
     Icons,
@@ -13,8 +11,9 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import {
-    FieldDataBodyCols,
-} from '@mpieva/psydb-ui-lib/src/record-list';
+    TableHeadCustomCols,
+    TableBodyCustomCols
+} from '@mpieva/psydb-custom-fields-ui';
 
 import { calculateAge } from '@mpieva/psydb-common-lib';
 import { datefns } from '@mpieva/psydb-ui-lib';
@@ -41,7 +40,8 @@ const DetailContainer = (ps) => {
         onCreateExperiment
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
+    var { definitions } = subjectMetadata;
 
     return (
         <div className='border bg-light pr-3 pl-3'>
@@ -77,9 +77,7 @@ const DetailContainer = (ps) => {
                     <tr>
                         <th />
                         <th>{ translate('Subject') }</th>
-                        <TableHeadCustomCols { ...({
-                            definitions: subjectMetadata.displayFieldData
-                        })}/>
+                        <TableHeadCustomCols definitions={ definitions }/>
                         <th>{ translate('Age Today') }</th>
                         <th>{ translate('Part. Studies') }</th>
                         <th>{ translate('Appointments') }</th>
@@ -128,7 +126,8 @@ const SubjectTableBody = (ps) => {
         selectedSubjectIds,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
+    var { related, definitions } = subjectMetadata;
 
     var quickSelectSubjects = (
         subjectRecords
@@ -173,10 +172,11 @@ const SubjectTableBody = (ps) => {
                                 { record._recordLabel }
                             </a>
                         </td>
-                        <FieldDataBodyCols { ...({
-                            record,
-                            ...subjectMetadata
-                        }) }/>
+                        <TableBodyCustomCols
+                            record={ record }
+                            definitions={ definitions }
+                            related={ related }
+                        />
                         <td>
                             { calculateAge({
                                 base: record._ageFrameField,

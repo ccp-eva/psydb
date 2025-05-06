@@ -40,12 +40,13 @@ const sanitizeCustomFieldValues = (options) => {
             case 'HelperSetItemId':
             case 'HelperSetItemIdList':
                 var input = values[key];
+                var any = input && input.any;
                 var saneValues = (
                     input &&
                     input.values &&
                     input.values.filter(it => !!it)
                 );
-                if (saneValues && saneValues.length > 0) {
+                if (any || saneValues && saneValues.length > 0) {
                     sanitized[key] = {
                         ...input,
                         values: saneValues
@@ -64,6 +65,7 @@ const sanitizeSpecialFilters = (values) => {
         sequenceNumber,
         didParticipateIn,
         didNotParticipateIn,
+        participationInterval,
         ...pass
     } = values;
 
@@ -75,6 +77,16 @@ const sanitizeSpecialFilters = (values) => {
         }),
         ...(didNotParticipateIn && {
             didNotParticipateIn: didNotParticipateIn.filter(it => !!it)
+        }),
+        ...((participationInterval?.start || participationInterval?.end) && {
+            participationInterval: {
+                ...(participationInterval?.start && {
+                    start: participationInterval.start
+                }),
+                ...(participationInterval?.end && {
+                    end: participationInterval.end
+                })
+            }
         })
     }
     return sanitized;

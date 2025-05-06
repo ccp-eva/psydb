@@ -1,40 +1,23 @@
 import React from 'react';
 
-import { Table, TableHeadCustomCols } from '@mpieva/psydb-ui-layout';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { Table } from '@mpieva/psydb-ui-layout';
+import { TableHeadCustomCols } from '@mpieva/psydb-custom-fields-ui';
 
 import TargetLocationRow from './target-location-row';
 
 
 const TargetLocationTable = (ps) => {
-    var {
-        studyIds,
-        mergedRecords,
-        subjectMetadata,
-        subjectExperimentMetadata,
-        locationMetadata,
-        locationExperimentMetadata,
-
-        onToggleDetails,
-        selectedLocationId,
-
-        onEditLocationComment,
-        onSelectSubject,
-        onSelectManySubjects,
-        selectedSubjectIds,
-
-        onCreateExperiment,
-    } = ps;
-
-    var translate = useUITranslation();
+    var { mergedRecords, locationMetadata, ...pass } = ps;
+    
+    var [{ translate }] = useI18N();
+    var { definitions } = locationMetadata;
 
     return (
         <Table>
             <thead>
                 <tr>
-                    <TableHeadCustomCols { ...({
-                        definitions: locationMetadata.displayFieldData
-                    })}/>
+                    <TableHeadCustomCols definitions={ definitions } />
                     <th>{ translate('_count_short') }</th>
                     <th></th>
                 </tr>
@@ -44,22 +27,9 @@ const TargetLocationTable = (ps) => {
                     return (
                         <TargetLocationRow { ...({
                             key: record._id,
-                            studyIds,
                             record,
-                            subjectMetadata,
-                            subjectExperimentMetadata,
                             locationMetadata,
-                            locationExperimentMetadata,
-
-                            onToggleDetails,
-                            selectedLocationId,
-
-                            onEditLocationComment,
-                            onSelectSubject,
-                            onSelectManySubjects,
-                            selectedSubjectIds,
-                            
-                            onCreateExperiment,
+                            ...pass,
                         }) } />
                     );
                 })}

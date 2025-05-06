@@ -3,6 +3,8 @@ var { copy } = require('copy-anything');
 var diff = require('deep-diff');
 var { entries, omit, ejson } = require('@mpieva/psydb-core-utils');
 
+//var spoolEvents = require('./spool-events');
+
 var SET = require('./set');
 var UNSET = require('./unset');
 var PUSH = require('./push');
@@ -10,6 +12,14 @@ var PULL = require('./pull');
 
 var generate = (bag = {}) => {
     var { events, omitPaths } = bag;
+
+    // TODO: use this instead
+    //var [ virtualChannel, updates ] = spoolEvents({
+    //    events: events.reverse()
+    //});
+    //console.log(updates);
+
+    var doOmit = (from) => omit({ from, paths: omitPaths });
 
     var history = [];
     var virtualChannel = {};
@@ -28,12 +38,12 @@ var generate = (bag = {}) => {
             message.payload,
             additionalChannelProps
         );
-        if (omitPaths) {
-            virtualChannel = omit({
-                from: virtualChannel,
-                paths: omitPaths
-            });
-        }
+        //if (omitPaths) {
+        //    virtualChannel = omit({
+        //        from: virtualChannel,
+        //        paths: omitPaths
+        //    });
+        //}
 
         // NOTE: diff is not safe when in situ changing diffed objects
         var clone = copy(virtualChannel);
@@ -44,8 +54,8 @@ var generate = (bag = {}) => {
                 message,
                 ...(additionalChannelProps && { additionalChannelProps }),
             },
-            version: clone,
-            diff: diff(preUpdate, clone),
+            version: doOmit(clone),
+            diff: diff(doOmit(preUpdate), doOmit(clone)),
         });
     }
 

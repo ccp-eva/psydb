@@ -1,0 +1,60 @@
+# docker-compose -p psydb -f docker-compose.yaml up -d
+version: "2"
+services:
+  mongodb:
+    image: "mongo:4.4.24"
+    ports:
+      - "127.0.0.1:47017:27017"
+    volumes:
+      - "./psydb-data/mongodb:/data/db"
+    networks:
+      - "psydb-net"
+    restart: "unless-stopped"
+
+  nginx-reverse:
+    image: "nginx:1.25.2"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./psydb-config/nginx:/etc/nginx/conf.d"
+      - "./psydb-ssl:/etc/ssl/private"
+    networks:
+      - "psydb-net"
+    # make it accessible from the host machine
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - psydb
+    restart: "unless-stopped"
+
+  # remove if using an actual mail server
+  mailhog:
+    image: "mailhog/mailhog"
+    ports:
+      - "127.0.0.1:1025:1025"
+      - "8025:8025"
+    networks:
+      - "psydb-net"
+    # make it accessible from the host machine
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: "unless-stopped"
+
+  psydb:
+    image: "cdxoo/psydb:0.1.0-alpha.202411060233_mpiccp"
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - "./psydb-config/psydb:/usr/src/app/config"
+    networks:
+      - "psydb-net"
+    depends_on:
+      - mongodb
+      - mailhog
+    restart: "unless-stopped"
+
+networks:
+  psydb-net:
+    driver: "bridge"
+

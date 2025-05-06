@@ -26,7 +26,7 @@ export const CustomField = (ps) => {
     var { definition, value, record, related } = ps;
     var {
         displayName,
-        displayNameI18N = {},
+        displayNameI18N = {}, // FIXME: in apedb this does not fall back
         type,
         props
     } = definition;
@@ -48,8 +48,9 @@ export const CustomField = (ps) => {
         );
     }
 
+    // FIXME: theming
     return (
-        <Field label={ displayNameI18N[language] || displayName }>
+        <Field label={ displayNameI18N?.[language] || displayName }>
             <Component
                 value={ value }
                 props={ props }
@@ -58,17 +59,5 @@ export const CustomField = (ps) => {
                 related={ related }
             />
         </Field>
-    )
-
-    // FIXME: theming
-    return (
-        <div className='mb-3'>
-            <header><b>{ displayName}</b></header>
-            <Component
-                value={ value }
-                props={ props }
-                related={ related }
-            />
-        </div>
     )
 }

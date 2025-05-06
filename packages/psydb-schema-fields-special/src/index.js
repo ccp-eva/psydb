@@ -21,4 +21,6 @@ module.exports = {
     ...require('./sort'),
 
     ...require('./access-rights-by-research-group'),
+
+    ListBodyCommon: require('./list-body-common'),
 }

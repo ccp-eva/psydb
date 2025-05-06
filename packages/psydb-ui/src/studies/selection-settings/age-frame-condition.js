@@ -1,8 +1,7 @@
 import React from 'react';
-import { stringifyFieldValue } from '@mpieva/psydb-common-lib';
-import {
-    useUILanguage, useUILocale, useUITranslation
-} from '@mpieva/psydb-ui-contexts';
+import { __fixRelated } from '@mpieva/psydb-common-compat';
+import { Fields } from '@mpieva/psydb-custom-fields-common';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 export const AgeFrameCondition = (ps) => {
     var {
@@ -11,44 +10,42 @@ export const AgeFrameCondition = (ps) => {
         subjectCRT,
     } = ps;
 
-    var translate = useUITranslation();
-    var [ language ] = useUILanguage();
-    var locale = useUILocale();
+    var [{ translate, language, locale }] = useI18N();
 
     var { pointer, values } = condition;
-    
-    var [ fieldDefinition ] = subjectCRT.findCustomFields({
+    var [ definition ] = subjectCRT.findCustomFields({
         'pointer': pointer
     });
 
     // FIXME: this is lab-operation/../selection-settings-form-schema.js
-    var realType = fieldDefinition.systemType;
+    var realType = definition.systemType;
     // FIXME: maybe we can just cut the "List" suffix via regex
-    if (fieldDefinition.systemType === 'HelperSetItemIdList') {
+    if (definition.systemType === 'HelperSetItemIdList') {
         realType = 'HelperSetItemId';
     }
-    if (fieldDefinition.systemType === 'ForeignIdList') {
+    if (definition.systemType === 'ForeignIdList') {
         realType = 'ForeignId';
     }
 
+    // FIXME
+    var related = __fixRelated(ageFrameRelated, { isResponse: false });
+    
     return (
         <div className='d-flex'>
             <div style={{ width: '20%' }}>
-                { translate.fieldDefinition(fieldDefinition) }:
+                { translate.fieldDefinition(definition) }:
             </div>
             <div className='flex-grow'>
-                { values.map(rawValue => stringifyFieldValue({
-                    rawValue,
-                    fieldDefinition: {
-                        ...fieldDefinition,
-                        type: realType,
-                        systemType: realType,
-                    },
-                    ...ageFrameRelated,
-
-                    language,
-                    locale,
-                })).join(', ') }
+                { values.map(it => {
+                    var stringify = Fields[realType]?.stringifyValue;
+                    var out = stringify ? (
+                        stringify({
+                            value: it, definition, related,
+                            i18n: { language, locale }
+                        })
+                    ) : '[!!ERROR!!]';
+                    return out;
+                }).join(', ')}
             </div>
         </div>
     );

@@ -56,7 +56,7 @@ var FullBodySchema = ({
 
     var schema = ExactObject({
         properties: {
-            collectionName: IdentifierString(),
+            collection: IdentifierString(),
             recordType: IdentifierString(), // FIXME: enum
             searchOptions: ExactObject({
                 properties: {
@@ -100,7 +100,7 @@ var FullBodySchema = ({
             timezone: Timezone(),
         },
         required: [
-            'collectionName',
+            'collection',
             'filters',
         ]
     });

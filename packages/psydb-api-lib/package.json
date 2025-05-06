@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
+    "build": "",
     "test": "npx mocha --config ./mocha.config.json tests"
   },
   "author": "Jan Schwalbe",
@@ -21,11 +22,13 @@
     "@cdxoo/inline-text": "~1.0.2",
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-mongo-stages": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-custom-fields-mongo": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-i18n": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-timezone-helpers": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-creators": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-verify-helpers": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-common-compat": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-api-config": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-mongo-adapter": "workspace:~0.1.0-alpha",
@@ -55,7 +58,9 @@
     "encodeurl": "~2.0.0",
     "@cdxoo/gather-possible-jss-paths": "~0.0.5",
     "clean-deep": "~3.4.0",
-    "@cdxoo/stringify-path-perlstyle": "~0.0.3"
+    "fast-clean": "~1.4.0",
+    "@cdxoo/stringify-path-perlstyle": "~0.0.3",
+    "mingo": "~6.4.9"
   },
   "devDependencies": {
     "mocha": "~10.2.0",

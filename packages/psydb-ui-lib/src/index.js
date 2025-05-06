@@ -10,6 +10,7 @@ export {
 export { ErrorResponseModal } from './modals';
 
 export { default as RecordListContainer } from './record-list-container';
+export { default as ExtendedRecordList } from './extended-record-list';
 
 export { default as FormBox } from './form-box';
 export { default as RecordTypeNav } from './record-type-nav';
@@ -18,7 +19,6 @@ export { default as ResearchGroupNav } from './research-group-nav';
 
 
 export { default as StudySelectList } from './study-select-list';
-export { default as stringifyFieldValue } from './stringify-field-value';
 export * from './formik';
 
 export { default as ExperimentDropdown } from './experiment-dropdown';

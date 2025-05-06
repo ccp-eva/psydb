@@ -131,11 +131,11 @@ var checkSchema = async ({ db, getRecordSchemas, message, permissions }) => {
         message
     );
 
-    /*if (collection === 'subject') {
-        console.dir(schema, { depth: null })
-        console.dir(message, { depth: null })
-        throw new Error();
-    }*/
+    //if (collection === 'subject') {
+    //    console.dir(schema, { depth: null })
+    //    console.dir(message, { depth: null })
+    //    throw new Error();
+    //}
 
     if (!isValid) {
         debug('ajv errors', message.type, ajv.errors);

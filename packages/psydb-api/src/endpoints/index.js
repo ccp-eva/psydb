@@ -22,7 +22,7 @@ module.exports = {
 
     researchGroup: require('./entities/research-group'),
     opsTeam: require('./entities/ops-team'),
-    subject: require('./entities/subject'),
+    //subject: require('./entities/subject'),
     subjectGroup: require('./entities/subject-group'),
     location: require('./entities/location'),
     personnel: require('./entities/personnel'),
@@ -36,6 +36,7 @@ module.exports = {
     experimentVariant: require('./entities/experiment-variant'),
     experimentVariantSetting: require('./entities/experiment-variant-setting'),
 
+    statistics: require('./statistics'),
     audit: require('./audit'),
     twoFactorCode: require('./two-factor-code'),
 

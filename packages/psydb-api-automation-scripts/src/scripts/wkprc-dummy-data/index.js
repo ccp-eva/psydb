@@ -6,24 +6,23 @@ var WrappedCache = require('../../wrapped-cache');
 var prepareCache = require('./prepare-cache');
 
 var createHelperSetItems = require('./create-helper-set-items');
-var createResearchGroups = require('./create-research-groups');
 var createPersonnel = require('./create-personnel');
 var createLocations = require('./create-locations');
 var createSubjectGroups = require('./create-subject-groups');
 var createChimpanzees = require('./create-chimpanzees');
 
 var helperSetItems = {
-    'WKPRC Chimpanzee Sub-Species': [
+    'Chimpanzee Sub-Species': [
         'Central African chimpanzee - Pan troglodytes troglodytes',
         'East African chimpanzee - Pan troglodytes schweinfurthi',
         'Nigeria chimpanzee - Pan troglodytes ellioti',
         'West African chimpanzee - Pan troglodytes verus',
     ],
-    'WKPRC Origin': [
+    'Origin': [
         'captive-born',
         'wild-born'
     ],
-    'WKPRC Rearing History': [
+    'Rearing History': [
         'hand-reared',
         'mother-reared',
     ]
@@ -49,7 +48,6 @@ module.exports = async (bag) => {
 
     await prepareCache(context);
     
-    await createResearchGroups(context);
     await createPersonnel(context);
    
     for (var [ setLabel, items ] of entries(helperSetItems)) {

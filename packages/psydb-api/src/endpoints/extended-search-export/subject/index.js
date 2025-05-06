@@ -3,22 +3,22 @@ var debug = require('debug')(
     'psydb:api:endpoints:extended-search-export:studies'
 );
 
-var sift = require('sift');
-var jsonpointer = require('jsonpointer');
 var { copy } = require('copy-anything');
+var { __fixRelated, __fixDefinitions } = require('@mpieva/psydb-common-compat');
 
-var { 
+var {
+    jsonpointer,
     keyBy,
     groupBy,
     convertPointerToPath
 } = require('@mpieva/psydb-core-utils');
 
 var {
-    stringifyFieldValue,
-    fieldStringifiers,
     calculateAge,
     findCRTAgeFrameField
 } = require('@mpieva/psydb-common-lib');
+
+var { Fields } = require('@mpieva/psydb-custom-fields-common');
 
 var {
     CSV,
@@ -32,11 +32,7 @@ var RequestBodySchema = require('./request-body-schema');
 
 
 var subjectExtendedSearchExport = async (context, next) => {
-    var {
-        db,
-        permissions,
-        request
-    } = context;
+    var { db, permissions, request, i18n } = context;
 
     var precheckBody = copy(request.body);
     validateOrThrow({
@@ -66,8 +62,6 @@ var subjectExtendedSearchExport = async (context, next) => {
 
         columns,
         sort,
-
-        timezone,
     } = request.body;
 
     var {
@@ -102,6 +96,10 @@ var subjectExtendedSearchExport = async (context, next) => {
         }
     });
 
+    // FIXME
+    related = __fixRelated(related, { isResponse: false });
+    displayFieldData = __fixDefinitions(displayFieldData);
+
     var experiments = (
         await fetchUpcomingExperiments({ db, records })
     );
@@ -128,7 +126,7 @@ var subjectExtendedSearchExport = async (context, next) => {
 
     var columnDefinitions = keyBy({
         items: displayFieldData,
-        byProp: 'dataPointer'
+        byProp: 'pointer'
     });
 
 
@@ -159,33 +157,28 @@ var subjectExtendedSearchExport = async (context, next) => {
                     break;
                 case '/_specialStudyParticipation':
                     return formatStudyParticipation({
-                        record, related, timezone
+                        record, related, i18n
                     });
                     break;
                 case '/_specialHistoricExperimentLocations':
                     return formatHistoricExperimentLocations({
-                        record, related, timezone
+                        record, related, i18n
                     });
                     break;
                 case '/_specialUpcomingExperiments':
                     return formatUpcomingExperiments({
-                        record, related, timezone
+                        record, related, i18n
                     });
                     break;
                 default:
-                    var fieldDefinition = columnDefinitions[pointer];
-                    var { dataPointer } = fieldDefinition;
-                    var rawValue = jsonpointer.get(record, dataPointer);
+                    var definition = columnDefinitions[pointer];
+                    var { systemType } = definition;
+
+                    var stringify = Fields[systemType]?.stringifyValue;
+                    var str = stringify ? (
+                        stringify({ record, definition, related, i18n })
+                    ) : '[!!ERROR!!]]';
                     
-                    var str = stringifyFieldValue({
-                        rawValue,
-                        fieldDefinition,
-                        ...related,
-
-                        record,
-                        timezone,
-                    });
-
                     return str;
             }
         }))
@@ -222,13 +215,16 @@ var fetchUpcomingExperiments = async ({ db, records }) => {
         collectionName: 'experiment',
         records,
     });
+    
+    // FIXME
+    related = __fixRelated(related, { isResponse: false });
 
     records = records.map(it => ({
         ...it,
         state: {
             ...it.state,
             studyLabel: (
-                related.relatedRecordLabels
+                related.records
                 .study[it.state.studyId]._recordLabel
             )
         }
@@ -238,21 +234,21 @@ var fetchUpcomingExperiments = async ({ db, records }) => {
 }
 
 var formatStudyParticipation = (bag) => {
-    var { record, related, timezone } = bag;
+    var { record, related, i18n } = bag;
     
     var participation = (
         record.scientific.state.internals.participatedInStudies
     );
 
-    var relatedStudies = related.relatedRecordLabels.study;
+    var relatedStudies = related.records.study;
     var formatted = (
         participation
         .filter(it => it.status === 'participated')
         .map(it => {
             var studyLabel = relatedStudies[it.studyId]._recordLabel;
-            var date = fieldStringifiers.DateOnlyServerSide(
-                it.timestamp, { timezone }
-            )
+            var date = Fields.DateOnlyServerSide.stringifyValue({
+                value: it.timestamp, i18n
+            });
             return `${studyLabel} (${date})`;
         })
         .join('; ')
@@ -262,21 +258,21 @@ var formatStudyParticipation = (bag) => {
 }
 
 var formatHistoricExperimentLocations = (bag) => {
-    var { record, related, timezone } = bag;
+    var { record, related, i18n } = bag;
     
     var participation = (
         record.scientific.state.internals.participatedInStudies
     );
 
-    var relatedLocations = related.relatedRecordLabels.location;
+    var relatedLocations = related.records.location;
     var formatted = (
         participation
         .filter(it => it.status === 'participated')
         .map(it => {
             var locationLabel = relatedLocations[it.locationId]._recordLabel;
-            var date = fieldStringifiers.DateOnlyServerSide(
-                it.timestamp, { timezone }
-            )
+            var date = Fields.DateOnlyServerSide.stringifyValue({
+                value: it.timestamp, i18n
+            });
             return `${locationLabel} (${date})`;
         })
         .join('; ')
@@ -286,15 +282,15 @@ var formatHistoricExperimentLocations = (bag) => {
 }
 
 var formatUpcomingExperiments = (bag) => {
-    var { record, related, timezone } = bag;
+    var { record, i18n } = bag;
     var experiments = record._specialUpcomingExperiments;
     
     var formatted = (
         experiments
         .map((it, index) => {
-            var date = fieldStringifiers.DateOnlyServerSide(
-                it.state.interval.start, { timezone }
-            )
+            var date = Fields.DateOnlyServerSide.stringifyValue({
+                value: it.state.interval.start, i18n
+            });
             return `${it.state.studyLabel} (${date})`;
         })
         .join('; ')

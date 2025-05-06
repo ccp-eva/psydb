@@ -4,6 +4,7 @@ var restore = require('@cdxoo/mongodb-restore');
 
 var doConnectLocal = require('./do-connect-local');
 var doRestore = require('./do-restore');
+var createKoaContext = require('./create-koa-context');
 
 var beforeAll = async function () {
     this.context = {
@@ -21,8 +22,10 @@ var beforeAll = async function () {
         return dbHandle;
     }
 
-    this.connectLocal = (...args) => doConnectLocal.call(this, ...args);
-    this.restore = (...args) => doRestore.call(this, ...args);
+    this.connectLocal = (...a) => doConnectLocal.call(this, ...a);
+    this.restore = (...a) => doRestore.call(this, ...a);
+    this.createKoaContext = (...a) => createKoaContext.call(this, ...a);
+
     
     this.fetchAllRecords = (collection) => {
         var db = this.getDbHandle();

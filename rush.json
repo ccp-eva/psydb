@@ -4,12 +4,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
 
-  "rushVersion": "5.86.0",
-  "pnpmVersion": "6.32.7",
+  "rushVersion": "5.149.0",
+  "pnpmVersion": "8.15.9",
   "pnpmOptions": {
       "useWorkspaces": true
   },
-  "nodeSupportedVersionRange": ">=14.21.0 <20.0.0",
+  "nodeSupportedVersionRange": ">=14.21.0 <23.0.0",
+  "projectFolderMaxDepth": 3,
   "gitPolicy": {},
   "repository": {
     "url": "https://github.com/cdxOo/psydb",
@@ -76,6 +77,21 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-custom-fields-common",
+       "projectFolder": "packages/psydb-custom-fields-common",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-custom-fields-mongo",
+       "projectFolder": "packages/psydb-custom-fields-mongo",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-custom-fields-ui",
+       "projectFolder": "packages/psydb-custom-fields-ui",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-rohrpost-utils",
        "projectFolder": "packages/psydb-rohrpost-utils",
        "reviewCategory": "production"
@@ -126,16 +142,6 @@
        "reviewCategory": "production"
     },
     {
-       "packageName": "@mpieva/psydb-migration",
-       "projectFolder": "packages/psydb-migration",
-       "reviewCategory": "production"
-    },
-    {
-       "packageName": "@mpieva/psydb-faker",
-       "projectFolder": "packages/psydb-faker",
-       "reviewCategory": "production"
-    },
-    {
        "packageName": "@mpieva/psydb-fixtures",
        "projectFolder": "packages/psydb-fixtures",
        "reviewCategory": "production"
@@ -166,6 +172,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-mocha-baseline-deltas",
+       "projectFolder": "packages/psydb-mocha-baseline-deltas",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-api-mocha-test-tools",
        "projectFolder": "packages/psydb-api-mocha-test-tools",
        "reviewCategory": "production"
@@ -178,16 +189,6 @@
     {
        "packageName": "@mpieva/psydb-common-config",
        "projectFolder": "packages/psydb-common-config",
-       "reviewCategory": "production"
-    },
-    {
-       "packageName": "@mpieva/psydb-api-automation-scripts",
-       "projectFolder": "packages/psydb-api-automation-scripts",
-       "reviewCategory": "production"
-    },
-    {
-       "packageName": "@mpieva/psydb-uni-cronjobs",
-       "projectFolder": "packages/psydb-uni-cronjobs",
        "reviewCategory": "production"
     },
     {
@@ -206,6 +207,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-api-crt-utils",
+       "projectFolder": "packages/psydb-api-crt-utils",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-api-self-auth",
        "projectFolder": "packages/psydb-api-self-auth",
        "reviewCategory": "production"
@@ -218,6 +224,11 @@
     {
        "packageName": "@mpieva/psydb-api-endpoint-lib",
        "projectFolder": "packages/psydb-api-endpoint-lib",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-api-endpoints",
+       "projectFolder": "packages/psydb-api-endpoints",
        "reviewCategory": "production"
     },
     {
@@ -251,6 +262,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-calculate-age",
+       "projectFolder": "packages/psydb-calculate-age",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-interval-fns",
        "projectFolder": "packages/psydb-interval-fns",
        "reviewCategory": "production"
@@ -258,6 +274,11 @@
     {
        "packageName": "@mpieva/psydb-date-interval-fns",
        "projectFolder": "packages/psydb-date-interval-fns",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-common-compat",
+       "projectFolder": "packages/psydb-common-compat",
        "reviewCategory": "production"
     },
     {
@@ -337,19 +358,8 @@
     },
     
     {
-       "packageName": "@mpieva/psydb-database-scripts",
-       "projectFolder": "packages/psydb-database-scripts",
-       "reviewCategory": "production"
-    },
-    
-    {
-       "packageName": "@mpieva/psydb-api-integration-test-helpers",
-       "projectFolder": "packages/psydb-api-integration-test-helpers",
-       "reviewCategory": "production"
-    },
-    {
-       "packageName": "@mpieva/psydb-api-integration-tests",
-       "projectFolder": "packages/psydb-api-integration-tests",
+       "packageName": "@humankind/psydb-cronjobs",
+       "projectFolder": "tools-extra/humankind/psydb-cronjobs",
        "reviewCategory": "production"
     },
   ]
