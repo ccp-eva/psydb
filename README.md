@@ -278,16 +278,18 @@ enabledLabMethods: [
 ### Branding and UI Options
 
 ```js
-branding: 'mpiccp',
+branding: { /* a branding object */ },
 disableLogoOverlay: false,
 dev_enableStagingBanner: false,
 dev_copyNoticeGreyscale: true,
+dev_enableForeignIdRefLinkInForms: false,
 ```
 
-- **branding**: Selected branding theme.
+- **branding**: An object containing branding information, see `psydb-common-config/psydb-default-branding/index.js`
 - **disableLogoOverlay**: Hide/show logo overlay text on login.
 - **dev_enableStagingBanner**: Shows a banner to indicate staging mode.
 - **dev_copyNoticeGreyscale**: Use greyscale or color copy watermark.
+- **dev_enableForeignIdRefLinkInForms**: Wether links to referenced records should be shown in record edit forms, only the details shows links.
 
 ### Development & Experimental Flags
 

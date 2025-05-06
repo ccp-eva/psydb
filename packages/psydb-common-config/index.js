@@ -7,23 +7,23 @@ module.exports = {
     },
 
     // apedb
-    sideNav: [
-        { path: '/csv-imports' },
-        { path: '/subjects' },
-        { path: '/studies' },
-        '=======',
-        { path: '/locations' },
-        { path: '/subject-groups' },
-        { path: '/study-topics' },
-        { path: '/helper-sets' },
-        { path: '/personnel' },
-        '=======',
-        { path: '/research-groups' },
-        { path: '/system-roles' },
-        { path: '/custom-record-types' },
-        { path: '/api-keys' },
-        { path: '/audit' },
-    ],
+    //sideNav: [
+    //    { path: '/csv-imports' },
+    //    { path: '/subjects' },
+    //    { path: '/studies' },
+    //    '=======',
+    //    { path: '/locations' },
+    //    { path: '/subject-groups' },
+    //    { path: '/study-topics' },
+    //    { path: '/helper-sets' },
+    //    { path: '/personnel' },
+    //    '=======',
+    //    { path: '/research-groups' },
+    //    { path: '/system-roles' },
+    //    { path: '/custom-record-types' },
+    //    { path: '/api-keys' },
+    //    { path: '/audit' },
+    //],
     
     enabledLabMethods: [
         'inhouse',
@@ -40,7 +40,6 @@ module.exports = {
         isEnabled: true,
         allowedIps: [ '::/0' ]
     },
-    //branding: 'sunway',
     //disableLogoOverlay: true,
     branding: require('./psydb-default-branding'),
     disableLogoOverlay: false,
