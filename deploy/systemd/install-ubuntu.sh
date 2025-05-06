@@ -8,6 +8,9 @@ if [ -z "$TARGET" ]; then
     echo "provide target folder"
 fi
 
+# prevent apt outdated daemons popup
+export NEEDRESTART_MODE="a"
+
 ### mongodb
 ### https://www.mongodb.com/docs/v6.0/tutorial/install-mongodb-on-ubuntu/
 sudo apt install -y gnupg curl
@@ -19,7 +22,7 @@ echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gp
     | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
 
 sudo apt update
-sudo NEEDRESTART_MODE=a apt install -y mongodb-org
+sudo apt install -y mongodb-org
 
 sudo sed -i -e 's/27017/47017/g' /etc/mongod.conf
 
