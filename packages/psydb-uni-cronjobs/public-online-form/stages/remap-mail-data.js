@@ -46,7 +46,7 @@ var remapMailData = async (context, next) => {
             debug(`raw pair is "${pair.key}" = "${pair.value}"`);
 
             if (pair.key === childBlockFirstKey) {
-                debug("\n", 'found child block at', pair,)
+                debug("\n", 'found child block at', pair)
                 if (childBlockData) {
                     childrenData.push(childBlockData);
                 }
@@ -54,7 +54,14 @@ var remapMailData = async (context, next) => {
             }
 
             var remapHandler, targetBucket;
-            if (inAdultBlock || /Auf welchem/.test(pair.key)) {
+            if (
+                inAdultBlock
+                || /Auf welchem/.test(pair.key)
+                || pair.key === 'errechneter Geburtstermin'
+            ) {
+                if (!inAdultBlock) {
+                    debug("\n", 'found late adult pair at', pair)
+                }
                 remapHandler = AdultFields[pair.key];
                 targetBucket = adultData;
             }
@@ -82,7 +89,7 @@ var remapMailData = async (context, next) => {
                     throw e
                 }
             }
-            if (!path || !value) {
+            if (!path || value === undefined) {
                 throw new RemapMailError(errorBag);
             }
             targetBucket[path] = value;

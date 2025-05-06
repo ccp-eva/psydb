@@ -15,7 +15,7 @@ var RootHandler = require('../../../src/');
 describe('csv-import/subject/create-default fs-malaysia', function () {
     var db, sendMessage, fileId;
     beforeEach(async function () {
-        await this.restore('2024-03-29__1914_fieldsites');
+        await this.restore('2024-08-30__0902');
         
         db = this.getDbHandle();
         ([ sendMessage ] = this.createMessenger({
@@ -31,7 +31,7 @@ describe('csv-import/subject/create-default fs-malaysia', function () {
 
     it('does the thing', async function () {
         var subjectType = 'fs_malaysia_subject';
-        var researchGroupId = ObjectId("66051bb1c1e37e5a99ee54c3");
+        var researchGroupId = ObjectId("64d42dd0443aa279ca4caff8");
 
         var koaContext = await sendMessage({
             type: 'csv-import/subject/create-default',
@@ -49,10 +49,10 @@ describe('csv-import/subject/create-default fs-malaysia', function () {
         var imports = await db.collection('csvImport').find().toArray();
         //console.dir(ejson(imports), { depth: null });
         
-        var subjects = await db.collection('subject').find().toArray();
-        //var subjects = await aggregateToArray({ db, subject: [
-        //    { $match: { csvImportId }}
-        //]});
+        //var subjects = await db.collection('subject').find().toArray();
+        var subjects = await aggregateToArray({ db, subject: [
+            { $match: { csvImportId }},
+        ]});
         console.dir(ejson(subjects), { depth: null });
     })
 })

@@ -6,6 +6,8 @@ module.exports = {
     CRTSettingsList: require('./crt-settings-list'),
     FieldDefinition: require('./field-definition'),
 
+    CSVColumnRemappers: require('./csv-column-remappers'),
+
     intervalUtils: require('./interval-utils'),
     createSchemaForRecord: require('./create-schema-for-record-type'),
     durations: require('./durations'),

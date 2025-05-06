@@ -3,11 +3,20 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
 
+const enableReadableErrors = false;
+
 module.exports = {
     context: __dirname,
-    mode: 'production',
     entry: './index.js',
-    devtool: false,
+    
+    ...(enableReadableErrors ? {
+        mode: 'development',
+        devtool: 'source-map',
+    } : {
+        mode: 'production',
+        devtool: false,
+    }),
+    
     output: {
         //path: path.resolve(__dirname, 'dist'),
         path: path.resolve(__dirname, '../dist'),
@@ -42,9 +51,13 @@ module.exports = {
         ]
     },
     optimization: {
-        splitChunks: {
-            chunks: 'all',
-        }
+        ...(enableReadableErrors ? {
+            // none
+        } : {
+            splitChunks: {
+                chunks: 'all',
+            }
+        })
     },
     plugins: [
         new HtmlWebpackPlugin({

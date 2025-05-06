@@ -40,6 +40,7 @@ module.exports = {
     pathify: require('./pathify'),
     queryObject: require('./query-object'),
     forcePush: require('./force-push'),
+    uniquePush: require('./unique-push'),
 
     convertSchemaPointerToMongoPath: require('./schemapointer-to-mongopath'),
     

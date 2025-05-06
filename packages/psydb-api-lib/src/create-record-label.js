@@ -3,6 +3,7 @@ var jsonpointer = require('jsonpointer');
 var stringifiers = require('@mpieva/psydb-common-lib/src/field-stringifiers');
 
 var createRecordLabel = (bag) => {
+    // NOTE: this 'from' parameter, we dont handle it in CRTSettings()!!!! 
     var {
         definition, record, from,
         timezone, language, locale,

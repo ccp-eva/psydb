@@ -116,7 +116,7 @@ var cliOptions = [
         defaults: false
     },
     {
-        long: 'dry-no-move-emails',
+        long: 'dry-no-move-mails',
         description: 'partial dry run - dont move mails from inbox',
         defaults: false
     },

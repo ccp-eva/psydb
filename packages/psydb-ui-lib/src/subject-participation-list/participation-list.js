@@ -225,6 +225,7 @@ const ParticipationListRow = (ps) => {
     );
 }
 
+// XXX
 var formatStatus = (status) => {
     return {
         'unknown': 'unknwon_short',

@@ -67,7 +67,7 @@ var preview = async (context, next) => {
         timezone: i18n.timezone
     });
 
-    var { matchedData, preparedObjects, transformed } = pipelineOutput;
+    var { pipelineData, transformed } = pipelineOutput;
     
     var previewRecords = transformed.subjects.map(it => {
         var previewRecord = {
@@ -95,8 +95,7 @@ var preview = async (context, next) => {
     );
 
     context.body = ResponseBody({ data: {
-        //matchedData,
-        //preparedObjects,
+        pipelineData,
         previewRecords,
         related,
         //displayFields: (

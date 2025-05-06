@@ -25,7 +25,7 @@ var read = async (context, next) => {
     var { id } = request.body;
 
     var record = await withRetracedErrors(
-        db.collection('subject').findOne(
+        db.collection('study').findOne(
             { _id: id },
             // XXX
             { projection: { 'type': true }}
@@ -42,4 +42,4 @@ var read = async (context, next) => {
     await next();
 }
 
-module.exports = read;
+module.exports = { read };

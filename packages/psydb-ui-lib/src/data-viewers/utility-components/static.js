@@ -214,31 +214,43 @@ export const DateOnlyServerSide = (ps) => {
     var translate = useUITranslation();
     var locale = useUILocale();
     
-    var formatted = (
-        value === undefined || value === null
-        ? <NoValue />
-        : datefns.format(new Date(value), 'P', { locale })
+    var hasValue = (
+        value !== undefined && value !== null
     );
 
-    var age = calculateAge({
-        base: value,
-        relativeTo: new Date(),
-        asString: true
-    });
+    var formatted = (
+        hasValue 
+        ? datefns.format(new Date(value), 'P', { locale })
+        : <NoValue />
+    );
 
-    return (
-        <span>
-            { formatted }
-            { value && props.isSpecialAgeFrameField && (
-                <>
-                    {' '}
-                    <span style={{ color: '#bbb' }}>
-                        ({ translate('Age Today')}: { age })
-                    </span>
-                </>
-            )}
-        </span>
-    )
+    if (hasValue && props.isSpecialAgeFrameField) {
+        var age = calculateAge({
+            base: value,
+            relativeTo: new Date(),
+            asString: true
+        });
+
+        return (
+            <span>
+                { formatted }
+                { value && props.isSpecialAgeFrameField && (
+                    <>
+                        {' '}
+                        <span style={{ color: '#bbb' }}>
+                            ({ translate('Age Today')}: { age })
+                        </span>
+                    </>
+                )}
+            </span>
+        )
+    }
+    else {
+        return (
+            <span>{ formatted }</span>
+        )
+    }
+
 }
 
 export const DateTime = (ps) => {
@@ -247,7 +259,7 @@ export const DateTime = (ps) => {
 
     var formatted = (
         value === undefined || value === null
-        ? '-' 
+        ? <NoValue />
         : datefns.format(new Date(value), 'P p', { locale })
     );
     return (

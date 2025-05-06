@@ -30,6 +30,6 @@ module.exports = {
     dev_copyNoticeGreyscale: true,
     //dev_enableForeignIdRefLinkInForms: true,
     
-    dev_enableCSVSubjectImport: false,
-    dev_enableCSVParticipationImport: false,
+    dev_enableCSVSubjectImport: true,
+    dev_enableCSVParticipationImport: true,
 }

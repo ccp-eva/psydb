@@ -44,7 +44,7 @@ var maybeRemapColumns = (bag) => {
     if (customColumnRemap) {
         var remappedColumns = [];
         for (var it of csvColumns) {
-            remappedColumns.push(customColumnRemap(it) || it);
+            remappedColumns.push(customColumnRemap({ colkey: it }) || it);
         }
         return remappedColumns;
     }

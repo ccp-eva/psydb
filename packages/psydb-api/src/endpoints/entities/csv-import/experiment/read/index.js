@@ -22,6 +22,7 @@ var read = async (context, next) => {
         'language', 'locale', 'timezone'
     ]});
 
+    // TODO
     if (!permissions.isRoot()) {
         throw new ApiError(403);
     }

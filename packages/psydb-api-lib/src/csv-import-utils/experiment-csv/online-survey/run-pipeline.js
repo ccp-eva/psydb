@@ -1,8 +1,8 @@
 'use strict';
+var { CSVColumnRemappers } = require('@mpieva/psydb-common-lib');
 var { runDefaultPipeline } = require('../../common');
 
 var CSVSchema = require('./csv-schema');
-var customColumnRemap = require('./custom-column-remap');
 var transformPrepared = require('./transform-prepared');
 
 var runPipeline = async (bag) => {
@@ -16,10 +16,14 @@ var runPipeline = async (bag) => {
     } = bag;
 
     var schema = CSVSchema();
-    var { pipelineData, preparedObjects } = await runDefaultPipeline({
+    var customColumnRemap = (
+        CSVColumnRemappers.Experiment.OnlineSurvey().csv2obj
+    );
+
+    var { pipelineData } = await runDefaultPipeline({
         db, csvData, schema, customColumnRemap, unmarshalClientTimezone,
         extraRecordResolvePointers: {
-            subject: [ '/onlineId'],
+            subject: [ '/onlineId' ],
         },
     });
 

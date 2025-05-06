@@ -11,6 +11,8 @@ import {
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 import { CSVImport } from '@mpieva/psydb-ui-lib/data-viewers';
 
+import RelatedExperiments from './related-experiments';
+
 const Details = (ps) => {
     var { id: csvImportId } = useParams();
     var translate = useUITranslation();
@@ -38,15 +40,21 @@ const Details = (ps) => {
                     <SplitPartitioned partitions={[ 1,1 ]}>
                         <div>
                             <CSVImport.StudyId __useNewRelated />
-                            <CSVImport.CreatedAt />
+                            <CSVImport.Type />
                         </div>
                         <div>
-                            <CSVImport.Type />
+                            <CSVImport.CreatedAt />
                             <CSVImport.CreatedBy __useNewRelated />
                         </div>
                     </SplitPartitioned>
                 </DetailsBox>
             </CSVImport>
+
+            <div className='mt-4'>
+                <RelatedExperiments
+                    csvImportId={ csvImportId }
+                />
+            </div>
         </>
     )
 }
