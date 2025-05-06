@@ -10,6 +10,7 @@
       "useWorkspaces": true
   },
   "nodeSupportedVersionRange": ">=14.21.0 <23.0.0",
+  "projectFolderMaxDepth": 3,
   "gitPolicy": {},
   "repository": {
     "url": "https://github.com/cdxOo/psydb",
