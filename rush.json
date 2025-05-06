@@ -140,16 +140,16 @@
        "projectFolder": "packages/psydb-schema-helpers",
        "reviewCategory": "production"
     },
-    {
-       "packageName": "@mpieva/psydb-migration",
-       "projectFolder": "packages/psydb-migration",
-       "reviewCategory": "production"
-    },
-    {
-       "packageName": "@mpieva/psydb-faker",
-       "projectFolder": "packages/psydb-faker",
-       "reviewCategory": "production"
-    },
+    //{
+    //   "packageName": "@mpieva/psydb-migration",
+    //   "projectFolder": "packages/psydb-migration",
+    //   "reviewCategory": "production"
+    //},
+    //{
+    //   "packageName": "@mpieva/psydb-faker",
+    //   "projectFolder": "packages/psydb-faker",
+    //   "reviewCategory": "production"
+    //},
     {
        "packageName": "@mpieva/psydb-fixtures",
        "projectFolder": "packages/psydb-fixtures",
@@ -200,16 +200,16 @@
        "projectFolder": "packages/psydb-common-config",
        "reviewCategory": "production"
     },
-    {
-       "packageName": "@mpieva/psydb-api-automation-scripts",
-       "projectFolder": "packages/psydb-api-automation-scripts",
-       "reviewCategory": "production"
-    },
-    {
-       "packageName": "@mpieva/psydb-uni-cronjobs",
-       "projectFolder": "packages/psydb-uni-cronjobs",
-       "reviewCategory": "production"
-    },
+    //{
+    //   "packageName": "@mpieva/psydb-api-automation-scripts",
+    //   "projectFolder": "packages/psydb-api-automation-scripts",
+    //   "reviewCategory": "production"
+    //},
+    //{
+    //   "packageName": "@mpieva/psydb-uni-cronjobs",
+    //   "projectFolder": "packages/psydb-uni-cronjobs",
+    //   "reviewCategory": "production"
+    //},
     {
        "packageName": "@mpieva/psydb-api-config",
        "projectFolder": "packages/psydb-api-config",
@@ -376,21 +376,20 @@
        "reviewCategory": "production"
     },
     
-    {
-       "packageName": "@mpieva/psydb-database-scripts",
-       "projectFolder": "packages/psydb-database-scripts",
-       "reviewCategory": "production"
-    },
-    
-    {
-       "packageName": "@mpieva/psydb-api-integration-test-helpers",
-       "projectFolder": "packages/psydb-api-integration-test-helpers",
-       "reviewCategory": "production"
-    },
-    {
-       "packageName": "@mpieva/psydb-api-integration-tests",
-       "projectFolder": "packages/psydb-api-integration-tests",
-       "reviewCategory": "production"
-    },
+    //{
+    //   "packageName": "@mpieva/psydb-database-scripts",
+    //   "projectFolder": "packages/psydb-database-scripts",
+    //   "reviewCategory": "production"
+    //},
+    //{
+    //   "packageName": "@mpieva/psydb-api-integration-test-helpers",
+    //   "projectFolder": "packages/psydb-api-integration-test-helpers",
+    //   "reviewCategory": "production"
+    //},
+    //{
+    //   "packageName": "@mpieva/psydb-api-integration-tests",
+    //   "projectFolder": "packages/psydb-api-integration-tests",
+    //   "reviewCategory": "production"
+    //},
   ]
 }
