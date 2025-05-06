@@ -19,7 +19,7 @@ echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gp
     | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
 
 sudo apt update
-sudo apt install -y mongodb-org
+sudo NEEDRESTART_MODE=a apt install -y mongodb-org
 
 sudo sed -i -e 's/27017/47017/g' /etc/mongod.conf
 
@@ -100,6 +100,10 @@ sudo cp -av ./psydb-src/deploy/common/helpers/restore-dump.sh ./
 mkdir -p ./psydb-src/config/
 cp -av ./psydb-src/deploy/common/dist-configs/psydb/config.js \
     ./psydb-src/config/
+cp -av ./psydb-src/packages/psydb-common-config/psydb-default-branding/ \
+    ./psydb-src/config/
 
-sed -i -e 's/mongodb:27017/127.0.0.1:47017/g' ./psydb-src/config/config.js
+CONF="./psydb-src/config/config.js"
+sed -i -e 's/mongodb:27017/127.0.0.1:47017/g' $CONF
+sed -i -e 's/your\/branding/psydb-default-branding/g' $CONF
 
