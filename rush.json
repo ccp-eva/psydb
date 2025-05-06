@@ -206,8 +206,8 @@
     //   "reviewCategory": "production"
     //},
     //{
-    //   "packageName": "@mpieva/psydb-uni-cronjobs",
-    //   "projectFolder": "packages/psydb-uni-cronjobs",
+    //   "packageName": "@humankind/psydb-cronjobs",
+    //   "projectFolder": "tools-extra/humankind/psydb-cronjobs",
     //   "reviewCategory": "production"
     //},
     {
