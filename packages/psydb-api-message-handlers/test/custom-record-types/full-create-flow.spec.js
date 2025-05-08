@@ -105,7 +105,7 @@ describe('custom-record-types/full-create-flow', function () {
             timezone: 'Europe/Berlin',
             payload: jsonify({
                 id: crtId,
-                subChannelKey: 'gdpr',
+                subChannelKey: 'scientific',
                 props: {
                     key: 'studyBookId',
                     type: 'SaneString',
@@ -119,19 +119,51 @@ describe('custom-record-types/full-create-flow', function () {
         deltas.push(await this.fetchAllRecords('customRecordType'));
         deltas.test({ expected: [{
             '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
-            'state': { 'nextSettings': { 'subChannelFields': { 'gdpr': [{
+            'state': { 'nextSettings': { 'subChannelFields': { 'scientific': [{
                 key: 'studyBookId',
                 type: 'SaneString',
                 displayName: 'Study Book ID',
                 displayNameI18N: { de: 'Studien Buch ID' },
                 props: { minLength: 1 },
-                pointer: '/gdpr/state/custom/studyBookId',
+                pointer: '/scientific/state/custom/studyBookId',
                 isNew: true,
                 isDirty: true
             }] }}}
         }], asFlatEJSON: true });
         
-        console.dir(ejson(deltas.getCurrent()), { depth: null });
+        await sendMessage({
+            type: 'custom-record-types/commit-settings',
+            timezone: 'Europe/Berlin',
+            payload: jsonify({
+                id: crtId,
+            })
+        });
+
+        deltas.push(await this.fetchAllRecords('customRecordType'));
+        //console.dir(ejson(deltas.getCurrent()), { depth: null });
+        deltas.test({ expected: [{
+            '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
+            'state': {
+                'isNew': false,
+                'isDirty': false,
+                'nextSettings': { 'subChannelFields': { 'scientific': [{
+                    isNew: false,
+                    isDirty: false
+                }] }},
+                'settings': { 'subChannelFields': { 'scientific': [{
+                    key: 'studyBookId',
+                    type: 'SaneString',
+                    displayName: 'Study Book ID',
+                    displayNameI18N: { de: 'Studien Buch ID' },
+                    props: { minLength: 1 },
+                    pointer: '/scientific/state/custom/studyBookId',
+                }] }},
+                formOrder: [
+                    '/scientific/state/comment',
+                    '/scientific/state/custom/studyBookId'
+                ]
+            }
+        }], asFlatEJSON: true });
     });
 })
 

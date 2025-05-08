@@ -163,7 +163,7 @@ var CRTSettings = ({ data }) => {
         var { applyGeneralFlags = false } = bag;
         var clone = { ...__availableDisplayFieldsByPointer };
         // XXX thats a hack
-        if (applyGeneralFlags) {
+        if (crt.getCollection() === 'subject' && applyGeneralFlags) {
             var {
                 showSequenceNumber, showOnlineId,
                 requiresTestingPermissions
