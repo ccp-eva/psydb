@@ -1,5 +1,5 @@
 'use strict';
-var { ejson, groupBy } = require('@mpieva/psydb-core-utils');
+var { ejson, groupBy, keyBy } = require('@mpieva/psydb-core-utils');
 var makeExperiment = require('./make-experiment');
 var makeParticipationItems = require('./make-participation-items');
 
@@ -11,7 +11,7 @@ var transformPrepared = (bag) => {
         timezone
     } = bag;
 
-    var groupedPipelineData = groupBy({
+    var groupedPipelineData = keyBy({
         items: pipelineData,
         createKey: (it) => {
             var { obj } = it;
@@ -26,7 +26,7 @@ var transformPrepared = (bag) => {
     }
     for (var it of Object.values(groupedPipelineData)) {
         var { record, parts } = makeExperiment({
-            pipelineItemGroup: it,
+            pipelineItemGroup: [ it ],
             
             subjectType,
             study,
