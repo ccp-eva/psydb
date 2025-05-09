@@ -159,9 +159,28 @@ var CRTSettings = ({ data }) => {
     crt.allFieldDefinitions = () => (
         Object.values(__availableDisplayFieldsByPointer)
     );
-    crt.availableDisplayFields = () => (
-        Object.values(__availableDisplayFieldsByPointer)
-    );
+    crt.availableDisplayFields = (bag = {}) => {
+        var { applyGeneralFlags = false } = bag;
+        var clone = { ...__availableDisplayFieldsByPointer };
+        // XXX thats a hack
+        if (crt.getCollection() === 'subject' && applyGeneralFlags) {
+            var {
+                showSequenceNumber, showOnlineId,
+                requiresTestingPermissions
+            } = data;
+
+            if (!showSequenceNumber) {
+                delete clone['/sequenceNumber'];
+            }
+            if (!showOnlineId) {
+                delete clone['/onlineId'];
+            }
+            if (!requiresTestingPermissions) {
+                delete clone['/scientific/state/testingPermissions'];
+            }
+        }
+        return Object.values(clone);
+    };
     crt.augmentedDisplayFields = (target) => {
         // FIXME: record lists target is lower case
         if (target === 'optionlist') {

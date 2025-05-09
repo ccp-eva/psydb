@@ -1,15 +1,15 @@
 import React from 'react';
-import { useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { BigNav, Alert } from '@mpieva/psydb-ui-layout';
 
 const RecordTypeNav = (ps) => {
     var { items, related } = ps;
-    var [ language ] = useUILanguage();
+    var [{ translate, language }] = useI18N();
 
     if (!items || items.length < 1) {
         return (
             <Alert variant='danger' className='mt-3'>
-                <b>Keine Datensatztypen definiert</b>
+                <b>{ translate('No record types defined!') }</b>
             </Alert>
         );
     }

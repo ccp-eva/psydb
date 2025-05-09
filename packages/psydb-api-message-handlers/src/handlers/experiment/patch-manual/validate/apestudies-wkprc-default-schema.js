@@ -43,7 +43,6 @@ var ApestudiesWKPRCDefaultSchema = (handlerType) => {
         'roomOrEnclosure': SaneString({ minLength: 1 }),
         'experimentName': SaneString({ minLength: 1 }),
         'conditionName': SaneString({ minLength: 1 }),
-        'intradaySeqNumber': Integer({ minimum: 1 }),
         'totalSubjectCount': Integer({ minimum: 1 }),
 
         'labOperatorIds': ForeignIdList({

@@ -77,7 +77,6 @@ describe('experiment/create-manual apestudies-wkprc-default', function () {
                 roomOrEnclosure: 'Outdoor Enclosure',
                 experimentName: 'the exp name',
                 conditionName: 'the condition name',
-                intradaySeqNumber: 1,
                 totalSubjectCount: 10,
                 
                 labOperatorIds: [ labOperatorId ],
@@ -106,7 +105,6 @@ describe('experiment/create-manual apestudies-wkprc-default', function () {
                     'start': { '$date': '2024-12-09T00:00:00.000Z' },
                     'end': { '$date': '2024-12-09T00:00:00.000Z' }
                 },
-                'intradaySeqNumber': 1,
                 'isCanceled': false,
                 'isPostprocessed': true,
                 'locationId': locationId,
@@ -169,7 +167,6 @@ describe('experiment/create-manual apestudies-wkprc-default', function () {
             experimentName: 'the exp name',
             conditionName: 'the condition name',
             roomOrEnclosure: 'Outdoor Enclosure',
-            intradaySeqNumber: 1,
             totalSubjectCount: 10
         }
 

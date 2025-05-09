@@ -19,33 +19,32 @@ var Schema = ({ collection, isPrecheck } = {}) => {
         type: `custom-record-types/set-general-data`,
         payload: ExactObject({
             properties: {
-                id: Id(),
-                lastKnownEventId: EventId(),
-                label: SaneString({ minLength: 1 }),
-                displayNameI18N: OpenObject({
-                    de: SaneString()
+                'id': Id(),
+                'lastKnownEventId': EventId(), // FIXME: remove
+                'label': SaneString({ minLength: 1 }),
+                'displayNameI18N': OpenObject({
+                    'de': SaneString()
                 }),
                 ...((collection === 'subject' || isPrecheck) && {
-                    requiresTestingPermissions: DefaultBool(),
-                    commentFieldIsSensitive: DefaultBool(),
-                    showSequenceNumber: DefaultBool(),
-                    showOnlineId: DefaultBool(),
+                    'requiresTestingPermissions': DefaultBool(),
+                    'commentFieldIsSensitive': DefaultBool(),
+                    'showSequenceNumber': DefaultBool(),
+                    'showOnlineId': DefaultBool(),
                 }),
                 ...((collection === 'location' || isPrecheck) && {
-                    reservationType: StringEnum([
+                    'reservationType': StringEnum([
                         'away-team',
                         'inhouse',
                         'no-reservation'
                     ])
                 }),
                 ...((collection === 'study' || isPrecheck) && {
-                    enableSubjectSelectionSettings: DefaultBool(),
-                    enableLabTeams: DefaultBool(),
+                    'enableSubjectSelectionSettings': DefaultBool(),
+                    'enableLabTeams': DefaultBool(),
                 }),
             },
             required: [
                 'id',
-                //'lastKnownEventId',
                 'label',
                 'displayNameI18N',
                 ...(

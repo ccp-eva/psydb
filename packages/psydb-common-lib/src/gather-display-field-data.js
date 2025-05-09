@@ -6,12 +6,12 @@ var CRTSettings = require('./crt-settings');
 
 // TODO: non-custom fields
 var gatherDisplayFieldData = ({
-    customRecordTypeData
+    customRecordTypeData, applyGeneralFlags
 }) => {
     var crtSettings = convertCRTRecordToSettings(customRecordTypeData);
     var crt = CRTSettings({ data: crtSettings });
 
-    return crt.availableDisplayFields();
+    return crt.availableDisplayFields({ applyGeneralFlags });
 
     //var fieldData = [
     //    {
