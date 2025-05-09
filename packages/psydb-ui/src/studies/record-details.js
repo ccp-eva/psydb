@@ -54,7 +54,9 @@ const StudyRecordDetails = (ps) => {
                 <hr />
                 <Study.Start />
                 <Study.End />
+                {/*XXX
                 <Study.EnableFollowUpExperiments />
+                */}
                 <Study.ResearchGroupIds />
                 <Study.ScientistIds />
                 <Study.StudyTopicIds />

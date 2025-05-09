@@ -82,10 +82,11 @@ const FormFields = (ps) => {
                 label={ translate('End') }
                 dataXPath='$.runningPeriod.end'
             />
+            {/* XXX
             <Fields.DefaultBool
                 label={ translate('Subjects can be tested multiple times') }
                 dataXPath='$.enableFollowUpExperiments'
-            />
+            />*/}
             <Fields.ForeignIdList
                 label={ translate('Research Groups') }
                 dataXPath='$.researchGroupIds'
