@@ -13,6 +13,7 @@ const PreviewRecord = (ps) => {
     var { previewRecord, related } = ps;
     var {
         experimentName,
+        conditionName,
         intradaySeqNumber,
         interval,
         subjectData,
@@ -38,8 +39,15 @@ const PreviewRecord = (ps) => {
                     newTab={ true }
                     __useNewRelated={ true }
                 /></BE>
-
             </SplitPartitioned>
+            
+            <SplitPartitioned partitions={[ 1, 1, 1, 1 ]}>
+                <span>{ translate('Condition Name') }:</span>
+                <BE>{ conditionName || 'NOT FOUND' }</BE>
+                <div />
+                <div />
+            </SplitPartitioned>
+
             <SplitPartitioned partitions={[ 1, 1, 1, 1 ]}>
                 <span>{ translate('Date/Time') }</span>
                 <BE><DateTime value={ interval.start } /></BE>

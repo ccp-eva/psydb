@@ -5,6 +5,7 @@ var { swapTimezone } = require('@mpieva/psydb-timezone-helpers');
 
 var onlyRelevant = ({ from }) => only({ from, keys: [
     'experimentName',
+    'conditionName',
     'intradaySeqNumber',
     'year',
     'month',

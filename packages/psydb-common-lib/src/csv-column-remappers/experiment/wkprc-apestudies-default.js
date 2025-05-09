@@ -10,6 +10,9 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
         if (col === 'experiment_name') {
             return 'experimentName';
         }
+        if (col === 'condition_name') {
+            return 'conditionName';
+        }
         if (col === 'daily_running_No' || col === 'daily_running_no') {
             return 'intradaySeqNumber';
         }
