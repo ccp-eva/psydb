@@ -88,10 +88,14 @@ Vor dem Anlegen von Datensatz-Typen und Hilfstabellen sollten folgende Punkte ge
 1. **Navigation:** **Datensatz-Typen → Neuer Eintrag**  
    - Collection: `Locations`  
    - Bezeichnung: `Labore`  
-2. **Felder anlegen:**  
-   - Feld-Typ: `Freitext - Einzeilig (SaneString)`  
-   - Pflichtfeld: `Ja`  
-3. **Felder fixieren:** Vorläufige Felder werden festgelegt.  
+2. **Felder anlegen:**
+    - Feld: `Labor-Bezeichung`
+        - Feld-Typ: `Freitext - Einzeilig (SaneString)`  
+        - Pflichtfeld: `Ja`
+    - Feld: `Etage`
+        - Feld-Typ: `Freitext - Einzeilig (SaneString)`  
+        - Pflichtfeld: `Ja`
+3. **Felder fixieren:** Vorläufige Felder werden festgelegt.
 4. **Live-Settings konfigurieren:** Spalten und Kurzanzeige definieren.  
 
 ### Anlegen Probanden-Typ 'Mäuse'
