@@ -14,7 +14,11 @@ const TableBodyCustomCols = (ps) => {
         var stringify = Fields[systemType]?.stringifyValue;
         var str = stringify ? (
             stringify({ definition: it, record, related, i18n })
-        ) : '[!!MISSING_STRINGIFER!!]';
+        ) : '[!!MISSING_STRINGIFIER!!]';
+
+        if (str === '[!!MISSING_STRINGIFIER!!]') {
+            console.log({ str, systemType });
+        }
 
         out.push(wrapAsLinkTo ? (
             <LinkTD key={ pointer } href={ wrapAsLinkTo }>{ str }</LinkTD>
