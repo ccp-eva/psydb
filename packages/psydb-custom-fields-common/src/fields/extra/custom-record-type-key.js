@@ -5,19 +5,12 @@ var createQuickSearchSchema = undefined;
 
 var stringifyValue = createStringifyValue({ fn: (bag) => {
     var { definition, value, related, i18n } = bag;
-    var { translate, language } = i18n;
-
-    console.log({ definition, value, related });
     var { collection } = definition.props;
+    var { translate } = i18n;
+    
     var crt = related.crts?.[collection]?.[value];
-    console.log({ crt })
-    return crt.state.label; // XXX
-    var label = (
-        translate.crt(language, crt)
-        || '[!!STRINGIFY_ERROR!!]'
-    );
-
-    return label;
+    
+    return translate.crt(crt) || '[!!STRINGIFY_ERROR!!]';
 }});
 
 module.exports = {
