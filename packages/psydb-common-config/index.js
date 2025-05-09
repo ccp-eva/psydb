@@ -56,7 +56,7 @@ module.exports = {
     
     dev_enableStatistics: true,
     dev_showDummyRecordsAsTopOptions: true,
-    dev_enableWKPRCPatches: false,
+    dev_enableWKPRCPatches: true,
 
     dev_enableSubjectDuplicatesSearch: true,
     dev_subjectDuplicatesSearchFields: {

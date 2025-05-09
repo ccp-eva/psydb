@@ -12,7 +12,7 @@ var CSVSchema = () => {
     var schema = OpenObject({
         properties: {
             'experimentName': SaneString({ minLength: 1 }),
-            'intradaySeqNumber': Integer({ minimum: 0 }),
+            'conditionName': SaneString({ minLength: 1 }),
 
             'year': Integer({ minimum: 1000 }),
             'month': Integer({ minimum: 0 }),
@@ -44,7 +44,7 @@ var CSVSchema = () => {
         },
         required: [
             'experimentName',
-            'intradaySeqNumber',
+            'conditionName',
             
             'year',
             'month',

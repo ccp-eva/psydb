@@ -74,7 +74,6 @@ describe(inline`
                 
                 roomOrEnclosure: 'Outdoor Enclosure',
                 experimentName: 'the exp name',
-                intradaySeqNumber: 1,
                 totalSubjectCount: 10,
                 
                 labOperatorIds: [ labOperatorId ],

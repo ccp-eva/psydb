@@ -86,7 +86,6 @@ const ParticipationList = (ps) => {
                         { IS_WKPRC ? (
                             <>
                                 <th>{ translate('_wkprc_subjectRole') }</th>
-                                <th>{ translate('_wkprc_intradaySeqNumber_short') }</th>
                                 <th>{ translate('_wkprc_totalSubjectCount_short') }</th>
                             </>
                         ) : (
@@ -219,7 +218,6 @@ const ParticipationListRow = (ps) => {
             { IS_WKPRC ? (
                 <>
                     <td>{ participationData.role }</td>
-                    <td>{ participationData.intradaySeqNumber }</td>
                     <td>{ participationData.totalSubjectCount }</td>
                 </>
             ) : (

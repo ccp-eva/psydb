@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -59,6 +59,7 @@ const FormFields = (ps) => {
     var { crtSettings, related, permissions } = ps;
     var { fieldDefinitions } = crtSettings;
     
+    var { dev_enableWKPRCPatches } = useUIConfig();
     var translate = useUITranslation();
 
     return (
@@ -82,10 +83,12 @@ const FormFields = (ps) => {
                 label={ translate('End') }
                 dataXPath='$.runningPeriod.end'
             />
-            <Fields.DefaultBool
-                label={ translate('Subjects can be tested multiple times') }
-                dataXPath='$.enableFollowUpExperiments'
-            />
+            { !dev_enableWKPRCPatches && (
+                <Fields.DefaultBool
+                    label={ translate('Subjects can be tested multiple times') }
+                    dataXPath='$.enableFollowUpExperiments'
+                />
+            )}
             <Fields.ForeignIdList
                 label={ translate('Research Groups') }
                 dataXPath='$.researchGroupIds'
