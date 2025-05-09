@@ -118,8 +118,6 @@ var checkNavItemAllowed = (bag) => {
     var { path, permissions } = bag;
     var { hasSomeLabOperationFlags, hasSomeFlags, isRoot } = permissions;
 
-    console.log(permissions);
-
     if (isRoot()) {
         return true;
     }
