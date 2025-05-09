@@ -24,8 +24,8 @@ var listAvailable = async (context, next) => {
         ignoreResearchGroups = false
     } = request.body;
 
-    if (!permissions.isRoot()) {
-        ignoreResearchGroups = false;
+    if (permissions.isRoot()) {
+        ignoreResearchGroups = true;
     }
 
     var crts = undefined;
