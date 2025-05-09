@@ -3,20 +3,7 @@ var { omit, only, compareIds } = require('@mpieva/psydb-core-utils');
 var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 var { swapTimezone } = require('@mpieva/psydb-timezone-helpers');
 
-var onlyRelevant = ({ from }) => only({ from, keys: [
-    'experimentName',
-    'conditionName',
-    'intradaySeqNumber',
-    'year',
-    'month',
-    'day',
-    'locationId',
-    'roomOrEnclosure',
-    'experimentOperatorIds',
-    'subjectData',
-    'totalSubjectCount',
-    'subjectGroupId',
-]});
+var onlyRelevantProps = require('./only-relevant-props');
 
 var makeExperiment = (bag) => {
     var {
@@ -34,7 +21,7 @@ var makeExperiment = (bag) => {
     var {
         year, month, day, subjectData,
         ...shared
-    } = onlyRelevant({ from: primaryItem.obj });
+    } = onlyRelevantProps({ from: primaryItem.obj });
     
     var timestamp = convertYMDToClientNoon({
         year, month, day, clientTZ: timezone,

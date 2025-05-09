@@ -1491,8 +1491,8 @@ module.exports = [
     },
     {
         internal: '_wkprc_conditionName',
-        en: 'Condition Name',
-        de: 'Name der Condition'
+        en: 'Condition',
+        de: 'Condition'
     },
     {
         internal: '_wkprc_roomOrEnclosure',
@@ -1503,16 +1503,6 @@ module.exports = [
         internal: '_wkprc_subjectRole',
         en: 'Role',
         de: 'Rolle'
-    },
-    {
-        internal: '_wkprc_intradaySeqNumber',
-        en: 'Daily Running No.',
-        de: 'Laufende Nummer (am Tag)'
-    },
-    {
-        internal: '_wkprc_intradaySeqNumber_short',
-        en: 'Daily-No.',
-        de: 'Tägl-Nr.'
     },
     {
         internal: '_wkprc_totalSubjectCount',

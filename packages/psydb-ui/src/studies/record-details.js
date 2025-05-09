@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useRouteMatch  } from 'react-router-dom';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { LinkButton, Icons } from '@mpieva/psydb-ui-layout';
 
@@ -30,6 +30,8 @@ const StudyRecordDetails = (ps) => {
         recordType,
         onSuccessfulUpdate,
     } = ps;
+    
+    var { dev_enableWKPRCPatches } = useUIConfig();
 
     var { record, crtSettings, related } = fetched;
     var { path, url } = useRouteMatch();
@@ -54,9 +56,9 @@ const StudyRecordDetails = (ps) => {
                 <hr />
                 <Study.Start />
                 <Study.End />
-                {/*XXX
-                <Study.EnableFollowUpExperiments />
-                */}
+                { !dev_enableWKPRCPatches && (
+                    <Study.EnableFollowUpExperiments />
+                )}
                 <Study.ResearchGroupIds />
                 <Study.ScientistIds />
                 <Study.StudyTopicIds />

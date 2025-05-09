@@ -13,7 +13,6 @@ const PreviewRecord = (ps) => {
     var { previewRecord, related } = ps;
     var {
         experimentName,
-        intradaySeqNumber,
         interval,
         subjectData,
         subjectGroupId,

@@ -13,7 +13,6 @@ var CSVSchema = () => {
         properties: {
             'experimentName': SaneString({ minLength: 1 }),
             'conditionName': SaneString({ minLength: 1 }),
-            'intradaySeqNumber': Integer({ minimum: 0 }),
 
             'year': Integer({ minimum: 1000 }),
             'month': Integer({ minimum: 0 }),
@@ -45,8 +44,7 @@ var CSVSchema = () => {
         },
         required: [
             'experimentName',
-            //'conditionName',
-            'intradaySeqNumber',
+            'conditionName',
             
             'year',
             'month',

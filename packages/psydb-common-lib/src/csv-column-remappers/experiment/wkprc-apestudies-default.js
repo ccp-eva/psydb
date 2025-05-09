@@ -10,11 +10,8 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
         if (col === 'experiment_name') {
             return 'experimentName';
         }
-        if (col === 'condition_name') {
+        if (col === 'condition') {
             return 'conditionName';
-        }
-        if (col === 'daily_running_No' || col === 'daily_running_no') {
-            return 'intradaySeqNumber';
         }
         if (col === 'year') {
             return 'year';
@@ -74,7 +71,6 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
 
             experiment_name: [{ key: 'experimentName', type: 'scalar' }],
             room_enclosure: [{ key: 'roomOrEnclosure', type: 'scalar' }],
-            daily_running_No: [{ key: 'intradaySeqNumber', type: 'scalar' }],
             location: [{ key: 'locationId', type: 'scalar' }],
             trial_participants: [
                 { key: 'totalSubjectCount', type: 'scalar' }

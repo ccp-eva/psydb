@@ -13,7 +13,6 @@ var makeParticipationItems = (bag) => {
 
         experimentName,
         roomOrEnclosure,
-        intradaySeqNumber,
         totalSubjectCount,
 
         timezone,
@@ -37,7 +36,6 @@ var makeParticipationItems = (bag) => {
             
             experimentName,
             roomOrEnclosure,
-            intradaySeqNumber,
             totalSubjectCount,
             role,
 

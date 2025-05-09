@@ -1,7 +1,9 @@
 'use strict';
 var { ejson, groupBy, keyBy } = require('@mpieva/psydb-core-utils');
+var onlyRelevantProps = require('./only-relevant-props');
 var makeExperiment = require('./make-experiment');
 var makeParticipationItems = require('./make-participation-items');
+
 
 var transformPrepared = (bag) => {
     var {
@@ -15,8 +17,19 @@ var transformPrepared = (bag) => {
         items: pipelineData,
         createKey: (it) => {
             var { obj } = it;
-            var { year, month, day, intradaySeqNumber } = obj;
-            return [ year, month, day, intradaySeqNumber ].join('_');
+            var {
+                subjectData,
+                experimentOperatorIds,
+                ...scalar
+            } = onlyRelevantProps({ from: obj });
+
+            var key = [
+                ...Object.values(scalar),
+                ...subjectData.map(s => `${s.subjectId}_${s.role}`),
+                ...experimentOperatorIds
+            ].join('_');
+
+            return key;
         }
     });
 
