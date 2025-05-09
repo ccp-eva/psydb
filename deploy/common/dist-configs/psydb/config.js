@@ -75,17 +75,14 @@ module.exports = {
         //'manual-only-participation'
     ],
 
-    branding: 'mpiccp',
-    disableLogoOverlay: false,
+    branding: require('./your/branding'),
 
+    disableLogoOverlay: false,
     dev_enableStagingBanner: false,
     dev_copyNoticeGreyscale: true,
+    dev_enableForeignIdRefLinkInForms: true,
 
     dev_enableDangerousCRTFieldOps: false,
-
     dev_enableCSVSubjectImport: false,
     dev_enableCSVParticipationImport: false,
-
-    dev_enableStatistics: false,
-
 }

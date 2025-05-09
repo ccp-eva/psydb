@@ -8,6 +8,9 @@ if [ -z "$TARGET" ]; then
     echo "provide target folder"
 fi
 
+# prevent apt outdated daemons popup
+export NEEDRESTART_MODE="a"
+
 ### mongodb
 ### https://www.mongodb.com/docs/v6.0/tutorial/install-mongodb-on-ubuntu/
 sudo apt install -y gnupg curl
@@ -97,8 +100,13 @@ sudo cp -av ./psydb-src/deploy/common/mongodb-initializer-dumps/ \
 sudo cp -av ./psydb-src/deploy/common/helpers/make-dump.sh ./
 sudo cp -av ./psydb-src/deploy/common/helpers/restore-dump.sh ./
 
+mkdir -p ./psydb-src/config/
 cp -av ./psydb-src/deploy/common/dist-configs/psydb/config.js \
     ./psydb-src/config/
+cp -av ./psydb-src/packages/psydb-common-config/psydb-default-branding/ \
+    ./psydb-src/config/
 
-sed -i -e 's/mongodb:27017/127.0.0.1:47017/g' ./psydb-src/config/config.js
+CONF="./psydb-src/config/config.js"
+sed -i -e 's/mongodb:27017/127.0.0.1:47017/g' $CONF
+sed -i -e 's/your\/branding/psydb-default-branding/g' $CONF
 

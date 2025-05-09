@@ -1524,7 +1524,12 @@ module.exports = [
         en: 'Trial-P.',
         de: 'Trial-P.' // FIXME
     },
-   
+  
+    {
+        en: 'No record types defined!',
+        de: 'Keine Datensatztypen definiert!'
+    },
+
     // Field sites
 
     {

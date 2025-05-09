@@ -116,7 +116,7 @@ var checkNavItemEnabled = (bag) => {
 
 var checkNavItemAllowed = (bag) => {
     var { path, permissions } = bag;
-    var { hasSomeLabOperationLags, hasSomeFlags, isRoot } = permissions;
+    var { hasSomeLabOperationFlags, hasSomeFlags, isRoot } = permissions;
 
     console.log(permissions);
 

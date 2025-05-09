@@ -22,6 +22,7 @@ const RecordLabelDefinitionEditor = (ps) => {
 
     var availableDisplayFieldData = gatherDisplayFieldData({
         customRecordTypeData: record,
+        applyGeneralFlags: true,
     });
 
     var availableFieldDataByPointer = keyBy({

@@ -44,14 +44,14 @@ The `deploy/` directory contains all relevant tools and helpers for setting up P
 | Operating System  | Ubuntu 22.04 LTS                     |
 | Runtime           | Node.js 18.x LTS                     |
 | Database          | MongoDB 6.x / 5.x / 4.x              |
-| Reverse Proxy     | Nginx 1.25.x                         |
+| Reverse Proxy     | Nginx 1.27.x                         |
 
 #### Setup Instructions
 
 ##### 1. Clone the Repository
 
 ```sh
-git clone git@github.com:ccp-eva/psydb.git psydb-repo
+git clone https://github.com/ccp-eva/psydb.git ./psydb-repo
 ```
 
 ##### 2. Run the Installation Script
@@ -112,15 +112,15 @@ $EDITOR ./psydb-src/config/config.js
 After configuration, start the remaining services:
 
 ```sh
-systemctl start psydb
-systemctl start nginx
+sudo systemctl start psydb
+sudo systemctl start nginx
 ```
 
 ##### TL;DR
 
 ```sh
     cd ~/
-    git clone git@github.com:ccp-eva/psydb.git ./psydb-repo
+    git clone https://github.com/ccp-eva/psydb.git ./psydb-repo
     ./psydb-repo/deploy/systemd/install-ubuntu.sh /srv/psydb-deployment
     
     cd /srv/psydb-deployment
@@ -128,8 +128,8 @@ systemctl start nginx
     
     $EDITOR ./psydb-src/config/config.js
 
-    # systemctl start psydb
-    # systemctl start nginx
+    # sudo systemctl start psydb
+    # sudo systemctl start nginx
 ```
 
 ### Docker
