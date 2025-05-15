@@ -30,7 +30,7 @@ const PreviewRecord = (ps) => {
             <SplitPartitioned partitions={[ 1, 1, 1, 1 ]}>
                 <span>{ translate('Experiment Name') }:</span>
                 <BE>{ experimentName }</BE>
-                <span>{ translate('Condition Name') }:</span>
+                <span>{ translate('Condition') }:</span>
                 <BE>{ conditionName || 'NOT FOUND' }</BE>
             </SplitPartitioned>
             
