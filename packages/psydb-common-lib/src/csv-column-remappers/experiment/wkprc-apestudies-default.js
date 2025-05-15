@@ -35,7 +35,7 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
             var [ _unused, ix = 0 ] = col.split('_');
             return `subjectData[${ix}].subjectId`;
         }
-        if (/^role(_\d+?)/.test(col)) {
+        if (/^role(_\d+)?/.test(col)) {
             var [ _unused, ix = 0 ] = col.split('_');
             return `subjectData[${ix}].role`;
         }
@@ -70,6 +70,7 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
             ],
 
             experiment_name: [{ key: 'experimentName', type: 'scalar' }],
+            condition: [{ key: 'conditionName', type: 'scalar' }],
             room_enclosure: [{ key: 'roomOrEnclosure', type: 'scalar' }],
             location: [{ key: 'locationId', type: 'scalar' }],
             trial_participants: [
