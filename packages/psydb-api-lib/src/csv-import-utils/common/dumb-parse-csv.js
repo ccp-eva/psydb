@@ -11,10 +11,15 @@ var dumbParseCSV = (data, { customColumnRemap } = {}) => {
     try {
         // XXX: i think csvLines is used in ui for error message
         // so we just parse this twice for now
-        var [ csvColumns, ...csvLines ] = parseCSV(data);
+        var [ csvColumns, ...csvLines ] = parseCSV(data, {
+            delimiter: [ ',', ';' ],
+            trim: true,
+        });
 
         var parsed = parseCSV(data, {
-            columns: true,
+            delimiter: [ ',', ';' ],
+            trim: true,
+            columns: true, // make object literals
             cast: (value) => {
                 if (['TRUE','FALSE', 'true', 'false'].includes(value)) {
                     return (value.toLowerCase() === 'true')
