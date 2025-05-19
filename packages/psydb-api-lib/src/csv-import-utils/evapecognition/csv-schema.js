@@ -6,6 +6,7 @@ var {
     SaneString,
     ForeignId,
     ForeignIdList,
+    StringEnum,
 } = require('@mpieva/psydb-schema-fields');
 
 var CSVSchema = () => {
@@ -22,7 +23,14 @@ var CSVSchema = () => {
                 collection: 'location',
                 recordType: 'wkprc_ape_location', // XXX
             }),
-            'roomOrEnclosure': SaneString({ minLength: 1 }),
+            //'roomOrEnclosure': SaneString({ minLength: 1 }),
+            'roomOrEnclosure': StringEnum([
+                'Sleeping Room',
+                'Observation Room',
+                'Outdoor Enclosure',
+                'Indoor Enclosure'
+            ]),
+
             
             'experimentOperatorIds': ForeignIdList({
                 collection: 'personnel', minItems: 1,

@@ -203,6 +203,21 @@ var ValidationError = (ps) => {
             <div key={ ix }><b>{' - '}"{ it }" is unknown</b></div>
         ))
     }
+    else if (keyword === 'enum') {
+        var { allowedValues } = params;
+        var cols = (
+            remapper
+            ? remapper.obj2csv({ path: dataPath })
+            : demap({ dataPath, demapping })
+        )
+        return cols.map((it, ix) => (
+            <div key={ ix }><b>
+                {' - '}"{ it }"
+                {' '}{ message }
+                {' '}{ allowedValues.map(it => `"${it}"`).join(', ') }
+            </b></div>
+        ))
+    }
     else {
         var cols = (
             remapper
