@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button, Grid } from '@mpieva/psydb-ui-layout';
 import {
@@ -15,41 +15,56 @@ import {
 export const Filters = (ps) => {
     var { crtSettings, schema } = ps;
     var { fieldDefinitions } = crtSettings;
+
+    var {
+        showOnlineId,
+        showSequenceNumber,
+        requiresTestingPermissions,
+    } = crtSettings;
     
-    var translate = useUITranslation();
-    var permissions = usePermissions();
+    var [{ translate }] = useI18N();
+    var { isRoot } = usePermissions();
+    var { dev_enableSubjectDuplicatesSearch = false } = useUIConfig();
     
     return (
         <FormBox title={ translate('_extended_search_filters_tab') }>
             <Grid cols={[ '1fr', '1fr' ]}>
-                <Fields.SaneString
-                    dataXPath='$.specialFilters.sequenceNumber'
-                    label={ translate('ID No.') }
-                    uiSplit={[ 4,8 ]}
-                />
-                <Fields.SaneString
-                    dataXPath='$.specialFilters.mergedDuplicateSequenceNumber'
-                    label={ translate('ID No. (from Duplicate)') }
-                    uiSplit={[ 4,8 ]}
-                />
-                <Fields.SaneString
-                    dataXPath='$.specialFilters.onlineId'
-                    label={ translate('Online ID Code') }
-                    uiSplit={[ 4,8 ]}
-                />
-                <Fields.SaneString
-                    dataXPath='$.specialFilters.mergedDuplicateOnlineId'
-                    label={ translate('Online ID Code (from Duplicate)') }
-                    uiSplit={[ 4,8 ]}
-                />
-                { permissions.isRoot() && (
+                { showSequenceNumber && (
+                    <Fields.SaneString
+                        dataXPath='$.specialFilters.sequenceNumber'
+                        label={ translate('ID No.') }
+                        uiSplit={[ 4,8 ]}
+                    />
+                )}
+                { showSequenceNumber && dev_enableSubjectDuplicatesSearch && (
+                    <Fields.SaneString
+                        dataXPath='$.specialFilters.mergedDuplicateSequenceNumber'
+                        label={ translate('ID No. (from Duplicate)') }
+                        uiSplit={[ 4,8 ]}
+                    />
+                )}
+                { showOnlineId && (
+                    <Fields.SaneString
+                        dataXPath='$.specialFilters.onlineId'
+                        label={ translate('Online ID Code') }
+                        uiSplit={[ 4,8 ]}
+                    />
+                )}
+                { showOnlineId && dev_enableSubjectDuplicatesSearch && (
+                    <Fields.SaneString
+                        dataXPath='$.specialFilters.mergedDuplicateOnlineId'
+                        label={ translate('Online ID Code (from Duplicate)') }
+                        uiSplit={[ 4,8 ]}
+                    />
+                )}
+                { isRoot() && (
                     <Fields.SaneString
                         dataXPath='$.specialFilters.subjectId'
                         label={ translate('Internal ID') }
                         uiSplit={[ 4,8 ]}
                     />
                 )}
-                { permissions.isRoot() && (
+                { isRoot() && dev_enableSubjectDuplicatesSearch && (
                     <Fields.SaneString
                         dataXPath='$.specialFilters.mergedDuplicateId'
                         label={ translate('Internal ID (from Duplicate)') }
@@ -68,10 +83,12 @@ export const Filters = (ps) => {
                 subChannelKey='scientific'
                 fieldDefinitions={ fieldDefinitions }
             />
-            <Fields.HasTestingPermission
-                dataXPath='$.specialFilters.hasTestingPermission'
-                label={ translate('Has Participation Permission')  }
-            />
+            { requiresTestingPermissions && (
+                <Fields.HasTestingPermission
+                    dataXPath='$.specialFilters.hasTestingPermission'
+                    label={ translate('Has Participation Permission')  }
+                />
+            )}
             <Fields.ForeignIdList
                 dataXPath='$.specialFilters.didParticipateIn'
                 label={ translate('Has Participated in') }
@@ -119,7 +136,7 @@ export const Filters = (ps) => {
 const ParticipatedBetween = withField({ Control: (ps) => {
     var { dataXPath } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <div className='d-flex border p-3'>
             <div className='w-50 flex-grow'>
