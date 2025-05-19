@@ -1,4 +1,6 @@
 import React from 'react';
+import { groupBy } from '@mpieva/psydb-core-utils';
+import { CRTSettings } from '@mpieva/psydb-common-lib';
 import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button, Grid } from '@mpieva/psydb-ui-layout';
@@ -13,9 +15,8 @@ import {
 
 // TODO: filter undefined values from all id lists
 export const Filters = (ps) => {
-    var { crtSettings, schema } = ps;
-    var { fieldDefinitions } = crtSettings;
-
+    var { crtSettings } = ps;
+    
     var {
         showOnlineId,
         showSequenceNumber,
@@ -23,9 +24,28 @@ export const Filters = (ps) => {
     } = crtSettings;
     
     var [{ translate }] = useI18N();
-    var { isRoot } = usePermissions();
-    var { dev_enableSubjectDuplicatesSearch = false } = useUIConfig();
+    var { isRoot, hasFlag } = usePermissions();
+    var {
+        dev_enableWKPRCPatches = false,
+        dev_enableSubjectDuplicatesSearch = false
+    } = useUIConfig();
     
+    var crt = CRTSettings({ data: crtSettings });
+    var fieldDefinitions = (
+        crt.findCustomFields({
+            'isRemoved': { $ne: true },
+            $or: [
+                { 'props.isSensitive': { $ne: true }},
+                { 'props.isSensitive': hasFlag('canAccessSensitiveFields') },
+            ]
+        })
+    );
+
+    fieldDefinitions = groupBy({
+        items: fieldDefinitions,
+        byProp: 'subChannel'
+    });
+
     return (
         <FormBox title={ translate('_extended_search_filters_tab') }>
             <Grid cols={[ '1fr', '1fr' ]}>
@@ -101,20 +121,17 @@ export const Filters = (ps) => {
             />
 
             {/* XXX */}
-            <ParticipatedBetween
-                dataXPath='$.specialFilters.participationInterval'
-                label={ translate('Participated') }
-            />
-
-            {(
-                !crtSettings.commentFieldIsSensitive
-                || permissions.hasFlag('canAccessSensitiveFields')
-            ) && (
-                <Fields.FullText
-                    dataXPath='$.specialFilters.comment'
-                    label={ translate('Comment') }
+            { !dev_enableWKPRCPatches && (
+                <ParticipatedBetween
+                    dataXPath='$.specialFilters.participationInterval'
+                    label={ translate('Participated') }
                 />
             )}
+
+            <Fields.FullText
+                dataXPath='$.specialFilters.comment'
+                label={ translate('Comment') }
+            />
 
             <Fields.GenericRadioGroup
                 dataXPath='$.specialFilters.isHidden'

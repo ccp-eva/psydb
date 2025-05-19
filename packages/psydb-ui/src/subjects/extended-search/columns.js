@@ -23,7 +23,7 @@ export const Columns = (ps) => {
     } = crtSettings;
 
     var [{ translate, language }] = useI18N();
-    var { isRoot } = usePermissions();
+    var { isRoot, hasFlag } = usePermissions();
     var {
         dev_enableWKPRCPatches = false,
         dev_enableSubjectDuplicatesSearch = false
@@ -31,16 +31,17 @@ export const Columns = (ps) => {
 
     var crt = CRTSettings({ data: crtSettings });
     var customColumns = (
-        crt.allCustomFields()
-        .filter(it => !it.isRemoved)
-        .map(it => {
-            // FIXME: displayNameI18N can be null somehow
-            var { pointer, displayName, displayNameI18N = {} } = it;
-            return {
-                pointer,
-                label: displayNameI18N?.[language] || displayName
-            }
+        crt.findCustomFields({
+            'isRemoved': { $ne: true },
+            $or: [
+                { 'props.isSensitive': { $ne: true }},
+                { 'props.isSensitive': hasFlag('canAccessSensitiveFields') },
+            ]
         })
+        .map(it => ({
+            pointer: it.pointer,
+            label: translate.fieldDefinition(it),
+        }))
     );
 
     // FIXME: generalzie the creation of the field parts
@@ -116,14 +117,10 @@ export const Columns = (ps) => {
             },
         ] : []),
 
-        // XXX
-        ...((
-            !crtSettings.commentFieldIsSensitive
-            || permissions.hasFlag('canAccessSensitiveFields')
-        ) ? [{
+        {
             pointer: '/scientific/state/comment',
             label: translate('Comment')
-        }] : []),
+        }
     ];
 
     var columnBlocks = [

@@ -45,10 +45,10 @@ var generateNavItems = (ps) => {
     var pass = { permissions, config, translate };
 
     var out = [];
-    for (var it of items) {
+    for (var [ ix, it ] of items.entries()) {
         if (typeof it === 'string') {
             out.push(
-                <div className='border-top mt-2 mb-2' />
+                <div key={ ix } className='border-top mt-2 mb-2' />
             )
             continue;
         }
@@ -66,10 +66,14 @@ var generateNavItems = (ps) => {
             });
             if (subitems.length > 0) {
                 out.push(
-                    <Link to={ path }><b>{ translate(label) }</b></Link>
+                    <Link to={ path } key={ ix }>
+                        <b>{ translate(label) }</b>
+                    </Link>
                 )
                 out.push(
-                    <Nav className='flex-column pl-3'>{ subitems }</Nav>
+                    <Nav className='flex-column pl-3' key={ ix + 'SN'}>
+                        { subitems }
+                    </Nav>
                 );
             }
         }
@@ -80,7 +84,9 @@ var generateNavItems = (ps) => {
             );
             if (show) {
                 out.push(
-                    <Link to={ path }>{ translate(label) }</Link>
+                    <Link to={ path } key={ ix }>
+                        { translate(label) }
+                    </Link>
                 )
             }
         }

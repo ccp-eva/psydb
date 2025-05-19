@@ -11,7 +11,8 @@ const TableHeadCustomCols = (ps) => {
     for (var [ ix, it ] of definitions.entries()) {
         var { systemType, pointer, displayName, displayNameI18N = {}} = it;
 
-        var label = displayNameI18N[language] || displayName;
+        // XXX displayNameI18N can be null somehow
+        var label = displayNameI18N?.[language] || displayName;
         
         var canSortColumn = canSort && [
             'SaneString',

@@ -27,7 +27,7 @@ export const Custom = (ps) => {
         subChannelKey
         ? fieldDefinitions[subChannelKey]
         : fieldDefinitions
-    );
+    ) || [];
 
     fields = fields.map(it => ({
         definition: it,
@@ -111,7 +111,7 @@ const CustomField = (ps) => {
             label={ displayNameI18N?.[language] || displayName }
             related={ related }
             required={ false }
-            systemType={ type }
+            //systemType={ type }
             { ...props }
             { ...extraTypeProps[type] }
         />
