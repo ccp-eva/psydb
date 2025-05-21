@@ -99,7 +99,8 @@ var listEndpoint = async (context, next) => {
     });
 
     // FIXME: ghetto
-    displayFields = displayFields.filter(it => (
+    // ye ... dont override the global one lol
+    var _displayFields = displayFields.filter(it => (
         target === 'optionlist'
         ? it.key === '_label'
         : it.key !== '_label'
@@ -107,7 +108,7 @@ var listEndpoint = async (context, next) => {
 
     context.body = ResponseBody({
         data: {
-            displayFieldData: displayFields,
+            displayFieldData: _displayFields,
             records,
             recordsCount: totalRecordCount,
 
