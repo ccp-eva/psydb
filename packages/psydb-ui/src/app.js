@@ -36,7 +36,12 @@ const App = () => {
     var [ isInitialized, setIsInitialized ] = useState(false);
 
     var [ state, setState ] = useState({});
-    var { authResponseStatus, self, config = {} } = state;
+    var {
+        authCurrentStatus = 401,
+        authResponseStatus = undefined,
+        self, config = {}
+    } = state;
+
     var setSelf = (nextSelf) => setState({ ...state, self: nextSelf });
 
     var [ cookieI18N, setCookieI18N ] = useCookieI18N({ config });
@@ -51,14 +56,15 @@ const App = () => {
         if (data?.authStatusCode) {
             setState({
                 self: data.self,
-                authResponseStatus: data.authStatusCode,
+                authCurrentStatus: data.authStatusCode,
+                authResponseStatus: undefined,
                 config: data.config,
             })
         }
         else if (data?.record) {
             setState({
                 self: response.data.data,
-                authResponseStatus: response.status,
+                authCurrentStatus: response.status,
                 config,
             });
         }
@@ -71,14 +77,17 @@ const App = () => {
     var onFailedUpdate = (error) => {
         var statusCode = error.response?.status;
         if (statusCode) {
-            setState({ authResponseStatus: statusCode });
+            setState({
+                authCurrentStatus: statusCode,
+                authResponseStatus: statusCode
+            });
         }
         else {
             throw error;
         }
     }
-
-    var is200 = (authResponseStatus === 200);
+            
+    var is200 = (authCurrentStatus === 200);
     useEffect(() => {
         setIsInitialized(false)
         publicAgent.get('/api/init-ui').then(
@@ -110,7 +119,7 @@ const App = () => {
     }
 
     var renderedView = undefined;
-    if (authResponseStatus === 200 && self) {
+    if (authCurrentStatus === 200 && self) {
         renderedView = (
             <CommonContexts { ...contextBag } agent={ agent }>
                 <BrandingWrapper enableDevPanel={ false }>
@@ -124,6 +133,7 @@ const App = () => {
     }
     else {
         var publicBag = {
+            authCurrentStatus,
             authResponseStatus,
             onSuccessfulUpdate,
             onFailedUpdate,

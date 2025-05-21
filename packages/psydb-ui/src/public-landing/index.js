@@ -13,7 +13,8 @@ const PublicLanding = (ps) => {
     var { authResponseStatus } = ps;
 
     var pass = only({ from: ps, keys: [
-        'authResponseCode',
+        'authCurrentStatus',
+        'authResponseStatus',
         'onSuccessfulUpdate',
         'onFailedUpdate',
     ]});

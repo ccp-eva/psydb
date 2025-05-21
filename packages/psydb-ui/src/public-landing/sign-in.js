@@ -27,7 +27,7 @@ const SignIn = (ps) => {
         onFailedUpdate,
     });
 
-    var hasError = (authResponseStatus === 400);
+    var hasError = ([400, 401].includes(authResponseStatus));
     var initialValues = {
         email: '',
         password: '',
