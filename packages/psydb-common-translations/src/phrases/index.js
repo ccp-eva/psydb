@@ -1660,7 +1660,7 @@ module.exports = [
         de: 'Zwei-Factor-Authentifizierung Erforderlich'
     },
     {
-        en: 'You should have receved an e-mail containing a code, please enter it here.',
+        en: 'You should have received an e-mail containing a code, please enter it here.',
         de: 'Sie sollten eine E-Mail mit einem Code erhalten haben, bitte geben Sie diesen hier ein.'
     },
     {

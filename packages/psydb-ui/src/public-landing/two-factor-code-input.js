@@ -106,7 +106,7 @@ const InfoText = () => {
                 { translate('Two-Factor-Authentication Required') }
             </b></header>
             <p>{ translate(inlineText`
-                You should have receved an e-mail containing a code,
+                You should have received an e-mail containing a code,
                 please enter it here.
             `) }</p>
         </>
