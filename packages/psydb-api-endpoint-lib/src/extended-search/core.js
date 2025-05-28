@@ -155,8 +155,6 @@ var extendedSearchCore = async (bag) => {
                 filters: customGdprFilters,
             }),
         }
-
-        console.log(customFieldMatchStages);
     }
     else {
         var permissionStatePath = 'state';
