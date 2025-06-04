@@ -79,6 +79,16 @@ var fetchPersonnelRecords = async (bag) => {
 
     var personnelRecords = await withRetracedErrors(
         db.collection('personnel').aggregate([
+            { $addFields: { '_primaryEmail': {
+                $first: { $filter: {
+                    input: '$gdpr.state.emails',
+                    as: 'it',
+                    cond: { $eq: [ '$$it.isPrimary', true ]}
+                }}
+            }}},
+            { $addFields: {
+                '_primaryEmail': { $toLower: '$_primaryEmail.email' }
+            }},
             { $match: {
                 $or: [
                     { 'scientific.state.hasRootAccess': true },
