@@ -47,7 +47,7 @@ const App = () => {
     var [ cookieI18N, setCookieI18N ] = useCookieI18N({ config });
     var i18n = createI18N({ ...cookieI18N });
     var { language, translate, localeCode, locale } = i18n;
-    
+
     var agent = createAgent({ language, localeCode });
 
     var onSuccessfulUpdate = (response) => {
@@ -79,7 +79,8 @@ const App = () => {
         if (statusCode) {
             setState({
                 authCurrentStatus: statusCode,
-                authResponseStatus: statusCode
+                authResponseStatus: statusCode,
+                config,
             });
         }
         else {
