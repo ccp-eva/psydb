@@ -1,9 +1,7 @@
 'use strict';
 var { keyBy, compareIds } = require('@mpieva/psydb-core-utils');
-var withRetracedErrors = require('../../with-retraced-errors');
-var aggregateToArray = require('../../aggregate-to-array');
-
-var { CSVImportError } = require('../errors');
+var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
+var { CSVImportError } = require('../../errors');
 
 
 var verifySameSubjectGroup = async (bag) => {
@@ -15,7 +13,7 @@ var verifySameSubjectGroup = async (bag) => {
         subjectIds.push(...subjectData.map(it => it.subjectId))
     }
     
-    var records = await withRetracedErrors(
+    var records = await (
         aggregateToArray({ db, subject: [
             { $match: { _id: { $in: subjectIds }}},
             { $project: {

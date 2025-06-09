@@ -1,6 +1,6 @@
 'use strict';
 var { CSVColumnRemappers } = require('@mpieva/psydb-common-lib');
-var { runDefaultPipeline } = require('../common');
+var { runDefaultPipeline } = require('../../common');
 
 var CSVSchema = require('./csv-schema');
 var verifySameSubjectType = require('./verify-same-subject-type');

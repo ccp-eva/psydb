@@ -1,8 +1,6 @@
 'use strict';
-var withRetracedErrors = require('../../with-retraced-errors');
-var aggregateToArray = require('../../aggregate-to-array');
-
-var { CSVImportError } = require('../errors');
+var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
+var { CSVImportError } = require('../../errors');
 
 
 var verifySameSubjectType = async (bag) => {
@@ -14,7 +12,7 @@ var verifySameSubjectType = async (bag) => {
         subjectIds.push(...subjectData.map(it => it.subjectId))
     }
 
-    var invalid = await withRetracedErrors(
+    var invalid = await (
         aggregateToArray({ db, subject: [
             { $match: {
                 _id: { $in: subjectIds },
