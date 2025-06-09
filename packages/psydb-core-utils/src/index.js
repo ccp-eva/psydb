@@ -17,6 +17,8 @@ module.exports = {
 
     groupBy: require('./group-by'),
     keyBy: require('./key-by'),
+    keySequence: require('./key-sequence'),
+
     unwind: require('./unwind'),
     only: require('./only'),
     omit: require('./omit'),

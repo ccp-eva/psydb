@@ -1,5 +1,5 @@
 'use strict';
-var Cache = require('./cache');
+var { SimpleCache } = require('@mpieva/psydb-common-lib');
 
 var WrappedCache = ({ driver }) => {
     var cache = Cache();

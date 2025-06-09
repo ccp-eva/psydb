@@ -1,7 +1,6 @@
 'use strict';
 var Axios = require('axios');
 var Driver = require('@mpieva/psydb-driver-nodejs');
-var Cache = require('./cache');
 var utils = require('./utils');
 
 var WrappedDriver = (bag) => {

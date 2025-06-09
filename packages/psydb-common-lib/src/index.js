@@ -60,6 +60,7 @@ module.exports = {
     ),
 
     calculateTestableIntervals: require('./calculate-testable-intervals'),
-   
+  
+    SimpleCache: require('./simple-cache'),
     SmartArray: require('./smart-array'),
 }

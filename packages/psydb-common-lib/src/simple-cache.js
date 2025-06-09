@@ -1,7 +1,7 @@
 'use strict';
 var { merge, jsonpointer } = require('@mpieva/psydb-core-utils');
 
-var Cache = () => {
+var SimpleCache = () => {
     var cache = {};
     var internal = {};
 
@@ -47,4 +47,4 @@ var Cache = () => {
     return cache;
 }
 
-module.exports = Cache;
+module.exports = SimpleCache;
