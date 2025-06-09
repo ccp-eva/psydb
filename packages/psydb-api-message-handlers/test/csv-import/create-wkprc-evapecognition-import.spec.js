@@ -16,7 +16,7 @@ describe('csv-import/experiment/create-wkprc-apestudies-default', function () {
     var db, sendMessage, fileId;
     beforeEach(async function () {
         //await this.restore('2024-04-03__0435_wkprc-and-fs');
-        await this.restore('2024-07-12__0202_wkprc-fieldsite');
+        await this.restore('2025-06-09__1835');
         
         db = this.getDbHandle();
         ([ sendMessage ] = this.createMessenger({
@@ -36,24 +36,13 @@ describe('csv-import/experiment/create-wkprc-apestudies-default', function () {
     });
 
     it('does the thing', async function () {
-        var studyId = ObjectId("6566b5c26c830cb226c1389b");
-        var locationId = ObjectId("64d42de0443aa279ca4cb2e8");
+        var studyId = ObjectId('670d7c608c7129131ebeb883');
         var subjectType = 'wkprc_chimpanzee';
-        var labOperatorIds = [
-            ObjectId("64d42ddf443aa279ca4cb2c9"),
-            ObjectId("64d42ddf443aa279ca4cb2c5"),
-        ];
 
         var koaContext = await sendMessage({
             type: 'csv-import/experiment/create-wkprc-apestudies-default',
             timezone: 'Europe/Berlin',
-            payload: jsonify({
-                subjectType,
-                studyId,
-                //locationId,
-                fileId,
-                //labOperatorIds
-            })
+            payload: jsonify({ subjectType, studyId, fileId })
         });
 
         var { csvImportId } = koaContext.response.body.data;

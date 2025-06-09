@@ -23,7 +23,10 @@ var CSVSchema = () => {
                 collection: 'location',
                 recordType: 'wkprc_ape_location', // XXX
             }),
-            //'roomOrEnclosure': SaneString({ minLength: 1 }),
+            // XXX: no intergroup tests intended i guess
+            'subjectGroupId': ForeignId({
+                collection: 'subjectGroup'
+            }),
             'roomOrEnclosure': StringEnum([
                 'Sleeping Room',
                 'Observation Room',
@@ -59,6 +62,7 @@ var CSVSchema = () => {
             'day',
             
             'locationId',
+            'subjectGroupId',
             'roomOrEnclosure',
             'experimentOperatorIds',
             'subjectData',
