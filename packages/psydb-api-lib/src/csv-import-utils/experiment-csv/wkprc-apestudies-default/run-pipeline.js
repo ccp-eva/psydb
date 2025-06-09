@@ -35,7 +35,7 @@ var runPipeline = async (bag) => {
     });
 
     await preinjectCombinationRefs({ db, parsed, subjectType });
-    //console.dir(parsed, { depth: null });
+    //console.dir(ejson(parsed), { depth: null });
     //return;
 
 

@@ -3,7 +3,7 @@ var { ejson } = require('@mpieva/psydb-core-utils');
 var { keyRecords } = require('@mpieva/psydb-common-lib');
 var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 
-var createCombinedLookup = async (bag) => {
+var createSubjectCombinationView = async (bag) => {
     var { db, parsed, subjectType } = bag;
 
     var subjectValues = [];
@@ -73,4 +73,4 @@ var createCombinedLookup = async (bag) => {
     return out;
 }
 
-module.exports = createCombinedLookup;
+module.exports = createSubjectCombinationView;
