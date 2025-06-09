@@ -1,22 +1,20 @@
 'use strict';
 // XXX: stub
 var debug = require('debug')(
-    'psydb:api:endpoints:csvImport:subject:read'
+    'psydb:api:endpoints:csvImport:subject:search'
 );
 
 var { only, jsonpointer } = require('@mpieva/psydb-core-utils');
+var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var {
     ResponseBody,
     validateOrThrow,
-    withRetracedErrors,
-    aggregateOne,
-    aggregateToArray,
     fetchRecordLabelsManual,
 } = require('@mpieva/psydb-api-lib');
 
 var Schema = require('./schema');
 
-var read = async (context, next) => {
+var search = async (context, next) => {
     var { db, permissions, request } = context;
     
     var i18n = only({ from: context, keys: [
@@ -32,25 +30,21 @@ var read = async (context, next) => {
         payload: request.body
     });
 
-    var { id: csvImportId } = request.body;
-
-    var record = await withRetracedErrors(
-        aggregateOne({ db, csvImport: [
-            { $match: {
-                _id: csvImportId
-            }},
-        ]})
-    );
+    var records = await aggregateToArray({ db, csvImport: [
+        { $match: {
+            type: /^subject\//
+        }}
+    ]});
 
     var relatedRecordLabels = await fetchRecordLabelsManual(db, {
-        personnel: [ record.createdBy ],
+        personnel: records.map(it => it.createdBy),
     }, { oldWrappedLabels: false, ...i18n });
 
     // FIXME: create utility to fetch related manually
     var relatedCRTRecords = await aggregateToArray({ db, customRecordType: [
         { $match: {
             collection: 'subject',
-            type: record?.subjectType
+            type: { $in: records.map(it => it.subjectType)}
         }},
         { $project: {
             'collection': true,
@@ -64,8 +58,9 @@ var read = async (context, next) => {
         var { collection, type, state } = it;
         jsonpointer.set(relatedCRTs, `/${collection}/${type}`, state);
     }
+
     context.body = ResponseBody({ data: {
-        record,
+        records,
         related: {
             records: relatedRecordLabels,
             crts: relatedCRTs
@@ -75,5 +70,5 @@ var read = async (context, next) => {
     await next();
 }
 
-module.exports = read;
+module.exports = search;
 

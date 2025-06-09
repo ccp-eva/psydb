@@ -2,11 +2,8 @@
 var { keyBy, only, merge, uniquePush } = require('@mpieva/psydb-core-utils');
 var { CRTSettings } = require('@mpieva/psydb-common-lib');
 var { ExactObject, Id } = require('@mpieva/psydb-schema-fields');
-var {
-    withRetracedErrors,
-    aggregateToArray,
-    ResponseBody
-} = require('@mpieva/psydb-api-lib');
+var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
+var { ResponseBody } = require('@mpieva/psydb-api-lib');
 
 var { withContext } = require('@mpieva/psydb-api-lib/src/list-endpoint-utils');
 
@@ -65,13 +62,11 @@ var relatedExperiments = async (context, next) => {
         uniquePush({ into: subjectTypes, values: [ it.type ] }) 
     }
 
-    var subjectCRTRecords = await withRetracedErrors(
-        aggregateToArray({ db, customRecordType: [
-            { $match: {
-                type: { $in: subjectTypes }
-            }}
-        ]})
-    );
+    var subjectCRTRecords = await aggregateToArray({ db, customRecordType: [
+        { $match: {
+            type: { $in: subjectTypes }
+        }}
+    ]});
 
     var subjectCRTs = keyBy({
         items: subjectCRTRecords,

@@ -5,11 +5,10 @@ var debug = require('debug')(
 );
 
 var { only } = require('@mpieva/psydb-core-utils');
+var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
 var {
     ResponseBody,
     validateOrThrow,
-    withRetracedErrors,
-    aggregateOne,
     fetchRecordLabelsManual,
 } = require('@mpieva/psydb-api-lib');
 
@@ -34,13 +33,11 @@ var read = async (context, next) => {
 
     var { id: csvImportId } = request.body;
 
-    var record = await withRetracedErrors(
-        aggregateOne({ db, csvImport: [
-            { $match: {
-                _id: csvImportId
-            }},
-        ]})
-    );
+    var record = await aggregateOne({ db, csvImport: [
+        { $match: {
+            _id: csvImportId
+        }},
+    ]});
 
     var relatedRecordLabels = await fetchRecordLabelsManual(db, {
         study: [ record.studyId ],

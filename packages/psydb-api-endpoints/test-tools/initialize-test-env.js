@@ -2,7 +2,7 @@
 var tenv = require('@mpieva/psydb-api-mocha-test-tools/initialize-test-env');
 
 var { Permissions } = require('@mpieva/psydb-common-lib');
-var { Self } = require('@mpieva/psydb-api-lib');
+var { Self, createId, withRetracedErrors } = require('@mpieva/psydb-api-lib');
 
 var [ createContext ] = tenv.mochaHooks.beforeAll;
 
@@ -28,6 +28,34 @@ var beforeAll = async function () {
             self,
             permissions,
         }
+    }
+    
+    this.createFakeFileUpload = async (bag) => {
+        var {
+            buffer,
+            mimetype = 'text/csv',
+            originalFilename = 'import.csv',
+        } = bag;
+
+        var db = this.getDbHandle();
+
+        var mongoDoc = {
+            _id: await createId(),
+            correlationId: await createId(),
+            createdBy: await createId(),
+            createdAt: new Date(),
+            uploadKey: 'import',
+            hash: 'xxx',
+            mimetype,
+            originalFilename,
+            blob: buffer
+        }
+
+        await withRetracedErrors(
+            db.collection('file').insertOne(mongoDoc)
+        );
+
+        return mongoDoc;
     }
 }
 

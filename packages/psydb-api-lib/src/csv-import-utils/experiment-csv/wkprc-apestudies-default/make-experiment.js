@@ -27,10 +27,18 @@ var makeExperiment = (bag) => {
         year, month, day, clientTZ: timezone,
     });
 
-    var { locationId } = shared;
-    var { type: locationRecordType } = primaryItem.replacements.find(it => (
-        compareIds(it._id, locationId)
-    ));
+    // FIXME: this is really stupid
+    var { locationId, __locationType = undefined } = shared;
+    if (__locationType) {
+        var locationRecordType = __locationType;
+    }
+    else {
+        var { type: locationRecordType } = (
+            primaryItem.replacements.find(it => (
+                compareIds(it._id, locationId)
+            ))
+        );
+    }
 
    
     var mergedSubjectIds = [];

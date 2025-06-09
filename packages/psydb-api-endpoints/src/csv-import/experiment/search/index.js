@@ -5,11 +5,10 @@ var debug = require('debug')(
 );
 
 var { only } = require('@mpieva/psydb-core-utils');
+var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var {
     ResponseBody,
     validateOrThrow,
-    withRetracedErrors,
-    aggregateToArray,
     fetchRecordLabelsManual,
 } = require('@mpieva/psydb-api-lib');
 
@@ -31,16 +30,14 @@ var search = async (context, next) => {
         payload: request.body
     });
 
-    var records = await withRetracedErrors(
-        aggregateToArray({ db, csvImport: [
-            { $match: {
-                type: /^experiment\//
-            }},
-            { $sort: {
-                createdAt: -1
-            }}
-        ]})
-    );
+    var records = await aggregateToArray({ db, csvImport: [
+        { $match: {
+            type: /^experiment\//
+        }},
+        { $sort: {
+            createdAt: -1
+        }}
+    ]});
 
     var relatedRecordLabels = await fetchRecordLabelsManual(db, {
         study: records.map(it => it.studyId),

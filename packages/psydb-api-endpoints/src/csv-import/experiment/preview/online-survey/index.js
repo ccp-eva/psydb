@@ -1,15 +1,12 @@
 'use strict';
 var { only } = require('@mpieva/psydb-core-utils');
+var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
 var {
     compose,
     ApiError,
     ResponseBody,
     validateOrThrow,
-    withRetracedErrors,
-    aggregateOne,
     fetchRecordLabelsManual,
-
-    findOne_RAW
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -33,13 +30,8 @@ var preview = async (context, next) => {
     validateOrThrow({ schema: Schema(), payload: request.body });
     var { fileId, subjectType, studyId } = request.body;
 
-    var file = await withRetracedErrors(
-        findOne_RAW({ db, file: { _id: fileId }})
-    );
-
-    var study = await withRetracedErrors(
-        findOne_RAW({ db, study: { _id: studyId }})
-    );
+    var file = await aggregateOne({ db, file: { _id: fileId }});
+    var study = await aggregateOne({ db, study: { _id: studyId }});
     
     var pipelineOutput = await (
         ExperimentCSV.OnlineSurvey.runPipeline({

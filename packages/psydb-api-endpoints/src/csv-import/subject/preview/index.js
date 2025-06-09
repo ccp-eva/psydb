@@ -2,18 +2,15 @@
 var { only } = require('@mpieva/psydb-core-utils');
 var { __fixRelated } = require('@mpieva/psydb-common-compat');
 var { sift } = require('@mpieva/psydb-common-lib');
+var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
 var {
     compose,
     ApiError,
     ResponseBody,
     validateOrThrow,
-    withRetracedErrors,
-    aggregateOne,
     fetchCRTSettings,
     fetchRelatedLabelsForMany,
     createRecordLabel,
-
-    findOne_RAW
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -40,19 +37,15 @@ var preview = async (context, next) => {
     });
     
     var {
-        csvImporter = 'wkprc-evapecognition', 
         fileId,
         subjectType,
         researchGroupId,
     } = request.body;
 
-    var file = await withRetracedErrors(
-        findOne_RAW({ db, file: { _id: fileId }})
-    );
-
-    var researchGroup = await withRetracedErrors(
-        findOne_RAW({ db, researchGroup: { _id: researchGroupId }})
-    );
+    var file = await aggregateOne({ db, file: { _id: fileId }});
+    var researchGroup = await aggregateOne({
+        db, researchGroup: { _id: researchGroupId }
+    });
 
     var subjectCRT = await fetchCRTSettings({
         db, collectionName: 'subject', recordType: subjectType,

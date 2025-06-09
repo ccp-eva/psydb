@@ -1,15 +1,12 @@
 'use strict';
 var { only } = require('@mpieva/psydb-core-utils');
+var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
 var {
     compose,
     ApiError,
     ResponseBody,
     validateOrThrow,
-    withRetracedErrors,
-    aggregateOne,
     fetchRecordLabelsManual,
-
-    findOne_RAW
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -31,23 +28,17 @@ var preview = async (context, next) => {
     }
 
     validateOrThrow({ schema: Schema(), payload: request.body });
-    var { fileId, subjectType, locationType, studyId } = request.body;
+    var { fileId, subjectType, studyId } = request.body;
 
-    var file = await withRetracedErrors(
-        findOne_RAW({ db, file: { _id: fileId }})
-    );
-
-    var study = await withRetracedErrors(
-        findOne_RAW({ db, study: { _id: studyId }})
-    );
+    var file = await aggregateOne({ db, file: { _id: fileId }});
+    var study = await aggregateOne({ db, study: { _id: studyId }});
     
     var pipelineOutput = await (
-        ExperimentCSV.ManualOnlyParticipation.runPipeline({
+        ExperimentCSV.WKPRCApestudiesDefault.runPipeline({
             db,
             csvLines: file.blob.toString(),
 
             subjectType,
-            locationType,
             study,
             timezone: i18n.timezone
         })
@@ -60,14 +51,20 @@ var preview = async (context, next) => {
         csvImportId: null,
     }));
 
-    var relatedIds = { subject: [], location: [], personnel: [] };
+    var relatedIds = {
+        subject: [],
+        subjectGroup: [],
+        location: [],
+        personnel: [],
+    };
     for (var it of previewRecords) {
         var {
-            selectedSubjectIds,
+            subjectGroupId, selectedSubjectIds,
             locationId, experimentOperatorIds
         } = it.state;
         
         relatedIds.subject.push(...selectedSubjectIds);
+        relatedIds.subjectGroup.push(subjectGroupId);
         relatedIds.location.push(locationId);
         relatedIds.personnel.push(...experimentOperatorIds);
     }

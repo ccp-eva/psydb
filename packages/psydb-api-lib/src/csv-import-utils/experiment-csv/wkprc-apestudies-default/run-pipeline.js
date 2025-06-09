@@ -1,11 +1,18 @@
 'use strict';
+var { ejson } = require('@mpieva/psydb-core-utils');
 var { CSVColumnRemappers } = require('@mpieva/psydb-common-lib');
-var { runDefaultPipeline } = require('../../common');
+var {
+    parseSchemaCSV,
+    injectRefids,
+
+    runDefaultPipeline
+} = require('../../common');
 
 var CSVSchema = require('./csv-schema');
 var verifySameSubjectType = require('./verify-same-subject-type');
 var verifySameSubjectGroup = require('./verify-same-subject-group');
 var transformPrepared = require('./transform-prepared');
+var preinjectCombinationRefs = require('./preinject-combination-refs');
 
 var runPipeline = async (bag) => {
     var {
@@ -22,8 +29,18 @@ var runPipeline = async (bag) => {
         CSVColumnRemappers.Experiment.WKPRCApestudiesDefault().csv2obj
     );
 
+    var parsed = parseSchemaCSV({
+        csvData, schema, customColumnRemap,
+        unmarshalClientTimezone
+    });
+
+    await preinjectCombinationRefs({ db, parsed, subjectType });
+    //console.dir(parsed, { depth: null });
+    //return;
+
+
     var { pipelineData, preparedObjects } = await runDefaultPipeline({
-        db, csvData, schema, customColumnRemap, unmarshalClientTimezone,
+        db, parsed, schema, customColumnRemap, unmarshalClientTimezone,
         extraRecordResolvePointers: {
             subject: [
                 '/scientific/state/custom/wkprcIdCode',

@@ -2,6 +2,7 @@ module.exports = {
     sift: require('sift'),
     inlineText: require('@cdxoo/inline-text'),
 
+    keyRecords: require('./key-records'),
     excapeRX: require('./escape-rx'),
     makeRX: require('./make-rx'),
     makeDiaRX: require('./make-dia-rx'),

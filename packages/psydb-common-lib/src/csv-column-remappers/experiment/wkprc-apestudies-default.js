@@ -25,6 +25,9 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
         if (col === 'location') {
             return 'locationId';
         }
+        if (col === 'group') {
+            return 'subjectGroupId';
+        }
         if (col === 'room_enclosure') {
             return 'roomOrEnclosure';
         }
