@@ -404,6 +404,64 @@ importers:
         specifier: ~6.0.1
         version: 6.0.1
 
+  ../../packages/psydb-api-automation-scripts:
+    dependencies:
+      '@cdxoo/mongodb-restore':
+        specifier: 2.0.0-alpha.2
+        version: 2.0.0-alpha.2
+      '@mpieva/psydb-common-lib':
+        specifier: workspace:*
+        version: link:../psydb-common-lib
+      '@mpieva/psydb-core-utils':
+        specifier: workspace:*
+        version: link:../psydb-core-utils
+      '@mpieva/psydb-driver-nodejs':
+        specifier: workspace:*
+        version: link:../psydb-driver-nodejs
+      '@mpieva/psydb-fixtures':
+        specifier: workspace:*
+        version: link:../psydb-fixtures
+      axios:
+        specifier: ~0.28.1
+        version: 0.28.1(debug@4.3.7)
+      co:
+        specifier: ~4.6.0
+        version: 4.6.0
+      commander:
+        specifier: ~10.0.1
+        version: 10.0.1
+      debug:
+        specifier: ~4.3.4
+        version: 4.3.7(supports-color@6.1.0)
+      mongodb:
+        specifier: ~3.6.3
+        version: 3.6.12
+    devDependencies:
+      '@cdxoo/mongo-test-helpers':
+        specifier: ~0.7.1
+        version: 0.7.1
+      '@mpieva/psydb-api':
+        specifier: workspace:*
+        version: link:../psydb-api
+      '@mpieva/psydb-api-lib':
+        specifier: workspace:*
+        version: link:../psydb-api-lib
+      '@mpieva/psydb-api-mocha-test-tools':
+        specifier: workspace:*
+        version: link:../psydb-api-mocha-test-tools
+      '@mpieva/psydb-axios-test-wrapper':
+        specifier: workspace:*
+        version: link:../psydb-axios-test-wrapper
+      chai:
+        specifier: ~4.3.7
+        version: 4.3.10
+      koa:
+        specifier: ~2.14.2
+        version: 2.14.2
+      mocha:
+        specifier: ~10.2.0
+        version: 10.2.0
+
   ../../packages/psydb-api-config:
     dependencies:
       '@mpieva/psydb-common-config':
@@ -4392,7 +4450,6 @@ packages:
       - mongodb-client-encryption
       - mongodb-extjson
       - snappy
-    dev: true
 
   /@cdxoo/mongodb-restore@2.0.1:
     resolution: {integrity: sha512-v8HhvU1JZF70hvcA3vfoylmUWJs6YOd1hqQ4YFErMSYRlPBVbwRs6gzWvUY/ySyc3CX+W6gTYKs9uK0YWleZfg==}
@@ -6540,7 +6597,6 @@ packages:
     dependencies:
       mime-types: 2.1.35
       ylru: 1.4.0
-    dev: false
 
   /call-bind-apply-helpers@1.0.2:
     resolution: {integrity: sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ==}
@@ -6937,7 +6993,6 @@ packages:
     dependencies:
       depd: 2.0.0
       keygrip: 1.1.0
-    dev: false
 
   /copy-anything@2.0.6:
     resolution: {integrity: sha512-1j20GZTsvKNkc4BY3NpMOM8tt///wY3FpIzozTOFO2ffuZcV61nojHXVKIy3WM+7ADCy5FVhdZYHYDdgTU0yJw==}
@@ -7260,7 +7315,6 @@ packages:
 
   /deep-equal@1.0.1:
     resolution: {integrity: sha512-bHtC0iYvWhyaTzvV3CZgPeZQqCOBGyGsVV7v4eevpdkLHfiSrXUdBG+qAuSz4RI70sszvjQ1QSZ98An1yNwpSw==}
-    dev: false
 
   /deep-equal@1.1.2:
     resolution: {integrity: sha512-5tdhKF6DbU7iIzrIOa1AOUt39ZRm13cmL1cGEh//aqR8x9+tNfbywRf0n5FD/18OKMdo7DNEtrX2t22ZAkI+eg==}
@@ -7383,7 +7437,6 @@ packages:
 
   /delegates@1.0.0:
     resolution: {integrity: sha512-bd2L678uiWATM6m5Z1VzNCErI3jiGzt6HGY8OVICs40JQq/HALfbyNJmp0UDakEY4pMMaN0Ly5om/B1VI/+xfQ==}
-    dev: false
 
   /denque@1.5.1:
     resolution: {integrity: sha512-XwE+iZ4D6ZUB7mfYRMb5wByE8L74HCn30FBN7sWnXksWc1LO1bPDl67pBR9o/kC4z/xSNAwkMYcGgqDV3BE3Hw==}
@@ -8703,7 +8756,6 @@ packages:
     dependencies:
       deep-equal: 1.0.1
       http-errors: 1.8.1
-    dev: false
 
   /http-cookie-agent@5.0.4(tough-cookie@4.1.4):
     resolution: {integrity: sha512-OtvikW69RvfyP6Lsequ0fN5R49S+8QcS9zwd58k6VSr6r57T8G29BkPdyrBcSwLq6ExLs9V+rBlfxu7gDstJag==}
@@ -8745,7 +8797,6 @@ packages:
       setprototypeof: 1.2.0
       statuses: 1.5.0
       toidentifier: 1.0.1
-    dev: false
 
   /http-errors@2.0.0:
     resolution: {integrity: sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==}
@@ -9113,7 +9164,6 @@ packages:
       get-proto: 1.0.1
       has-tostringtag: 1.0.2
       safe-regex-test: 1.1.0
-    dev: false
 
   /is-glob@3.1.0:
     resolution: {integrity: sha512-UFpDDrPgM6qpnFNI+rh/p3bUaq9hKLZN8bMUWzxmcnZVS3omf4IPK+BrewlnWjO1WmUsMYuSjKh4UJuV4+Lqmw==}
@@ -9971,7 +10021,6 @@ packages:
     engines: {node: '>= 0.6'}
     dependencies:
       tsscmp: 1.0.6
-    dev: false
 
   /killable@1.0.1:
     resolution: {integrity: sha512-LzqtLKlUwirEUyl/nicirVmNiPvYs7l5n8wOPP7fyJVpUPkvCnW/vuiXGpylGUlnPDnB7311rARzAt3Mhswpjg==}
@@ -10010,7 +10059,6 @@ packages:
 
   /koa-compose@4.1.0:
     resolution: {integrity: sha512-8ODW8TrDuMYvXRwra/Kh7/rJo9BtOfPc6qO8eAfC80CnCvSjSl0bkRM24X6/XBBEyj0v1nRUQ1LyOy3dbqOWXw==}
-    dev: false
 
   /koa-convert@2.0.0:
     resolution: {integrity: sha512-asOvN6bFlSnxewce2e/DK3p4tltyfC4VM7ZwuTuepI7dEQVcvpyFuBcEARu1+Hxg8DIwytce2n7jrZtRlPrARA==}
@@ -10018,7 +10066,6 @@ packages:
     dependencies:
       co: 4.6.0
       koa-compose: 4.1.0
-    dev: false
 
   /koa-encrypted-session@3.0.7:
     resolution: {integrity: sha512-nBCL1mrvo0jsI2NGysejdOrbqNN8mp+a/ANkk1in46+wMZyiCtbYR7L03BnPUUiVrVpajQjKSiWewMQkU7Uakg==}
@@ -10118,7 +10165,6 @@ packages:
       vary: 1.1.2
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /lazy-ass@1.6.0:
     resolution: {integrity: sha512-cc8oEVoctTvsFZ/Oje/kGnHbpWHYBe8IAJe4C0QNc3t8uM/0Y8+erSz/7Y1ALuXTEZTMvxXwO6YbX1ey3ujiZw==}
@@ -11053,7 +11099,6 @@ packages:
 
   /only@0.0.2:
     resolution: {integrity: sha512-Fvw+Jemq5fjjyWz6CpKx6w9s7xxqo3+JCyM0WXWeCSOboZ8ABkyvP8ID4CZuChA/wxSx+XSJmdOm8rGVyJ1hdQ==}
-    dev: false
 
   /opn@5.5.0:
     resolution: {integrity: sha512-PqHpggC9bLV0VeWcdKhkpxY+3JTzetLSqTCWL/z/tFIbI6G8JCjondXklT1JinczLz2Xib62sSp0T/gKT4KksA==}
@@ -13099,7 +13144,6 @@ packages:
   /tsscmp@1.0.6:
     resolution: {integrity: sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==}
     engines: {node: '>=0.6.x'}
-    dev: false
 
   /tunnel-agent@0.6.0:
     resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}
@@ -13839,7 +13883,6 @@ packages:
   /ylru@1.4.0:
     resolution: {integrity: sha512-2OQsPNEmBCvXuFlIni/a+Rn+R2pHW9INm0BxXJ4hVDA8TirqMj+J/Rp9ItLatT/5pZqWwefVrTQcHpixsxnVlA==}
     engines: {node: '>= 4.0.0'}
-    dev: false
 
   /yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}

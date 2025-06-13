@@ -3,4 +3,6 @@ module.exports = {
     helperSet: require('./helper-set'),
     systemRole: require('./system-role'),
     createOnePersonnelRecord: require('./create-one-personnel-record'),
+
+    PointerGen: require('./pointer-gen'),
 }

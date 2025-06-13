@@ -356,6 +356,11 @@
        "projectFolder": "packages/psydb-ui",
        "reviewCategory": "production"
     },
+    {
+       "packageName": "@mpieva/psydb-api-automation-scripts",
+       "projectFolder": "packages/psydb-api-automation-scripts",
+       "reviewCategory": "production"
+    },
     
     {
        "packageName": "@humankind/psydb-cronjobs",
