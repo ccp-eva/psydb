@@ -7,8 +7,8 @@ var useMysql = () => {
         host: '127.0.0.1',
         port: 33060,
         user: 'root',
-        password: '',
-        database: '',
+        password: 'supersecret',
+        database: 'childdb_dummy',
     });
     
     var query = promisify(conn.query).bind(conn);

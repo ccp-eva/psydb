@@ -32,10 +32,10 @@ module.exports = async (bag) => {
 
     console.log({ rows });
 
-    //for (var it of rows) {
-    //    var sequenceNumbers = it.seq.split(',');
-    //    await markNonDuplicates({ db, driver, sequenceNumbers });
-    //}
+    for (var it of rows) {
+        var sequenceNumbers = it.seq.split(',');
+        await markNonDuplicates({ db, driver, sequenceNumbers });
+    }
     
     mongo.close();
     mysqlConnection.end();
