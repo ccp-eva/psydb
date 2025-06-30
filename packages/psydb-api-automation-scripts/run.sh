@@ -1,10 +1,10 @@
 #NODE_TLS_REJECT_UNAUTHORIZED='0' \
 DEBUG="*psydb:driver*" node src/run.js \
     --mongodb 'mongodb://127.0.0.1:47017/psydb' \
-    --restore-fixture 'init-minimal-with-api-key' \
+    --restore-fixture '2025-06-30__0347' \
     $@ \
-    src/scripts/cats/01_init-helper-sets-and-crts \
-    src/scripts/cats/02_init-roles-and-research-groups
+    src/scripts/migrate-duplicates/01_init-dummy-records \
+    src/scripts/migrate-duplicates/02_do-migration
 
 #NODE_TLS_REJECT_UNAUTHORIZED='0' \
 #DEBUG="*psydb:driver*" node src/run.js \
