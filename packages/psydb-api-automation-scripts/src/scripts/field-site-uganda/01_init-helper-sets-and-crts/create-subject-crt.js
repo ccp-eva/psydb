@@ -24,14 +24,14 @@ module.exports = async (context) => {
     await crt.setupDisplaySettings({
         recordLabelDefinition: {
             format: '${#} (${#})',
-            tokens: asPointers([ 'name', 'sex' ])
+            tokens: asPointers([ 'name', 'biologicalGender' ])
         },
         displayFields: {
             'table': [ '/sequenceNumber', ...asPointers([
-                'name', 'sex', 'dateOfBirth'
+                'name', 'biologicalGender', 'dateOfBirth'
             ])],
             'optionlist': [ '/sequenceNumber', ...asPointers([
-                'name', 'sex', 'dateOfBirth'
+                'name', 'biologicalGender', 'dateOfBirth'
             ])],
         },
         formOrder: [
@@ -162,7 +162,7 @@ var FieldDefinitions = ({ cache }) => ({
         props: { isNullable: true, isSpecialAgeFrameField: false }
     },
 
-    'schoolClassAtAcquisiton': {
+    'schoolClassAtAcquisition': {
         __subChannelKey: 'scientific',
         type: 'SaneString',
         key: 'schoolClassAtAcquisition',
@@ -179,7 +179,7 @@ var FieldDefinitions = ({ cache }) => ({
         displayNameI18N: { de: 'Eltern' },
         props: {
             collection: 'subject',
-            recordType: 'uganda_subject',
+            recordType: 'fs_uganda_subject',
             minItems: 0,
             readOnly: false,
             addReferenceToTarget: true,
@@ -199,7 +199,7 @@ var FieldDefinitions = ({ cache }) => ({
         displayNameI18N: { de: 'Bekannte Kinder' },
         props: {
             collection: 'subject',
-            recordType: 'uganda_subject',
+            recordType: 'fs_uganda_subject',
             minItems: 0,
             readOnly: true,
             constraints: {},

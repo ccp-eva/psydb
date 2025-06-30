@@ -1,9 +1,10 @@
 #NODE_TLS_REJECT_UNAUTHORIZED='0' \
 DEBUG="*psydb:driver*" node src/run.js \
     --mongodb 'mongodb://127.0.0.1:47017/psydb' \
-    --restore-fixture '2025-06-30__0347' \
+    --restore-fixture '2025-06-30__0412' \
     $@ \
-    src/scripts/migrate-duplicates/02_do-migration
+    src/scripts/field-site-uganda/01_init-helper-sets-and-crts \
+    src/scripts/field-site-uganda/02_init-roles-and-research-groups
 
 #NODE_TLS_REJECT_UNAUTHORIZED='0' \
 #DEBUG="*psydb:driver*" node src/run.js \
