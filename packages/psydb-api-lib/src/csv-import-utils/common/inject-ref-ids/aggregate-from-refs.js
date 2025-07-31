@@ -16,6 +16,10 @@ var aggregateFromRefs = async (bag) => {
             { $match: {
                 [path]: { $in: values },
                 ...extraMatch,
+                $and: [
+                    { 'scentific.state.internals.isRemoved': { $ne: true }},
+                    { 'state.internals.isRemoved': { $ne: true }},
+                ]
             }},
             { $project: {
                 _id: true,

@@ -197,9 +197,11 @@ var Driver = (options) => {
             });
 
             var modified = data.data;
-            for (var it of modified) {
-                cache.setLastChannelId({ ...it });
-                cache.setLastKnownEventId({ ...it });
+            if (Array.isArray(modified)) {
+                for (var it of modified) {
+                    cache.setLastChannelId({ ...it });
+                    cache.setLastKnownEventId({ ...it });
+                }
             }
 
             return { status, data };

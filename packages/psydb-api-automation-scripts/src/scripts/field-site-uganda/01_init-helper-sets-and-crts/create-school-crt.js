@@ -1,0 +1,54 @@
+'use strict';
+var { PointerGen } = require('../../../utils');
+
+module.exports = async (context) => {
+    var { driver, cache } = context;
+
+    var definitions = FieldDefinitions({ cache });
+    var asPointers = PointerGen(definitions);
+
+    var displayNames = {
+        'en': 'Uganda Schools',
+        'de': 'Uganda Schulen',
+    }
+
+    var crt = await driver.crt.create({
+        collection: 'location', key: 'fs_uganda_school',
+        displayNames,
+    });
+
+    cache.addCRT(crt.meta);
+
+    await crt.addManyFields({ definitions: Object.values(definitions) });
+    await crt.commitFields();
+
+    await crt.setupDisplaySettings({
+        recordLabelDefinition: {
+            format: '${#}',
+            tokens: asPointers([ 'name' ])
+        },
+        displayFields: {
+            'table': [ '/sequenceNumber', ...asPointers([
+                'name'
+            ])],
+            'optionlist': [ '/sequenceNumber', ...asPointers([
+                'name'
+            ])],
+        },
+    })
+
+    await crt.updateGeneralSettings({
+        displayNames,
+        reservationType: 'no-reservation',
+    });
+}
+
+var FieldDefinitions = ({ cache }) => ({
+    'name': {
+        type: 'SaneString',
+        key: 'name',
+        displayName: 'Name',
+        displayNameI18N: { 'de': 'Bezeichnung' },
+        props: { minLength: 1 }
+    },
+})
