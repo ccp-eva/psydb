@@ -38,8 +38,8 @@ module.exports = async (context) => {
 
     await crt.updateGeneralSettings({
         displayNames: {
-            'en': 'Kindergardens',
-            'de': 'Kindergärten',
+            'en': 'Cat Shelters',
+            'de': 'Tierheime',
         },
         reservationType: 'away-team',
     });
