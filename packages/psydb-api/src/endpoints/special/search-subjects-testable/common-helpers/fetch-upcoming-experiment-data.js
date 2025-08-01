@@ -54,7 +54,8 @@ var fetchUpcomingExperimentData = async ({
                 //    { 'state.interval.start': { $gt: after }},
                 //    { 'state.isPostprocessed': false }
                 //],
-                'state.isPostprocessed': false
+                'state.isCanceled': { $ne: true },
+                'state.isPostprocessed': { $ne: true },
             }},
             { $sort: { 'state.interval.start': 1 }},
 
