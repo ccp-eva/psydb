@@ -43,6 +43,7 @@ module.exports = {
     fetchCustomRecordTypes: require('./fetch-custom-record-types'),
 
     allCRTCollections: require('./all-crt-collections'),
+    fetchCRTLabels: require('./fetch-crt-labels'),
     fetchCRTSettings: require('./fetch-crt-settings'),
     fetchCRTSettingsById: require('./fetch-crt-settings-by-id'),
     fetchAllCRTSettings: require('./fetch-all-crt-settings'),
