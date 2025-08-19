@@ -56,6 +56,9 @@ var fetchUpcomingExperimentData = async ({
                 //],
                 'state.isCanceled': { $ne: true },
                 'state.isPostprocessed': { $ne: true },
+                // NOTE: placeholders dont have any subjects
+                // but dont have a seperate flag
+                'state.subjectData.0': { $exists: true },
             }},
             { $sort: { 'state.interval.start': 1 }},
 
