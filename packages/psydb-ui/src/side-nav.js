@@ -57,7 +57,7 @@ var generateNavItems = (ps) => {
         if (prefix) {
             path = prefix + path
         }
-
+            
         var label = getNavItemLabel({ path });
 
         if (subnav) {
@@ -78,10 +78,10 @@ var generateNavItems = (ps) => {
             }
         }
         else {
-            var show = (
-                checkNavItemEnabled({ path, config })
-                && checkNavItemAllowed({ path, permissions })
-            );
+            var isEnabled = checkNavItemEnabled({ path, config });
+            var isAllowed = checkNavItemAllowed({ path, permissions });
+            var show = (isEnabled && isAllowed);
+            
             if (show) {
                 out.push(
                     <Link to={ path } key={ ix }>
@@ -127,19 +127,19 @@ var checkNavItemAllowed = (bag) => {
     if (isRoot()) {
         return true;
     }
-    
+   
     switch (path) {
-        case '/calendars/inhouse-appointments':
+        case '/calendars/inhouse':
             return hasSomeLabOperationFlags({
                 types: [ 'inhouse' ],
                 flags: [ 'canViewExperimentCalendar' ]
             });
-        case '/calendars/away-team-appointments':
+        case '/calendars/away-team':
             return hasSomeLabOperationFlags({
                 types: [ 'away-team' ],
                 flags: [ 'canViewExperimentCalendar' ]
             });
-        case '/calendars/video-appointments':
+        case '/calendars/online-video-call':
             return hasSomeLabOperationFlags({
                 types: [ 'online-video-call' ],
                 flags: [ 'canViewExperimentCalendar' ]
