@@ -47,7 +47,7 @@ module.exports = {
     dev_enableStagingBanner: true,
     dev_enableDevPanel: false,
     dev_copyNoticeGreyscale: true,
-    //dev_enableForeignIdRefLinkInForms: true,
+    dev_enableForeignIdRefLinkInForms: true,
 
     dev_enableDangerousCRTFieldOps: true,
     

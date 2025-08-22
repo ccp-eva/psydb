@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N, useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 const ErrorResponseModal = ({
     show,
@@ -57,6 +57,8 @@ const ErrorResponseModal = ({
 
 const getErrorComponents = (statusCode) => {
     switch (statusCode) {
+        case 409:
+            return [ '_409_conflict', ConflictError ];
         case 404:
             return [ '_404_not_found', NotFoundError ];
         case 400:
@@ -83,6 +85,22 @@ const DefaultServerError = ({
             </div>
         </div>
     )
+}
+
+const ConflictError = (ps) => {
+    var { status, statusCode, apiStatus, data } = ps;
+
+    var [{ translate }] = useI18N();
+    if (apiStatus === 'DuplicatePersonnelEmail') {
+        return (
+            <div className='text-danger'>
+                { translate('The given email is already in use by an existing account.') }
+            </div>
+        )
+    }
+    else {
+        return <DefaultServerError { ...ps } />
+    }
 }
 
 const NotFoundError = ({
