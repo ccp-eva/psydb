@@ -92,9 +92,21 @@ const ConflictError = (ps) => {
 
     var [{ translate }] = useI18N();
     if (apiStatus === 'DuplicatePersonnelEmail') {
+        var { duplicates = [] } = data;
         return (
-            <div className='text-danger'>
-                { translate('The given email is already in use by an existing account.') }
+            <div>
+                <div className='text-danger'>
+                    { translate('The given email is already in use by an existing account.') }
+                </div>
+                <div className='ml-4'>
+                    { duplicates.map((it, ix) => (
+                        <div key={ ix }>
+                            <b>{ it.email }</b>
+                            {' '}
+                            ({ it.firstname } { it.lastname})
+                        </div>
+                    )) }
+                </div>
             </div>
         )
     }

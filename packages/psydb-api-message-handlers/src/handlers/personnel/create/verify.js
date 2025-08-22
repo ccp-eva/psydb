@@ -37,7 +37,9 @@ var verifyNoDuplicateMails = async (context, next) => {
             )}
         }},
         { $project: {
-            'duplicateMail': '$gdpr.state.emails.email'
+            'firstname':'$gdpr.state.firstname',
+            'lastname': '$gdpr.state.lastname',
+            'email': '$gdpr.state.emails.email',
         }}
     ]});
     if (duplicates.length > 0) {
