@@ -129,6 +129,10 @@ var checkNavItemAllowed = (bag) => {
     }
    
     switch (path) {
+        case '/calendars/reception':
+            return hasSomeFlags([
+                'canViewReceptionCalendar',
+            ]);
         case '/calendars/inhouse':
             return hasSomeLabOperationFlags({
                 types: [ 'inhouse' ],
@@ -147,7 +151,7 @@ var checkNavItemAllowed = (bag) => {
 
         case '/lab-operation/reservation':
             return hasSomeLabOperationFlags({ types: 'any', flags: [
-                'canWriteResevations'
+                'canWriteReservations'
             ]});
         case '/lab-operation/subject-selection':
             return hasSomeLabOperationFlags({ types: 'any', flags: [
@@ -171,6 +175,11 @@ var checkNavItemAllowed = (bag) => {
             return hasSomeFlags([
                 'canReadStudies',
                 'canWriteStudies'
+            ]);
+        case '/locations':
+            return hasSomeFlags([
+                'canReadLocations',
+                'canWriteLocations'
             ]);
         case '/external-persons':
             return hasSomeFlags([
