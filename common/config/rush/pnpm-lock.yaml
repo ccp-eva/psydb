@@ -592,6 +592,9 @@ importers:
 
   ../../packages/psydb-api-endpoints:
     dependencies:
+      '@cdxoo/debug-js-fork':
+        specifier: ~0.0.1
+        version: 0.0.1
       '@mpieva/psydb-api-endpoint-lib':
         specifier: workspace:*
         version: link:../psydb-api-endpoint-lib
@@ -631,9 +634,9 @@ importers:
       '@mpieva/psydb-schema-fields-special':
         specifier: workspace:*
         version: link:../psydb-schema-fields-special
-      debug:
-        specifier: ~4.3.4
-        version: 4.3.7(supports-color@6.1.0)
+      mingo:
+        specifier: ~6.6.1
+        version: 6.6.1
     devDependencies:
       '@mpieva/psydb-api-config':
         specifier: workspace:*
@@ -10503,6 +10506,10 @@ packages:
 
   /mingo@6.4.15:
     resolution: {integrity: sha512-fKUCGr7fUxrb7YBK6whm5O5VouXfKAVtxnb+6g3Xuwsj9Jt9u8hhMOgiUoKO4kp3DmuiN0qgpYX2H/nP3zD1Hw==}
+    dev: false
+
+  /mingo@6.6.1:
+    resolution: {integrity: sha512-KC6b1ODYoSdYu5fBm+SzQb7fa4ARmGwfa3Cf9F7U+2mnfD4Zhf89qQgO1cPTtaJ68w3ntIT5dVujgF52HvN7+g==}
     dev: false
 
   /mini-create-react-context@0.4.1(prop-types@15.8.1)(react@17.0.2):
