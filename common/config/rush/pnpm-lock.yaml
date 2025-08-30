@@ -1106,6 +1106,25 @@ importers:
 
   ../../packages/psydb-axios-test-wrapper:
     dependencies:
+      '@mpieva/psydb-axios-wrapper-node':
+        specifier: workspace:*
+        version: link:../psydb-axios-wrapper-node
+
+  ../../packages/psydb-axios-wrapper-node:
+    dependencies:
+      '@mpieva/psydb-axios-wrapper-web':
+        specifier: workspace:*
+        version: link:../psydb-axios-wrapper-web
+    devDependencies:
+      chai:
+        specifier: ~4.3.6
+        version: 4.3.10
+      mocha:
+        specifier: ~9.2.2
+        version: 9.2.2
+
+  ../../packages/psydb-axios-wrapper-web:
+    dependencies:
       axios:
         specifier: ~0.28.1
         version: 0.28.1(debug@4.3.7)

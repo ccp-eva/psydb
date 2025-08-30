@@ -57,6 +57,16 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-axios-wrapper-web",
+       "projectFolder": "packages/psydb-axios-wrapper-web",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-axios-wrapper-node",
+       "projectFolder": "packages/psydb-axios-wrapper-node",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-axios-test-wrapper",
        "projectFolder": "packages/psydb-axios-test-wrapper",
        "reviewCategory": "production"

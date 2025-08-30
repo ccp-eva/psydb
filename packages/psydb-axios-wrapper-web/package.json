@@ -1,5 +1,5 @@
 {
-  "name": "@mpieva/psydb-axios-test-wrapper",
+  "name": "@mpieva/psydb-axios-wrapper-web",
   "version": "0.1.0-alpha",
   "description": "",
   "main": "src/index.js",
@@ -9,7 +9,9 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
-    "@mpieva/psydb-axios-wrapper-node": "workspace:*"
+    "axios": "~0.28.1",
+    "axios-cookiejar-support": "~4.0.7",
+    "tough-cookie": "~4.1.3"
   },
   "config": {}
 }

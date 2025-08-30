@@ -1,5 +1,5 @@
 {
-  "name": "@mpieva/psydb-axios-test-wrapper",
+  "name": "@mpieva/psydb-axios-wrapper-node",
   "version": "0.1.0-alpha",
   "description": "",
   "main": "src/index.js",
@@ -8,8 +8,12 @@
   },
   "author": "Jan Schwalbe",
   "license": "MIT",
+  "devDependencies": {
+    "mocha": "~9.2.2",
+    "chai": "~4.3.6"
+  },
   "dependencies": {
-    "@mpieva/psydb-axios-wrapper-node": "workspace:*"
+    "@mpieva/psydb-axios-wrapper-web": "workspace:*"
   },
   "config": {}
 }
