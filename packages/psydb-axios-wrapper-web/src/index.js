@@ -7,6 +7,7 @@ var { CookieJar } = require('tough-cookie');
 var createAgent = (baseURL, options = {}) => {
     var { enableCookies = false } = options;
 
+    var bag = { baseURL };
     var axios = (
         enableCookies
         ? createWithCookieSupport(bag)

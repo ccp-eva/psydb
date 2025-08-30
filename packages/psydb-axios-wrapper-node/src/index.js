@@ -4,7 +4,7 @@ var createWebAgent = require('@mpieva/psydb-axios-wrapper-web');
 var { isFunction, isString } = require('./utils');
 var { createServer, getServerURL } = require('./extra-setup');
 
-var createAgent = (target, options = {}) => {
+var createNodeAgent = (target, options = {}) => {
     var { ...pass } = options;
 
     var server, baseURL;
@@ -17,7 +17,7 @@ var createAgent = (target, options = {}) => {
     }
     else {
         server = target;
-        baseURL = getServerAddress(server);
+        baseURL = getServerURL(server);
     }
 
     var axios = createWebAgent(baseURL, pass);
@@ -30,4 +30,4 @@ var createAgent = (target, options = {}) => {
     return axios;
 }
 
-module.exports = createAgent;
+module.exports = createNodeAgent;
