@@ -1,0 +1,21 @@
+{
+  "name": "@mpieva/psydb-schema",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "npx mocha --config ./mocha.config.json tests",
+    "build": ""
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "~9.2.2",
+    "chai": "~4.3.6",
+    "@mpieva/psydb-mocha-baseline-deltas": "workspace:*"
+  },
+  "dependencies": {
+    "@mpieva/psydb-core-utils": "workspace:*"
+  },
+  "type": "commonjs"
+}
