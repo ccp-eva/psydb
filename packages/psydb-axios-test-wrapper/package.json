@@ -9,7 +9,7 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
-    "@mpieva/psydb-axios-wrapper-node": "workspace:*"
+    "@mpieva/psydb-axios-wrapper-nodejs": "workspace:*"
   },
   "config": {}
 }

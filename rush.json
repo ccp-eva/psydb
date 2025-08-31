@@ -62,8 +62,8 @@
        "reviewCategory": "production"
     },
     {
-       "packageName": "@mpieva/psydb-axios-wrapper-node",
-       "projectFolder": "packages/psydb-axios-wrapper-node",
+       "packageName": "@mpieva/psydb-axios-wrapper-nodejs",
+       "projectFolder": "packages/psydb-axios-wrapper-nodejs",
        "reviewCategory": "production"
     },
     {
@@ -169,6 +169,11 @@
     {
        "packageName": "@mpieva/psydb-driver-nodejs",
        "projectFolder": "packages/psydb-driver-nodejs",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-driver-nodejs-tests",
+       "projectFolder": "packages/psydb-driver-nodejs-tests",
        "reviewCategory": "production"
     },
     {

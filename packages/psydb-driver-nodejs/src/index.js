@@ -1,14 +1,11 @@
 'use strict';
 var debug = require('debug')('psydb:driver-node-js');
 var { inspect } = require('util');
-var superagent = require('superagent');
+
+var createNodeAgent = require('@mpieva/psydb-axios-wrapper-nodejs');
 
 var { jsonpointer, only } = require('@mpieva/psydb-core-utils');
 var { getSystemTimezone } = require('@mpieva/psydb-timezone-helpers');
-
-var createDefaultAgent = (server) => (
-    superagent.agent(server)
-);
 
 var Cache = () => {
     var cache = {};
@@ -126,23 +123,29 @@ var maybeInjectApiKey = ({ url, apiKey }) => {
 
 var Driver = (options) => {
     var {
+        target,
         server,
         agent,
         customWriteRequest,
         apiKey: driverApiKey,
     } = options;
 
-    if (!server && !agent) {
+    if (server) {
+        console.warn('using "server" is deprecated, use "target" instead');
+        target = server;
+    }
+
+    if (!target && !agent) {
         throw new DriverError(
-            'one of "server" or "agent" parameters must be set'
+            'one of "target" or "agent" parameters must be set'
         )
     }
 
-    var driver = {},
-        cache = Cache();
+    var driver = {};
+    var cache = Cache();
 
     var writeRequest = customWriteRequest || defaultWriteRequest;
-    agent = agent || createDefaultAgent(server);
+    agent = agent || createNodeAgent(target);
 
     // FIXME: duh
     driver.post = async (bag) => {
