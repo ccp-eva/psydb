@@ -34,5 +34,41 @@ describe('basics', function () {
         }});
 
         expect(out.data.records[0].sequenceNumber).to.eql('1');
-    })
+    });
+
+    it('ApiError when sendMessage() = 400', async function () {
+        var driver = Driver({ target: server, apiKey });
+
+        var error = undefined;
+        try {
+            await driver.sendMessage({
+                type: 'helperSet/create',
+                payload: { props: {}},
+            });
+        }
+        catch (e) {
+            error = e;
+        }
+        //console.log(error);
+        expect(error).to.exist;
+        expect(error).to.be.instanceOf(Driver.ApiError);
+    });
+    
+    it('ApiError when post() = 400', async function () {
+        var driver = Driver({ target: server, apiKey });
+
+        var error = undefined;
+        try {
+            await driver.post({ url: '/helperSet/list', payload: {
+                //constraints: { '/sequenceNumber': { $in: [ '1' ]}},
+                //limit: 1000, offset: 0, filters: {}, showHidden: false
+            }});
+        }
+        catch (e) {
+            error = e;
+        }
+        //console.log(error);
+        expect(error).to.exist;
+        expect(error).to.be.instanceOf(Driver.ApiError);
+    });
 })
