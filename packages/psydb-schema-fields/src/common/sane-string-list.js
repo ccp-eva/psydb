@@ -1,7 +1,7 @@
 'use strict';
 var SaneString = require('./sane-string');
 
-var SaneStringList = ({ title, minItems }) => ({
+var SaneStringList = ({ title, minItems } = {}) => ({
     title: title,
     systemType: 'SaneStringList',
     type: 'array',

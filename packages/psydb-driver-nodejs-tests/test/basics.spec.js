@@ -29,6 +29,7 @@ describe('basics', function () {
         var driver = Driver({ target: server, apiKey });
 
         var out = await driver.post({ url: '/helperSet/list', payload: {
+            constraints: { '/sequenceNumber': { $in: [ '1' ]}},
             limit: 1000, offset: 0, filters: {}, showHidden: false
         }});
 
