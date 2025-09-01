@@ -36,6 +36,13 @@ describe('basics', function () {
         expect(out.data.records[0].sequenceNumber).to.eql('1');
     });
 
+    it('can do get request', async function () {
+        var driver = Driver({ target: server, apiKey });
+        
+        var out = await driver.get({ url: '/self' });
+        expect(out.data?.data?.record).to.exist;
+    })
+
     it('ApiError when sendMessage() = 400', async function () {
         var driver = Driver({ target: server, apiKey });
 

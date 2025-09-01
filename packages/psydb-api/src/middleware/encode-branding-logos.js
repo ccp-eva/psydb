@@ -12,7 +12,7 @@ var encodeBrandingLogos = (config) => {
     }
 
     var { landing, sidenav } = branding;
-    if (!landing) {
+    if (landing) {
         for (var [ key, filepath ] of Object.entries(landing.logos)) {
             landing.logos[key] = encodeOne(filepath);
         }
@@ -21,7 +21,7 @@ var encodeBrandingLogos = (config) => {
         console.warn('branding misses "landing" logo property');
     }
     
-    if (!sidenav) {
+    if (sidenav) {
         for (var [ key, filepath ] of Object.entries(sidenav.logos)) {
             sidenav.logos[key] = encodeOne(filepath);
         }

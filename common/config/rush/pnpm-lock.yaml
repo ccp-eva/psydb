@@ -592,9 +592,6 @@ importers:
 
   ../../packages/psydb-api-endpoints:
     dependencies:
-      '@cdxoo/debug-js-fork':
-        specifier: ~0.0.1
-        version: 0.0.1
       '@mpieva/psydb-api-endpoint-lib':
         specifier: workspace:*
         version: link:../psydb-api-endpoint-lib
@@ -634,6 +631,9 @@ importers:
       '@mpieva/psydb-schema-fields-special':
         specifier: workspace:*
         version: link:../psydb-schema-fields-special
+      debug:
+        specifier: npm:@cdxoo/debug-js-fork@~0.0.1
+        version: /@cdxoo/debug-js-fork@0.0.1
       mingo:
         specifier: ~6.6.1
         version: 6.6.1

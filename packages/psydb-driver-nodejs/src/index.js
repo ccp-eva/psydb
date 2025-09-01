@@ -11,7 +11,7 @@ var Cache = require('./cache');
 
 var maybeInjectApiKey = require('./maybe-inject-api-key');
 var defaultWriteRequest = require('./default-write-request');
-
+var inter = require('./interface');
 
 var defaultI18N = {
     language: 'en', locale: 'en_US',
@@ -197,7 +197,20 @@ var Driver = (options) => {
         return cache; 
     }
 
+    driver.crt = __withDriver(driver, inter.crt);
+    driver.helperSet = __withDriver(driver, inter.helperSet);
+    driver.systemRole = __withDriver(driver, inter.systemRole);
+
     return driver;
+}
+
+var __withDriver = (driver, obj) => {
+    var out = {};
+    for (var [key, fn] of Object.entries(obj)) {
+        out[key] = (bag) => fn({ driver, ...bag })
+    }
+
+    return out;
 }
 
 Driver.DriverError = DriverError;

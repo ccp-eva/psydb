@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "dependencies": {
-    "@cdxoo/debug-js-fork": "~0.0.1",
+    "debug": "npm:@cdxoo/debug-js-fork@~0.0.1",
     "mingo": "~6.6.1",
     "@mpieva/psydb-core-utils": "workspace:*",
     "@mpieva/psydb-common-compat": "workspace:*",
