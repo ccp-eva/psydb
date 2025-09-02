@@ -16,7 +16,7 @@ var defaultWriteRequest = async (bag) => {
             timezone: forceTZ || getSystemTimezone(), // FIXME: headers
             ...payload,
         };
-        debug(agent?.defaults?.baseURL, url, JSON.stringify(body));
+        debug('POST', agent?.defaults?.baseURL, url, JSON.stringify(body));
         var response = await agent.post(url, body);
     }
     catch (e) {

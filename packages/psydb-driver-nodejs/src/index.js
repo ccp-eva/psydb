@@ -83,6 +83,7 @@ var Driver = (options) => {
         var { url, payload, apiKey = driverApiKey } = bag;
         url = maybeInjectApiKey({ url, apiKey });
         
+        debug('GET', agent?.defaults?.baseURL, url);
         return agent.get(url)
     };
     // FIXME:
@@ -199,14 +200,20 @@ var Driver = (options) => {
 
     driver.crt = __withDriver(driver, inter.crt);
     driver.helperSet = __withDriver(driver, inter.helperSet);
+    driver.researchGroup = __withDriver(driver, inter.researchGroup);
     driver.systemRole = __withDriver(driver, inter.systemRole);
+    driver.personnel = __withDriver(driver, inter.personnel);
+
+    driver.study = __withDriver(driver, inter.study);
+    driver.subject = __withDriver(driver, inter.subject);
 
     return driver;
 }
 
 var __withDriver = (driver, obj) => {
     var out = {};
-    for (var [key, fn] of Object.entries(obj)) {
+    //NOTE: let
+    for (let [key, fn] of Object.entries(obj)) {
         out[key] = (bag) => fn({ driver, ...bag })
     }
 
