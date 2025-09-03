@@ -18,13 +18,15 @@ class RequestError extends DriverError {
     constructor (bag) {
         super(bag.message);
         this.httpStatusCode = bag.httpStatusCode;
+        this.httpStatus = bag.httpStatus;
         this.response = bag.response;
     }
 
     static fromResponse (response) {
-        var { data, status } = response;
+        var { data, status, statusText } = response;
         var bag = {
             httpStatusCode: status,
+            httpStatus: statusText,
             message: data,    
         }
         return new RequestError.prototype.constructor(bag);
@@ -35,22 +37,23 @@ class ApiError extends RequestError {
     static name = 'ApiError'
     constructor (bag) {
         super({
-            httpStatusCode: bag.statusCode,
+            httpStatusCode: bag.httpStatusCode,
+            httpStatus: bag.httpStatus,
             message: bag.apiMessage,
             response: bag.response,
         });
 
-        this.httpStatus = bag.httpStatus;
         this.apiStatus = bag.apiStatus;
         this.apiMessage = bag.apiMessage;
         this.apiStack = bag.apiStack;
     }
+
     static fromResponse (response) {
-        var { data, status } = response;
-       
+        var { data, status, statusText } = response;
+
         var bag = {
             httpStatusCode: data?.statusCode || status,
-            httpStatus: data?.status,
+            httpStatus: data?.status || statusText,
             
             apiStatus: data?.apiStatus,
             apiMessage: data?.data?.message,

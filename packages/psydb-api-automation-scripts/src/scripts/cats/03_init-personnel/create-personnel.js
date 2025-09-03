@@ -5,14 +5,14 @@ module.exports = async (context) => {
    
     var accounts = [
         { firstname: 'Test', lastname: 'Cat-RA',
-            canLogin: true, systemRole: 'Cat RA' },
+            canLogIn: true, systemRole: 'Cat RA' },
 
         { firstname: 'Test', lastname: 'Cat-Scientist',
-            canLogin: true, systemRole: 'Cat Scientist' },
+            canLogIn: true, systemRole: 'Cat Scientist' },
     ];
 
     for (var it of accounts) {
-        var { firstname, lastname, canLogin, systemRole } = it;
+        var { firstname, lastname, canLogIn, systemRole } = it;
 
         await driver.personnel.create({ data: {
             gdpr: { state: {
@@ -30,7 +30,7 @@ module.exports = async (context) => {
                 hasRootAccess: false,
                 researchGroupSettings: [{
                     researchGroupId: cache.get('/researchGroup/Cat-Lab'),
-                    systemRole: cache.get(`/systemRole/${systemRole}`)
+                    systemRoleId: cache.get(`/systemRole/${systemRole}`)
                 }],
                 systemPermissions: {
                     isHidden: false,

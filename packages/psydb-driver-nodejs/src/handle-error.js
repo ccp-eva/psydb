@@ -7,7 +7,7 @@ var handleError = (e) => {
             throw ApiError.fromResponse(e.response);
         }
         else {
-            throw RequestError.fromRespone(e.response);
+            throw RequestError.fromResponse(e.response);
         }
     }
     else {

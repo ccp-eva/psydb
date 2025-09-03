@@ -4,7 +4,8 @@ DEBUG="*psydb:driver*" node src/run.js \
     --restore-fixture 'init-minimal-with-api-key' \
     $@ \
     src/scripts/cats/01_init-helper-sets-and-crts \
-    src/scripts/cats/02_init-roles-and-research-groups
+    src/scripts/cats/02_init-roles-and-research-groups \
+    src/scripts/cats/03_init-personnel
 
 #NODE_TLS_REJECT_UNAUTHORIZED='0' \
 #DEBUG="*psydb:driver*" node src/run.js \

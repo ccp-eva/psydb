@@ -18,6 +18,11 @@ module.exports = async (context) => {
         collection: 'researchGroup',
         keyBy: '/state/shorthand',
     });
+    
+    await cache.prepareKeyedIds({
+        collection: 'systemRole',
+        keyBy: '/state/name',
+    });
 
     console.dir(ejson(cache.get()), { depth: null });
 }

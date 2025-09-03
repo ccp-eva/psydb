@@ -3,7 +3,7 @@ var { MongoClient } = require('mongodb');
 var WrappedCache = require('../../../wrapped-cache');
 
 var prepareCache = require('./prepare-cache');
-var createPersonnel = require('./personnel');
+var createPersonnel = require('./create-personnel');
 
 module.exports = async (bag) => {
     var { driver, apiKey, extraOptions = {}} = bag;

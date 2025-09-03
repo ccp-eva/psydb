@@ -1,4 +1,5 @@
 'use strict';
+var { entries } = Object;
 
 var create = async (bag) => {
     var { driver, data = {}} = bag;
