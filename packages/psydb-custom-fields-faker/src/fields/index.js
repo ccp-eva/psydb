@@ -1,7 +1,7 @@
 var ensure = require('@mpieva/psydb-schema-fields/ensure');
 
 var fields = {
-    ...require('./extra'),
+    //...require('./extra'),
     Address: require('./address'),
 
     BiologicalGender: require('./biological-gender'),
@@ -10,7 +10,7 @@ var fields = {
     DateTime: require('./date-time'),
 
     DefaultBool: require('./default-bool'),
-    EmailList: require('./email-list'),
+    EmailList: require('./email-with-type-list'), // TODO: rename
     Email: require('./email'),
     ExtBool: require('./ext-bool'),
 
