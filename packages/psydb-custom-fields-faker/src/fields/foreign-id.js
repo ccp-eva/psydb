@@ -9,7 +9,10 @@ var getRandomValue = (bag) => {
         count = 1,
     } = bag;
 
-    var { props: { collection, isNullable, /*constraints*/ }} = definition;
+    var { props: {
+        collection, recordType,
+        isNullable, /*constraints*/
+    }} = definition;
 
     if (!fromList && !fromStore) {
         throw new Error('either "fromList" of "fromStore" are required')
@@ -17,7 +20,11 @@ var getRandomValue = (bag) => {
 
 
     if (fromStore) {
-        fromList = Object.values(fromStore[collection]);
+        fromList = Object.values(
+            recordType
+            ? fromStore[collection][recordType]
+            : fromStore[collection]
+        );
     }
 
     if (isNullable) {

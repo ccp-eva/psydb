@@ -1,6 +1,5 @@
 'use strict';
 var { faker } = require('@faker-js/faker');
-var { ucfirst } = require('@mpieva/psydb-core-utils');
 var { pick } = require('../utils');
 
 var getRandomValue = (bag) => {
@@ -13,7 +12,7 @@ var getRandomValue = (bag) => {
         : false
     );
 
-    var out = makeEmpty ? '' : ucfirst(faker.word.noun({ min: minLength }));
+    var out = makeEmpty ? '' : faker.lorem.paragraphs(2);
     return out;
 }
 

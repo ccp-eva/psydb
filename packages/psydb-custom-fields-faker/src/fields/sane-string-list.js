@@ -1,6 +1,6 @@
 'use strict';
 var { randItemCount } = require('../utils');
-var Email = require('./email');
+var SaneString = require('./sane-string');
 
 var getRandomValue = (bag) => {
     var { definition, count } = bag;
@@ -12,8 +12,8 @@ var getRandomValue = (bag) => {
 
     var out = [];
     for (var it = 0; it < count; it += 1) {
-        out.push(Email.getRandomValue({
-            definition: { props: {} },
+        out.push(SaneString.getRandomValue({
+            definition: { props: { minLength: 1 }},
         }));
     }
 
