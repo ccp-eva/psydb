@@ -1347,6 +1347,31 @@ importers:
         specifier: ~10.2.0
         version: 10.2.0
 
+  ../../packages/psydb-custom-fields-faker:
+    dependencies:
+      '@cdxoo/pick-random-item':
+        specifier: ~0.0.2
+        version: 0.0.2
+      '@faker-js/faker':
+        specifier: ~8.4.1
+        version: 8.4.1
+      '@mpieva/psydb-core-utils':
+        specifier: workspace:*
+        version: link:../psydb-core-utils
+      '@mpieva/psydb-schema-fields':
+        specifier: workspace:*
+        version: link:../psydb-schema-fields
+      debug:
+        specifier: npm:@cdxoo/debug-js-fork@~0.0.1
+        version: /@cdxoo/debug-js-fork@0.0.1
+    devDependencies:
+      chai:
+        specifier: ~4.3.7
+        version: 4.3.10
+      mocha:
+        specifier: ~10.2.0
+        version: 10.2.0
+
   ../../packages/psydb-custom-fields-mongo:
     dependencies:
       '@mpieva/psydb-common-compat':
@@ -4548,6 +4573,10 @@ packages:
   /@cdxoo/omit@1.0.1:
     resolution: {integrity: sha512-2LM0fbRTixVTCE7qF4pLFZXlLeO0C0o7N7x0HzIbQNgDey8dcFxCOUblUpPfxIw8eGyHxBc4Sba4l6nlnXbO1A==}
 
+  /@cdxoo/pick-random-item@0.0.2:
+    resolution: {integrity: sha512-DnLA9K2dmVTKJBbLAXPmWfdNto+FjPQMg6QVXmiNRDU8iFZVMKSG40dPgpYdYOvLQaoDBCL+MWjQthgOhqqVWQ==}
+    dev: false
+
   /@cdxoo/react-compose-contexts@1.0.0-beta.0(react@17.0.2):
     resolution: {integrity: sha512-Yg1ftBBmYWJSiytHtkxPfkoXA3ubDG+7W/cfrWSHDwYJMrtgo64yOLBmpbxEMn9wDlpMYHLv5gu8Lurp7y4Jvg==}
     peerDependencies:
@@ -4653,6 +4682,11 @@ packages:
   /@emotion/weak-memoize@0.2.5:
     resolution: {integrity: sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==}
     dev: true
+
+  /@faker-js/faker@8.4.1:
+    resolution: {integrity: sha512-XQ3cU+Q8Uqmrbf2e0cIC/QN43sTBSC8KF12u29Mb47tWrt2hAgBXSgpZMj4Ao8Uk0iJcU99QsOCaIL8934obCg==}
+    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
+    dev: false
 
   /@isaacs/cliui@8.0.2:
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}

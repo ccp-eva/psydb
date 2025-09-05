@@ -1,18 +1,13 @@
 'use strict';
-var { range } = require('@mpieva/psydb-core-utils');
-var { pick } = require('../utils');
-
+var { randItemCount } = require('../utils');
 var Phone = require('./phone');
 
 var getRandomValue = (bag) => {
     var { definition, count } = bag;
     var { props: { minItems = 0 }} = definition;
 
-    if (!count) {
-        count = pick({
-            from: range(minItems + 3),
-            weights: [ 75, 20, 5 ]
-        });
+    if (count === undefined) {
+        count = randItemCount({ minItems });
     }
 
     var out = [];

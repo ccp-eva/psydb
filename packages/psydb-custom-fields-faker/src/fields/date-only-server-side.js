@@ -6,7 +6,7 @@ var getRandomValue = (bag) => {
 
     // FIXME: timezone probably
     // TODO: future?
-    var d = faker.date.past(30);
+    var d = faker.date.past({ years: 30 });
     d.setHours(0);
     d.setMinutes(0);
     d.setSeconds(0);

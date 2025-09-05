@@ -7,10 +7,10 @@ var getRandomValue = (bag) => {
     // FIXME: respect definition
     var out = {
         country: 'DE',
-        city: faker.address.city(),
-        postcode: faker.address.zipCode('#####'),
-        street: `${faker.address.streetName()} Strasse`,
-        housenumber: String(faker.datatype.number({ min: 1, max: 150 })),
+        city: faker.location.city(),
+        postcode: faker.location.zipCode('#####'),
+        street: `${faker.location.street()} Strasse`,
+        housenumber: String(faker.number.int({ min: 1, max: 150 })),
         affix: ''
     };
 

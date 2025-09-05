@@ -5,12 +5,15 @@ var { range } = require('@mpieva/psydb-core-utils');
 
 var pick = (bag) => {
     var { from, ...options } = bag;
-    return _pick(from, { generateRandom: faker.random.number, ...options });
+    return _pick(from, {
+        generateRandom: () => faker.number.float(),
+        ...options
+    });
 }
 
 var randItemCount = (bag) => {
     var { minItems = 0, weights = [ 75, 20, 5 ]} = bag;
-    return pick({ from: range(minItems + 3), weights });
+    return pick({ from: range(minItems + 3).slice(-3), weights });
 }
 
 module.exports = {

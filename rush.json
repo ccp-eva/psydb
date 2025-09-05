@@ -102,6 +102,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-custom-fields-faker",
+       "projectFolder": "packages/psydb-custom-fields-faker",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-rohrpost-utils",
        "projectFolder": "packages/psydb-rohrpost-utils",
        "reviewCategory": "production"

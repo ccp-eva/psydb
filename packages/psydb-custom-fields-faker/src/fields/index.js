@@ -10,7 +10,7 @@ var fields = {
     DateTime: require('./date-time'),
 
     DefaultBool: require('./default-bool'),
-    EmailList: require('./email-with-type-list'), // TODO: rename
+    EmailList: require('./email-with-primary-list'), // TODO: rename
     Email: require('./email'),
     ExtBool: require('./ext-bool'),
 
@@ -22,7 +22,7 @@ var fields = {
     HelperSetItemIdList: require('./helper-set-item-id-list'),
     HelperSetItemId: require('./helper-set-item-id'),
     Integer: require('./integer'),
-    Lambda: require('./lambda'),
+    //Lambda: require('./lambda'),
     Phone: require('./phone'),
     PhoneList: require('./phone-list'),
     PhoneWithTypeList: require('./phone-with-type-list'),
@@ -46,6 +46,14 @@ var skipped = [
     'TimeInterval', // FIXME: is that used?
 
     'WeekdayBoolObject', // TODO
+
+    // ====================
+
+    'DateTimeInterval',
+    'DateOnlyServerSideInterval',
+    'AgeFrameBoundary',
+    'AgeFrameInterval',
+    'Timezone',
 ]
 
 for (var systemType of ensure) {
@@ -57,14 +65,9 @@ for (var systemType of ensure) {
     if (!field) {
         throw new Error(`systemType "${systemType}" is not handled`);
     }
-    if (!Object.keys(field).includes('createQuickSearchSchema')) {
+    if (!Object.keys(field).includes('getRandomValue')) {
         throw new Error(
-            `"createQuickSearchSchema" is not handled in "${systemType}"`
-        );
-    }
-    if (!Object.keys(field).includes('stringifyValue')) {
-        throw new Error(
-            `"stringifyValue" is not handled in "${systemType}"`
+            `"getRandomValue" is not handled in "${systemType}"`
         );
     }
 }

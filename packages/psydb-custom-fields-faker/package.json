@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "",
-    "test": "npx mocha --config ./mocha.config.json tests"
+    "test": "npx mocha --config ./mocha.config.json test"
   },
   "author": "Jan Schwalbe",
   "license": "MIT",

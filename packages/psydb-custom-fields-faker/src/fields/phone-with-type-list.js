@@ -6,7 +6,7 @@ var getRandomValue = (bag) => {
     var { definition, count } = bag;
     var { props: { minItems = 0 }} = definition;
 
-    var phones = PhoneList.generateRandom({ definition, count });
+    var phones = PhoneList.getRandomValue({ definition, count });
     var out = [];
     for (var it of phones) {
         out.push({
