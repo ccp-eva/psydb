@@ -76,5 +76,6 @@ module.exports = {
             '/gdpr/state/custom/address', // includes only street and number
             '/scientific/state/custom/dateOfBirth'
         ]
-    }
+    },
+    dev_enableSubjectCopyForUnprocessedExperiments: true,
 }

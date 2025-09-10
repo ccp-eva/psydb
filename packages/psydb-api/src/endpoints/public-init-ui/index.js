@@ -55,6 +55,7 @@ var publicInitUI = async (context, next) => {
         
         '/dev_enableSubjectDuplicatesSearch',
         '/dev_subjectDuplicatesSearchFields',
+        '/dev_enableSubjectCopyForUnprocessedExperiments',
     ]});
 
     var configHashSum = '';
