@@ -1279,8 +1279,8 @@ importers:
   ../../packages/psydb-core-utils:
     dependencies:
       '@cdxoo/flat':
-        specifier: ~0.1.0
-        version: 0.1.0
+        specifier: ~0.1.1
+        version: 0.1.1
       '@cdxoo/jsonpointer-to-objectpath':
         specifier: ~1.0.0
         version: 1.0.0
@@ -1596,8 +1596,8 @@ importers:
   ../../packages/psydb-mocha-baseline-deltas:
     dependencies:
       '@cdxoo/assert-baseline-deltas':
-        specifier: ~0.0.7
-        version: 0.0.7
+        specifier: ~0.0.12
+        version: 0.0.12
       '@mpieva/psydb-core-utils':
         specifier: workspace:*
         version: link:../psydb-core-utils
@@ -2432,16 +2432,16 @@ importers:
         specifier: ~7.22.20
         version: 7.22.20(@babel/core@7.22.20)
       '@cdxoo/flat':
-        specifier: ~0.0.11
-        version: 0.0.11
+        specifier: ~0.1.1
+        version: 0.1.1
       '@mpieva/psydb-common-lib':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-common-lib
       '@mpieva/psydb-core-utils':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-core-utils
       '@mpieva/psydb-ui-request-agents':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-ui-request-agents
       chai:
         specifier: ~4.3.7
@@ -4379,12 +4379,15 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@cdxoo/assert-baseline-deltas@0.0.7:
-    resolution: {integrity: sha512-48UAMWIFzoq2hcwNX7Mm/p9IY1hXqFg9+RxxmzUd5uin/rkpT2ySw0g6s/jiao9gD9Hs858KOeIvDShzw+rs1Q==}
+  /@cdxoo/assert-baseline-deltas@0.0.12:
+    resolution: {integrity: sha512-jFkKoG5/sKx//6UNpmLWTBUsHI9TSEEvn2tLHIm7pZsFt4bTmFUa1HzTH1HImJLiV04egazocFz2IiFVHhojQA==}
     dependencies:
-      '@cdxoo/flat': 0.1.0
+      '@cdxoo/flat': 0.1.1
       '@cdxoo/objectpath-to-jsonpointer': 1.0.0
+      debug: 4.3.7(supports-color@6.1.0)
       jsonpointer: 5.0.1
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /@cdxoo/block-quote@1.0.1:
@@ -4409,17 +4412,10 @@ packages:
       ms: 2.1.2
     dev: false
 
-  /@cdxoo/flat@0.0.11:
-    resolution: {integrity: sha512-qvG4cFof/bdyywsXUXO9AouctMM+YTqPVcGMz7kwT9Sxvk1In00AQ3gHwHbcZ/LpnnyGB3j5CdAcdQSSEo2SzA==}
+  /@cdxoo/flat@0.1.1:
+    resolution: {integrity: sha512-Yw9RebVBA+yX6UZOv15TdqeTS7vUOLzsf/jgUeG8edUYS0Bm1z49LxLn3UY0Ky+sUKe8axXnzS6FbU2BjjaISQ==}
     dependencies:
       '@cdxoo/traverse': 0.0.2
-    dev: true
-
-  /@cdxoo/flat@0.1.0:
-    resolution: {integrity: sha512-Cdro7Q2x5JCW8swaxPLuitepjwV0m1GFYnf9MCJA0n0xvGTkHJtdLwz5uSsbN5eYbVrvyquKKwoN6laMq3KX8A==}
-    dependencies:
-      '@cdxoo/traverse': 0.0.2
-    dev: false
 
   /@cdxoo/formik-ajv-async@0.4.2(formik@2.4.6)(react@17.0.2):
     resolution: {integrity: sha512-IspDO3DXE4PD8R2kBuGR9q2FUTFGatyVEN5yPG+04tEajxqY4Sx+nCDzmJ4tfjFoZsb78Wuc0+pmAW3peXIBeA==}
