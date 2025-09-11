@@ -11,6 +11,7 @@ var fields = {
 
     DefaultBool: require('./default-bool'),
     EmailList: require('./email-with-primary-list'), // TODO: rename
+    EmailWithPrimaryList: require('./email-with-primary-list'),
     Email: require('./email'),
     ExtBool: require('./ext-bool'),
 

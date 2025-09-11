@@ -1,4 +1,5 @@
 'use strict';
+var { arrify } = require('@mpieva/psydb-core-utils');
 var { randItemCount } = require('../utils');
 var HelperSetItemId = require('./helper-set-item-id');
 
@@ -19,7 +20,7 @@ var getRandomValue = (bag) => {
         });
     }
 
-    return out;
+    return arrify(out);
 }
 
 module.exports = {
