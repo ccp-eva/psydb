@@ -1350,8 +1350,8 @@ importers:
   ../../packages/psydb-custom-fields-faker:
     dependencies:
       '@cdxoo/pick-random-item':
-        specifier: ~0.0.2
-        version: 0.0.2
+        specifier: ~0.0.3
+        version: 0.0.3
       '@faker-js/faker':
         specifier: ~8.4.1
         version: 8.4.1
@@ -1478,6 +1478,28 @@ importers:
       mocha:
         specifier: ~9.2.2
         version: 9.2.2
+
+  ../../packages/psydb-faker:
+    dependencies:
+      '@faker-js/faker':
+        specifier: ~8.4.1
+        version: 8.4.1
+      '@mpieva/psydb-core-utils':
+        specifier: workspace:*
+        version: link:../psydb-core-utils
+      '@mpieva/psydb-custom-fields-faker':
+        specifier: workspace:*
+        version: link:../psydb-custom-fields-faker
+      debug:
+        specifier: npm:@cdxoo/debug-js-fork@~0.0.1
+        version: /@cdxoo/debug-js-fork@0.0.1
+    devDependencies:
+      chai:
+        specifier: ~4.3.7
+        version: 4.3.10
+      mocha:
+        specifier: ~10.2.0
+        version: 10.2.0
 
   ../../packages/psydb-fixture-initializer:
     dependencies:
@@ -4569,8 +4591,8 @@ packages:
   /@cdxoo/omit@1.0.1:
     resolution: {integrity: sha512-2LM0fbRTixVTCE7qF4pLFZXlLeO0C0o7N7x0HzIbQNgDey8dcFxCOUblUpPfxIw8eGyHxBc4Sba4l6nlnXbO1A==}
 
-  /@cdxoo/pick-random-item@0.0.2:
-    resolution: {integrity: sha512-DnLA9K2dmVTKJBbLAXPmWfdNto+FjPQMg6QVXmiNRDU8iFZVMKSG40dPgpYdYOvLQaoDBCL+MWjQthgOhqqVWQ==}
+  /@cdxoo/pick-random-item@0.0.3:
+    resolution: {integrity: sha512-ZRekDnpXFsd0GliXoTQCS/xaxndOrH4uY2S61VKnpIPZf5gDQS5PurJVMH0mpDATFSKWGOKH2Hjj+qbEvcxYQA==}
     dev: false
 
   /@cdxoo/react-compose-contexts@1.0.0-beta.0(react@17.0.2):

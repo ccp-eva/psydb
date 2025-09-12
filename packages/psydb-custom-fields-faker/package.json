@@ -12,7 +12,7 @@
   "dependencies": {
     "debug": "npm:@cdxoo/debug-js-fork@~0.0.1",
     "@faker-js/faker": "~8.4.1",
-    "@cdxoo/pick-random-item": "~0.0.2",
+    "@cdxoo/pick-random-item": "~0.0.3",
     "@mpieva/psydb-core-utils": "workspace:*",
     "@mpieva/psydb-schema-fields": "workspace:*"
   },

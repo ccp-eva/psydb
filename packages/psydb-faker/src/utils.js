@@ -5,10 +5,14 @@ var { Fields: BaseFields } = require('@mpieva/psydb-custom-fields-faker');
 //    Fields[systemType].getRandomValue({ definition: { props }});
 //)
 var Fields = {};
-for (let [ systemType, fn ] of Object.entries(Fields)) {
-    Fields[systemType] = (props = {}) => (
-        BaseFields[systemType].getRandomValue({ props })
-    );
+for (let [ systemType, fn ] of Object.entries(BaseFields)) {
+    Fields[systemType] = (...args) => {
+        var [ props = {}, extra ] = args;
+
+        return BaseFields[systemType].getRandomValue({
+            definition: { props }, ...extra
+        })
+    };
 }
 
 module.exports = { Fields };

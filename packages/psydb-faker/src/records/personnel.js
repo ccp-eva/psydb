@@ -27,7 +27,9 @@ var fakeRecord = (bag) => {
                     }, { fromStore: refcache })
                 }
             ],
-            'systemPermissions': Fields.SystemPermissions({ refcache }),
+            'systemPermissions': Fields.SystemPermissions({}, {
+                fromStore: refcache,
+            }),
         }}
     }
 

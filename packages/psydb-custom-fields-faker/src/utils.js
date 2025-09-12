@@ -4,10 +4,15 @@ var _pick = require('@cdxoo/pick-random-item');
 var { range } = require('@mpieva/psydb-core-utils');
 
 var pick = (bag) => {
-    var { from, ...options } = bag;
+    var { from, unique = true, count = 1, ...pass } = bag;
+    
+    if (unique && (count > from.length)) {
+        count = from.length;
+    }
+
     return _pick(from, {
         generateRandom: () => faker.number.float(),
-        ...options
+        unique, count, ...pass
     });
 }
 
