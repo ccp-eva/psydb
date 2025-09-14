@@ -3,7 +3,7 @@ var { range } = require('@mpieva/psydb-core-utils');
 var { FakeRecords, Fields } = require('@mpieva/psydb-faker');
 
 module.exports = async (context) => {
-    var { driver, cache } = context;
+    var { driver, cache, ids } = context;
     var { refcache } = cache.get();
    
     var fixed = [
@@ -27,11 +27,11 @@ module.exports = async (context) => {
             '/scientific/state/canLogIn': true,
             '/scientific/state/hasRootAccess': false,
             '/scientific/state/researchGroupSettings': [{
-                'researchGroupId': cache.get('/researchGroup/Cat-Lab'),
-                'systemRoleId': cache.get(`/systemRole/${systemRole}`)
+                'researchGroupId': ids('Cat-Lab'),
+                'systemRoleId': ids('Cat Scientist'),
             }],
             '/scientific/stat/systemPermissions/accessRightsByResearchGroup': [{
-                researchGroupId: cache.get('/researchGroup/Cat-Lab'),
+                researchGroupId: ids('Cat-Lab'),
                 permission: 'write',
             }],
         }});

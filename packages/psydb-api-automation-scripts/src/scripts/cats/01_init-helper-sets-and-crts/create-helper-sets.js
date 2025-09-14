@@ -4,7 +4,7 @@ module.exports = async (context) => {
     var { driver, cache, as } = context;
     
     await driver.helperSet.create({ displayNames: {
-        'en': 'Akquisition (Cat Owners)',
+        'en': 'Acquisition (Cat Owners)',
         'de': 'Akquise (Katzenbesitzer:innen)'
     }});
     cache.addId({ collection: 'helperSet', as: 'catOwner_acquisition' });
