@@ -5,6 +5,8 @@ var fspath = require('path');
 var { MongoClient } = require('mongodb');
 
 var restore = require('@cdxoo/mongodb-restore');
+
+var { ejson } = require('@mpieva/psydb-core-utils');
 var fixtures = require('@mpieva/psydb-fixtures');
 var faker = require('@mpieva/psydb-faker');
 
@@ -12,6 +14,10 @@ var cli = require('./cli-setup');
 var execute = require('./execute-with-driver');
 
 var cwd = process.cwd();
+
+console.ejson = (that, options) => {
+    console.dir(ejson(that), { depth: null, ...options })
+}
 
 var developmentApiKey = [
     'xA3S5M1_2uEhgelRVaZyYjg5qw_UehHV',
