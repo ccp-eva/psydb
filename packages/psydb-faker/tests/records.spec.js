@@ -1,7 +1,7 @@
 'use strict';
 var { expect } = require('chai');
 var { faker } = require('@faker-js/faker');
-var { Records } = require('../src/');
+var { FakeRecords } = require('../src/');
 
 describe('records', () => {
     var crtSettings = [];

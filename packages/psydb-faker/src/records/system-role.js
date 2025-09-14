@@ -1,9 +1,9 @@
 'use strict';
 var { jsonpointer } = require('@mpieva/psydb-core-utils');
-var { Fields } = require('../utils');
+var { Fields, applyOverrides } = require('../utils');
 
 var fakeRecord = (bag) => {
-    var { refcache } = bag;
+    var { refcache, overrides } = bag;
 
     var flagpointers = [
         '/canReadLocations',
@@ -103,6 +103,8 @@ var fakeRecord = (bag) => {
             ...flags
         }
     }
+
+    applyOverrides({ record, refcache, overrides });
 
     return record;
 }

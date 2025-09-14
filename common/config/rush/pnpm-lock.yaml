@@ -418,6 +418,9 @@ importers:
       '@mpieva/psydb-driver-nodejs':
         specifier: workspace:*
         version: link:../psydb-driver-nodejs
+      '@mpieva/psydb-faker':
+        specifier: workspace:*
+        version: link:../psydb-faker
       '@mpieva/psydb-fixtures':
         specifier: workspace:*
         version: link:../psydb-fixtures

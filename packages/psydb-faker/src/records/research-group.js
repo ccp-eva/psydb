@@ -1,8 +1,8 @@
 'use strict';
-var { Fields } = require('../utils');
+var { Fields, applyOverrides } = require('../utils');
 
 var fakeRecord = (bag) => {
-    var { refcache } = bag;
+    var { refcache, overrides } = bag;
 
     var basename = Fields.SaneString({ minLength: 1 });
 
@@ -28,6 +28,8 @@ var fakeRecord = (bag) => {
             'helperSetIds': [],
         }
     }
+
+    applyOverrides({ record, refcache, overrides });
 
     return record;
 }

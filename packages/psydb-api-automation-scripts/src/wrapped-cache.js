@@ -1,5 +1,6 @@
 'use strict';
-var { keyBy, keySequence } = require('@mpieva/psydb-core-utils');
+var { keyBy, keySequence, groupBy, jsonpointer }
+    = require('@mpieva/psydb-core-utils');
 var { SimpleCache } = require('@mpieva/psydb-common-lib');
 
 var WrappedCache = ({ driver, db = undefined }) => {
@@ -20,18 +21,56 @@ var WrappedCache = ({ driver, db = undefined }) => {
         else {
             cache.merge({ [collection]: { [as]: id }});
         }
+        
+        cache.addToRefCache({ collection, recordType, ids: [ id ] });
+
         return id;
+    }
+
+    cache.initRefCache = (refcache) => {
+        cache.merge({ refcache });
+    }
+
+    cache.addToRefCache = (bag) => {
+        var { collection, recordType, ids } = bag;
+
+        var { refcache } = cache.get();
+        var pointer = (
+            recordType ? `/${collection}/${recordType}` : `/${collection}`
+        );
+        
+        var target = jsonpointer.get(refcache, pointer);
+        if (!target) {
+            target = []
+            jsonpointer.set(refcache, pointer, target);
+        }
+
+        target.push(...ids);
     }
 
     cache.prepareKeyedIds = async (bag) => {
         var { collection, keyBy: pointer } = bag;
+        
+        var records = await db.collection(collection).find().toArray();
 
         var keyed = keyBy({
-            items: await db.collection(collection).find().toArray(),
+            items: records,
             byPointer: pointer, transform: (it) => (it._id)
         });
         
         cache.merge({ [collection]: keyed });
+        
+        var groups = groupBy({ items: records, byProp: 'recordType' });
+        for (var [ recordType, groupItems ] of Object.entries(groups)) {
+            
+            cache.addToRefCache({
+                collection,
+                ids: groupItems.map(it => it._id),
+                recordType: (
+                    recordType === 'undefined' ? undefined : recordType
+                ),
+            })
+        }
     }
     
     cache.prepareSequenceKeyedIds = async (bag) => {
@@ -46,8 +85,21 @@ var WrappedCache = ({ driver, db = undefined }) => {
         });
 
         cache.merge({ [collection]: keyed });
+        
+        var groups = groupBy({ items: records, byProp: 'recordType' });
+        for (var [ recordType, groupItems ] of Object.entries(groups)) {
+            
+            cache.addToRefCache({
+                collection,
+                ids: groupItems.map(it => it._id),
+                recordType: (
+                    recordType === 'undefined' ? undefined : recordType
+                ),
+            })
+        }
     }
 
+    cache.initRefCache({});
     return cache;
 }
 

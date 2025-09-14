@@ -1,8 +1,9 @@
 'use strict';
 var { jsonpointer } = require('@mpieva/psydb-core-utils');
+var { Fields, applyOverrides } = require('../utils');
 
 var fakeRecord = (bag) => {
-    var { crtSettings, refcache } = bag;
+    var { crtSettings, refcache, overrides } = bag;
     var { fieldDefinitions, requiresTestingPermissions } = crtSettings;
 
     var record = { 
@@ -27,6 +28,8 @@ var fakeRecord = (bag) => {
             fromStore: refcache
         }))
     }
+
+    applyOverrides({ record, refcache, overrides });
 
     return record;
 }

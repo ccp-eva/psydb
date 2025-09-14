@@ -1,8 +1,8 @@
 'use strict';
-var { Fields } = require('../utils');
+var { Fields, applyOverrides } = require('../utils');
 
 var fakeRecord = (bag) => {
-    var { refcache } = bag;
+    var { refcache, overrides } = bag;
 
     var record = {
         'gdpr': { 'state': {
@@ -15,7 +15,7 @@ var fakeRecord = (bag) => {
             'description': Fields.FullText(),
         }},
         'scientific': { 'state': {
-            'canLogin': Fields.DefaultBool(),
+            'canLogIn': Fields.DefaultBool(),
             'hasRootAccess': Fields.DefaultBool(),
             'researchGroupSettings': [
                 { 
@@ -32,6 +32,8 @@ var fakeRecord = (bag) => {
             }),
         }}
     }
+
+    applyOverrides({ record, refcache, overrides });
 
     return record;
 }

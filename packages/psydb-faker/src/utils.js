@@ -1,4 +1,5 @@
 'use strict';
+var { jsonpointer } = require('@mpieva/psydb-core-utils');
 var { Fields: BaseFields } = require('@mpieva/psydb-custom-fields-faker');
 
 //var fakeval = (systemType, props) => (
@@ -15,4 +16,16 @@ for (let [ systemType, fn ] of Object.entries(BaseFields)) {
     };
 }
 
-module.exports = { Fields };
+var applyOverrides = (bag) => {
+    var { record, refcache, overrides = {} } = bag;
+    
+    if (typeof overrides === 'function') {
+        overrides = overrirde({ record, refcache });
+    }
+
+    for (var [ pointer, value ] of Object.entries(overrides)) {
+        jsonpointer.set(record, pointer, value);
+    }
+}
+
+module.exports = { Fields, applyOverrides };

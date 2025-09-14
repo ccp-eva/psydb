@@ -6,6 +6,7 @@ var { MongoClient } = require('mongodb');
 
 var restore = require('@cdxoo/mongodb-restore');
 var fixtures = require('@mpieva/psydb-fixtures');
+var faker = require('@mpieva/psydb-faker');
 
 var cli = require('./cli-setup');
 var execute = require('./execute-with-driver');
@@ -27,7 +28,8 @@ co(async () => {
         restoreFixture: fixturePath,
         ...extraOptions
     } = cliOptions;
-
+    
+    faker.seed(1);
 
     var scripts = [];
     for (var it of cli.args) {
