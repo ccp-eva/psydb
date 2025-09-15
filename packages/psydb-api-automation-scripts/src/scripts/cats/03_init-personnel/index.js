@@ -1,20 +1,14 @@
 'use strict';
-var WrappedCache = require('../../../wrapped-cache');
-var { initDB, gatherLabeledIds } = require('../../../utils');
-
-var prepareCache = require('./prepare-cache');
+var { initDB, gatherRefCache, gatherLabeledIds } = require('../../../utils');
 var createPersonnel = require('./create-personnel');
 
 module.exports = async (bag) => {
     var { driver, apiKey, extraOptions = {}} = bag;
 
     var db = await initDB(extraOptions);
-    var cache = WrappedCache({ driver, db });
     var ids = await gatherLabeledIds({ db });
-
-    var context = { driver, cache, ids };
-
-    await prepareCache(context);
+    var refcache = await gatherRefCache({ db });
+    var context = { driver, refcache, ids };
 
     await createPersonnel(context);
 

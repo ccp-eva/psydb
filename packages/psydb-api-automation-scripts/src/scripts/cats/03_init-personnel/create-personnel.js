@@ -3,8 +3,7 @@ var { range } = require('@mpieva/psydb-core-utils');
 var { FakeRecords, Fields } = require('@mpieva/psydb-faker');
 
 module.exports = async (context) => {
-    var { driver, cache, ids } = context;
-    var { refcache } = cache.get();
+    var { driver, refcache, ids } = context;
    
     var fixed = [
         { firstname: 'Test', lastname: 'Cat-RA',
@@ -17,37 +16,36 @@ module.exports = async (context) => {
     for (var it of fixed) {
         var { firstname, lastname, canLogIn, systemRole } = it;
 
-        var faked = FakeRecords['personnel']({ refcache, overrides: {
-            '/gdpr/state/firstname': firstname,
-            '/gdpr/state/lastname': lastname,
-            '/gdpr/state/emails': [{
-                'email': emailify({ firstname, lastname }),
-                'isPrimary': true
-            }],
-            '/scientific/state/canLogIn': true,
-            '/scientific/state/hasRootAccess': false,
-            '/scientific/state/researchGroupSettings': [{
-                'researchGroupId': ids('Cat-Lab'),
-                'systemRoleId': ids('Cat Scientist'),
-            }],
-            '/scientific/stat/systemPermissions/accessRightsByResearchGroup': [{
-                researchGroupId: ids('Cat-Lab'),
-                permission: 'write',
-            }],
-        }});
+        var faked = FakeRecords['personnel']({
+            refcache: refcache.data(), overrides: {
+                '/gdpr/state/firstname': firstname,
+                '/gdpr/state/lastname': lastname,
+                '/gdpr/state/emails': [{
+                    'email': emailify({ firstname, lastname }),
+                    'isPrimary': true
+                }],
+                '/scientific/state/canLogIn': true,
+                '/scientific/state/hasRootAccess': false,
+                '/scientific/state/researchGroupSettings': [{
+                    'researchGroupId': ids('Cat-Lab'),
+                    'systemRoleId': ids('Cat Scientist'),
+                }],
+                '/scientific/stat/systemPermissions/accessRightsByResearchGroup': [{
+                    researchGroupId: ids('Cat-Lab'),
+                    permission: 'write',
+                }],
+            }
+        });
 
         await driver.personnel.create({ data: faked });
-
-        cache.addId({
-            collection: 'personnel',
-            as: `${firstname} ${lastname}`
-        });
     }
   
     for (var ix of range(20)) {
-        var faked = FakeRecords['personnel']({ refcache, overrides: {
-            '/gdpr/state/description': Fields.SaneString(),
-        }});
+        var faked = FakeRecords['personnel']({
+            refcache: refcache.data(), overrides: {
+                '/gdpr/state/description': Fields.SaneString(),
+            }
+        });
         await driver.personnel.create({ data: faked });
     }
     

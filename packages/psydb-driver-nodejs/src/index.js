@@ -204,6 +204,7 @@ var Driver = (options) => {
     driver.systemRole = __withDriver(driver, inter.systemRole);
     driver.personnel = __withDriver(driver, inter.personnel);
 
+    driver.externalOrganization = __withDriver(driver, inter.externalOrganization);
     driver.study = __withDriver(driver, inter.study);
     driver.subject = __withDriver(driver, inter.subject);
 

@@ -1,24 +1,21 @@
 'use strict';
-var WrappedCache = require('../../../wrapped-cache');
-var { initDB, gatherLabeledIds } = require('../../../utils');
-
-var prepareCache = require('./prepare-cache');
+var { initDB, fetchCRTs, gatherRefCache, gatherLabeledIds }
+    = require('../../../utils');
 var createCatShelterOrgs = require('./create-cat-shelter-orgs');
-var createCatShelters = require('./create-cat-shelters');
+//var createCatShelters = require('./create-cat-shelters');
 
 module.exports = async (bag) => {
     var { driver, apiKey, extraOptions = {}} = bag;
 
     var db = await initDB(extraOptions);
-    var cache = WrappedCache({ driver, db });
     var ids = await gatherLabeledIds({ db });
+    var refcache = await gatherRefCache({ db });
+    var crts = await fetchCRTs({ db });
     
-    var context = { driver, cache, ids };
+    var context = { driver, refcache, ids, crts };
 
-    await prepareCache(context);
-    
     await createCatShelterOrgs(context);
-    await createCatShelters(context);
+    //await createCatShelters(context);
 
     db.close();
 }
