@@ -2,7 +2,8 @@
 var { initDB, fetchCRTs, gatherRefCache, gatherLabeledIds }
     = require('../../../utils');
 var createCatShelterOrgs = require('./create-cat-shelter-orgs');
-//var createCatShelters = require('./create-cat-shelters');
+var createCatShelters = require('./create-cat-shelters');
+var createCatLabRooms = require('./create-cat-lab-rooms');
 
 module.exports = async (bag) => {
     var { driver, apiKey, extraOptions = {}} = bag;
@@ -15,7 +16,8 @@ module.exports = async (bag) => {
     var context = { driver, refcache, ids, crts };
 
     await createCatShelterOrgs(context);
-    //await createCatShelters(context);
+    await createCatShelters(context);
+    await createCatLabRooms(context);
 
     db.close();
 }

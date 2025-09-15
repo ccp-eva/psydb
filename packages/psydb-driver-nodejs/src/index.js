@@ -198,15 +198,9 @@ var Driver = (options) => {
         return cache; 
     }
 
-    driver.crt = __withDriver(driver, inter.crt);
-    driver.helperSet = __withDriver(driver, inter.helperSet);
-    driver.researchGroup = __withDriver(driver, inter.researchGroup);
-    driver.systemRole = __withDriver(driver, inter.systemRole);
-    driver.personnel = __withDriver(driver, inter.personnel);
-
-    driver.externalOrganization = __withDriver(driver, inter.externalOrganization);
-    driver.study = __withDriver(driver, inter.study);
-    driver.subject = __withDriver(driver, inter.subject);
+    for (var [ _key, _inter] of Object.entries(inter)) {
+        driver[_key] = __withDriver(driver, _inter);
+    }
 
     return driver;
 }
