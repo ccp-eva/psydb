@@ -22,7 +22,7 @@ var override = (bag) => {
     return clone;
 }
 
-describe.only('subject/create', function () {
+describe('subject/create', function () {
     var db;
     beforeEach(async function () {
         await this.restore('2025-06-09__1835');
