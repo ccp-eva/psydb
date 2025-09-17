@@ -18,7 +18,19 @@ var CSVSubjectColumnRemapper = (bag) => {
 
     remapper.csv2obj = (bag) => {
         var { colkey } = bag;
-        return mappings.csv2obj[colkey];
+        
+        var maybeArrayIndexMatch = colkey.match(/^(.*)\[(\d+)\]$/);
+        var maybeArrayIndex = undefined;
+        if (maybeArrayIndexMatch) {
+            colkey = maybeArrayIndexMatch[1]
+            maybeArrayIndex = maybeArrayIndexMatch[2]
+        }
+        
+        var out = mappings.csv2obj[colkey];
+        if (maybeArrayIndex) {
+            out += `.${maybeArrayIndex}`;
+        }
+        return out;
     }
     remapper.obj2csv = (bag) => {
         var { path } = bag;
@@ -32,7 +44,7 @@ var preGenerate = {
     csv2obj: (bag) => {
         var { subjectCRT } = bag;
 
-        var definitions = subjectCRT.allCustomFields();        
+        var definitions = subjectCRT.allCustomFields(); 
         var dups = _gatherDups({ definitions });
 
         var staticMapping = {
