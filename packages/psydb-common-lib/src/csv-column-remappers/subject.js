@@ -32,9 +32,27 @@ var CSVSubjectColumnRemapper = (bag) => {
         }
         return out;
     }
+
     remapper.obj2csv = (bag) => {
         var { path } = bag;
         return getDemappedCols({ path, mapping: mappings.obj2csv });
+    }
+
+    remapper.ajvpath2csv = (bag) => {
+        var { path } = bag;
+
+        var maybeArrayIndexMatch = path.match(/^(.*)\[(\d+)\]$/);
+        var maybeArrayIndex = undefined;
+        if (maybeArrayIndexMatch) {
+            path = maybeArrayIndexMatch[1]
+            maybeArrayIndex = maybeArrayIndexMatch[2]
+        }
+        
+        var cols = getDemappedCols({ path, mapping: mappings.obj2csv });
+        if (maybeArrayIndex) {
+            cols = cols.map(it => it += `[${maybeArrayIndex}]`);
+        }
+        return cols;
     }
     
     return remapper;
