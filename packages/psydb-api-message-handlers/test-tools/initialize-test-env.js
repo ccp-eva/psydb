@@ -13,6 +13,8 @@ var {
     compose, createId, Self, withRetracedErrors
 } = require('@mpieva/psydb-api-lib');
 
+console.ejson = (that) => console.dir(ejson(that), { depth: null });
+
 var {
     withEventEngine,
     // FIXME: theese will be moved inside handlers themselves
