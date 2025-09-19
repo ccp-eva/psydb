@@ -51,7 +51,7 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
         }
     }
 
-    remapper.obj2csv = (bag) => {
+    remapper.ajvpath2csv = remapper.obj2csv = (bag) => {
         var { path } = bag;
 
         var mapping = {

@@ -47,7 +47,7 @@ module.exports = {
     dev_enableStagingBanner: true,
     dev_enableDevPanel: false,
     dev_copyNoticeGreyscale: true,
-    dev_enableForeignIdRefLinkInForms: true,
+    dev_enableForeignIdRefLinkInForms: false,
 
     dev_enableDangerousCRTFieldOps: true,
     
@@ -55,7 +55,7 @@ module.exports = {
     dev_enableCSVParticipationImport: true,
     
     dev_enableStatistics: true,
-    dev_showDummyRecordsAsTopOptions: true,
+    dev_showDummyRecordsAsTopOptions: false,
     dev_enableWKPRCPatches: false,
 
     dev_enableSubjectDuplicatesSearch: true,
