@@ -20,6 +20,8 @@ var addSubjectRoutes = require('./add-subject-routes');
 var addCSVImportRoutes = require('./add-csv-import-routes');
 var addAuditRoutes = require('./add-audit-routes');
 
+var addWKPRCCSVExportRoutes = require('./add-wkprc-csv-export-routes');
+
 var createRouting = (bag = {}) => {
     var { prefix = '/' } = bag;
 
@@ -528,6 +530,8 @@ var createRouting = (bag = {}) => {
     addSubjectRoutes({ router });
     addCSVImportRoutes({ router });
     addAuditRoutes({ router });
+    
+    addWKPRCCSVExportRoutes({ router });
 
     return compose([
         router.routes(),
