@@ -26,11 +26,11 @@ var verifyStudyRecord = verifyOneRecord({
 
 var verifyStudyConfirmation = async (context, next) => {
     var { message, cache } = context;
-    var { confirmation } = message;
+    var { confirmation } = message.payload;
     var { study } = cache.get();
 
     if (study.state.shorthand !== confirmation) {
-        throw new Error(409, 'InvalidStudyConfirmation')
+        throw new ApiError(409, 'InvalidStudyConfirmation')
     }
 
     await next();

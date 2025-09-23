@@ -18,8 +18,12 @@ var executeSystemEvents = async (context) => {
 
     await cleanRelatedChannels({ db, studyId });
     await cleanStudyChannel({ db, studyId });
+}
 
-
+var cleanStudyChannel = async (bag) => {
+    var { db, studyId } = bag;
+    debug({ studyId });
+    await distcleanManyChannels({ db, study: [ studyId ] });
 }
 
 var cleanSubjectParticipations = async (bag) => {
@@ -35,10 +39,11 @@ var cleanSubjectParticipations = async (bag) => {
     debug({ participationIds });
    
     await withRetracedErrors(
-        db.collection('subject').updateMany({
-            $pull: { [ppath]: { _id: { $in: participationIds }}}
-        })
-    )
+        db.collection('subject').updateMany(
+            { [`${ppath}._id`]: { $in: participationIds }},
+            { $pull: { [ppath]: { '_id': { $in: participationIds }}}}
+        )
+    );
 
     var pushpath = [
         'message.payload', '/$push',
@@ -80,7 +85,7 @@ var cleanCSVImports = async (bag) => {
     });
     debug({ csvImportIds });
     
-    await deleteManyChannels({
+    await distcleanManyChannels({
         db, csvImport: csvImportIds
     });
 }
@@ -93,7 +98,7 @@ var cleanExperiments = async (bag) => {
     });
     debug({ experimentIds });
     
-    await deleteManyChannels({
+    await distcleanManyChannels({
         db, experiment: experimentIds
     });
 }
@@ -105,28 +110,31 @@ var cleanRelatedChannels = async (bag) => {
         db, experimentOperatorTeam: { 'studyId': studyId }
     });
     debug({ labTeamIds });
+    
+    await distcleanManyChannels({
+        db, experimentOperatorTeam: labTeamIds
+    });
+
 
     var experimentVariantIds = await aggregateToIds({
         db, experimentVariant: { 'studyId': studyId }
     });
     debug({ experimentVariantIds });
     
+    await distcleanManyChannels({
+        db, experimentVariant: experimentVariantIds
+    });
+   
+
     var experimentVariantSettingIds = await aggregateToIds({
         db, experimentVariantSetting: { 'studyId': studyId }
     });
     debug({ experimentVariantSettingIds });
 
-    await deleteManyChannels({
+    await distcleanManyChannels({
         db, experimentVariantSetting: experimentVariantSettingIds
     });
     
-    await deleteManyChannels({
-        db, experimentVariant: experimentVariantIds
-    });
-    
-    await deleteManyChannels({
-        db, experimentOperatorTeam: labTeamIds
-    });
 }
 
 var deleteManyRecords = (bag) => {
