@@ -31,7 +31,7 @@ describe('study/remove-distclean wip', function () {
             timezone: 'Europe/Berlin',
             payload: jsonify({
                 studyId: studyId,
-                confirmation: 'dddd'
+                //confirmation: 'dddd'
             })
         });
     })

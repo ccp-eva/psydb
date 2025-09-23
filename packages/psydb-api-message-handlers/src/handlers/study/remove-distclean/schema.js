@@ -5,7 +5,7 @@ var { ClosedObject, ForeignId, SaneString }
 var Schema = (context) => {
     var schema = ClosedObject({
         'studyId': ForeignId({ collection: 'study' }),
-        'confirmation': SaneString({ minLength: 1 }),
+        //'confirmation': SaneString({ minLength: 1 }),
     });
 
     return schema;

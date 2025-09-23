@@ -6,7 +6,7 @@ var { verifyOneRecord } = require('@mpieva/psydb-api-message-handler-lib');
 var compose_verifyAllowedAndPlausible = () => compose([
     verifyPermissions,
     verifyStudyRecord,
-    verifyStudyConfirmation,
+    //verifyStudyConfirmation,
 ]);
 
 var verifyPermissions = async (context, next) => {
