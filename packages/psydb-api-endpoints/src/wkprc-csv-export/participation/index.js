@@ -3,6 +3,7 @@ var debug = require('debug')(
     'psydb:api:endpoints:wkprc-csv-export:participation'
 );
 
+var datefns = require('date-fns');
 var { range, keyBy } = require('@mpieva/psydb-core-utils');
 var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var { CSV, validateOrThrow } = require('@mpieva/psydb-api-lib');
@@ -19,7 +20,7 @@ var csvExport = async (context, next) => {
 
     var { studyId, subjectType } = request.body;
 
-    var records = await aggregateToArray({ db, experiment: [
+    var experiments = await aggregateToArray({ db, experiment: [
         { $match: {
             $or: [
                 { type: 'apestudies-wkprc-default' },
@@ -36,7 +37,7 @@ var csvExport = async (context, next) => {
         subjectGroup: [], subject: [],
         personnel: [],
     };
-    for (var it of records) {
+    for (var it of experiments) {
         var {
             locationId,
             subjectGroupId,
@@ -83,13 +84,15 @@ var csvExport = async (context, next) => {
         byProp: '_id',
         transform: it => it.sequenceNumber
     });
-    related.subject = keyBy({
+    
+    var lookups = {};
+    lookups.subject = keyBy({
         items: await aggregateToArray({ db, subject: {
             _id: { $in: relatedIds.subject }
         }}),
         byProp: '_id',
         //transform: it => it.state.name
-        transform: it => it.scientific.state.custom.wkprcIdCode
+        //transform: it => it.scientific.state.custom.wkprcIdCode
     });
 
 
@@ -101,12 +104,15 @@ var csvExport = async (context, next) => {
         'location', 'room_enclosure',
         'experimenter_id', 'group',
         ...(range(maxSubjectCount).map(ix => `subject_${ix+1}`)),
+        ...(range(maxSubjectCount).map(ix => `date_of_brith_${ix+1}`)),
+        ...(range(maxSubjectCount).map(ix => `age_${ix+1}`)),
+        ...(range(maxSubjectCount).map(ix => `sex_${ix+1}`)),
         ...(range(maxSubjectCount).map(ix => `role_${ix+1}`)),
         'trial_participants',
         ...(range(maxSubjectCount).map(ix => `comment_${ix+1}`)),
     ])
 
-    for (var it of records) {
+    for (var it of experiments) {
         var {
             experimentName, conditionName,
             interval,
@@ -117,11 +123,31 @@ var csvExport = async (context, next) => {
         } = it.state;
 
         var expandedSubjectData = range(maxSubjectCount).map(ix => {
-            var out = { subject: '', role: '', comment: '' };
+            var out = {
+                subject: '', date_of_birth: '', age: '',
+                sex: '', role: '', comment: ''
+            };
             if (subjectData[ix]) {
-                out.subject = related.subject[subjectData[ix].subjectId];
-                out.role = subjectData[ix].role || '';
-                out.comment = subjectData[ix].comment || '';
+                var { subjectId, role, comment } = subjectData[ix];
+
+                var subject = lookups.subject[subjectId];
+                var { wkprcIdCode, dateOfBirth, biologicalGender }
+                    = subject.scientific.state.custom;
+
+                out.date_of_birth = (
+                    dateOfBirth
+                    ? datefns.format(dateOfBirth, 'yyyy-MM-dd')
+                    : ''
+                );
+                out.age = (
+                    dateOfBirth
+                    ? datefns.differenceInYears(interval.start, dateOfBirth)
+                    : ''
+                );
+                out.sex = biologicalGender || '';
+                out.subject = wkprcIdCode || '';
+                out.role = role || '';
+                out.comment = comment || '';
             }
             return out;
         })
@@ -137,6 +163,9 @@ var csvExport = async (context, next) => {
             related.subjectGroup[subjectGroupId],
 
             ...expandedSubjectData.map(it => it.subject),
+            ...expandedSubjectData.map(it => it.date_of_birth),
+            ...expandedSubjectData.map(it => it.age),
+            ...expandedSubjectData.map(it => it.sex),
             ...expandedSubjectData.map(it => it.role),
             totalSubjectCount || '',
             ...expandedSubjectData.map(it => it.comment),
