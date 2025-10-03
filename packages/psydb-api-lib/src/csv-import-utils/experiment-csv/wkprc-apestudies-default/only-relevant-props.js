@@ -15,6 +15,7 @@ var onlyRelevantProps = ({ from }) => only({ from, keys: [
     'subjectGroupId',
     
     '__locationType',
+    '__subjectData_comment',
 ]});
 
 module.exports = onlyRelevantProps;

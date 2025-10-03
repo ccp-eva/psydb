@@ -42,7 +42,10 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
             var [ _unused, ix = 0 ] = col.split('_');
             return `subjectData[${ix}].role`;
         }
-        if (/^comment(_\d?)/.test(col)) {
+        if (/^comment$/.test(col)) {
+            return '__subjectData_comment';
+        }
+        if (/^comment(_\d+)?/.test(col)) {
             var [ _unused, ix = 0 ] = col.split('_');
             return `subjectData[${ix}].comment`;
         }
