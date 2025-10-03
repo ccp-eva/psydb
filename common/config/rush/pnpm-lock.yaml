@@ -634,6 +634,9 @@ importers:
       '@mpieva/psydb-schema-fields-special':
         specifier: workspace:*
         version: link:../psydb-schema-fields-special
+      date-fns:
+        specifier: ~2.30.0
+        version: 2.30.0
       debug:
         specifier: npm:@cdxoo/debug-js-fork@~0.0.1
         version: /@cdxoo/debug-js-fork@0.0.1
