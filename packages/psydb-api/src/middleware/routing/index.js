@@ -492,6 +492,9 @@ var createRouting = (bag = {}) => {
     router.post('/file/read', ...withPostStages({
         endpoint: endpoints.file.read
     }));
+    router.get('/file/download', ...withGetStages({
+        endpoint: endpoints.file.download,
+    }));
     
 
     

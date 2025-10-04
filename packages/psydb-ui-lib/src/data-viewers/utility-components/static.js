@@ -5,7 +5,7 @@ import { calculateAge } from '@mpieva/psydb-common-lib';
 import {
     useUILanguage,
     useUITranslation,
-    useUILocale
+    useUILocale,
 } from '@mpieva/psydb-ui-contexts';
 
 import { Icons } from '@mpieva/psydb-ui-layout';
@@ -541,4 +541,12 @@ export const Email = (ps) => {
     }
 
     return String(value);
+}
+
+export const FileRef = (ps) => {
+    var { value, related } = ps;
+
+    return (
+        <a href={`/api/file/download?fileId=${value}`} target='_blank'>{ value }</a>
+    );
 }
