@@ -342,6 +342,21 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-ui-date-locales",
+       "projectFolder": "packages/psydb-ui-date-locales",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-ui-cookies",
+       "projectFolder": "packages/psydb-ui-cookies",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-ui-context-initializers",
+       "projectFolder": "packages/psydb-ui-context-initializers",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-ui-contexts",
        "projectFolder": "packages/psydb-ui-contexts",
        "reviewCategory": "production"

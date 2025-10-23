@@ -14,12 +14,13 @@ import {
     Icons
 } from '@mpieva/psydb-ui-layout';
 
-import { useRequestAgent } from '@mpieva/psydb-ui-contexts';
+import { ServerTimezoneContext, useRequestAgent }
+    from '@mpieva/psydb-ui-contexts';
+
 import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
-import ErrorBoundary from './error-boundary';
-import ServerTimezoneContext from '@mpieva/psydb-ui-lib/src/server-timezone-context';
+import { ErrorBoundary } from '@mpieva/psydb-ui-lib';
 
 import CopyNotice from './copy-notice';
 import SideNav from './side-nav';

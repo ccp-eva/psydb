@@ -8,6 +8,7 @@ export {
 } from './pickers';
 
 export { ErrorResponseModal } from './modals';
+export { default as ErrorBoundary } from './error-boundary';
 
 export { default as RecordListContainer } from './record-list-container';
 export { default as ExtendedRecordList } from './extended-record-list';

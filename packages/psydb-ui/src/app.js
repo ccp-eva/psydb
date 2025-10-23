@@ -10,23 +10,20 @@ import {
 import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
 
 import {
-    SelfContext,
     AgentContext,
+    UIConfigContext,
+    SelfContext,
     I18NContext,
     
     UILocaleContext,
     UILanguageContext,
     UITranslationContext,
-
-    UIConfigContext,
-    useUIConfig,
 } from '@mpieva/psydb-ui-contexts';
 
-import { useCookieI18N } from '@mpieva/psydb-ui-hooks';
-import { createI18N } from '@mpieva/psydb-ui-lib';
+import { initI18N } from '@mpieva/psydb-ui-context-initializers';
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
-import ErrorBoundary from './error-boundary';
+import { ErrorBoundary } from '@mpieva/psydb-ui-lib';
 
 import BrandingWrapper from './branding-wrapper';
 import PublicLanding from './public-landing';
@@ -44,8 +41,7 @@ const App = () => {
 
     var setSelf = (nextSelf) => setState({ ...state, self: nextSelf });
 
-    var [ cookieI18N, setCookieI18N ] = useCookieI18N({ config });
-    var i18n = createI18N({ ...cookieI18N });
+    var [ i18n, setCookieI18N ] = initI18N({ config });
     var { language, translate, localeCode, locale } = i18n;
 
     var agent = createAgent({ language, localeCode });

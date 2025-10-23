@@ -26,7 +26,7 @@ import { useCookieI18N } from '@mpieva/psydb-ui-hooks';
 import { createI18N } from '@mpieva/psydb-ui-lib';
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
-import ErrorBoundary from './error-boundary';
+import { ErrorBoundary } from '@mpieva/psydb-ui-lib';
 
 import BrandingWrapper from './branding-wrapper';
 import PublicLanding from './public-landing';

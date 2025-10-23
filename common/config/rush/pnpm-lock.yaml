@@ -2097,6 +2097,24 @@ importers:
         specifier: ~17.0.2
         version: 17.0.2
 
+  ../../packages/psydb-ui-context-initializers:
+    devDependencies:
+      '@mpieva/psydb-common-translations':
+        specifier: workspace:*
+        version: link:../psydb-common-translations
+      '@mpieva/psydb-timezone-helpers':
+        specifier: workspace:*
+        version: link:../psydb-timezone-helpers
+      '@mpieva/psydb-ui-cookies':
+        specifier: workspace:*
+        version: link:../psydb-ui-cookies
+      '@mpieva/psydb-ui-date-locales':
+        specifier: workspace:*
+        version: link:../psydb-ui-date-locales
+      react:
+        specifier: ~17.0.2
+        version: 17.0.2
+
   ../../packages/psydb-ui-contexts:
     devDependencies:
       '@mpieva/psydb-core-utils':
@@ -2105,6 +2123,21 @@ importers:
       react:
         specifier: ~17.0.2
         version: 17.0.2
+
+  ../../packages/psydb-ui-cookies:
+    devDependencies:
+      react:
+        specifier: ~17.0.2
+        version: 17.0.2
+      react-cookie:
+        specifier: ~6.1.1
+        version: 6.1.3(react@17.0.2)
+
+  ../../packages/psydb-ui-date-locales:
+    devDependencies:
+      date-fns:
+        specifier: ~2.30.0
+        version: 2.30.0
 
   ../../packages/psydb-ui-form-control-wrappers:
     devDependencies:
@@ -2192,9 +2225,6 @@ importers:
       react:
         specifier: ~17.0.2
         version: 17.0.2
-      react-cookie:
-        specifier: ~6.1.1
-        version: 6.1.3(react@17.0.2)
       react-dom:
         specifier: ~17.0.2
         version: 17.0.2(react@17.0.2)
