@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { CookiesProvider } from 'react-cookie';
 import { HashRouter as Router } from 'react-router-dom';
 
 import {
@@ -7,7 +6,7 @@ import {
     composeAsComponent
 } from '@cdxoo/react-compose-contexts';
 
-import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
+import { createAgent, PublicAgent } from '@mpieva/psydb-ui-request-agents';
 
 import {
     AgentContext,
@@ -20,13 +19,13 @@ import {
     UITranslationContext,
 } from '@mpieva/psydb-ui-contexts';
 
+import { withCookiesProvider } from '@mpieva/psydb-ui-cookies';
 import { initI18N } from '@mpieva/psydb-ui-context-initializers';
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
-import { ErrorBoundary } from '@mpieva/psydb-ui-lib';
+import { ErrorBoundary, BrandingWrapper } from '@mpieva/psydb-ui-lib';
+import PublicLanding from '@mpieva/psydb-ui-public-landing';
 
-import BrandingWrapper from './branding-wrapper';
-import PublicLanding from './public-landing';
 import Main from './main'
 
 const App = () => {
@@ -87,7 +86,7 @@ const App = () => {
     var is200 = (authCurrentStatus === 200);
     useEffect(() => {
         setIsInitialized(false)
-        publicAgent.get('/api/init-ui').then(
+        PublicAgent.get('/api/init-ui').then(
             (response) => {
                 onSuccessfulUpdate(response);
                 setIsInitialized(true);
@@ -136,7 +135,7 @@ const App = () => {
             onFailedUpdate,
         };
         renderedView = (
-            <CommonContexts { ...contextBag } agent={ publicAgent }>
+            <CommonContexts { ...contextBag } agent={ PublicAgent }>
                 <BrandingWrapper>
                     <PublicLanding { ...publicBag } />
                 </BrandingWrapper>
@@ -166,28 +165,7 @@ var CommonContexts = composeAsComponent(
     withContext(AgentContext, 'agent')
 );
 
-var withCookiesProvider = (Component) => (ps) => {
-    return (
-        <CookiesProvider defaultSetOptions={{
-            // FIXME: theese cannot currently controlled via
-            // config; im not sure that is an issue since we only
-            // use it for i18n
-            path: '/', maxAge: 365*24*60*60
-        }}>
-            <Component { ...ps } />
-        </CookiesProvider>
-    )
-}
-
 const CookieWrapped = withCookiesProvider(App);
-
-//const ConfigWrapped = (ps) => {
-//    return (
-//        <UIConfigContext.Provider value={ config }>
-//            <CookieWrapped />
-//        </UIConfigContext.Provider>
-//    )
-//}
 
 export default CookieWrapped;
 

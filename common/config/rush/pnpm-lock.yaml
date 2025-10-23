@@ -1946,9 +1946,15 @@ importers:
       '@mpieva/psydb-ui-compositions':
         specifier: workspace:~0.1.0-alpha
         version: link:../psydb-ui-compositions
+      '@mpieva/psydb-ui-context-initializers':
+        specifier: workspace:~0.1.0-alpha
+        version: link:../psydb-ui-context-initializers
       '@mpieva/psydb-ui-contexts':
         specifier: workspace:~0.1.0-alpha
         version: link:../psydb-ui-contexts
+      '@mpieva/psydb-ui-cookies':
+        specifier: workspace:~0.1.0-alpha
+        version: link:../psydb-ui-cookies
       '@mpieva/psydb-ui-form-controls':
         specifier: workspace:~0.1.0-alpha
         version: link:../psydb-ui-form-controls
@@ -1961,6 +1967,9 @@ importers:
       '@mpieva/psydb-ui-lib':
         specifier: workspace:~0.1.0-alpha
         version: link:../psydb-ui-lib
+      '@mpieva/psydb-ui-public-landing':
+        specifier: workspace:~0.1.0-alpha
+        version: link:../psydb-ui-public-landing
       '@mpieva/psydb-ui-record-views':
         specifier: workspace:~0.1.0-alpha
         version: link:../psydb-ui-record-views
@@ -2024,9 +2033,6 @@ importers:
       react-bootstrap:
         specifier: ~1.5.2
         version: 1.5.2(react-dom@17.0.2)(react@17.0.2)
-      react-cookie:
-        specifier: ~6.1.1
-        version: 6.1.3(react@17.0.2)
       react-datetime:
         specifier: ~3.1.1
         version: 3.1.1(moment@2.29.4)(react@17.0.2)
@@ -2244,16 +2250,16 @@ importers:
         specifier: ~7.22.15
         version: 7.22.15(@babel/core@7.22.20)
       '@mpieva/psydb-core-utils':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-core-utils
       '@mpieva/psydb-schema-enums':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-schema-enums
       '@mpieva/psydb-ui-contexts':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-ui-contexts
       '@mpieva/psydb-ui-utils':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-ui-utils
       chai:
         specifier: ~4.3.7
@@ -2426,6 +2432,33 @@ importers:
       sift:
         specifier: ~16.0.1
         version: 16.0.1
+
+  ../../packages/psydb-ui-public-landing:
+    devDependencies:
+      '@mpieva/psydb-common-lib':
+        specifier: workspace:*
+        version: link:../psydb-common-lib
+      '@mpieva/psydb-core-utils':
+        specifier: workspace:*
+        version: link:../psydb-core-utils
+      '@mpieva/psydb-ui-contexts':
+        specifier: workspace:*
+        version: link:../psydb-ui-contexts
+      '@mpieva/psydb-ui-hooks':
+        specifier: workspace:*
+        version: link:../psydb-ui-hooks
+      '@mpieva/psydb-ui-layout':
+        specifier: workspace:*
+        version: link:../psydb-ui-layout
+      '@mpieva/psydb-ui-lib':
+        specifier: workspace:*
+        version: link:../psydb-ui-lib
+      '@mpieva/psydb-ui-utils':
+        specifier: workspace:*
+        version: link:../psydb-ui-utils
+      react:
+        specifier: ~17.0.2
+        version: 17.0.2
 
   ../../packages/psydb-ui-record-views:
     devDependencies:

@@ -15,4 +15,6 @@ export {
     enUSLocale,
     enGBLocale,
     deLocale,
+
+    localesByCode
 }

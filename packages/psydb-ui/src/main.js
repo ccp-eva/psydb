@@ -18,11 +18,9 @@ import { ServerTimezoneContext, useRequestAgent }
     from '@mpieva/psydb-ui-contexts';
 
 import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
-
+import { CopyNotice, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import { ErrorBoundary } from '@mpieva/psydb-ui-lib';
 
-import CopyNotice from './copy-notice';
 import SideNav from './side-nav';
 import TopFunctions from './top-functions';
 

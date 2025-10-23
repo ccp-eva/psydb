@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { CookiesProvider } from 'react-cookie';
 import { HashRouter as Router } from 'react-router-dom';
 
 import {
@@ -10,26 +9,19 @@ import {
 import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
 
 import {
-    SelfContext,
     AgentContext,
-    I18NContext,
-    
-    UILocaleContext,
-    UILanguageContext,
-    UITranslationContext,
-
     UIConfigContext,
-    useUIConfig,
+    SelfContext,
+    I18NContext,
 } from '@mpieva/psydb-ui-contexts';
 
-import { useCookieI18N } from '@mpieva/psydb-ui-hooks';
-import { createI18N } from '@mpieva/psydb-ui-lib';
+import { withCookiesProvider } from '@mpieva/psydb-ui-cookies';
+import { initI18N } from '@mpieva/psydb-ui-context-initializers';
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
-import { ErrorBoundary } from '@mpieva/psydb-ui-lib';
+import { ErrorBoundary, BrandingWrapper } from '@mpieva/psydb-ui-lib';
+import PublicLanding from '@mpieva/psydb-ui-public-landing';
 
-import BrandingWrapper from './branding-wrapper';
-import PublicLanding from './public-landing';
 import Main from './main-isolation'
 
 const App = () => {
@@ -39,8 +31,7 @@ const App = () => {
     var { authResponseStatus, self, config = {} } = state;
     var setSelf = (nextSelf) => setState({ ...state, self: nextSelf });
 
-    var [ cookieI18N, setCookieI18N ] = useCookieI18N({ config });
-    var i18n = createI18N({ ...cookieI18N });
+    var [ i18n, setCookieI18N ] = initI18N({ config });
     var { language, translate, localeCode, locale } = i18n;
     
     var agent = createAgent({ language, localeCode });
@@ -159,28 +150,7 @@ var CommonContexts = composeAsComponent(
     withContext(AgentContext, 'agent')
 );
 
-var withCookiesProvider = (Component) => (ps) => {
-    return (
-        <CookiesProvider defaultSetOptions={{
-            // FIXME: theese cannot currently controlled via
-            // config; im not sure that is an issue since we only
-            // use it for i18n
-            path: '/', maxAge: 365*24*60*60
-        }}>
-            <Component { ...ps } />
-        </CookiesProvider>
-    )
-}
-
 const CookieWrapped = withCookiesProvider(App);
-
-//const ConfigWrapped = (ps) => {
-//    return (
-//        <UIConfigContext.Provider value={ config }>
-//            <CookieWrapped />
-//        </UIConfigContext.Provider>
-//    )
-//}
 
 export default CookieWrapped;
 

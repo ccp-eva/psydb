@@ -1,5 +1,4 @@
 export { default as datefns } from './date-fns';
-export { default as createI18N } from './create-i18n';
 
 export {
     RecordPicker,
@@ -9,6 +8,7 @@ export {
 
 export { ErrorResponseModal } from './modals';
 export { default as ErrorBoundary } from './error-boundary';
+export { default as BrandingWrapper } from './branding-wrapper';
 
 export { default as RecordListContainer } from './record-list-container';
 export { default as ExtendedRecordList } from './extended-record-list';

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useUIConfig } from '@mpieva/psydb-ui-contexts';
+
 import ccporbgrey from './ccp-orb-grayscale2.svg';
 import ccporb from './ccp-orb.svg';
 
@@ -21,7 +22,7 @@ const CopyNotice = (ps) => {
                     lineHeight: '110%',
                     color: '#b5b5b5',
                 }}>
-                    &copy;2024 MPI EVA<br />
+                    &copy;2025 MPI EVA<br />
                     Department of Comparative Cultural Psychology
                 </div>
             </div>

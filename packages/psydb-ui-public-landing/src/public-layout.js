@@ -1,7 +1,6 @@
 import React from 'react';
 import { useUIConfig } from '@mpieva/psydb-ui-contexts';
-
-import CopyNotice from '../copy-notice';
+import { CopyNotice } from '@mpieva/psydb-ui-layout';
 
 import CenterBox from './center-box';
 import LogoImage from './logo-image';
