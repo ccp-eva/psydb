@@ -69,7 +69,11 @@ const initStateFromAPI = (bag) => {
         isInitialized, 
         config,
         authCurrentStatus, authResponseStatus,
-        self, setSelf
+        self, setSelf,
+
+        // NOTE: sign-out will trigger onSuccessfulUpdate()
+        onSuccessfulUpdate,
+        onFailedUpdate,
     }
 }
 

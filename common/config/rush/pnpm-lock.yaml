@@ -2117,6 +2117,9 @@ importers:
       '@mpieva/psydb-ui-date-locales':
         specifier: workspace:*
         version: link:../psydb-ui-date-locales
+      '@mpieva/psydb-ui-request-agents':
+        specifier: workspace:*
+        version: link:../psydb-ui-request-agents
       react:
         specifier: ~17.0.2
         version: 17.0.2

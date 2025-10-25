@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { HashRouter as Router } from 'react-router-dom';
 
-import {
-    withContext,
-    composeAsComponent
-} from '@cdxoo/react-compose-contexts';
+import { withContext, composeAsComponent }
+    from '@cdxoo/react-compose-contexts';
 
-import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
-
-import {
-    AgentContext,
-    UIConfigContext,
-    SelfContext,
-    I18NContext,
-} from '@mpieva/psydb-ui-contexts';
-
-import { withCookiesProvider } from '@mpieva/psydb-ui-cookies';
-import { initI18N } from '@mpieva/psydb-ui-context-initializers';
+import { createAgent }
+    from '@mpieva/psydb-ui-request-agents';
+import { withCookiesProvider }
+    from '@mpieva/psydb-ui-cookies';
+import { initI18N, initStateFromAPI }
+    from '@mpieva/psydb-ui-context-initializers';
+import { AgentContext, UIConfigContext, SelfContext, I18NContext }
+    from '@mpieva/psydb-ui-contexts';
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
 import { ErrorBoundary, BrandingWrapper } from '@mpieva/psydb-ui-lib';
@@ -25,71 +20,21 @@ import * as Public from '@mpieva/psydb-ui-public-landing';
 import Main from './main-isolation'
 
 const App = () => {
-    var [ isInitialized, setIsInitialized ] = useState(false);
+    var {
+        isInitialized, config,
+        authCurrentStatus, authResponseStatus,
+        self, setSelf,
 
-    var [ state, setState ] = useState({});
-    var { authResponseStatus, self, config = {} } = state;
-    var setSelf = (nextSelf) => setState({ ...state, self: nextSelf });
-
-    var [ i18n, setCookieI18N ] = initI18N({ config });
-    var { language, translate, localeCode, locale } = i18n;
+        onFailedUpdate,
+        onSuccessfulUpdate,
+    } = initStateFromAPI();
     
-    var agent = createAgent({ language, localeCode });
-
-    var onSuccessfulUpdate = (response) => {
-        // FIXME: find better way to determine logout
-        var data = response?.data?.data;
-        if (data?.authStatusCode) {
-            setState({
-                self: data.self,
-                authResponseStatus: data.authStatusCode,
-                config: data.config,
-            })
-        }
-        else if (data?.record) {
-            setState({
-                self: response.data.data,
-                authResponseStatus: response.status,
-                config,
-            });
-        }
-        else {
-            // NOTE: reset auth status on logout /api/self on logout
-            setState({ config });
-        }
-    }
-
-    var onFailedUpdate = (error) => {
-        var statusCode = error.response?.status;
-        if (statusCode) {
-            setState({ authResponseStatus: statusCode });
-        }
-        else {
-            throw error;
-        }
-    }
-
-    var is200 = (authResponseStatus === 200);
-    useEffect(() => {
-        setIsInitialized(false)
-        publicAgent.get('/api/init-ui').then(
-            (response) => {
-                onSuccessfulUpdate(response);
-                setIsInitialized(true);
-            },
-            (error) => {
-                onFailedUpdate(error);
-                setIsInitialized(true);
-            }
-        )
-    }, [ is200 ]);
+    var [ i18n, setI18N ] = initI18N({ config });
+    var agent = createAgent({ ...i18n });
 
     var contextBag = {
         config,
-        i18n: [ i18n, setCookieI18N ],
-        language: [ language, setCookieI18N ],
-        locale,
-        translate,
+        i18n: [ i18n, setI18N ]
     }
 
     if (!isInitialized) {
@@ -115,24 +60,21 @@ const App = () => {
     }
     else {
         var publicBag = {
-            authResponseStatus,
-            onSuccessfulUpdate,
-            onFailedUpdate,
+            authCurrentStatus, authResponseStatus,
+            onSuccessfulUpdate, onFailedUpdate,
         };
         renderedView = (
             <Public.Contexts { ...contextBag }>
                 <BrandingWrapper>
                     <Public.Landing { ...publicBag } />
                 </BrandingWrapper>
-            </CommonContexts>
+            </Public.Contexts>
         )
     }
 
     return (
         <ErrorBoundary>
-            <Router>
-                { renderedView }
-            </Router>
+            <Router>{ renderedView }</Router>
         </ErrorBoundary>
     );
 }
@@ -142,12 +84,9 @@ const AppInitializing = () => (
 )
 
 var CommonContexts = composeAsComponent(
+    withContext(AgentContext, 'agent'),
     withContext(UIConfigContext, 'config'),
     withContext(I18NContext, 'i18n'),
-    withContext(UILocaleContext, 'locale'),
-    withContext(UILanguageContext, 'language'),
-    withContext(UITranslationContext, 'translate'),
-    withContext(AgentContext, 'agent')
 );
 
 const CookieWrapped = withCookiesProvider(App);

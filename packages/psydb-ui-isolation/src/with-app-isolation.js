@@ -4,19 +4,18 @@ import { HashRouter as Router } from 'react-router-dom';
 import { withContext, composeAsComponent }
     from '@cdxoo/react-compose-contexts';
 
-import { PublicAgent, createAgent }
-    from '@mpieva/psydb-ui-request-agents'
+import { createAgent } from '@mpieva/psydb-ui-request-agents'
 
 import { AgentContext, UIConfigContext, SelfContext, I18NContext }
     from '@mpieva/psydb-ui-contexts';
 
 import { withCookiesProvider } from '@mpieva/psydb-ui-cookies';
-import { initI18N } from '@mpieva/psydb-ui-context-initializers';
+import { initI18N, initStateFromAPI }
+    from '@mpieva/psydb-ui-context-initializers';
 
 import { ErrorBoundary, BrandingWrapper } from '@mpieva/psydb-ui-lib';
 import * as Public from '@mpieva/psydb-ui-public-landing';
 
-import initStateFromAPI from './init-state-from-api';
 import withMainIsolation from './with-main-isolation';
 
 const withAppIsolation = (Component) => {
@@ -27,7 +26,7 @@ const withAppIsolation = (Component) => {
             isInitialized, config,
             authCurrentStatus, authResponseStatus,
             self, setSelf,
-        } = initStateFromApi();
+        } = initStateFromAPI();
 
         var [ i18n, setI18N ] = initI18N({ config });
         var agent = createAgent({ ...i18n });
