@@ -57,7 +57,7 @@ const EditForm = (ps) => {
     ];
 
     if (IS_WKPRC) {
-        paths = paths.filter(it => ([ 'shorthand' ].includes(it)));
+        paths = paths.filter(it => (![ 'shorthand' ].includes(it)));
         paths.push('experimentNames');
     }
 
