@@ -8,7 +8,7 @@ import { withField } from '@cdxoo/formik-utils';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 
 import { translate } from '@mpieva/psydb-common-translations';
-import { useServerTimezone, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { Form } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -39,7 +39,7 @@ const Control = (ps) => {
     //    value = datefns.startOfDay(new Date(value).getTime() + 1)
     //}
 
-    //var serverTimezone = useContext(ServerTimezoneContext);
+    //var { serverTimezone } = useUIConfig();
     //var clientTimezone = getSystemTimezone();
 
     var inputClassName = classnames([

@@ -64,11 +64,6 @@ var createRouting = (bag = {}) => {
         ]})
     );
 
-    router.get('/server-timezone',
-        withSelfAuth(),
-        endpoints.special.serverTimezone
-    );
-
     router.get('/self', ...withGetStages({
         endpoint: endpoints.self.account,
         enableApiKeyAuth: true,
