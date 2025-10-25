@@ -1,12 +1,7 @@
 import React from 'react';
-import { useUITranslation, useUIConfig } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
-
-import {
-    DefaultForm,
-    Fields,
-    FormBox,
-} from '@mpieva/psydb-ui-lib';
+import { DefaultForm, Fields, FormBox } from '@mpieva/psydb-ui-lib';
 
 export const Component = (ps) => {
     var {
@@ -21,7 +16,7 @@ export const Component = (ps) => {
         renderFormBox = true,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var renderedForm = (
         <DefaultForm
@@ -59,8 +54,8 @@ const FormFields = (ps) => {
     var { crtSettings, related, permissions } = ps;
     var { fieldDefinitions } = crtSettings;
     
-    var { dev_enableWKPRCPatches } = useUIConfig();
-    var translate = useUITranslation();
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
+    var [{ translate }] = useI18N();
 
     return (
         <>
@@ -69,11 +64,13 @@ const FormFields = (ps) => {
                 dataXPath='$.name'
                 required
             />
-            <Fields.SaneString
-                label={ translate('Shorthand') }
-                dataXPath='$.shorthand'
-                required
-            />
+            { !IS_WKPRC && (
+                <Fields.SaneString
+                    label={ translate('Shorthand') }
+                    dataXPath='$.shorthand'
+                    required
+                />
+            )}
             <Fields.DateOnlyServerSide
                 label={ translate('Start') }
                 dataXPath='$.runningPeriod.start'
@@ -83,7 +80,7 @@ const FormFields = (ps) => {
                 label={ translate('End') }
                 dataXPath='$.runningPeriod.end'
             />
-            { !dev_enableWKPRCPatches && (
+            { !IS_WKPRC && (
                 <Fields.DefaultBool
                     label={ translate('Subjects can be tested multiple times') }
                     dataXPath='$.enableFollowUpExperiments'
@@ -106,6 +103,13 @@ const FormFields = (ps) => {
                 dataXPath='$.studyTopicIds'
                 collection='studyTopic'
             />
+            
+            { IS_WKPRC && (
+                <Fields.SaneStringList
+                    label={ translate('_wkprc_experimentNames') }
+                    dataXPath='$.experimentNames'
+                />
+            )}
 
             <Fields.Custom
                 fieldDefinitions={ fieldDefinitions }
