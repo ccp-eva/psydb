@@ -9,14 +9,15 @@ var {
     SaneString,
 } = require('@mpieva/psydb-schema-fields');
 
-var createSchemaForRecordType = ({
-    collectionName,
-    recordType,
-    subChannelKey,
-    fullSchema,
-    prefetchedCustomRecordTypes,
-    additionalSchemaCreatorArgs,
-}) => {
+var createSchemaForRecordType = (bag) => {
+    var {
+        collectionName,
+        recordType,
+        subChannelKey,
+        fullSchema,
+        prefetchedCustomRecordTypes,
+        additionalSchemaCreatorArgs,
+    } = bag;
 
     var collectionCreatorData = allSchemaCreators[collectionName];
     if (!collectionCreatorData) {

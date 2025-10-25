@@ -79,7 +79,7 @@ describe('csv-import/experiment/create-wkprc-apestudies-default', function () {
         console.dir(ejson(experiments), { depth: null });
     });
 
-    it.only('mono-comment issue', async function () {
+    it('mono-comment issue', async function () {
         var { _id: fileId } = await this.createFakeFileUpload({
             db, buffer: loadCSV(
                 'experiment-csv/wkprc-apestudies-default/combination-with-mono-comment'

@@ -1,25 +1,32 @@
 'use strict';
 var inline = require('@cdxoo/inline-text');
-var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
-var {
-    ExactObject,
-} = require('@mpieva/psydb-schema-fields');
+var apiConfig = require('@mpieva/psydb-api-config');
+var allSchemaCreators = require('@mpieva/psydb-schema-creators');
+var createSchemaForRecordType
+    = require('@mpieva/psydb-common-lib/src/create-schema-for-record-type');
 
 var fetchOneCustomRecordType = require('./fetch-one-custom-record-type');
 var fetchCustomRecordTypes = require('./fetch-custom-record-types');
-var createSchemaForRecordType = require('@mpieva/psydb-common-lib/src/create-schema-for-record-type');
 
-var createSchemaForRecordTypeWithAutoFetch = async ({
-    db,
-    collectionName,
-    recordType,
-    subChannelKey,
-    fullSchema,
-    prefetchedCustomRecordTypes,
-    additionalSchemaCreatorArgs
-}) => {
+var createSchemaForRecordTypeWithAutoFetch = async (bag) => {
+    var {
+        db,
+        collectionName,
+        recordType,
+        subChannelKey,
+        fullSchema,
+        prefetchedCustomRecordTypes,
+        // NOTE: this should be called additionalSchemaCreatorBag
+        // as it is an object not an arguments list
+        additionalSchemaCreatorArgs
+    } = bag;
+
     additionalSchemaCreatorArgs = additionalSchemaCreatorArgs || {};
+
+    additionalSchemaCreatorArgs = {
+        ...additionalSchemaCreatorArgs, apiConfig
+    };
 
     var collectionCreatorData = allSchemaCreators[collectionName];
     if (!collectionCreatorData) {

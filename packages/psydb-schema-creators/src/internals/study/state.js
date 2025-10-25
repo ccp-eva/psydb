@@ -1,11 +1,7 @@
 'use strict';
-var inline = require('@cdxoo/inline-text'),
-    CustomProps = require('../../common/custom-props'),
-    systemPermissionsSchema = require('../../common/system-permissions-schema');
-
- var {
-     SubjectSelectionSettingsList
- } = require('@mpieva/psydb-schema-fields-special');
+ var { SubjectSelectionSettingsList, SystemPermissions }
+    = require('@mpieva/psydb-schema-fields-special');
+var { CustomProps } = require('../../common');
 
 var {
     ExactObject,
@@ -14,163 +10,155 @@ var {
     ForeignId,
     ForeignIdList,
 
-    IdentifierString,
     SaneString,
-    Color,
     DateOnlyServerSideInterval,
     CustomRecordTypeKey,
 } = require('@mpieva/psydb-schema-fields');
 
-var StudyState = (ps = {}) => {
+var StudyState = (bag = {}) => {
     var {
+        apiConfig,
+
         customFieldDefinitions,
         subjectRecordTypeRecords,
         enableInternalProps,
-    } = ps;
+    } = bag;
+
+    var { dev_enableWKPRCPatches: IS_WKPRC } = apiConfig;
+
+    var required = {
+        'name': SaneString({
+            title: 'Bezeichnung',
+            minLength: 1,
+        }),
+        'shorthand': SaneString({
+            title: 'Kürzel',
+            minLength: 1,
+        }),
+        'runningPeriod': DateOnlyServerSideInterval({
+            required: [ 'start', 'end' ],
+            additionalEndKeywords: { isNullable: true },
+        }),
+        'researchGroupIds': ForeignIdList({
+            minItems: 1,
+            collection: 'researchGroup',
+        }),
+        'custom': CustomProps({ customFieldDefinitions }),
+        'systemPermissions': SystemPermissions(),
+    }
+
+    var optional = {
+        'scientistIds': ForeignIdList({
+            collection: 'personnel', minItems: 1,
+        }),
+        'studyTopicIds': ForeignIdList({
+            collection: 'studyTopic', minItems: 0,
+        }),
+        'excludedOtherStudyIds': ForeignIdList({
+            collection: 'study', minItems: 0,
+        }),
+
+        // TODO: move to labProcedureSettings
+        'enableFollowUpExperiments': DefaultBool(),
+    }
+
+    if (IS_WKPRC) {
+        delete required.shorthand;
+
+        required['experimentNames'] = DefaultArray({
+            items: SaneString({ minLength: 1 }),
+            minItems: 1
+        });
+    }
+
+    var compat = _COMPAT_PROPS({ enableInternalProps });
 
     var schema = ExactObject({
         properties: {
-            
-            ...(enableInternalProps && {
-                // TODO: remove this property
-                // we currently just keep it around to
-                // not need to update the database
-                isCreateFinalized: DefaultBool({ default: true}),
-            }),
-
-            name: SaneString({
-                title: 'Bezeichnung',
-                minLength: 1,
-            }),
-            shorthand: SaneString({
-                title: 'Kürzel',
-                minLength: 1,
-            }),
-            scientistIds: ForeignIdList({
-                title: 'Wissenschaftler:innen',
-                collection: 'personnel',
-                minItems: 1,
-            }),
-
-            runningPeriod: DateOnlyServerSideInterval({
-                title: 'Laufzeit',
-                required: [ 'start', 'end' ],
-                additionalStartKeywords: { title: 'Beginn' },
-                additionalEndKeywords: { title: 'Ende', isNullable: true },
-            }),
-
-            studyTopicIds: ForeignIdList({
-                title: 'Themengebiete',
-                collection: 'studyTopic',
-                minItems: 0,
-            }),
-
-            // TODO: move to labProcedureSettings
-            enableFollowUpExperiments: DefaultBool({
-                title: 'Proband:innen können mehrfach getestet werden'
-            }),
-
-            researchGroupIds: ForeignIdList({
-                title: 'Forschungsgruppen',
-                minItems: 1,
-                collection: 'researchGroup',
-                description: inline`
-                    this list of ids will be used to get the permissions
-                    for when we search in this studies context
-                    for subjects or when checking foreign key field
-                    permissions on the related collections records
-                    i.e. it overrides the user role permission
-                    in certain cases
-                `,
-            }),
-            
-            custom: CustomProps({ customFieldDefinitions }),
-            systemPermissions: systemPermissionsSchema,
-            
-            // TODO: obsolete
-            inhouseTestLocationSettings: DefaultArray({
-                systemType: 'InhouseTestLocationSettings',
-                items: ExactObject({
-                    systemType: 'InhouseTestLocationSettingsItem',
-                    title: 'Test-Locations',
-                    properties: {
-                        customRecordType: CustomRecordTypeKey({
-                            title: 'Location-Typ',
-                            collection: 'location',
-                        }),
-                        enabledLocationIds: ForeignIdList({
-                            title: 'Zugewiesen',
-                            collection: 'location',
-                            // TODO: record type $data ??
-                        })
-                    },
-                    required: [
-                        'customRecordType',
-                        'enabledLocationIds',
-                    ]
-                })
-            }),
-
-            // FIXME: should probably be in internals
-            // TODO: obsolete
-            selectionSettingsBySubjectType: { type: 'array' },
-            /*selectionSettingsBySubjectType: SubjectSelectionSettingsList({
-                subjectRecordTypeRecords,
-            }),*/
-
-            excludedOtherStudyIds: ForeignIdList({
-                collection: 'study',
-            }),
-
-            ...(enableInternalProps && {
-                interals: {
-                    type: 'object',
-                    properties: {
-                        /*experimentOperatorTeamIds: {
-                            type: 'array',
-                            default: [],
-                            items: ForeignId({
-                                collection: 'experimentOperatorTeam'
-                            }),
-                        },*/
-
-                        /*...(enableInternalProps && ({
-                            isNew: { type: 'boolean', default: true },
-                            isDirty: { type: 'boolean', default: true },
-                        })),
-                        nextSettings: StudySettings({
-                            enableFlags: true,
-                            enableInternalProps,
-                        }),
-                        settings: StudySettings({
-                            enableInternalProps,
-                        })*/
-                    },
-                    required: [
-                        'excludedOtherStudyIds',
-                        //'experimentOperatorTeamIds',
-                        //'nextSettings',
-                        //'settings',
-                    ],
-                },
-            })
+            ...required,
+            ...optional,
+            ...compat
         },
         required: [
-            'name',
-            'shorthand',
-            'runningPeriod',
-            'researchGroupIds',
-            'custom',
-            'systemPermissions',
-            ...(
-                enableInternalProps
-                ? [ 'internals' ]
-                : []
-            ),
+            ...Object.keys(required),
+            ...(enableInternalProps ? [ 'internals' ] : []),
         ],
     });
 
     return schema;
 };
+
+var _COMPAT_PROPS = ({ enableInternalProps }) => ({
+    ...(enableInternalProps && {
+        // TODO: remove this property
+        // we currently just keep it around to
+        // not need to update the database
+        'isCreateFinalized': DefaultBool({ default: true}),
+    }),
+
+    // TODO: obsolete
+    inhouseTestLocationSettings: DefaultArray({
+        systemType: 'InhouseTestLocationSettings',
+        items: ExactObject({
+            systemType: 'InhouseTestLocationSettingsItem',
+            title: 'Test-Locations',
+            properties: {
+                customRecordType: CustomRecordTypeKey({
+                    title: 'Location-Typ',
+                    collection: 'location',
+                }),
+                enabledLocationIds: ForeignIdList({
+                    title: 'Zugewiesen',
+                    collection: 'location',
+                    // TODO: record type $data ??
+                })
+            },
+            required: [
+                'customRecordType',
+                'enabledLocationIds',
+            ]
+        })
+    }),
+
+    // FIXME: should probably be in internals
+    // TODO: obsolete
+    selectionSettingsBySubjectType: { type: 'array' },
+    /*selectionSettingsBySubjectType: SubjectSelectionSettingsList({
+        subjectRecordTypeRecords,
+    }),*/
+    
+    ...(enableInternalProps && {
+        interals: { // XXX: sic
+            type: 'object',
+            properties: {
+                /*experimentOperatorTeamIds: {
+                    type: 'array',
+                    default: [],
+                    items: ForeignId({
+                        collection: 'experimentOperatorTeam'
+                    }),
+                },*/
+
+                /*...(enableInternalProps && ({
+                    isNew: { type: 'boolean', default: true },
+                    isDirty: { type: 'boolean', default: true },
+                })),
+                nextSettings: StudySettings({
+                    enableFlags: true,
+                    enableInternalProps,
+                }),
+                settings: StudySettings({
+                    enableInternalProps,
+                })*/
+            },
+            required: [
+                'excludedOtherStudyIds',
+                //'experimentOperatorTeamIds',
+                //'nextSettings',
+                //'settings',
+            ],
+        },
+    })
+})
 
 module.exports = StudyState;
