@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { PublicAgent } from '@mpieva/psydb-ui-request-agents';
 
 const initStateFromAPI = (bag) => {
-    var { state, setState, isInitialized, setIsInitialized } = bag;
+    var [ isInitialized, setIsInitialized ] = useState(false);
+    var [ state, setState ] = useState({});
 
     var {
         authCurrentStatus = 401,
@@ -61,4 +62,15 @@ const initStateFromAPI = (bag) => {
             }
         )
     }, [ is200 ]);
+
+    var setSelf = (next) => setState((state) => ({ ...state, self: next }));
+
+    return {
+        isInitialized, 
+        config,
+        authCurrentStatus, authResponseStatus,
+        self, setSelf
+    }
 }
+
+export default initStateFromAPI;

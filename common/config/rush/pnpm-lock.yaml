@@ -2435,6 +2435,9 @@ importers:
 
   ../../packages/psydb-ui-public-landing:
     devDependencies:
+      '@cdxoo/react-compose-contexts':
+        specifier: ~1.0.0-beta.0
+        version: 1.0.0-beta.0(react@17.0.2)
       '@mpieva/psydb-common-lib':
         specifier: workspace:*
         version: link:../psydb-common-lib
@@ -2453,6 +2456,9 @@ importers:
       '@mpieva/psydb-ui-lib':
         specifier: workspace:*
         version: link:../psydb-ui-lib
+      '@mpieva/psydb-ui-request-agents':
+        specifier: workspace:*
+        version: link:../psydb-ui-request-agents
       '@mpieva/psydb-ui-utils':
         specifier: workspace:*
         version: link:../psydb-ui-utils

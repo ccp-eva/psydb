@@ -24,7 +24,7 @@ import { initI18N } from '@mpieva/psydb-ui-context-initializers';
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
 import { ErrorBoundary, BrandingWrapper } from '@mpieva/psydb-ui-lib';
-import PublicLanding from '@mpieva/psydb-ui-public-landing';
+import * as Public from '@mpieva/psydb-ui-public-landing';
 
 import Main from './main'
 
@@ -129,17 +129,15 @@ const App = () => {
     }
     else {
         var publicBag = {
-            authCurrentStatus,
-            authResponseStatus,
-            onSuccessfulUpdate,
-            onFailedUpdate,
+            authCurrentStatus, authResponseStatus,
+            onSuccessfulUpdate, onFailedUpdate,
         };
         renderedView = (
-            <CommonContexts { ...contextBag } agent={ PublicAgent }>
+            <Public.Contexts { ...contextBag }>
                 <BrandingWrapper>
-                    <PublicLanding { ...publicBag } />
+                    <Public.Landing { ...publicBag } />
                 </BrandingWrapper>
-            </CommonContexts>
+            </Public.Contexts>
         )
     }
 

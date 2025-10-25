@@ -19,8 +19,10 @@
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "devDependencies": {
     "react": "~17.0.2",
+    "@cdxoo/react-compose-contexts": "~1.0.0-beta.0",
     "@mpieva/psydb-core-utils": "workspace:*",
     "@mpieva/psydb-common-lib": "workspace:*",
+    "@mpieva/psydb-ui-request-agents": "workspace:*",
     "@mpieva/psydb-ui-contexts": "workspace:*",
     "@mpieva/psydb-ui-hooks": "workspace:*",
     "@mpieva/psydb-ui-layout": "workspace:*",

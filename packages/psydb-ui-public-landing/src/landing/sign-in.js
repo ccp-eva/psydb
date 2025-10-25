@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-    useUIConfig,
-    useUITranslation,
-    useUILanguage
-} from '@mpieva/psydb-ui-contexts';
-
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { AsyncButton, SmallFormFooter } from '@mpieva/psydb-ui-layout';
 import { useWriteRequest } from '@mpieva/psydb-ui-hooks';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
@@ -18,7 +13,7 @@ const SignIn = (ps) => {
         onFailedUpdate
     } = ps;
 
-    var translate = useUITranslation(); 
+    var [{ translate }] = useI18N(); 
 
     var write = useWriteRequest((agent, formData) => {
         return agent.post('/api/sign-in', formData)
@@ -54,7 +49,8 @@ const SignIn = (ps) => {
 
 const SignInFormBody = (ps) => {
     var { isTransmitting, hasError } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N(); 
+    
     return (
         <>
             <Fields.Email

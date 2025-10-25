@@ -1,8 +1,8 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 const LogoImageOverlay = () => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <h5

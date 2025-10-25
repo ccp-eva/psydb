@@ -1,9 +1,9 @@
 import React from 'react';
-import { useUIConfig, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 
 const LogoImage = (ps) => {
     var config = useUIConfig();
-    var [ language ] = useUILanguage();
+    var [{ language }] = useI18N();
 
     var { logos, style } = config.branding.landing;
 

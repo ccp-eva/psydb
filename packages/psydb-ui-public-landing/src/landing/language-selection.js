@@ -1,11 +1,8 @@
 import React from 'react';
-import {
-    useUITranslation,
-    useUILanguage
-} from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 const LanguageSelection = () => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <div className='mt-1 d-flex justify-content-end'>
             <span>{ translate('Language') }:</span>
@@ -17,9 +14,9 @@ const LanguageSelection = () => {
 
 const LangButton = (ps) => {
     var { code } = ps;
-    var [ language, setLanguage ] = useUILanguage();
+    var [ i18n, setI18N ] = useI18N();
     
-    var isActive = ( language === code );
+    var isActive = ( i18n.language === code );
 
     var className = (
         isActive
@@ -30,7 +27,7 @@ const LangButton = (ps) => {
     var onClick = (
         isActive
         ? undefined
-        : () => setLanguage({ language: code })
+        : () => setI18N({ language: code })
     );
 
     var bag = {

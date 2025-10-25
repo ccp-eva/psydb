@@ -14,31 +14,24 @@ import { withCookiesProvider } from '@mpieva/psydb-ui-cookies';
 import { initI18N } from '@mpieva/psydb-ui-context-initializers';
 
 import { ErrorBoundary, BrandingWrapper } from '@mpieva/psydb-ui-lib';
-import PublicLanding from '@mpieva/psydb-ui-public-landing';
+import * as Public from '@mpieva/psydb-ui-public-landing';
 
+import initStateFromAPI from './init-state-from-api';
 import withMainIsolation from './with-main-isolation';
 
 const withAppIsolation = (Component) => {
     var MainIsolation = withMainIsolation(Component);
 
     var AppIsolation = () => {
-        var [ isInitialized, setIsInitialized ] = useState(false);
-        var [ state, setState ] = useState({});
         var {
-            authCurrentStatus = 401,
-            authResponseStatus = undefined,
-            self, config = {}
-        } = state;
+            isInitialized, config,
+            authCurrentStatus, authResponseStatus,
+            self, setSelf,
+        } = initStateFromApi();
 
-        var [ i18n, setI18N ] = initI18N();
+        var [ i18n, setI18N ] = initI18N({ config });
         var agent = createAgent({ ...i18n });
 
-        // XXX: this feels relly dumb
-        initStateFromApi({
-            state, setState, isInitialized, setIsInitialized
-        });
-
-        var setSelf = (nextSelf) => setState({ ...state, self: nextSelf });
         var contextBag = {
             agent, config, i18n: [ i18n, setI18N ],
         }
@@ -65,11 +58,11 @@ const withAppIsolation = (Component) => {
                 onSuccessfulUpdate, onFailedUpdate,
             };
             renderedView = (
-                <CommonContexts { ...contextBag } agent={ PublicAgent }>
+                <Public.Contexts { ...contextBag }>
                     <BrandingWrapper>
-                        <PublicLanding { ...publicBag } />
+                        <Public.Landing { ...publicBag } />
                     </BrandingWrapper>
-                </CommonContexts>
+                </Public.Contexts>
             )
         }
 

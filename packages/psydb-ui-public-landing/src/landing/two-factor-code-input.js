@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { only } from '@mpieva/psydb-core-utils';
 import { inlineText } from '@mpieva/psydb-common-lib';
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import {
-    useUIConfig,
-    useUITranslation,
-    useUILanguage
-} from '@mpieva/psydb-ui-contexts';
-
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { useWriteRequest, useModalReducer } from '@mpieva/psydb-ui-hooks';
 
 import { 
@@ -33,7 +28,7 @@ const TwoFactorCodeInput = (ps) => {
     ]});
 
     var config = useUIConfig();
-    var translate = useUITranslation(); 
+    var [{ translate }] = useI18N(); 
     
     var match = useWriteRequest((agent, formData) => {
         return agent.post('/api/two-factor-code/match', formData)
@@ -99,7 +94,7 @@ const TwoFactorCodeInput = (ps) => {
 }
 
 const InfoText = () => {
-    var translate = useUITranslation(); 
+    var [{ translate }] = useI18N(); 
     return (
         <>
             <header><b>
@@ -114,7 +109,7 @@ const InfoText = () => {
 }
 
 const TwoFactorCodeResender = () => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N(); 
     var modal = useModalReducer();
 
     var resend = useWriteRequest((agent) => {
@@ -140,7 +135,7 @@ const TwoFactorCodeResender = () => {
 
 const TwoFactorCodeResenderModalBody = (ps) => {
     var { onHide } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N(); 
 
     return (
         <div>

@@ -20,7 +20,7 @@ import { initI18N } from '@mpieva/psydb-ui-context-initializers';
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
 import { ErrorBoundary, BrandingWrapper } from '@mpieva/psydb-ui-lib';
-import PublicLanding from '@mpieva/psydb-ui-public-landing';
+import * as Public from '@mpieva/psydb-ui-public-landing';
 
 import Main from './main-isolation'
 
@@ -120,9 +120,9 @@ const App = () => {
             onFailedUpdate,
         };
         renderedView = (
-            <CommonContexts { ...contextBag } agent={ publicAgent }>
+            <Public.Contexts { ...contextBag }>
                 <BrandingWrapper>
-                    <PublicLanding { ...publicBag } />
+                    <Public.Landing { ...publicBag } />
                 </BrandingWrapper>
             </CommonContexts>
         )
