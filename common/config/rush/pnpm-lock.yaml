@@ -1061,16 +1061,16 @@ importers:
         specifier: ~2.0.1
         version: 2.0.1
       '@mpieva/psydb-api-config':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-api-config
       '@mpieva/psydb-core-utils':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-core-utils
       '@mpieva/psydb-fixtures':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-fixtures
       '@mpieva/psydb-mongo-adapter':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-mongo-adapter
       chai:
         specifier: ~4.3.7
@@ -1287,6 +1287,9 @@ importers:
       '@cdxoo/flat':
         specifier: ~0.1.1
         version: 0.1.1
+      '@cdxoo/json-base64':
+        specifier: ~1.0.0
+        version: 1.0.0
       '@cdxoo/jsonpointer-to-objectpath':
         specifier: ~1.0.0
         version: 1.0.0
@@ -1730,13 +1733,13 @@ importers:
         specifier: ~1.0.1
         version: 1.0.1
       '@mpieva/psydb-schema-fields':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-schema-fields
       '@mpieva/psydb-schema-fields-special':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-schema-fields-special
       '@mpieva/psydb-schema-helpers':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-schema-helpers
       jsonpointer:
         specifier: ~5.0.1
@@ -4558,7 +4561,6 @@ packages:
     resolution: {integrity: sha512-PCzSQTriNYkKLnI+huKoIWPKkQz8+v/7QQCViL2sHnkJJptd0IRGfh+EG2FXeG/VaKa2IxN4hnBle8Ik91gpOA==}
     dependencies:
       js-base64: 3.7.7
-    dev: true
 
   /@cdxoo/jsonpointer-to-objectpath@1.0.0:
     resolution: {integrity: sha512-irVseGCgtDKd+bUnHvRe/J8/nm50saOxW1mw5xfo13d2ni82q/e/sEwd1x7lYlweVYRkE+pQImJhScaOftFxoQ==}

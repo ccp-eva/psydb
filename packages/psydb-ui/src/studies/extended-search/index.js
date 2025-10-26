@@ -1,44 +1,18 @@
 import React, { useState } from 'react';
-import { Base64 } from 'js-base64';
 import { useHistory, useLocation } from 'react-router';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { JsonBase64 } from '@mpieva/psydb-core-utils';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
-import {
-    useFetchAll,
-    useURLSearchParams
-} from '@mpieva/psydb-ui-hooks';
+import { useFetchAll, useURLSearchParams } from '@mpieva/psydb-ui-hooks';
 
-import {
-    Button,
-    LoadingIndicator,
-    TabNav,
-    PageWrappers,
-} from '@mpieva/psydb-ui-layout';
+import { LoadingIndicator, TabNav, PageWrappers }
+    from '@mpieva/psydb-ui-layout';
 
-import {
-    FormBox,
-    DefaultForm,
-    ExtendedSearchFields as Fields
-} from '@mpieva/psydb-ui-lib';
+import { DefaultForm } from '@mpieva/psydb-ui-lib';
 
 import { Filters } from './filters';
 import { Columns } from './columns';
 import { Results } from './results';
-
-const maybeDecodeBase64 = (encoded, { isJson = true } = {}) => {
-    var decoded = undefined;
-    try {
-        if (encoded) {
-            decoded = Base64.decode(encoded);
-            if (isJson) {
-                decoded = JSON.parse(decoded);
-            }
-            console.log('decoded base64', decoded);
-        }
-    }
-    catch (e) {}
-    return decoded;
-}
 
 const ExtendedSearchDataWrapper = (ps) => {
     var {
@@ -61,8 +35,7 @@ const ExtendedSearchDataWrapper = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var schema = fetched.schema.data;
-    var crtSettings = fetched.crtSettings.data;
+    var { schema, crtSettings } = fetched._stageDatas
 
     return (
         <ExtendedSearch
@@ -84,17 +57,18 @@ const ExtendedSearch = (ps) => {
 
     var location = useLocation();
     var history = useHistory();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var [ query, updateQuery ] = useURLSearchParams({
         defaults: { tab: 'filters' }
     });
     var { tab, formData } = query;
-    var decodedFormData = maybeDecodeBase64(formData, { isJson: true });
+    // NOTE: the previous implementation wasnt url safe so ill keep that
+    var decodedFormData = JsonBase64.decode(formData, { urlSafe: false });
     
     var handleSwitchTab = ({ nextTab, formData }) => {
-        //console.log('handleSwitchTab', formData);
-        var formData64 = Base64.encode(JSON.stringify(formData));
+        // NOTE: the previous implementation wasnt url safe so ill keep that
+        var formData64 = JsonBase64.encode(formData, { urlSafe: false });
 
         var nextSearchQuery = updateQuery(
             { ...query, tab: nextTab, formData: formData64 },
@@ -172,7 +146,7 @@ const Inner = (ps) => {
         formData,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var Component = {
         filters: Filters,

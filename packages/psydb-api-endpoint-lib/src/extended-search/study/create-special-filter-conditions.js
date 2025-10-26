@@ -41,6 +41,12 @@ var createSpecialFilterConditions = (filters) => {
                 type: 'SaneString'
             },
             {
+                key: 'researchGroupIds',
+                pointer: '/state/researchGroupIds',
+                type: 'ForeignIdList',
+                props: { collection: 'researchGroup' }
+            },
+            {
                 key: 'scientistIds',
                 pointer: '/state/scientistIds',
                 type: 'ForeignIdList',
@@ -53,11 +59,10 @@ var createSpecialFilterConditions = (filters) => {
                 props: { collection: 'studyTopic' }
             },
             {
-                key: 'researchGroupIds',
-                pointer: '/state/researchGroupIds',
-                type: 'ForeignIdList',
-                props: { collection: 'researchGroup' }
-            }
+                key: 'experimentNames',
+                pointer: '/state/name',
+                type: 'SaneString'
+            },
         ],
         filters,
     });

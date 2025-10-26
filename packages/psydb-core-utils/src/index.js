@@ -59,4 +59,5 @@ module.exports = {
     copy: require('copy-anything').copy,
     escapeRX: require('escape-string-regexp'),
 
+    JsonBase64: require('@cdxoo/json-base64').JsonBase64,
 }

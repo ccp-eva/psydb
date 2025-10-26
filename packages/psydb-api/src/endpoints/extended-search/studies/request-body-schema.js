@@ -2,7 +2,8 @@
 
 var {
     ExactObject,
-    OpenObject,
+    MinObject,
+    MaxObject,
     CustomRecordTypeKey,
     DefaultArray,
     JsonPointer,
@@ -12,82 +13,80 @@ var {
     SaneString,
     ForeignIdList,
 
-    AgeFrameInterval,
-    DateOnlyServerSideInterval,
     Timezone,
 } = require('@mpieva/psydb-schema-fields');
 
 
 
 var RequestBodySchema = {};
-RequestBodySchema.Core = () => OpenObject({
-    properties: {
-        studyType: CustomRecordTypeKey({ collection: 'study' }),
-    },
-    required: [ 'studyType' ]
+RequestBodySchema.Core = () => MinObject({
+    'studyType': CustomRecordTypeKey({ collection: 'study' }),
 })
 
 var NegatableForeignIdList = (bag) => {
-    return ExactObject({
-        properties: {
-            any: DefaultBool(),
-            negate: DefaultBool(),
-            values: ForeignIdList({
-                ...bag
-            }),
-        }
+    // FIXME: not sure if MaxObject is correct though
+    var schema = MaxObject({
+        'any': DefaultBool(),
+        'negate': DefaultBool(),
+        'values': ForeignIdList({ ...bag })
     });
+
+    return schema;
 }
 
-RequestBodySchema.Full = () => ExactObject({
-    properties: {
-        studyType: CustomRecordTypeKey({ collection: 'study' }),
-        customFilters: { type: 'object' },
-        
-        specialFilters: ExactObject({
-            properties: {
-                studyId: SaneString(),
-                sequenceNumber: SaneString(),
-                name: SaneString(),
-                shorthand: SaneString(),
-                scientistIds: NegatableForeignIdList({
-                    collection: 'personnel'
-                }),
+RequestBodySchema.Full = (bag) => {
+    var { apiConfig } = bag;
+    var { dev_enableWKPRCPatches: IS_WKPRC } = apiConfig;
+    
+    var required = {
+        'studyType': CustomRecordTypeKey({ collection: 'study' }),
+        'customFilters': { type: 'object' },
+        'specialFilters': MaxObject({
+            'studyId': SaneString(),
+            'sequenceNumber': SaneString(),
+            'name': SaneString(),
+            ...(!IS_WKPRC && {
+                'shorthand': SaneString(),
+            }),
 
-                researchGroupIds: NegatableForeignIdList({
-                    collection: 'researchGroup'
-                }),
-                studyTopicIds: NegatableForeignIdList({
-                    collection: 'studyTopic'
-                }),
+            'scientistIds': NegatableForeignIdList({
+                collection: 'personnel'
+            }),
+            'researchGroupIds': NegatableForeignIdList({
+                collection: 'researchGroup'
+            }),
+            'studyTopicIds': NegatableForeignIdList({
+                collection: 'studyTopic'
+            }),
 
-                isHidden: StringEnum([ 'any', 'only-true', 'only-false' ])
-            }
+            ...(IS_WKPRC && {
+                'experimentNames': SaneString()
+            }),
+
+            'isHidden': StringEnum([ 'any', 'only-true', 'only-false' ])
         }),
-
-        columns: DefaultArray({
+        'columns': DefaultArray({
             items: JsonPointer(),
             minItems: 1,
         }),
-        sort: ExactObject({
-            properties: {
-                column: JsonPointer(),
-                direction: StringEnum([ 'asc', 'desc' ]),
-            },
-            required: [],
-        }),
-        offset: Integer({ minimum: 0 }),
-        limit: Integer({ maximum: 1000 }),
-        timezone: Timezone(),
-    },
-    required: [
-        'studyType',
-        'customFilters',
-        'specialFilters',
+        'timezone': Timezone(),
+    };
 
-        'columns',
-        'timezone',
-    ]
-});
+    var optional = {
+        'sort': MaxObject({
+            'column': JsonPointer(),
+            'direction': StringEnum([ 'asc', 'desc' ]),
+        }),
+        'offset': Integer({ minimum: 0 }),
+        'limit': Integer({ maximum: 1000 }),
+    };
+
+    var schema = ExactObject({
+        properties: { ...required, ...optional },
+        required: Object.keys(required)
+    });
+
+    return schema;
+}
 
 module.exports = RequestBodySchema;

@@ -1,10 +1,9 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import {
     FormBox,
-    DefaultForm,
     ExtendedSearchFields as Fields
 } from '@mpieva/psydb-ui-lib';
 
@@ -13,7 +12,8 @@ export const Filters = (ps) => {
     var { crtSettings, schema } = ps;
     var { fieldDefinitions } = crtSettings;
     
-    var translate = useUITranslation();
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
     
     return (
@@ -32,10 +32,12 @@ export const Filters = (ps) => {
                 dataXPath='$.specialFilters.name'
                 label={ translate('Name') }
             />
-            <Fields.SaneString
-                dataXPath='$.specialFilters.shorthand'
-                label={ translate('Shorthand') }
-            />
+            { !IS_WKPRC && (
+                <Fields.SaneString
+                    dataXPath='$.specialFilters.shorthand'
+                    label={ translate('Shorthand') }
+                />
+            )}
             <Fields.NegatableForeignIdList
                 dataXPath='$.specialFilters.researchGroupIds'
                 label={ translate('Research Groups') }
@@ -51,6 +53,12 @@ export const Filters = (ps) => {
                 label={ translate('Study Topics') }
                 collection='studyTopic'
             />
+            { IS_WKPRC && (
+                <Fields.SaneString
+                    dataXPath='$.specialFilters.experimentNames'
+                    label={ translate('_wkprc_experimentName') }
+                />
+            )}
 
             <Fields.Custom
                 dataXPath='$.customFilters'

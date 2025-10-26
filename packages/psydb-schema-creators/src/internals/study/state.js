@@ -11,6 +11,7 @@ var {
     ForeignIdList,
 
     SaneString,
+    SaneStringList,
     DateOnlyServerSideInterval,
     CustomRecordTypeKey,
 } = require('@mpieva/psydb-schema-fields');
@@ -64,11 +65,7 @@ var StudyState = (bag = {}) => {
 
     if (IS_WKPRC) {
         delete required.shorthand;
-
-        required['experimentNames'] = DefaultArray({
-            items: SaneString({ minLength: 1 }),
-            minItems: 1
-        });
+        required['experimentNames'] = SaneStringList({ minItems: 1 });
     }
 
     var compat = _COMPAT_PROPS({ enableInternalProps });

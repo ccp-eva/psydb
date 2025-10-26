@@ -370,6 +370,13 @@ module.exports = {
                 displayNameI18N: { de: 'Themengebiete' },
             },
             {
+                key: '_experimentNames',
+                systemType: 'SaneStringList',
+                dataPointer: '/state/experimentNames',
+                displayName: 'Experiment Names',
+                displayNameI18N: { de: 'Namen der Experimente' },
+            },
+            {
                 key: '_start',
                 systemType: 'DateOnlyServerSide',
                 props: {},

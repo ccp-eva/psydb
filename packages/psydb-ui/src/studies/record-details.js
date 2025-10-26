@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { useRouteMatch  } from 'react-router-dom';
-import { urlUp as up } from '@mpieva/psydb-ui-utils';
+import { useRouteMatch } from 'react-router-dom';
 import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { LinkButton, Icons } from '@mpieva/psydb-ui-layout';
@@ -10,10 +9,9 @@ import { Study } from '@mpieva/psydb-ui-lib/data-viewers';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
 
-const EditLinkButton = ({
-    to,
-    label
-}) => {
+const EditLinkButton = (ps) => {
+    var { to, label } = ps;
+
     return (
         <LinkButton
             className='d-flex align-items-center'

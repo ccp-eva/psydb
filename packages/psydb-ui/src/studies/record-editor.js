@@ -3,7 +3,7 @@ import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { only } from '@mpieva/psydb-core-utils';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUIConfig, use18N } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
 import { Pair } from '@mpieva/psydb-ui-layout';
 import {
