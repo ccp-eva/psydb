@@ -550,7 +550,7 @@ module.exports = {
         hasSubChannels: false,
     },
 
-    subjectSelector: {
+    ageFrame: {
         collection: 'ageFrame',
         isGenericRecord: true,
         hasCustomTypes: false,
