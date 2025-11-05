@@ -198,6 +198,7 @@ var extendedSearchCore = async (bag) => {
         { $match: {
             isDummy: { $ne: true },
             'scientific.state.internals.isRemoved': { $ne: true },
+            'state.internals.isRemoved': { $ne: true },
             ...(recordType && { type: recordType }),
             //...customQueryValues,
             //...specialFilterConditions,
