@@ -1,5 +1,4 @@
 'use strict';
-var { ejson } = require('@mpieva/psydb-core-utils');
 var { makeRX } = require('@mpieva/psydb-common-lib');
 var { createCustomQueryValues } = require('../utils');
 
@@ -70,8 +69,6 @@ var createSpecialFilterConditions = (filters) => {
     if (Object.keys(statics).length > 0 ) {
         AND.push(statics);
     }
-
-    console.dir(ejson(statics), { depth: null });
 
     return (
         AND.length > 0
