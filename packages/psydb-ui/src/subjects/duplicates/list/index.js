@@ -73,9 +73,7 @@ const DuplicatesList = (ps) => {
         selection.value.length < 1
         ? (
             <Alert variant='info'>
-                <i className='text-muted'>
-                    { translate('Please select at least one field.') }
-                </i>
+                { translate('Please select at least one field.') }
             </Alert>
         )
         : <FetchingTable recordType={ recordType } selection={ selection } />

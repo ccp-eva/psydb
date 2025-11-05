@@ -11,6 +11,7 @@ var {
     DefaultBool,
     StringEnum,
     SaneString,
+    SaneStringList,
     ForeignIdList,
 
     Timezone,
@@ -60,7 +61,7 @@ RequestBodySchema.Full = (bag) => {
             }),
 
             ...(IS_WKPRC && {
-                'experimentNames': SaneString()
+                'experimentNames': SaneStringList()
             }),
 
             'isHidden': StringEnum([ 'any', 'only-true', 'only-false' ])

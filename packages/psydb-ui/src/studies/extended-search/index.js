@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import { JsonBase64 } from '@mpieva/psydb-core-utils';
-import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 
 import { useFetchAll, useURLSearchParams } from '@mpieva/psydb-ui-hooks';
 
@@ -57,6 +57,8 @@ const ExtendedSearch = (ps) => {
 
     var location = useLocation();
     var history = useHistory();
+    
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
     var [{ translate }] = useI18N();
 
     var [ query, updateQuery ] = useURLSearchParams({
@@ -89,7 +91,8 @@ const ExtendedSearch = (ps) => {
         studyType: recordType,
         customFilters: {},
         specialFilters: {
-            isHidden: 'only-false'
+            isHidden: 'only-false',
+            ...(IS_WKPRC && { experimentNames: [ '' ] }),
         },
         columns: defaultColumns,
         sort: { column: '/sequenceNumber', direction: 'asc' },

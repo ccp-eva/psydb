@@ -3,8 +3,7 @@ import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import {
-    FormBox,
-    ExtendedSearchFields as Fields
+    withFieldArray, FormBox, ExtendedSearchFields as Fields
 } from '@mpieva/psydb-ui-lib';
 
 // TODO: filter undefined values from all id lists
@@ -54,7 +53,7 @@ export const Filters = (ps) => {
                 collection='studyTopic'
             />
             { IS_WKPRC && (
-                <Fields.SaneString
+                <WKPRCExperimentNames
                     dataXPath='$.specialFilters.experimentNames'
                     label={ translate('_wkprc_experimentName') }
                 />
@@ -81,3 +80,9 @@ export const Filters = (ps) => {
         </FormBox>
     )
 }
+
+const WKPRCExperimentNames = withFieldArray({
+    FieldComponent: Fields.SaneString,
+    ArrayItemWrapper: 'ScalarArrayItemWrapper',
+    defaultItemValue: '',
+});
