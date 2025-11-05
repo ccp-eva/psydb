@@ -61,7 +61,7 @@ RequestBodySchema.Full = (bag) => {
             }),
 
             ...(IS_WKPRC && {
-                'experimentNames': SaneStringList()
+                'experimentNames': SaneStringList({ minLength: 0 })
             }),
 
             'isHidden': StringEnum([ 'any', 'only-true', 'only-false' ])
