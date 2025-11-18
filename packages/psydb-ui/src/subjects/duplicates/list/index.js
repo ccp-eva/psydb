@@ -33,26 +33,9 @@ import {
 import FieldSelection from './field-selection';
 import DuplicateGroup from './duplicate-group';
 
-const DuplicatesList = (ps) => {
+const CRTFetchWrapper = (ps) => {
     var { recordType } = ps;
-    var [{ translate }] = useI18N();
-
-    var [ query, updateQuery ] = useURLSearchParamsB64();
-    var selection = {
-        value: query.fields || [
-            '/gdpr/state/custom/lastname',
-            '/scientific/state/custom/dateOfBirth',
-        ],
-        toggle: (next) => {
-            var fields = selection.value;
-            fields.includes(next) ? (
-                updateQuery({ fields: fields.filter(it => it !== next) })
-            ) : (
-                updateQuery({ fields: [ ...fields, next ]})
-            )
-        }
-    }
-
+    
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.readCRTSettings({
             collection: 'subject', recordType, wrap: true
@@ -65,9 +48,34 @@ const DuplicatesList = (ps) => {
     if (!didFetch) {
         return <LoadingIndicator size='xl' />
     }
-
+    
     // FIXME: that response is BS
     var crtSettings = fetched.data;
+
+    return (
+        <DuplicatesList { ...ps } crtSettings={ crtSettings } />
+    );
+}
+
+const DuplicatesList = (ps) => {
+    var { recordType, crtSettings } = ps;
+    var { duplicateCheckSettings } = crtSettings;
+    var [{ translate }] = useI18N();
+
+    var [ query, updateQuery ] = useURLSearchParamsB64();
+    var selection = {
+        value: query.fields || (
+            duplicateCheckSettings?.fieldSettings?.map(it => it.pointer)
+        ) || [],
+        toggle: (next) => {
+            var fields = selection.value;
+            fields.includes(next) ? (
+                updateQuery({ fields: fields.filter(it => it !== next) })
+            ) : (
+                updateQuery({ fields: [ ...fields, next ]})
+            )
+        }
+    }
 
     var content = (
         selection.value.length < 1
@@ -82,6 +90,7 @@ const DuplicatesList = (ps) => {
     return (
         <>
             <FieldSelection
+                recordType={ recordType }
                 crtSettings={ crtSettings }
                 selection={ selection }
             />
@@ -152,9 +161,7 @@ var FetchingTable = (ps) => {
             
             { aggregateItems.length < 1 && (
                 <Alert variant='info'>
-                    <i className='text-muted'>
-                        { translate('No possible duplicates found.') }
-                    </i>
+                    { translate('No possible duplicates found.') }
                 </Alert>
             )}
         </>
@@ -162,4 +169,4 @@ var FetchingTable = (ps) => {
 
 }
 
-export default DuplicatesList;
+export default CRTFetchWrapper;
