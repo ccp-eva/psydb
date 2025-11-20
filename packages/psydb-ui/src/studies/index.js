@@ -9,14 +9,18 @@ import {
 } from 'react-router-dom';
 
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { LinkContainer, PermissionDenied } from '@mpieva/psydb-ui-layout';
-import { FormBox } from '@mpieva/psydb-ui-lib';
+import { PermissionDenied } from '@mpieva/psydb-ui-layout';
 
 import StudyRecordContainer from './record-container';
+
+import IntraTypeRouting from './intra-type-routing'
+
 import { RecordDetails } from './record-details';
 import { RecordCreator } from './record-creator';
 import { RecordEditor } from './record-editor';
 import { RecordRemover } from './record-remover';
+
+
 
 import {
     withCollectionView,
@@ -105,15 +109,20 @@ const StudyRouting = (ps) => {
 
 const StudyTypeView = withRecordTypeView({
     //CustomRouting: StudyRouting
+    CustomRouting: IntraTypeRouting,
     RecordDetails,
     RecordCreator,
     RecordEditor,
     RecordRemover,
 });
 
-const Studies = withCollectionView({
+const StudyCollectionView = withCollectionView({
     collection: 'study',
     RecordTypeView: StudyTypeView
 });
+
+const Studies = () => {
+    return <StudyCollectionView />
+}
 
 export default Studies;

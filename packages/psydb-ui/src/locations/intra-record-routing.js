@@ -3,15 +3,14 @@ import React from 'react';
 import {
     useRouteMatch,
     useHistory,
-    useParams,
 
     Route,
     Redirect,
     Switch,
 } from 'react-router-dom';
 
-import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { URL } from '@mpieva/psydb-common-lib';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { DefaultRecordSideNav as Nav } from '@mpieva/psydb-ui-layout';
 import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 import {
@@ -22,19 +21,13 @@ import {
 
 const IntraRecordRoutingBody = (ps) => {
     var {
-        collection,
-        recordType,
-        fetched,
-        permissions,
-        //revision,
+        collection, recordType,
+        fetched, permissions,
 
-        RecordDetails,
-        RecordCreator,
-        RecordEditor,
-        RecordRemover,
+        RecordDetails, RecordEditor, RecordRemover
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var history = useHistory();
     var { path, url } = useRouteMatch();
 
@@ -49,29 +42,6 @@ const IntraRecordRoutingBody = (ps) => {
     var enableReservation = permissions.hasSomeLabOperationFlags({
         types: 'any', flags: [ 'canWriteReservations' ]
     });
-
-    var navItems = [
-        {
-            key: 'details',
-            label: translate('Details')
-        },
-        //{
-        //    key: 'edit',
-        //    label: 'Beabeiten',
-        //    disabled: !enableEdit,
-        //},
-        ...(reservationType !== 'no-reservation' ? ([
-            {
-                key: 'calendar',
-                label: translate('Appointments')
-            },
-            {
-                key: 'reservation',
-                label: translate('Reservation'),
-                show: canBeReserved
-            }
-        ]) : [])
-    ];
 
     var { hashurl, core } = Nav.useLinks({ record });
     var extra = reservationType === 'no-reservation' ? undefined : {
@@ -98,14 +68,6 @@ const IntraRecordRoutingBody = (ps) => {
                             <Nav.LinkList links={ extra } />
                         )}
                     </Nav.Container>
-                    {/*<Route path={ `${path}/:navKey`}>
-                        <RoutedSideNav
-                            className='bg-light border'
-                            param='navKey'
-                            items={ navItems }
-                            remap={{ edit: 'details', remove: 'details' }}
-                        />
-                    </Route>*/}
                 </div>
             )}
             <div className='ml-2 flex-grow'>
@@ -137,7 +99,7 @@ const IntraRecordRoutingBody = (ps) => {
                             type='edit'
                             collection={ collection }
                             recordType={ recordType }
-                            successInfoBackLink={ `#${up(url, 1)}` }
+                            successInfoBackLink={ `#${URL.up(url, 1)}` }
                             onSuccessfulUpdate={ () => {
                                 history.push(`${url}/remove/success`)
                             }}
