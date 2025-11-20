@@ -113,7 +113,7 @@ const EditForm = (ps) => {
                 onSuccessfulUpdate={ () => {} }
            
                 removeUrl={`${up(url, 2)}/remove`}
-                className='d-flex justify-content-between mt-3 mb-3'
+                className='d-flex justify-content-between mt-3'
             />
         </>
     );

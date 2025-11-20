@@ -1,18 +1,12 @@
 import React from 'react';
-
-import {
-    useRouteMatch,
-    useHistory,
-
-    Route,
-    Redirect,
-    Switch,
-} from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router';
+import { Route, Redirect, Switch } from 'react-router-dom';
 
 import { URL } from '@mpieva/psydb-common-lib';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { DefaultRecordSideNav as Nav } from '@mpieva/psydb-ui-layout';
 import { withRecordDetails } from '@mpieva/psydb-ui-lib';
+
 import {
     InviteCalendar,
     AwayTeamCalendar,
@@ -44,7 +38,7 @@ const IntraRecordRoutingBody = (ps) => {
     });
 
     var { hashurl, core } = Nav.useLinks({ record });
-    var extra = reservationType === 'no-reservation' ? undefined : {
+    var extra = {
         [`${hashurl}/calendar`]: {
             label: translate('Appointments'),
             show: true, enabled: true
@@ -55,88 +49,108 @@ const IntraRecordRoutingBody = (ps) => {
         },
     }
 
-    return (
-        <div className='d-flex'>
-            { (canBeReserved && reservationType !== 'no-reservation') && (
-                <div
-                    className='flex-shrink-0'
-                    style={{ width: '175px' }}
-                >
-                    <Nav.Container className='bg-light border'>
-                        <Nav.LinkList links={ core } />
-                        { extra && (
-                            <Nav.LinkList links={ extra } />
-                        )}
-                    </Nav.Container>
-                </div>
-            )}
-            <div className='ml-2 flex-grow'>
-                <Switch>
-                    <Route exact path={`${path}`} render={ (ps) => (
-                        <Redirect to={ `${url}/details` } />
-                    )} />
-
-                    <Route path={`${path}/details`}>
-                        <RecordDetails
-                            collection={ collection }
-                            recordType={ recordType }
-                        />
-                    </Route>
-
-                    <Route path={`${path}/edit`}>
-                        <RecordEditor
-                            type='edit'
-                            collection={ collection }
-                            recordType={ recordType }
-                            onSuccessfulUpdate={ ({ id }) => {
-                                history.push(`${url}`)
-                            }}
-                        />
-                    </Route>
-
-                    <Route path={`${path}/remove`}>
-                        <RecordRemover
-                            type='edit'
-                            collection={ collection }
-                            recordType={ recordType }
-                            successInfoBackLink={ `#${URL.up(url, 1)}` }
-                            onSuccessfulUpdate={ () => {
-                                history.push(`${url}/remove/success`)
-                            }}
-                        />
-                    </Route>
-                    
-                    <Route path={`${path}/calendar`}>
-                        <div className='border p-3'>
-                            { canBeReserved ? (
-                                <InviteCalendar
-                                    locationId={ record._id }
-                                    experimentTypes={[
-                                        'inhouse', 'online-video-call'
-                                    ]}
-                                />
-                            ) : (
-                                <AwayTeamCalendar
-                                    locationId={ record._id }
-                                />
-                            )}
-                        </div>
-                    </Route>
-
-                    <Route path={`${path}/reservation`}>
-                        <div className='border p-3'>
-                            <ReservationCalendar
-                                locationId={ record._id }
-                                experimentTypes={[
-                                    'inhouse', 'online-video-call'
-                                ]}
-                            />
-                        </div>
-                    </Route>
-                </Switch>
-            </div>
+    var showExtraNav = canBeReserved && reservationType !== 'no-reservation';
+    var nav = (
+        <div className='flex-shrink-0'>
+            <Nav.Container className='bg-light border'>
+                <Nav.LinkList links={ core } />
+                { showExtraNav && (
+                    <Nav.LinkList links={ extra } />
+                )}
+            </Nav.Container>
         </div>
     );
+
+    var { _id: recordId, _recordLabel: recordLabel } = record;
+    var sharedBag = { collection, recordType }
+
+    var content = (
+        <Switch>
+            <Route exact path={`${path}`} render={ (ps) => (
+                <Redirect to={ `${url}/details` } />
+            )} />
+
+            <Route path={`${path}/details`}>
+                <RecordDetails { ...sharedBag } />
+            </Route>
+
+            <Route path={`${path}/edit`}>
+                <RecordEditor
+                    { ...sharedBag }
+                    type='edit'
+                    onSuccessfulUpdate={ ({ id }) => {
+                        history.push(`${url}`)
+                    }}
+                />
+            </Route>
+
+            <Route path={`${path}/remove`}>
+                <RecordRemover
+                    { ...sharedBag }
+                    type='edit'
+                    successInfoBackLink={ `#${URL.up(url, 1)}` }
+                    onSuccessfulUpdate={ () => {
+                        history.push(`${url}/remove/success`)
+                    }}
+                />
+            </Route>
+            
+            <Route path={`${path}/calendar`}>
+                <div className='border p-3'>
+                    { canBeReserved ? (
+                        <InviteCalendar
+                            locationId={ recordId }
+                            experimentTypes={[
+                                'inhouse', 'online-video-call'
+                            ]}
+                        />
+                    ) : (
+                        <AwayTeamCalendar locationId={ recordId } />
+                    )}
+                </div>
+            </Route>
+
+            <Route path={`${path}/reservation`}>
+                <div className='border p-3'>
+                    <ReservationCalendar
+                        locationId={ recordId }
+                        experimentTypes={[ 'inhouse', 'online-video-call' ]}
+                    />
+                </div>
+            </Route>
+        </Switch>
+    );
+
+    return (
+        <Wrapper
+            title={ translate('Location') + ': ' + recordLabel }
+            nav={ nav} content={ content }
+        />
+    )
+}
+
+var Wrapper = (ps) => {
+    var { title, nav, content } = ps;
+
+    return (
+        <>
+            <h5 className='border-bottom mb-1'>
+                <b>{ title }</b>
+            </h5>
+            { nav ? (
+                <div className='d-flex'>
+                    <div className='flex-shrink-0'>
+                        { nav }
+                    </div>
+                    <div className='ml-2 flex-grow'>
+                        { content }
+                    </div>
+                </div>
+            ) : (
+                <div>{ content }</div>
+            )}
+        </>
+    )
 }
 
 const IntraRecordRouting = withRecordDetails({

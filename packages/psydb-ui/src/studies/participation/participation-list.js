@@ -72,7 +72,7 @@ const ParticipationList = (ps) => {
         return (
             <TableEmptyFallback
                 tableExtraClassName={ className }
-                emptyInfoText={ translate('No study participations found.') }
+                emptyInfoText={ 'No study participations found.' }
             >
                 <TableHeadCols { ...headBag } />
             </TableEmptyFallback>

@@ -4,8 +4,9 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { DefaultRecordSideNav as Nav } from '@mpieva/psydb-ui-layout';
 import { withRecordDetails } from '@mpieva/psydb-ui-lib';
+import { FormBox, DefaultRecordSideNav as Nav }
+    from '@mpieva/psydb-ui-layout';
 
 import SelectionSettings from './selection-settings';
 import LabWorkflowSettings from './experiment-settings';
@@ -32,7 +33,10 @@ const IntraRecordRoutingBody = (ps) => {
     var canViewStudyLabOpsSettings = permissions.hasFlag('canViewStudyLabOpsSettings');
 
     var { hashurl, core } = Nav.useLinks({ record });
-    
+   
+    core[`${hashurl}/details`].label = translate('Details');
+    core[`${hashurl}/edit`].label = translate('Edit Details');
+
     var extra = {
         [`${hashurl}/selection-settings`]: {
             label: translate('Selection Settings'),
@@ -47,7 +51,7 @@ const IntraRecordRoutingBody = (ps) => {
             show: crtSettings.enableLabTeams, enabled: true
         },
         [`${hashurl}/participation`]: {
-            label: translate('Study Participation'),
+            label: translate('Study Participations'),
             show: canReadParticipation, enabled: hasWorkflows
         },
     }
@@ -64,57 +68,96 @@ const IntraRecordRoutingBody = (ps) => {
 
     var sharedBag = { collection, recordType };
 
+    var nav = (
+        <Nav.Container className='bg-light border'>
+            <Nav.LinkList links={ core } />
+            { Object.keys(extra).length > 0 && (
+                <>
+                    <Nav.HR />
+                    <Nav.LinkList links={ extra } />
+                </>
+            )}
+        </Nav.Container>
+    );
+
+    var content = (
+        <Switch>
+            <Route exact path={`${path}`} render={ (ps) => (
+                <Redirect to={ `${url}/details` } />
+            )} />
+
+            <Route path={`${path}/details`}>
+                <RecordDetails { ...sharedBag } />
+            </Route>
+            
+            <Route path={`${path}/edit`}>
+                <FormBox title={ translate('Edit Details') }>
+                    <RecordEditor
+                        { ...sharedBag }
+                        type='edit'
+                        onSuccessfulUpdate={ ({ id }) => {
+                            history.push(`${url}`)
+                        }}
+                    />
+                </FormBox>
+            </Route>
+
+            <Route path={`${path}/selection-settings`}>
+                <FormBox title={ translate('Selection Settings') }>
+                    <SelectionSettings recordType={ recordType } />
+                </FormBox>
+            </Route>
+            
+            <Route path={`${path}/experiment-settings`}>
+                <FormBox title={ translate('Lab Workflow Settings') }>
+                    <LabWorkflowSettings
+                        studyType={ recordType }
+                        onSuccessfulUpdate={ revision.up }
+                    />
+                </FormBox>
+            </Route>
+            
+            <Route path={`${path}/teams`}>
+                <FormBox title={ translate('Teams') }>
+                    <LabTeams recordType={ recordType } />
+                </FormBox>
+            </Route>
+            
+            <Route path={`${path}/participation`}>
+                <div className='border p-3'>
+                    <h5>{ translate('Study Participations') }</h5>
+                    <hr />
+                    <Participation recordType={ recordType } />
+                </div>
+            </Route>
+        </Switch>
+    );
+
     return (
-        <div className='d-flex'>
-            <div className='flex-shrink-0'>
-                <Nav.Container className='bg-light border'>
-                    <Nav.LinkList links={ core } />
-                    { Object.keys(extra).length > 0 && (
-                        <Nav.LinkList links={ extra } />
-                    )}
-                </Nav.Container>
-            </div>
-            <div className='ml-2 flex-grow'>
-                <Switch>
-                    <Route exact path={`${path}`} render={ (ps) => (
-                        <Redirect to={ `${url}/details` } />
-                    )} />
+        <Wrapper
+            title={ translate('Study') + ': ' + record._recordLabel }
+            nav={ nav } content={ content }
+        />
+    )
+}
 
-                    <Route path={`${path}/details`}>
-                        <RecordDetails { ...sharedBag } />
-                    </Route>
-                    
-                    <Route path={`${path}/edit`}>
-                        <RecordEditor
-                            { ...sharedBag }
-                            type='edit'
-                            onSuccessfulUpdate={ ({ id }) => {
-                                history.push(`${url}`)
-                            }}
-                        />
-                    </Route>
+var Wrapper = (ps) => {
+    var { title, nav, content } = ps;
 
-                    <Route path={`${path}/selection-settings`}>
-                        <SelectionSettings recordType={ recordType } />
-                    </Route>
-                    
-                    <Route path={`${path}/experiment-settings`}>
-                        <LabWorkflowSettings
-                            studyType={ recordType }
-                            onSuccessfulUpdate={ revision.up }
-                        />
-                    </Route>
-                    
-                    <Route path={`${path}/teams`}>
-                        <LabTeams recordType={ recordType } />
-                    </Route>
-                    
-                    <Route path={`${path}/participation`}>
-                        <Participation recordType={ recordType } />
-                    </Route>
-                </Switch>
+    return (
+        <>
+            <h5 className='border-bottom mb-1'>
+                <b>{ title }</b>
+            </h5>
+            <div className='d-flex'>
+                <div className='flex-shrink-0'>
+                    { nav }
+                </div>
+                <div className='ml-2 flex-grow'>
+                    { content }
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 

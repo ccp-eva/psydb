@@ -297,6 +297,10 @@ module.exports = [
         de: 'Details'
     },
     {
+        en: 'Edit Details',
+        de: 'Details Bearbeiten'
+    },
+    {
         en: 'Date',
         de: 'Datum'
     },
@@ -918,6 +922,14 @@ module.exports = [
     {
         en: 'Record Details',
         de: 'Datensatz-Details'
+    },
+    {
+        en: 'Raw Data',
+        de: 'Roh-Daten'
+    },
+    {
+        en: 'Raw History',
+        de: 'Roh-Historie'
     },
     {
         en: 'History',

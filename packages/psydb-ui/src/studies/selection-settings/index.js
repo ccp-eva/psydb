@@ -37,9 +37,6 @@ const SelectionSettings = (ps) => {
 
     return (
         <>
-            <h5 className='mt-3 mb-2 border-bottom pb-1'>
-                { translate('General Conditions') }
-            </h5>
             <div className='mb-3 p-3 border bg-white'>
                 <StudyExclusion {...({
                     studyId,

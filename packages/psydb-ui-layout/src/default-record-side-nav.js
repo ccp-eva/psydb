@@ -126,7 +126,10 @@ const Container = (ps) => {
     var toggle = () => setIsCollapsed(!isCollapsed);
     
     return (
-        <nav style={ style } className={ className }>
+        <nav
+            style={{ minWidth: '200px', ...style }}
+            className={ className }
+        >
             { children }
         </nav>
     )
