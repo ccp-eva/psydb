@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useRouteMatch, useParams } from 'react-router';
 
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-
 import { useFetch, useModalReducer, useRevision, usePermissions }
     from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, Icons, Button, Alert }

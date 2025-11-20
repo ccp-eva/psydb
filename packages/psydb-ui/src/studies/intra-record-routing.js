@@ -12,6 +12,7 @@ import SelectionSettings from './selection-settings';
 import LabWorkflowSettings from './experiment-settings';
 import LabTeams from './teams';
 import Participation from './participation';
+import ConsentTemplates from './consent-templates';
 
 const IntraRecordRoutingBody = (ps) => {
     var {
@@ -37,7 +38,7 @@ const IntraRecordRoutingBody = (ps) => {
     core[`${hashurl}/details`].label = translate('Details');
     core[`${hashurl}/edit`].label = translate('Edit Details');
 
-    var extra = {
+    var settingsLinks = {
         [`${hashurl}/selection-settings`]: {
             label: translate('Selection Settings'),
             show: crtSettings.enableSubjectSelectionSettings, enabled: true
@@ -56,6 +57,17 @@ const IntraRecordRoutingBody = (ps) => {
         },
     }
 
+    var consentLinks = {
+        [`${hashurl}/consent-templates`]: {
+            label: translate('Consent Templates'),
+            show: true, enabled: true
+        },
+        [`${hashurl}/consent-forms`]: {
+            label: translate('Consent Forms'),
+            show: true, enabled: true
+        },
+    }
+
     //var titleparts = [
     //    translate('Study Details'),
     //    ' - ',
@@ -71,10 +83,16 @@ const IntraRecordRoutingBody = (ps) => {
     var nav = (
         <Nav.Container className='bg-light border'>
             <Nav.LinkList links={ core } />
-            { Object.keys(extra).length > 0 && (
+            { Object.keys(settingsLinks).length > 0 && (
                 <>
                     <Nav.HR />
-                    <Nav.LinkList links={ extra } />
+                    <Nav.LinkList links={ settingsLinks } />
+                </>
+            )}
+            { Object.keys(consentLinks).length > 0 && (
+                <>
+                    <Nav.HR />
+                    <Nav.LinkList links={ consentLinks } />
                 </>
             )}
         </Nav.Container>
@@ -128,6 +146,14 @@ const IntraRecordRoutingBody = (ps) => {
                     <h5>{ translate('Study Participations') }</h5>
                     <hr />
                     <Participation recordType={ recordType } />
+                </div>
+            </Route>
+            
+            <Route path={`${path}/consent-templates`}>
+                <div className='border p-3'>
+                    <h5>{ translate('Consent Templates') }</h5>
+                    <hr />
+                    <ConsentTemplates studyId={ record._id } />
                 </div>
             </Route>
         </Switch>

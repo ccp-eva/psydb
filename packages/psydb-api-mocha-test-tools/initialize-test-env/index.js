@@ -1,4 +1,10 @@
 'use strict';
+// NOTE: using this and step() instead of it() will prevent
+// later steps from being executed after an error; it() would execute 
+// all the steps after an error regardless which is undesireable
+// due to bloated error output
+require('../mocha-async-step');
+
 var locale = require('date-fns/locale/de');
 
 var mongoHelpers = require('@cdxoo/mongo-test-helpers');
@@ -8,6 +14,8 @@ var { ejson } = require('@mpieva/psydb-core-utils');
 
 var doConnectLocal = require('./do-connect-local');
 var doRestore = require('./do-restore');
+var doGatherLabeledIds = require('./do-gather-labeled-ids');
+
 var createKoaContext = require('./create-koa-context');
 
 console.ejson = (that, options = {}) => {
@@ -35,10 +43,13 @@ var beforeAll = async function () {
         return dbHandle;
     }
 
-    this.connectLocal = (...a) => doConnectLocal.call(this, ...a);
-    this.restore = (...a) => doRestore.call(this, ...a);
     this.createKoaContext = (...a) => createKoaContext.call(this, ...a);
-
+    this.connectLocal = (...a) => doConnectLocal.call(this, ...a);
+    this.gatherLabeledIds = (...a) => doGatherLabeledIds.call(this, ...a);
+    this.restore = async (...a) => {
+        await mongoHelpers.clean(this.context.mongo)();
+        return doRestore.call(this, ...a);
+    }
     
     this.fetchAllRecords = (collection) => {
         var db = this.getDbHandle();
@@ -55,7 +66,6 @@ var afterEach = async function () {
         client.close();
         delete this.context.mongo.local;
     }
-    await mongoHelpers.clean(this.context.mongo)();
 }
 
 var afterAll = async function () {
