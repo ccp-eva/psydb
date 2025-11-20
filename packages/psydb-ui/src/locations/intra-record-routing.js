@@ -12,7 +12,7 @@ import {
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { RoutedSideNav } from '@mpieva/psydb-ui-layout';
+import { DefaultRecordSideNav as Nav } from '@mpieva/psydb-ui-layout';
 import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 import {
     InviteCalendar,
@@ -73,6 +73,18 @@ const IntraRecordRoutingBody = (ps) => {
         ]) : [])
     ];
 
+    var { hashurl, core } = Nav.useLinks({ record });
+    var extra = reservationType === 'no-reservation' ? undefined : {
+        [`${hashurl}/calendar`]: {
+            label: translate('Appointments'),
+            show: true, enabled: true
+        },
+        [`${hashurl}/reservation`]: {
+            label: translate('Reservation'),
+            show: true, enabled: true
+        },
+    }
+
     return (
         <div className='d-flex'>
             { (canBeReserved && reservationType !== 'no-reservation') && (
@@ -80,14 +92,20 @@ const IntraRecordRoutingBody = (ps) => {
                     className='flex-shrink-0'
                     style={{ width: '175px' }}
                 >
-                    <Route path={ `${path}/:navKey`}>
+                    <Nav.Container className='bg-light border'>
+                        <Nav.LinkList links={ core } />
+                        { extra && (
+                            <Nav.LinkList links={ extra } />
+                        )}
+                    </Nav.Container>
+                    {/*<Route path={ `${path}/:navKey`}>
                         <RoutedSideNav
                             className='bg-light border'
                             param='navKey'
                             items={ navItems }
                             remap={{ edit: 'details', remove: 'details' }}
                         />
-                    </Route>
+                    </Route>*/}
                 </div>
             )}
             <div className='ml-2 flex-grow'>

@@ -64,4 +64,5 @@ module.exports = {
   
     SimpleCache: require('./simple-cache'),
     SmartArray: require('./smart-array'),
+    URL: require('./url-helper'),
 }

@@ -13,7 +13,9 @@ import { LinkContainer, PermissionDenied } from '@mpieva/psydb-ui-layout';
 import { FormBox } from '@mpieva/psydb-ui-lib';
 
 import StudyRecordContainer from './record-container';
-import RecordCreator from './record-creator';
+import { RecordDetails } from './record-details';
+import { RecordCreator } from './record-creator';
+import { RecordEditor } from './record-editor';
 import { RecordRemover } from './record-remover';
 
 import {
@@ -102,7 +104,11 @@ const StudyRouting = (ps) => {
 }
 
 const StudyTypeView = withRecordTypeView({
-    CustomRouting: StudyRouting
+    //CustomRouting: StudyRouting
+    RecordDetails,
+    RecordCreator,
+    RecordEditor,
+    RecordRemover,
 });
 
 const Studies = withCollectionView({

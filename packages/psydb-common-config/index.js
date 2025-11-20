@@ -75,6 +75,10 @@ module.exports = {
             '/gdpr/state/custom/phones',
             '/gdpr/state/custom/address', // includes only street and number
             '/scientific/state/custom/dateOfBirth'
+        ],
+        'fs_namibia_subject': [
+            '/gdpr/state/custom/name',
+            '/scientific/state/custom/dateOfBirth'
         ]
     },
     dev_enableSubjectCopyForUnprocessedExperiments: true,

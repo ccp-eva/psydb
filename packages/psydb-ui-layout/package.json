@@ -32,6 +32,7 @@
     "react-router-bootstrap": "~0.25.0",
     "classnames": "~2.3.1",
     "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-common-lib": "workspace:*",
     "@mpieva/psydb-schema-enums": "workspace:*",
     "@mpieva/psydb-ui-utils": "workspace:*",
     "@mpieva/psydb-ui-contexts": "workspace:*"

@@ -125,9 +125,7 @@ const EditForm = (ps) => {
     );
 }
 
-const RecordEditor = withRecordEditor({
+export const RecordEditor = withRecordEditor({
     EditForm,
     shouldFetchSchema: false,
 });
-
-export default RecordEditor;
