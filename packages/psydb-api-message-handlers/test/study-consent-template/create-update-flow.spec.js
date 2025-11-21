@@ -19,9 +19,122 @@ describe('study-consent-template/[create|update] flow', function () {
     });
 
     step('create', async function () {
-        console.ejson(ids.all());
-        //var deltas = BaselineDeltas();
-        //deltas.push(await this.fetchAllRecords(''));
+        var deltas = BaselineDeltas();
+        deltas.push(await this.fetchAllRecords('studyConsentTemplate'));
+
+        var payload = {
+            'studyId': ids('IH-Study'),
+            'subjectType': 'child',
+            'props': {
+                'internalName': 'Default Consent Form',
+                'title': 'Einwilligung zur Studienteilnahme',
+                'isEnabled': true,
+                'form': [
+                    {
+                        type: 'extra-field',
+                        systemType: 'SaneString',
+                        displayName: 'Some Extra Text Field',
+                        displayNameI18N: { 'de': 'Ein Extra Text Feld' },
+                    },
+                    {
+                        type: 'subject-field',
+                        pointer: '/gdpr/state/custom/firstname',
+                    },
+                    {
+                        type: 'subject-field',
+                        pointer: '/gdpr/state/custom/lastname',
+                    },
+                    {
+                        type: 'subject-field',
+                        pointer: '/scientific/state/custom/dateOfBirth',
+                    },
+                    { 
+                        type: 'info-text-markdown',
+                        markdown: lorem,
+                        markdownI18N: {},
+                    },
+                    { type: 'hr' },
+                    {
+                        type: 'extra-field',
+                        systemType: 'DefaultBool',
+                        displayName: 'Siblings?',
+                        displayNameI18N: { 'de': 'Geschwister' },
+                    },
+                    {
+                        type: 'extra-field',
+                        systemType: 'BiologicalGender',
+                        displayName: 'Gender',
+                        displayNameI18N: { 'de': 'Geschlecht' },
+                    },
+                    {
+                        type: 'extra-field',
+                        systemType: 'DateOnlyServerSide',
+                        displayName: 'Date of Birth',
+                        displayNameI18N: { 'de': 'Geburtsdatum' },
+                    },
+                    { type: 'hr' },
+                    {
+                        type: 'extra-field',
+                        systemType: 'DefaultBool',
+                        displayName: 'Multi Lang?',
+                        displayNameI18N: { 'de': 'Mehrsprachig?' },
+                    },
+                    {
+                        type: 'subject-field',
+                        pointer: '/scientific/state/custom/languageIds',
+                    },
+                    { type: 'hr' },
+                    {
+                        type: 'extra-field',
+                        systemType: 'DefaultBool',
+                        displayName: 'Kiga?',
+                        displayNameI18N: { 'de': 'Kiga?' },
+                    },
+                    {
+                        type: 'extra-field',
+                        systemType: 'DefaultBool',
+                        displayName: 'Kiga?',
+                        displayNameI18N: { 'de': 'Kiga?' },
+                    },
+                    {
+                        type: 'extra-field',
+                        systemType: 'SaneString',
+                        displayName: 'Kiga-Name',
+                        displayNameI18N: { 'de': 'Kiga-Name' },
+                    },
+                    {
+                        type: 'extra-field',
+                        systemType: 'Address',
+                        displayName: 'Kiga-Address',
+                        displayNameI18N: { 'de': 'Kiga-Anschrift' },
+                    },
+                    { type: 'hr' },
+                    {
+                        type: 'extra-field',
+                        systemType: 'DefaultBool',
+                        displayName: 'Online?',
+                        displayNameI18N: { 'de': 'Online?' },
+                    },
+                    { 
+                        type: 'info-text-markdown',
+                        markdown: `
+                            # GDPR INFORMATION
+
+                            ## Headline 1
+                            ${lorem}
+
+                            ## Headline 2
+                            ${lorem}
+                        `,
+                        markdownI18N: {},
+                    },
+                ]
+            }
+        }
     })
 })
+
+var lorem = (
+    'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?'
+)
 

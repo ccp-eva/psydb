@@ -31,7 +31,8 @@ var run = () => async (context, next) => {
             collection,
             channelId,
             isNew,
-            additionalChannelProps,
+            additionalChannelProps, // FIXME: make obsolete
+            extraCreateProps,
 
             channel,
             subChannelKey,
@@ -40,13 +41,16 @@ var run = () => async (context, next) => {
         } = options;
         //console.dir(payload, { depth: null });
 
+        if (additionalChannelProps) {
+            extraCreateProps = additionalChannelProps;
+        }
+
         var channel = channel || (
             rohrpost
             .openCollection(collection)
             .openChannel({
-                id: channelId,
-                isNew,
-                additionalChannelProps
+                id: channelId, isNew,
+                additionalChannelProps: extraCreateProps,
             })
         );
         
