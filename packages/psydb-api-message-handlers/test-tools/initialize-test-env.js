@@ -1,4 +1,7 @@
 'use strict';
+var { mochaHooks, ...other }
+    = require('@mpieva/psydb-api-mocha-test-tools/initialize-test-env');
+
 var mongoHelpers = require('@cdxoo/mongo-test-helpers');
 var restore = require('@cdxoo/mongodb-restore');
 
@@ -23,28 +26,8 @@ var {
     withDefaultResponseBody,
 } = require('@mpieva/psydb-koa-event-middleware');
 
-var beforeAll = async function () {
-    this.context = {
-        mongo: {},
-    };
-    
-    await mongoHelpers.startup(this.context.mongo)();
-    // TODO: spin up engine
-
-    this.getDbHandle = () => {
-        return this.context.mongo.dbHandle;
-    }
-
-    this.restore = async (fixtureName) => {
-        var out = await restore.database({
-            con: this.context.mongo.client,
-            database: this.context.mongo.dbName,
-            clean: true,
-            from: fixtures.get(fixtureName, { db: true })
-        })
-
-        return out;
-    };
+var augmentedBeforeAll = async function () {
+    await mochaHooks.beforeAll[0].call(this);
 
     this.createEngine = (options) => {
         var { RootHandler } = options;
@@ -90,9 +73,22 @@ var beforeAll = async function () {
     }
 
     this.createMessenger = (options) => {
-        var { RootHandler, ...extraOptionsContext } = options;
+        var { RootHandler, login, ...extraOptionsContext } = options;
 
+        if (!RootHandler) {
+            RootHandler = require('../src');
+        }
+
+        var didAutoLogin = false;
         var send = async (message, extraContext) => {
+            if (login && !didAutoLogin) {
+                extraOptionsContext = {
+                    ...extraOptionContext,
+                    ...(await this.createFakeLogin({ ...login }))
+                }
+                didAutoLogin = true;
+            }
+
             var koaContext = this.createKoaContext(
                 jsonify(message), { ...extraOptionsContext, ...extraContext }
             );
@@ -206,21 +202,9 @@ var beforeAll = async function () {
 
 }
 
-var beforeEach = async function () {}
-
-var afterEach = async function () {
-    await mongoHelpers.clean(this.context.mongo)();
-}
-
-var afterAll = async function () {
-    await mongoHelpers.teardown(this.context.mongo)();
-}
-
 module.exports = {
     mochaHooks: {
-        beforeAll: [ beforeAll ],
-        beforeEach: [ beforeEach ],
-        afterEach: [ afterEach ],
-        afterAll: [ afterAll ]
+        ...mochaHooks,
+        beforeAll: [ augmentedBeforeAll ],
     }
 }

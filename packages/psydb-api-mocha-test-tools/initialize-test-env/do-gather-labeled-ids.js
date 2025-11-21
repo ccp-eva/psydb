@@ -130,6 +130,12 @@ var createOneRecordLabel = (collection, record, options = {}) => {
                 state.name
                 || state.lastname + ', ' + state.firstname
             );
+        case 'customRecordType':
+            return `${record.collection} ${record.type}`;
+        case 'personnel':
+            var { _id, gdpr } = record;
+            var email = gdpr?.state?.emails?.[0]?.email;
+            return email || _id;
         default:
             //return undefined;
             return String(record._id)

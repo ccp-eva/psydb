@@ -77,6 +77,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-mongo-tiny-dumper",
+       "projectFolder": "packages/psydb-mongo-tiny-dumper",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-mongo-adapter",
        "projectFolder": "packages/psydb-mongo-adapter",
        "reviewCategory": "production"

@@ -5,6 +5,7 @@ var { arrify } = require('@mpieva/psydb-core-utils');
 
 var doRestore = async function (fixtureNames, options = {}) {
     var { client, dbName, dbHandle } = this.context.mongo;
+    var { gatherIds } = options;
     
     fixtureNames = arrify(fixtureNames);
     
@@ -16,7 +17,7 @@ var doRestore = async function (fixtureNames, options = {}) {
 
     var ix = 0;
     for (var thatFixtureName of fixtureNames) {
-        path = fixtures.get(thatFixtureName, { db: true });
+        var path = fixtures.get(thatFixtureName, { db: true });
         
         var sharedBag = {
             // NOTE: never restore to local connection

@@ -1,3 +1,5 @@
+CONF="consent-flow-starter"
+
 node src/run.js \
-    -c ./configs/bulk-fixate-state.js \
-    -o ./dumps/$(date +%Y-%m-%d__%H%M)__bulk-fixate-state
+    -c ./configs/$CONF.js \
+    -o ./dumps/tiny_$(date +%Y-%m-%d__%H%M)__$CONF
