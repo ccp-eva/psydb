@@ -136,6 +136,8 @@ var createOneRecordLabel = (collection, record, options = {}) => {
             var { _id, gdpr } = record;
             var email = gdpr?.state?.emails?.[0]?.email;
             return email || _id;
+        case 'studyConsentForm':
+            return record.state.internalName;
         default:
             //return undefined;
             return String(record._id)

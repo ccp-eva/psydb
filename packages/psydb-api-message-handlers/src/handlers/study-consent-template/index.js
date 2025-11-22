@@ -1,8 +1,9 @@
 'use strict';
 var { MessageHandlerGroup } = require('@mpieva/psydb-koa-event-middleware');
 
-var StudyConsentTemplateGroup = MessageHandlerGroup([
+var StudyConsentFormGroup = MessageHandlerGroup([
     require('./create'),
+    require('./patch'),
 ]);
 
-module.exports = StudyConsentTemplateGroup;
+module.exports = StudyConsentFormGroup;

@@ -1,9 +1,11 @@
 'use strict';
-var { MessageHandler, presets }
-    = require('@mpieva/psydb-api-message-handler-compat');
+var {
+    MessageHandler,
+    presets
+} = require('@mpieva/psydb-api-message-handler-compat');
 
 var handler = MessageHandler({
-    type: 'study-consent-form/create',
+    type: 'study-consent-form/patch',
     stages: {
         ...presets.default({
             createMessagePayloadSchema: require('./schema'),

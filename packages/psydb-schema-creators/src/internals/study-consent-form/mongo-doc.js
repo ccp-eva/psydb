@@ -2,16 +2,16 @@
 var { ClosedObject, ForeignId, CustomRecordTypeKey }
     = require('@mpieva/psydb-schema-fields');
 
-var { StudyConsentForm } = require('@mpieva/psydb-schema-creators');
+var State = require('./state');
 
-var Schema = async (context) => {
+var MongoDoc = (context) => {
     var schema = ClosedObject({
         'studyId': ForeignId({ collection: 'study' }),
         'subjectType': CustomRecordTypeKey({ collection: 'subject' }),
-        'props': StudyConsentForm.State(),
+        'props': State(),
     });
     
     return schema;
 }
 
-module.exports = Schema;
+module.exports = MongoDoc;

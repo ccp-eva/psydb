@@ -146,4 +146,11 @@ module.exports = {
         FullSchema: internals.ApiKeyFullSchema,
         State: internals.ApiKeyState,
     },
+    
+    //////////////////////////////////////////////
+
+    StudyConsentForm: {
+        //...metadata.StudyConsentForm,
+        ...internals.StudyConsentForm
+    },
 }

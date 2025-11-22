@@ -3,7 +3,7 @@ var { pathify, merge, seperateNulls } = require('@mpieva/psydb-core-utils');
 
 var executeSystemEvents = async (context) => {
     var { message, dispatch } = context;
-    var { studyId, subjectType, props, } = message.payload;
+    var { studyConsentFormId, props, } = message.payload;
 
     var pathified = merge(
         //createDefaults(StudyConsentTemplate.State()), // TODO
@@ -15,9 +15,7 @@ var executeSystemEvents = async (context) => {
 
     await dispatch({
         collection: 'studyConsentForm',
-        isNew: true,
-        
-        extraCreateProps: { studyId, subjectType },
+        channelId: studyConsentFormId,
         payload: { $set: SET }
     });
 }

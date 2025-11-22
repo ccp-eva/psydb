@@ -89,3 +89,8 @@ module.exports.ManualOnlyParticipationExperimentVariantSettingState = (
 
 module.exports.ApiKeyFullSchema = require('./api-key/full-schema');
 module.exports.ApiKeyState = require('./api-key/state');
+
+module.exports.StudyConsentForm = {
+    MongoDoc: require('./study-consent-form/mongo-doc'),
+    State: require('./study-consent-form/state'),
+}
