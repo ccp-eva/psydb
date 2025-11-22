@@ -1,5 +1,5 @@
 'use strict';
-var { pathify, merge, seperateNulls } = require('martaflex-core-utils');
+var { pathify, merge, seperateNulls } = require('@mpieva/psydb-core-utils');
 
 var executeSystemEvents = async (context) => {
     var { message, dispatch } = context;

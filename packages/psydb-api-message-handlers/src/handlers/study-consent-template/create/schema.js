@@ -1,7 +1,7 @@
 'use strict';
 var {
     ClosedObject, DefaultArray, DefaultBool, ForeignId,
-    CustomRecordTypeKey, SaneString, StringConst,
+    CustomRecordTypeKey, SaneString, FullText, StringConst,
     MinObject, MaxObject, JsonPointer,
 } = require('@mpieva/psydb-schema-fields');
 
@@ -61,7 +61,7 @@ var InfoTextMarkdown = (bag) => {
         'type': StringConst('info-text-markdown'),
         'markdown': FullText({ minLength: 1 }),
         'markdownI18N': MaxObject({
-            'de': Fulltext({ minLength: 0 }),
+            'de': FullText({ minLength: 0 }),
         })
     });
 

@@ -1,6 +1,7 @@
 'use strict';
-var chai = require('@mpieva/psydb-api-mocha-test-tools/chai');
 var { BaselineDeltas } = require('@mpieva/psydb-mocha-baseline-deltas');
+var { KOA_CHANNELS, PROPS_AS_STATE }
+    = require('@mpieva/psydb-api-mocha-test-tools/utils');
 
 var { jsonify } = require('@mpieva/psydb-core-utils');
 var { ObjectId, aggregateOne } = require('@mpieva/psydb-mongo-adapter');
@@ -19,6 +20,8 @@ describe('study-consent-template/[create|update] flow', function () {
     });
 
     step('create', async function () {
+        console.ejson(ids.all());
+
         var deltas = BaselineDeltas();
         deltas.push(await this.fetchAllRecords('studyConsentTemplate'));
 
@@ -125,12 +128,25 @@ describe('study-consent-template/[create|update] flow', function () {
 
                             ## Headline 2
                             ${lorem}
-                        `,
+                        `.trim(),
                         markdownI18N: {},
                     },
                 ]
             }
         }
+
+        var [{ channelId }] = await KOA_CHANNELS(send({
+            type: 'study-consent-template/create',
+            timezone: 'Europe/Berlin',
+            payload: payload
+        }));
+
+        deltas.push(await this.fetchAllRecords('studyConsentTemplate'));
+        deltas.test({ expected: [{
+            '_id': channelId,
+            '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
+            ...PROPS_AS_STATE(payload),
+        }], asFlatEJSON: true });
     })
 })
 

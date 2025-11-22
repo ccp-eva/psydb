@@ -83,7 +83,7 @@ var augmentedBeforeAll = async function () {
         var send = async (message, extraContext) => {
             if (login && !didAutoLogin) {
                 extraOptionsContext = {
-                    ...extraOptionContext,
+                    ...extraOptionsContext,
                     ...(await this.createFakeLogin({ ...login }))
                 }
                 didAutoLogin = true;
