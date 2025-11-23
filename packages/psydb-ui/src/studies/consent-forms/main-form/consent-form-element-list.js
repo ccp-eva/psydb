@@ -26,7 +26,10 @@ const ConsentFormElement = withField({ Control: (ps) => {
             />
             <hr />
             { ElementVariant ? (
-                <ElementVariant subjectCRT={ subjectCRT } />
+                <ElementVariant
+                    dataXPath={ dataXPath }
+                    subjectCRT={ subjectCRT }
+                />
             ) : (
                 <i className='text-muted'>
                     { translate('Please select an element type.') }

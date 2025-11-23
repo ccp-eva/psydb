@@ -9,8 +9,8 @@ var State = (context) => {
         'internalName': SaneString({ minLength: 1 }),
         'title': SaneString({ minLength: 1 }),
         'isEnabled': DefaultBool(),
-        'form': DefaultArray({
-            items: TemplateFormItem(),
+        'elements': DefaultArray({
+            items: StudyConsentFormElement(),
             minItems: 0,
         })
     });
@@ -18,7 +18,7 @@ var State = (context) => {
     return schema;
 }
 
-var TemplateFormItem = (bag) => {
+var StudyConsentFormElement = (bag) => {
     var schema = OneOf([
         ExtraField(),
         SubjectField(),

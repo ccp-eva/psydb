@@ -47,13 +47,16 @@ const CRTSelectionWrapper = (ps) => {
 const FullRecordCreator = (ps) => {
     var { studyId, subjectCRT, onSuccessfulUpdate } = ps;
 
-    var send = useSend((formData) => ({
-        type: 'study-consent-form/create',
-        payload: {
-            studyId, subjectType: subjectCRT.getType(),
-            props: { ...formData }
+    var send = useSend((formData) => {
+        var { elements, ...pass } = formData;
+        return {
+            type: 'study-consent-form/create',
+            payload: {
+                studyId, subjectType: subjectCRT.getType(),
+                props: { elements: sanitizeElements(elements), ...pass }
+            }
         }
-    }));
+    });
 
     var initialValues = MainForm.createDefaults();
     return (
@@ -63,6 +66,33 @@ const FullRecordCreator = (ps) => {
             onSubmit={ send.exec }
         />
     );
+}
+
+// FIXME: can we make this obsolete n an easy manner?
+const sanitizeElements = (elements) => {
+    var out = [];
+    var defaults = {
+        'info-text-markdown': {
+            markdown: '', markdownI18N: { 'de': '' }
+        },
+        'extra-field': {
+            displayName: '', displayNameI18N: { 'de': '' }
+        },
+        'subject-field': {},
+        'hr': {},
+    };
+    
+    for (var it of elements) {
+        var { type } = it;
+        if (type) {
+            out.push({ ...defaults[type], ...it });
+        }
+        else {
+            out.push(it)
+        }
+    }
+
+    return out;
 }
 
 export default CRTSelectionWrapper;

@@ -44,7 +44,7 @@ const FormFields = (ps) => {
                 required
             />
             <Fields.DefaultBool
-                label={ translate('Is Enabled') }
+                label={ translate('Enabled') }
                 dataXPath='$.isEnabled'
                 required
             />
