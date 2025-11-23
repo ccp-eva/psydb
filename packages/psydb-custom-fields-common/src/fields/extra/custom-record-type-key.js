@@ -1,5 +1,5 @@
 'use strict';
-var { CustomRecordTypeKey CustomRecordTypeKeyList, DefaultSearchConstraint }
+var { CustomRecordTypeKey, CustomRecordTypeKeyList, DefaultSearchConstraint }
     = require('@mpieva/psydb-schema-fields');
 var { createStringifyValue } = require('../../stringify-utils');
 

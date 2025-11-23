@@ -23,6 +23,7 @@ const IntraRecordRoutingBody = (ps) => {
     } = ps;
     
     var { record, crtSettings } = fetched;
+    var { _id: recordId } = record;
     var hasWorkflows = true; // FIXME
 
     var history = useHistory();
@@ -149,11 +150,11 @@ const IntraRecordRoutingBody = (ps) => {
                 </div>
             </Route>
             
-            <Route path={`${path}/consent-templates`}>
+            <Route path={`${path}/consent-forms`}>
                 <div className='border p-3'>
-                    <h5>{ translate('Consent Templates') }</h5>
+                    <h5>{ translate('Consent Forms') }</h5>
                     <hr />
-                    <ConsentForms studyId={ record._id } />
+                    <ConsentForms studyId={ recordId } />
                 </div>
             </Route>
         </Switch>

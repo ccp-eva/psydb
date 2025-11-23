@@ -1,43 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { useI18N } from '@mpieva/psydb-ui-contexts';
-import { useFetch, useModalReducer, useRevision, usePermissions }
-    from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator, Icons, Button, Alert }
-    from '@mpieva/psydb-ui-layout';
+import {
+    Route,
+    Switch,
+    useRouteMatch,
+    useHistory,
+    useParams
+} from 'react-router-dom';
 
-const ConsentTemplates = (ps) => {
+const StudyConsentFormRouting = (ps) => {
     var { studyId } = ps;
-    
-    var [{ translate }] = useI18N();
-    
-    var revision = useRevision();
-    var [ showHidden, setShowHidden ] = useState();
-    var [ createModal, editModal, hideModal ] = useModalReducer.many(3);
+    var { path, url } = useRouteMatch();
+    var history =  useHistory();
 
     return (
-        <div className=''>
-            <div className='d-flex justify-content-between mb-3'>
-                <Button size='sm' onClick={ createModal.handleShow }>
-                    { '+ ' + translate('New Template') }
-                </Button>
-                <div
-                    role='button'
-                    className='d-flex align-items-center text-primary'
-                    onClick={ () => setShowHidden(!showHidden) }
-                >
-                    {
-                        showHidden 
-                        ? <Icons.CheckSquareFill />
-                        : <Icons.Square />
-                    }
-                    <span className='ml-2'>
-                        { translate('Show Hidden') }
-                    </span>
-                </div>
-            </div>
-        </div>
+        <Switch>
+            <Route exact path={ path }>
+                <List studyId={ studyId } />
+            </Route>
+            <Route path={ `${path}/new` }>
+                <RecordCreator studyId={ studyId} />
+            </Route>
+        </Switch>
     )
 }
 
-export default ConsentTemplates;
+export default StudyConsentFormRouting;

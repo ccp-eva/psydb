@@ -17,8 +17,8 @@ import IntraTypeRouting from './intra-type-routing'
 
 import { RecordDetails } from './record-details';
 import { RecordCreator } from './record-creator';
-import { RecordEditor } from './record-editor';
-import { RecordRemover } from './record-remover';
+//import { RecordEditor } from './record-editor';
+//import { RecordRemover } from './record-remover';
 
 
 
@@ -87,7 +87,7 @@ const StudyRouting = (ps) => {
                     : <PermissionDenied />
                 }
             </Route>
-            <Route path={`${path}/:id/remove`}>
+            {/*<Route path={`${path}/:id/remove`}>
                 <RecordRemover
                     collection={ collection }
                     recordType={ recordType }
@@ -96,7 +96,7 @@ const StudyRouting = (ps) => {
                         history.push(`${url}/${id}/remove/success`)
                     }}
                 />
-            </Route>
+            </Route>*/}
             <Route path={`${path}/:id`}>
                 <StudyRecordContainer
                     collection={ collection }
