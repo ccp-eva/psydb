@@ -10,4 +10,6 @@ module.exports = {
     ClosedObject: require('./closed-object'), // TODO: rename ExactObject
     MaxObject: require('./max-object'),
     MinObject: require('./min-object'),
+
+    OneOf: require('./one-of'),
 }

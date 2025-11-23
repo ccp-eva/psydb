@@ -12,7 +12,7 @@ import SelectionSettings from './selection-settings';
 import LabWorkflowSettings from './experiment-settings';
 import LabTeams from './teams';
 import Participation from './participation';
-import ConsentTemplates from './consent-templates';
+import ConsentForms from './consent-forms';
 
 const IntraRecordRoutingBody = (ps) => {
     var {
@@ -58,12 +58,12 @@ const IntraRecordRoutingBody = (ps) => {
     }
 
     var consentLinks = {
-        [`${hashurl}/consent-templates`]: {
-            label: translate('Consent Templates'),
-            show: true, enabled: true
-        },
         [`${hashurl}/consent-forms`]: {
             label: translate('Consent Forms'),
+            show: true, enabled: true
+        },
+        [`${hashurl}/consent-docs`]: {
+            label: translate('Consent Documents'),
             show: true, enabled: true
         },
     }
@@ -153,7 +153,7 @@ const IntraRecordRoutingBody = (ps) => {
                 <div className='border p-3'>
                     <h5>{ translate('Consent Templates') }</h5>
                     <hr />
-                    <ConsentTemplates studyId={ record._id } />
+                    <ConsentForms studyId={ record._id } />
                 </div>
             </Route>
         </Switch>
