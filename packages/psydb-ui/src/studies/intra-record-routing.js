@@ -12,7 +12,7 @@ import SelectionSettings from './selection-settings';
 import LabWorkflowSettings from './experiment-settings';
 import LabTeams from './teams';
 import Participation from './participation';
-import ConsentForms from './consent-forms';
+import ConsentFormsRouting from './consent-forms';
 
 const IntraRecordRoutingBody = (ps) => {
     var {
@@ -151,11 +151,7 @@ const IntraRecordRoutingBody = (ps) => {
             </Route>
             
             <Route path={`${path}/consent-forms`}>
-                <div className='border p-3'>
-                    <h5>{ translate('Consent Forms') }</h5>
-                    <hr />
-                    <ConsentForms studyId={ recordId } />
-                </div>
+                <ConsentFormsRouting studyId={ recordId } />
             </Route>
         </Switch>
     );

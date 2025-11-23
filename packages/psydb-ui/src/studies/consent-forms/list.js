@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useRouteMatch } from 'react-router';
 
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useModalReducer, useRevision, usePermissions }
     from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator, Icons, Button, Alert }
+import { LoadingIndicator, LinkButton }
     from '@mpieva/psydb-ui-layout';
 
-const ConsentForms = (ps) => {
+const ConsentFormList = (ps) => {
     var { studyId } = ps;
     
+    var { url } = useRouteMatch();
     var [{ translate }] = useI18N();
     
     var revision = useRevision();
@@ -17,26 +19,12 @@ const ConsentForms = (ps) => {
     return (
         <div className=''>
             <div className='d-flex justify-content-between mb-3'>
-                <Button size='sm' onClick={ createModal.handleShow }>
-                    { '+ ' + translate('New Template') }
-                </Button>
-                <div
-                    role='button'
-                    className='d-flex align-items-center text-primary'
-                    onClick={ () => setShowHidden(!showHidden) }
-                >
-                    {
-                        showHidden 
-                        ? <Icons.CheckSquareFill />
-                        : <Icons.Square />
-                    }
-                    <span className='ml-2'>
-                        { translate('Show Hidden') }
-                    </span>
-                </div>
+                <LinkButton size='sm' to={ `${url}/new` }>
+                    { '+ ' + translate('New Consent Form') }
+                </LinkButton>
             </div>
         </div>
     )
 }
 
-export default ConsentForms;
+export default ConsentFormList;

@@ -3,6 +3,8 @@ import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 
+import ConsentFormElementList from './consent-form-element-list';
+
 export const Component = (ps) => {
     var { subjectCRT, initialValues, onSubmit } = ps;
     var [{ translate }] = useI18N();
@@ -46,6 +48,16 @@ const FormFields = (ps) => {
                 dataXPath='$.isEnabled'
                 required
             />
+           
+            <div className='px-3'>
+                <ConsentFormElementList
+                    label={ translate('Elements') }
+                    dataXPath='$.elements'
+                    enableMove={ true }
+                    enableRemove={ true }
+                    subjectCRT={ subjectCRT }
+                />
+            </div>
         </>
     );
 }
