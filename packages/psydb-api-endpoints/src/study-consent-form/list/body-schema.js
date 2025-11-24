@@ -5,7 +5,7 @@ var { ListBodyCommon, Pagination, Sort }
     = require('@mpieva/psydb-schema-fields-special');
 
 var futils = require('@mpieva/psydb-custom-fields-common');
-
+var definitions = require('./definitions');
 
 var BodySchema = (bag) => {
     var common = ListBodyCommon();
@@ -19,12 +19,11 @@ var BodySchema = (bag) => {
             recordType: IdentifierString(), // FIXME: enum
 
             quicksearch: QuickSearch(),
-            constraints: SearchConstraints()
+            constraints: SearchConstraints(),
             
             sort: Sort(),
         },
         required: [
-            'filters',
             ...common.required,
             ...pagination.required,
         ]
@@ -33,25 +32,17 @@ var BodySchema = (bag) => {
 }
 
 var QuickSearch = () => {
-    var schema = futils.createFullQuickSearchSchema({ definitions: [
-        { systemType: 'SaneString', pointer: '/state/internalName' },
-        { systemType: 'SaneString', pointer: '/state/title' },
-    ]});
+    var schema = futils.createFullQuickSearchSchema({
+        definitions: definitions.displayFields
+    });
 
     return schema;
 }
 
 var SearchConstraints = () => {
-    var schema = futils.createFullSearchConstraintsSchema({ definitions: [
-        { 
-            systemType: 'CustomRecordType', pointer: '/subjectType',
-            props: { collection: 'subject' }
-        },
-        { 
-            systemType: 'ForeignId', pointer: '/studyId',
-            props: { collection: 'study' }
-        },
-    ]});
+    var schema = futils.createFullSearchConstraintsSchema({
+        definitions: definitions.constraints,
+    });
 
     return schema;
 }

@@ -1,26 +1,17 @@
 'use strict';
-var debug = require('debug')('psydb:api:endpoints:studyTemplateForm:list');
-var { entries } = require('@mpieva/psydb-core-utils');
-var { __fixRelated } = require('@mpieva/psydb-common-compat');
+var debug = require('../debug-helper')('list');
 
-var {
-    ResponseBody,
-    validateOrThrow,
-    convertFiltersToQueryPairs,
+var { aggregateToArray, aggregateCount }
+    = require('@mpieva/psydb-mongo-adapter');
+var { MatchConstraintsStage } = require('@mpieva/psydb-mongo-stages');
 
-    fetchRecordsByFilter,
-} = require('@mpieva/psydb-api-lib');
-
-var {
-    fetchRelated,
-    gatherDisplayFields,
-    gatherSharedDisplayFields,
-    gatherAvailableConstraints,
-} = require('@mpieva/psydb-api-endpoint-lib');
+var { SmartArray } = require('@mpieva/psydb-common-lib');
+var { ResponseBody, validateOrThrow } = require('@mpieva/psydb-api-lib');
 
 var futils = require('@mpieva/psydb-custom-fields-mongo');
-
+var definitions = require('./definitions');
 var BodySchema = require('./body-schema');
+
 
 var listEndpoint = async (context, next) => {
     var { db, request, permissions } = context;
@@ -34,113 +25,58 @@ var listEndpoint = async (context, next) => {
     validateOrThrow({
         schema: BodySchema(),
         payload: request.body,
-        //unmarshalClientTimezone: timezone,
     });
+    
+    debug('done validating');
 
-    var { target = 'table', recordType = undefined } = request.body;
-
-    var displayFields = undefined;
-    var availableConstraints = undefined;
-    if (recordType) {
-        displayFields = await gatherDisplayFields({
-            db, collection: 'study', recordType, target,
-        });
-        availableConstraints = await gatherAvailableConstraints({
-            db, collection: 'study', recordType
-        }); // XXX
-    }
-    else {
-        displayFields = await gatherSharedDisplayFields({
-            db, collection: 'study', target,
-        });
-        availableConstraints = []; // XXX
-    }
-
-    validateOrThrow({
-        schema: FullBodySchema({
-            availableConstraints,
-            availableQuickSearchFields: displayFields
-        }),
-        payload: request.body,
-        unmarshalClientTimezone: timezone,
-    });
+    var { target = 'table' } = request.body;
 
     var {
-        extraIds, excludedIds, // NOTE: only for option list
         quicksearch = {}, constraints = {},
         showHidden, offset, limit, sort,
     } = request.body;
 
-    debug('done validating');
 
-    // FIXME: thtas a hotfixed for $in in constraint values
-    constraints = entries(constraints).reduce((acc, [key, value]) => ({
-        ...acc,
-        [key]: Array.isArray(value) ? { $in: value } : value
-    }), {});
-    ///
-   
-    var definedQuickSearch = convertFiltersToQueryPairs({
-        filters: quicksearch, displayFields,
-    });
-
-    var stages = SmartArray([
+    var precount = SmartArray([
         ...futils.createFullQuicksearchStages({
-            quicksearch, definitions: [
-                { systemType: 'SaneString', pointer: '/state/internalName' },
-                { systemType: 'SaneString', pointer: '/state/title' }
-            ]
+            quicksearch, definitions: definitions.displayFields
         }),
-        
+
+        MatchConstraintsStage({ constraints, __sanitize_$in: true }),
     ]);
 
-    var records = await aggregateToArray({ db, studyConsentForm: stages });
+    var postcount = SmartArray([
+        { $project: {
+            'subjectType': true,
+            'state.internalName': true,
+            'state.title': true,
+            'studyId': true,
+        }},
 
-    // TODO: rework this
-    debug('>>>>>>>>> START FETCH');
-    var records = await fetchRecordsByFilter({
-        db,
-        permissions,
-        collectionName: 'studyConsentForm',
-        recordType,
-        hasSubChannels: false,
+        ( sort?.path && { $sort: {
+            [sort.path]: sort.direction === 'desc' ? -1 : 1
+        }}),
 
-        enableResearchGroupFilter,
-        // onlyIds, NOTE: not used here
-        extraIds,
-        excludedIds,
-        constraints,
-        
-        // FIXME
-        queryFields: definedQuickSearch.map(it => ({
-            field: it.definition, value: it.input
-        })),
+        (offset && { $skip: offset }),
+        (limit && { $limit: limit }),
+    ])
 
-        displayFields,
-        recordLabelDefinition: undefined, // FIXME
-        offset,
-        limit,
-        sort,
-
-        showHidden,
-        // TODO remove this as soon as we
-        // can properly quicksearch and search for fk
-        //disablePermissionCheck: (target === 'optionlist' ? true : false)
-    });
-
-    debug('<<<<<<<<< END FETCH')
-
-    var __related = await fetchRelated({
-        db, records, definitions: displayFields, i18n
-    });
+    debug('start count');
+    var recordsCount = await aggregateCount({ db, studyConsentForm: [
+        ...precount
+    ]});
+    debug('done count');
+    
+    debug('start aggregate');
+    var records = await aggregateToArray({ db, studyConsentForm: [
+        ...precount, ...postcount
+    ]});
+    debug('done aggregate');
 
     context.body = ResponseBody({
         data: {
-            records,
-            displayFieldData: displayFields,
-            recordsCount: records.totalRecordCount,
-            //related: __fixRelated(__related, { isResponse: false }),
-            ...(__related),
+            records, recordsCount,
+            displayFieldData: definitions.displayFields,
         },
     });
 

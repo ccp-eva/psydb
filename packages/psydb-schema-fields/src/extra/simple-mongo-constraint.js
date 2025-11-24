@@ -1,5 +1,5 @@
 'use strict';
-var { OneOf } = require('../core-compositions');
+var { OneOf, ClosedObject } = require('../core-compositions');
 
 var SimpleMongoConstraint = (bag) => {
     var { array, scalar } = bag;

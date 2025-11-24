@@ -1,5 +1,6 @@
 'use strict';
 var { OneOf } = require('../core-compositions');
+var SimpleMongoConstraint = require('./simple-mongo-constraint');
 
 var DefaultSearchConstraint = (bag) => {
     var { scalar, array } = bag;
