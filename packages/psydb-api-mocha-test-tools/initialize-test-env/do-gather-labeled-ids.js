@@ -125,10 +125,10 @@ var createOneRecordLabel = (collection, record, options = {}) => {
                 record.state.shorthand
             );
         case 'subject':
-            var { state } = record.gdpr;
+            var { custom } = record.gdpr.state;
             return (
-                state.name
-                || state.lastname + ', ' + state.firstname
+                custom.name
+                || custom.lastname + ', ' + custom.firstname
             );
         case 'customRecordType':
             return `${record.collection} ${record.type}`;

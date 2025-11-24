@@ -1,4 +1,4 @@
-CONF="consent-flow-starter"
+CONF="consent-doc-starter"
 
 node src/run.js \
     -c ./configs/$CONF.js \
