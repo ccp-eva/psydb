@@ -7,6 +7,7 @@ import { FormBox } from '@mpieva/psydb-ui-layout';
 
 import List from './list';
 import RecordCreator from './record-creator';
+import RecordEditor from './record-editor';
 
 const StudyConsentFormRouting = (ps) => {
     var { studyId } = ps;
@@ -26,7 +27,21 @@ const StudyConsentFormRouting = (ps) => {
             </Route>
             <Route path={ `${path}/new` }>
                 <FormBox title={ translate('New Consent Form') }>
-                    <RecordCreator studyId={ studyId } />
+                    <RecordCreator
+                        studyId={ studyId }
+                        onSuccessfulUpdate={
+                            () => history.push(`${url}`)
+                        }
+                    />
+                </FormBox>
+            </Route>
+            <Route path={ `${path}/:id` }>
+                <FormBox title={ translate('Edit Consent Form') }>
+                    <RecordEditor
+                        onSuccessfulUpdate={
+                            () => history.push(`${url}`)
+                        }
+                    />
                 </FormBox>
             </Route>
         </Switch>

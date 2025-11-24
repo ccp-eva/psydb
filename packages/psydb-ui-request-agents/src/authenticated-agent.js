@@ -960,6 +960,10 @@ const createAgent = (options = {}) => {
     agent.helperSetItem = {
         list: dumpPOST({ url: '/api/helperSetItem/list' }),
     };
+    agent.studyConsentForm = {
+        read: dumpPOST({ url: '/api/study-consent-form/read' }),
+        list: dumpPOST({ url: '/api/study-consent-form/list' }),
+    };
     
     // XXX
     agent.fetchFixedEventDetails = (bag) => {

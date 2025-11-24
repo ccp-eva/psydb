@@ -8,7 +8,7 @@ import * as Controls from '@mpieva/psydb-ui-form-controls';
 import MainForm from './main-form';
 
 const CRTSelectionWrapper = (ps) => {
-    var { studyId } = ps;
+    var { studyId, onSuccessfulUpdate } = ps;
     var [ subjectType, setSubjectType ] = useState('child');
     var [{ translate, language }] = useI18N();
 
@@ -33,6 +33,7 @@ const CRTSelectionWrapper = (ps) => {
             { subjectType ? (
                 <FullRecordCreator
                     studyId={ studyId }
+                    onSuccessfulUpdate={ onSuccessfulUpdate }
                     subjectCRT={ crts.find({ type: subjectType }) }
                 />
             ) : (
@@ -56,7 +57,7 @@ const FullRecordCreator = (ps) => {
                 props: { elements: sanitizeElements(elements), ...pass }
             }
         }
-    });
+    }, { onSuccessfulUpdate });
 
     var initialValues = MainForm.createDefaults();
     return (

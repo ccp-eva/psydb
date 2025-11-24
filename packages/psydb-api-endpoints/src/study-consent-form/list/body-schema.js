@@ -16,12 +16,10 @@ var BodySchema = (bag) => {
             ...common.properties,
             ...pagination.properties,
 
-            recordType: IdentifierString(), // FIXME: enum
-
-            quicksearch: QuickSearch(),
-            constraints: SearchConstraints(),
+            'quicksearch': QuickSearch(),
+            'constraints': SearchConstraints(),
             
-            sort: Sort(),
+            'sort': Sort(),
         },
         required: [
             ...common.required,

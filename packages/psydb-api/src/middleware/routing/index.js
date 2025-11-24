@@ -16,6 +16,7 @@ var { withPostStages, withGetStages } = require('./stage-helpers');
 
 var addCRTSettingsRoutes = require('./add-crt-settings-routes');
 var addStudyRoutes = require('./add-study-routes');
+var addStudyConsentFormRoutes = require('./add-study-consent-form-routes');
 var addSubjectRoutes = require('./add-subject-routes');
 var addCSVImportRoutes = require('./add-csv-import-routes');
 var addAuditRoutes = require('./add-audit-routes');
@@ -525,6 +526,7 @@ var createRouting = (bag = {}) => {
 
     addCRTSettingsRoutes({ router });
     addStudyRoutes({ router });
+    addStudyConsentFormRoutes({ router });
     addSubjectRoutes({ router });
     addCSVImportRoutes({ router });
     addAuditRoutes({ router });

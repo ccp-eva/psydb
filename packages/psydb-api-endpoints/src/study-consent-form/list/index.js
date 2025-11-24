@@ -50,6 +50,7 @@ var listEndpoint = async (context, next) => {
             'subjectType': true,
             'state.internalName': true,
             'state.title': true,
+            'state.isEnabled': true,
             'studyId': true,
         }},
 
