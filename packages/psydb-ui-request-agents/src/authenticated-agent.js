@@ -964,6 +964,10 @@ const createAgent = (options = {}) => {
         read: dumpPOST({ url: '/api/study-consent-form/read' }),
         list: dumpPOST({ url: '/api/study-consent-form/list' }),
     };
+    agent.studyConsentDoc = {
+        read: dumpPOST({ url: '/api/study-consent-doc/read' }),
+        list: dumpPOST({ url: '/api/study-consent-doc/list' }),
+    };
     
     // XXX
     agent.fetchFixedEventDetails = (bag) => {

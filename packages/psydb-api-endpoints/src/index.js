@@ -2,6 +2,7 @@
 module.exports = {
     study: require('./study'),
     studyConsentForm: require('./study-consent-form'),
+    studyConsentDoc: require('./study-consent-doc'),
 
     subject: require('./subject'),
     experiment: require('./experiment'),

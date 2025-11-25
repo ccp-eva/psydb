@@ -29,9 +29,7 @@ const StudyConsentDocRouting = (ps) => {
                 <FormBox title={ translate('New Consent Doc') }>
                     <RecordCreator
                         studyId={ studyId }
-                        onSuccessfulUpdate={
-                            () => history.push(`${url}`)
-                        }
+                        onSuccessfulUpdate={ () => history.push(`${url}`) }
                     />
                 </FormBox>
             </Route>
@@ -44,4 +42,4 @@ const StudyConsentDocRouting = (ps) => {
     )
 }
 
-export default StudyConsentFormRouting;
+export default StudyConsentDocRouting;

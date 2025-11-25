@@ -37,22 +37,28 @@ const ConsentFormList = (ps) => {
     var headBag = { definitions, sorter, canSort: true };
     if (records.length < 1) {
         return (
-            <TableEmptyFallback
-                emptyInfoText={ 'No study consent forms found.' }
-            >
-                <TableHeadCustomCols { ...headBag } />
-            </TableEmptyFallback>
+            <>
+                <div className='d-flex justify-content-between mb-3'>
+                    <LinkButton size='sm' to={ `${url}/new` }>
+                        { '+ ' + translate('New Consent Form') }
+                    </LinkButton>
+                </div>
+                <TableEmptyFallback
+                    emptyInfoText={ 'No study consent forms found.' }
+                >
+                    <TableHeadCustomCols { ...headBag } />
+                </TableEmptyFallback>
+            </>
         )
     }
 
     return (
-        <div className=''>
+        <>
             <div className='d-flex justify-content-between mb-3'>
                 <LinkButton size='sm' to={ `${url}/new` }>
                     { '+ ' + translate('New Consent Form') }
                 </LinkButton>
             </div>
-
             <Table
                 style={{ borderCollapse: 'separate', borderSpacing: 0 }}
                 hover={ true }
@@ -77,7 +83,7 @@ const ConsentFormList = (ps) => {
                     ))}
                 </tbody>
             </Table>
-        </div>
+        </>
     )
 }
 

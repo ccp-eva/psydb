@@ -16,7 +16,7 @@ var displayFields = [
         props: { collection: 'subject' }
     },
     {
-        systemType: 'ForeignId', // FIXME: CRT
+        systemType: 'ForeignId',
         pointer: '/subjectId',
         displayName: 'Subject', displayNameI18N: { 'de': 'Proband:in' },
         props: { collection: 'subject', recordType: 'child' /* XXX */ }

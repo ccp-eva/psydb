@@ -35,6 +35,7 @@ var allHandlers = [
     require('./handlers/api-key'),
     
     require('./handlers/study-consent-form'),
+    require('./handlers/study-consent-doc'),
 ];
 
 module.exports = allHandlers;

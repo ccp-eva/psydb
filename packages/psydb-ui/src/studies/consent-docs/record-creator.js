@@ -1,0 +1,159 @@
+import React, { useState } from 'react';
+
+import { CRTSettings } from '@mpieva/psydb-common-lib';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useFetch, useFetchChain, useSend } from '@mpieva/psydb-ui-hooks';
+
+import { LoadingIndicator, Alert } from '@mpieva/psydb-ui-layout';
+import * as Controls from '@mpieva/psydb-ui-form-controls';
+import { RecordPicker } from '@mpieva/psydb-ui-lib';
+import MainForm from './main-form';
+
+const FormSelectionWrapper = (ps) => {
+    var { studyId, subjectId: props_subjectId, onSuccessfulUpdate } = ps;
+    
+    var [ studyConsentFormId, setStudyConsentFormId ] = useState(
+        '69241bc4b88e9704906d6942'
+    );
+    var [ subjectId, setSubjectId ] = useState(
+        '64d42dcb443aa279ca4caede'
+    );
+    var [{ translate, language }] = useI18N();
+
+    return (
+        <div>
+            <StudyConsentFormSelect
+                studyId={ studyId }
+                value={ studyConsentFormId }
+                onChange={ setStudyConsentFormId }
+            />
+            { (studyConsentFormId && !props_subjectId) && (
+                <SubjectPicker
+                    studyConsentFormId={ studyConsentFormId }
+                    value={{ _id: subjectId }}
+                    onChange={ (record) => (
+                        setSubjectId(record._id || record)
+                    )}
+                />
+            )}
+            <hr />
+            { !studyConsentFormId ? (
+                <Alert variant='info'><i>
+                    { translate('Please select a consent form.') }
+                </i></Alert>
+            ) : (!props_subjectId && !subjectId) ? (
+                <Alert variant='info'><i>
+                    { translate('Please select a subject.') }
+                </i></Alert>
+            ) : (
+                <FullRecordCreator
+                    studyConsentFormId={ studyConsentFormId }
+                    subjectId={ props_subjectId || subjectId }
+                    onSuccessfulUpdate={ onSuccessfulUpdate }
+                />
+            )}
+        </div>
+    )
+}
+
+const StudyConsentFormSelect = (ps) => {
+    var { studyId, value, onChange } = ps;
+    
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.studyConsentForm.list({
+            //target: 'option-list', // FIXME
+            constraints: { '/studyId': studyId },
+            offset: 0, limit: 1000,
+        })
+    ), [ studyId ]);
+
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
+
+    var { records } = fetched.data;
+    var options = {};
+    for (var it of records) {
+        options[it._id] = it.state.internalName;
+    }
+
+    return (
+        <Controls.GenericEnum
+            value={ value } onChange={ onChange }
+            options={ options }
+        />
+    )
+}
+
+const SubjectPicker = (ps) => {
+    var { studyConsentFormId, value, onChange } = ps;
+    
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.studyConsentForm.read({ studyConsentFormId })
+    ), [ studyConsentFormId ]);
+    
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
+
+    var { record } = fetched.data;
+    var { subjectType } = record;
+
+    return (
+        <div className='mt-3'>
+            <RecordPicker
+                value={ value }
+                onChange={ onChange }
+                collection='subject'
+                recordType={ subjectType }
+            />
+        </div>
+    )
+}
+
+const FullRecordCreator = (ps) => {
+    var { studyConsentFormId, subjectId, onSuccessfulUpdate } = ps;
+
+    var send = useSend((formData) => {
+        var { elements, ...pass } = formData;
+        return { type: 'study-consent-doc/create', payload: {
+            studyConsentFormId, subjectId,
+            props: { ...formData }
+        }}
+    }, { onSuccessfulUpdate });
+
+    var [ didFetch, fetched ] = useFetchChain(() => ([
+        ({ agent }) => ({ studyConsentForm: (
+            agent.studyConsentForm.read({ studyConsentFormId })
+        )}),
+        ({ agent, context }) => ({ subject: (
+            agent.readRecord({
+                collection: 'subject',
+                recordType: context.studyConsentForm.data.record.subjectType,
+                id: subjectId
+            })
+        )}),
+    ]), [ studyConsentFormId, subjectId ]);
+    
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
+
+    var { studyConsentForm, subject } = fetched._stageDatas;
+    var related = { ...subject.related } // FIXME: full merge
+
+    var { subjectCRT } = studyConsentForm;
+    subjectCRT = CRTSettings({ data: subjectCRT });
+
+    var initialValues = MainForm.createDefaults();
+    return (
+        <MainForm.Component
+            studyConsentForm={ studyConsentForm.record }
+            subjectCRT={ subjectCRT }
+            initialValues={ initialValues }
+            onSubmit={ send.exec }
+        />
+    );
+}
+
+export default FormSelectionWrapper;

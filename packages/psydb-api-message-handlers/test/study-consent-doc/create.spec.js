@@ -26,13 +26,15 @@ describe('study-consent-doc/create', function () {
         deltas.push(await this.fetchAllRecords('studyConsentDoc'));
 
         var payload = {
-            'studyConsentDocId': ids('Tiny-Test'),
+            'studyConsentFormId': ids('Tiny-Test'),
             'subjectId': ids('Test Kind, Alice'),
             'props': {
-                '2': 'Test Parent, Elenor',
-                '3': 'Alice',
-                '4': 'Test Kind',
-                '6': true
+                'elementValues': {
+                    '2': 'Test Parent, Elenor',
+                    '3': 'Alice',
+                    '4': 'Test Kind',
+                    '6': true
+                }
             }
         }
 
@@ -43,10 +45,19 @@ describe('study-consent-doc/create', function () {
         }));
 
         deltas.push(await this.fetchAllRecords('studyConsentDoc'));
-        deltas.test({ expected: [{
-            '_id': channelId,
-            '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
-            ...PROPS_AS_STATE(payload),
-        }], asFlatEJSON: true });
+        var studyConsentFormSnapshot = await (
+            aggregateOne({ db, studyConsentForm: { '_id': ids('Tiny-Test') }})
+        );
+        deltas.test({ expected: {
+            '/0/_id': channelId,
+            '/0/_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
+            '/0/studyConsentFormId': ids('Tiny-Test'),
+            '/0/subjectId': ids('Test Kind, Alice'),
+            '/0/subjectType': 'child',
+            '/0/state': {
+                ...PROPS_AS_STATE(payload).state,
+                'studyConsentFormSnapshot': studyConsentFormSnapshot,
+            }
+        }, asFlatEJSON: true });
     })
 })
