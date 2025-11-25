@@ -19,10 +19,10 @@ const FormSelectionWrapper = (ps) => {
     } = ps;
     
     var [ studyConsentFormId, setStudyConsentFormId ] = useState(
-        '69241bc4b88e9704906d6942'
+        //'69241bc4b88e9704906d6942'
     );
     var [ subjectId, setSubjectId ] = useState(
-        '64d42dcb443aa279ca4caede'
+        //'64d42dcb443aa279ca4caede'
     );
     var [{ translate, language }] = useI18N();
 
@@ -47,7 +47,7 @@ const FormSelectionWrapper = (ps) => {
                     )}
                 />
             )}
-            { enableFullScreenLink && (
+            { (studyConsentFormId && subjectId && enableFullScreenLink) && (
                 <div className='d-flex justify-content-end mt-3'>
                     <LinkQ64
                         className='btn btn-primary btn-sm m-0'

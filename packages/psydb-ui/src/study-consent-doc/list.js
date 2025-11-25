@@ -56,7 +56,11 @@ const ConsentDocList = (ps) => {
 
     return (
         <>
-
+            <div className='d-flex justify-content-between mb-3'>
+                <LinkButton size='sm' to={ `${url}/new` }>
+                    { '+ ' + translate('New Consent Doc') }
+                </LinkButton>
+            </div>
             <Table
                 style={{ borderCollapse: 'separate', borderSpacing: 0 }}
                 hover={ true }
