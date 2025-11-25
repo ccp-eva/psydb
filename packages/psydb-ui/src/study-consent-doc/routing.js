@@ -7,7 +7,7 @@ import { FormBox } from '@mpieva/psydb-ui-layout';
 
 import List from './list';
 import RecordCreator from './record-creator';
-//import RecordEditor from './record-editor';
+import RecordDetails from './record-details';
 
 const StudyConsentDocRouting = (ps) => {
     var { studyId } = ps;
@@ -34,11 +34,11 @@ const StudyConsentDocRouting = (ps) => {
                     />
                 </FormBox>
             </Route>
-            {/*<Route path={ `${path}/:id` }>
+            <Route path={ `${path}/:studyConsentDocId` }>
                 <FormBox title={ translate('Consent Doc Details') }>
                     <RecordDetails />
                 </FormBox>
-            </Route>*/}
+            </Route>
         </Switch>
     )
 }

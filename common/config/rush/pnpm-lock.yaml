@@ -2165,6 +2165,9 @@ importers:
       '@mpieva/psydb-ui-request-agents':
         specifier: workspace:*
         version: link:../psydb-ui-request-agents
+      date-fns:
+        specifier: ~2.30.0
+        version: 2.30.0
       react:
         specifier: ~17.0.2
         version: 17.0.2

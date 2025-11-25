@@ -1,12 +1,12 @@
 var displayFields = [
     {
         systemType: 'SaneString',
-        pointer: '/state/studyRecordFormSnapshot/state/internalName',
-        displayName: 'Internal Name', displayNameI18N: { 'de': 'Interner Name' }
+        pointer: '/state/studyConsentFormSnapshot/state/internalName',
+        displayName: 'Consent Form Name', displayNameI18N: { 'de': 'Consent-Formular Name' }
     },
     {
         systemType: 'SaneString',
-        pointer: '/state/studyRecordFormSnapshot/state/title',
+        pointer: '/state/studyConsentFormSnapshot/state/title',
         displayName: 'Title', displayNameI18N: { 'de': 'Titel' }
     },
     {

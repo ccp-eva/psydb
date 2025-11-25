@@ -5,6 +5,7 @@ var executeSystemEvents = async (context) => {
     var { message, cache, dispatch } = context;
     var { studyConsentFormId, subjectId, props } = message.payload;
     var { studyConsentForm, subject } = cache.get();
+    var { studyId } = studyConsentForm;
     var { type: subjectType } = subject;
 
 
@@ -21,6 +22,7 @@ var executeSystemEvents = async (context) => {
         isNew: true,
         
         extraCreateProps: {
+            studyId,
             studyConsentFormId,
             subjectId,
             subjectType

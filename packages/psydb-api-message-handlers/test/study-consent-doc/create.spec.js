@@ -51,6 +51,7 @@ describe('study-consent-doc/create', function () {
         deltas.test({ expected: {
             '/0/_id': channelId,
             '/0/_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
+            '/0/studyId': ids('IH-Study'),
             '/0/studyConsentFormId': ids('Tiny-Test'),
             '/0/subjectId': ids('Test Kind, Alice'),
             '/0/subjectType': 'child',

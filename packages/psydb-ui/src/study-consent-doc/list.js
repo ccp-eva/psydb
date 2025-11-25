@@ -73,7 +73,7 @@ const ConsentDocList = (ps) => {
                         >
                             <TableBodyCustomCols
                                 record={ record }
-                                related={ related }
+                                related={ related || {} }
                                 definitions={ definitions }
                                 wrapAsLinkTo={ `#${url}/${record._id}`}
                             />

@@ -19,6 +19,7 @@
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "devDependencies": {
     "react": "~17.0.2",
+    "date-fns": "~2.30.0",
     "@mpieva/psydb-timezone-helpers": "workspace:*",
     "@mpieva/psydb-common-translations": "workspace:*",
     "@mpieva/psydb-ui-request-agents": "workspace:*",
