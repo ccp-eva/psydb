@@ -2297,6 +2297,9 @@ importers:
       '@babel/preset-react':
         specifier: ~7.22.15
         version: 7.22.15(@babel/core@7.22.20)
+      '@cdxoo/json-base64':
+        specifier: ~1.0.0
+        version: 1.0.0
       '@mpieva/psydb-common-lib':
         specifier: workspace:*
         version: link:../psydb-common-lib

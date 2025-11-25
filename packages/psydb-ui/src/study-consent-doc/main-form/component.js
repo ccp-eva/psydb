@@ -7,7 +7,8 @@ import ConsentDocElement from './consent-doc-element';
 
 export const Component = (ps) => {
     var { studyConsentForm, subjectCRT, initialValues, onSubmit } = ps;
-    var [{ translate }] = useI18N();
+    var { title, titleI18N } = studyConsentForm.state;
+    var [{ translate, language }] = useI18N();
 
     return (
         <DefaultForm
@@ -17,6 +18,8 @@ export const Component = (ps) => {
         >
             {(formikProps) => (
                 <>
+                    <h1>{ titleI18N?.[language] || title }</h1>
+                    <hr />
                     <FormFields
                         studyConsentForm={ studyConsentForm }
                         subjectCRT={ subjectCRT }
@@ -46,35 +49,4 @@ const FormFields = (ps) => {
             ))}
         </>
     )
-    
-
-    return (
-        <>
-            <Fields.SaneString
-                label={ translate('Internal Name') }
-                dataXPath='$.internalName'
-                required
-            />
-            <Fields.SaneString
-                label={ translate('Title') }
-                dataXPath='$.title'
-                required
-            />
-            <Fields.DefaultBool
-                label={ translate('Enabled') }
-                dataXPath='$.isEnabled'
-                required
-            />
-           
-            <div className='px-3'>
-                <ConsentFormElementList
-                    label={ translate('Elements') }
-                    dataXPath='$.elements'
-                    enableMove={ true }
-                    enableRemove={ true }
-                    subjectCRT={ subjectCRT }
-                />
-            </div>
-        </>
-    );
 }

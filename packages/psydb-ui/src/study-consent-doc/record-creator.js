@@ -4,7 +4,7 @@ import { CRTSettings } from '@mpieva/psydb-common-lib';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useFetchChain, useSend } from '@mpieva/psydb-ui-hooks';
 
-import { LoadingIndicator, Alert } from '@mpieva/psydb-ui-layout';
+import { LoadingIndicator, Alert, LinkQ64 } from '@mpieva/psydb-ui-layout';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
 import { RecordPicker } from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
@@ -14,6 +14,7 @@ const FormSelectionWrapper = (ps) => {
         studyId,
         subjectId: props_subjectId,
         studyConsentFormId: props_studyConsentFormId,
+        enableFullScreenLink = false,
         onSuccessfulUpdate
     } = ps;
     
@@ -24,6 +25,9 @@ const FormSelectionWrapper = (ps) => {
         '64d42dcb443aa279ca4caede'
     );
     var [{ translate, language }] = useI18N();
+
+    studyConsentFormId = props_studyConsentFormId || studyConsentFormId;
+    subjectId = props_subjectId || subjectId;
 
     return (
         <div>
@@ -43,6 +47,18 @@ const FormSelectionWrapper = (ps) => {
                     )}
                 />
             )}
+            { enableFullScreenLink && (
+                <div className='d-flex justify-content-end mt-3'>
+                    <LinkQ64
+                        className='btn btn-primary btn-sm m-0'
+                        href='#/full-screen/study-consent-doc/fill'
+                        target='_blank'
+                        payload={{ studyId, subjectId, studyConsentFormId }}
+                    >
+                        { translate('Go Fullscreen ->') }
+                    </LinkQ64>
+                </div>
+            )}
             { (!props_studyConsentFormId || !props_subjectId) && (
                 <hr />
             )}
@@ -56,10 +72,8 @@ const FormSelectionWrapper = (ps) => {
                 </i></Alert>
             ) : (
                 <FullRecordCreator
-                    studyConsentFormId={
-                        props_studyConsentFormId || studyConsentFormId
-                    }
-                    subjectId={ props_subjectId || subjectId }
+                    studyConsentFormId={ studyConsentFormId }
+                    subjectId={ subjectId }
                     onSuccessfulUpdate={ onSuccessfulUpdate }
                 />
             )}

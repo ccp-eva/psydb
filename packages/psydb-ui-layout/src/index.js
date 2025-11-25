@@ -70,5 +70,7 @@ export * from './narrow-hr';
 export * from './small-form-footer';
 
 export * from './json-raw';
+export * from './link-q64';
+export * from './a4-wrapper';
 
 export * as ErrorFallbacks from './error-fallbacks';

@@ -30,6 +30,7 @@ const StudyConsentDocRouting = (ps) => {
                     <RecordCreator
                         studyId={ studyId }
                         onSuccessfulUpdate={ () => history.push(`${url}`) }
+                        enableFullScreenLink={ true }
                     />
                 </FormBox>
             </Route>
