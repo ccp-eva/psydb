@@ -69,6 +69,10 @@ var CRTSettings = ({ data }) => {
     }
 
     crt.allCustomFields = crt.getFlattenedFieldDefinitions;
+    crt.findOneCustomField = (filter) => {
+        var [ first ] = crt.findCustomFields(filter);
+        return first;
+    }
     crt.findCustomFields = (filter) => {
         var fields = crt.getFlattenedFieldDefinitions();
         return (

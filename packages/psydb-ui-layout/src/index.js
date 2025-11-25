@@ -1,4 +1,4 @@
-export { LinkContainer } from 'react-router-bootstrap';
+export * from './externals';
 
 export { default as CopyNotice } from './copy-notice';
 export { default as LinkButton } from './link-button';
@@ -70,20 +70,5 @@ export * from './narrow-hr';
 export * from './small-form-footer';
 
 export * from './json-raw';
-
-export {
-    Nav,
-    Modal,
-    Button,
-    Table,
-    Container,
-    Row,
-    Col,
-    Alert,
-    Dropdown,
-    Form,
-    InputGroup,
-    ButtonGroup,
-} from 'react-bootstrap';
 
 export * as ErrorFallbacks from './error-fallbacks';

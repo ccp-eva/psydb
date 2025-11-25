@@ -145,7 +145,11 @@ const FullRecordCreator = (ps) => {
     var { subjectCRT } = studyConsentForm;
     subjectCRT = CRTSettings({ data: subjectCRT });
 
-    var initialValues = MainForm.createDefaults();
+    var initialValues = MainForm.createDefaults({
+        subject: subject.record,
+        studyConsentForm: studyConsentForm.record,
+        subjectCRT,
+    });
     return (
         <MainForm.Component
             studyConsentForm={ studyConsentForm.record }

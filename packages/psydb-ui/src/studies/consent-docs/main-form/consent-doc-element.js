@@ -1,5 +1,6 @@
 import React from 'react';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { Markdown } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib';
 
 const ConsentDocElement = (ps) => {
@@ -27,24 +28,49 @@ const switchElementVariant = (type) => {
 }
 
 const InfoTextMarkdown = (ps) => {
-    var { markdown, markdownI18N } = ps;
+    var { index, markdown, markdownI18N } = ps;
     var [{ language }] = useI18N();
 
     return (
-        <pre>
+        <Markdown>
             { markdownI18N?.[language] || markdown }
-        </pre>
+        </Markdown>
     )
 }
 
 const SubjectField = (ps) => {
-    var { pointer, subjectCRT } = ps;
-    return pointer;
+    var { index, pointer, subjectCRT } = ps;
+    var [{ translate }] = useI18N();
+    
+    var definition = subjectCRT.findOneCustomField({ 'pointer': pointer });
+
+    if (!definition) {
+        return <Alert variant='danger'>
+            <b>ERROR: Could not find subject field for pointer { pointer }</b>
+        </Alert>
+    }
+
+    var { systemType } = definition;
+    var Component = Fields[systemType];
+    return (
+        <Component
+            dataXPath={ `$.elementValues.${index}` }
+            label={ translate.fieldDefinition(definition) }
+        />
+    )
 }
 
 const ExtraField = (ps) => {
-    var { systemType } = ps;
-    return systemType;
+    var { index, systemType, displayName, displayNameI18N } = ps;
+    var [{ language }] = useI18N();
+    
+    var Component = Fields[systemType];
+    return (
+        <Component
+            dataXPath={ `$.elementValues.${index}` }
+            label={ displayNameI18N?.[language] || displayName }
+        />
+    )
 }
 
 const HR = (ps) => {
