@@ -10,7 +10,12 @@ import { RecordPicker } from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
 
 const FormSelectionWrapper = (ps) => {
-    var { studyId, subjectId: props_subjectId, onSuccessfulUpdate } = ps;
+    var {
+        studyId,
+        subjectId: props_subjectId,
+        studyConsentFormId: props_studyConsentFormId,
+        onSuccessfulUpdate
+    } = ps;
     
     var [ studyConsentFormId, setStudyConsentFormId ] = useState(
         '69241bc4b88e9704906d6942'
@@ -22,11 +27,13 @@ const FormSelectionWrapper = (ps) => {
 
     return (
         <div>
-            <StudyConsentFormSelect
-                studyId={ studyId }
-                value={ studyConsentFormId }
-                onChange={ setStudyConsentFormId }
-            />
+            { !props_studyConsentFormId && (
+                <StudyConsentFormSelect
+                    studyId={ studyId }
+                    value={ studyConsentFormId }
+                    onChange={ setStudyConsentFormId }
+                />
+            )}
             { (studyConsentFormId && !props_subjectId) && (
                 <SubjectPicker
                     studyConsentFormId={ studyConsentFormId }
@@ -36,8 +43,10 @@ const FormSelectionWrapper = (ps) => {
                     )}
                 />
             )}
-            <hr />
-            { !studyConsentFormId ? (
+            { (!props_studyConsentFormId || !props_subjectId) && (
+                <hr />
+            )}
+            { (!props_studyConsentFormId && !studyConsentFormId) ? (
                 <Alert variant='info'><i>
                     { translate('Please select a consent form.') }
                 </i></Alert>
@@ -47,7 +56,9 @@ const FormSelectionWrapper = (ps) => {
                 </i></Alert>
             ) : (
                 <FullRecordCreator
-                    studyConsentFormId={ studyConsentFormId }
+                    studyConsentFormId={
+                        props_studyConsentFormId || studyConsentFormId
+                    }
                     subjectId={ props_subjectId || subjectId }
                     onSuccessfulUpdate={ onSuccessfulUpdate }
                 />

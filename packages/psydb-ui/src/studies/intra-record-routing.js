@@ -13,7 +13,7 @@ import LabWorkflowSettings from './experiment-settings';
 import LabTeams from './teams';
 import Participation from './participation';
 import ConsentFormsRouting from './consent-forms';
-import ConsentDocsRouting from './consent-docs';
+import * as StudyConsentDoc from '../study-consent-doc';
 
 const IntraRecordRoutingBody = (ps) => {
     var {
@@ -155,7 +155,7 @@ const IntraRecordRoutingBody = (ps) => {
                 <ConsentFormsRouting studyId={ recordId } />
             </Route>
             <Route path={`${path}/consent-docs`}>
-                <ConsentDocsRouting studyId={ recordId } />
+                <StudyConsentDoc.Routing studyId={ recordId } />
             </Route>
         </Switch>
     );
