@@ -48,7 +48,7 @@ const RecordDetails = (ps) => {
 
 const Metadata = (ps) => {
     var { record } = ps;
-    var { _rohrpostMetadata } = record;
+    var { _rohrpostMetadata, personnelId } = record;
     var { createdAt } = _rohrpostMetadata;
     
     var [{ translate, fdatetime }] = useI18N();
@@ -60,6 +60,9 @@ const Metadata = (ps) => {
         <>
             <Field label={ translate('Timestamp') }>
                 { fdatetime(createdAt) }
+            </Field>
+            <Field label={ translate('Personnel ID') }>
+                { personnelId }
             </Field>
         </>
     )

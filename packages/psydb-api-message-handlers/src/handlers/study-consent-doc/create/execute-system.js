@@ -2,7 +2,8 @@
 var { pathify, merge, seperateNulls } = require('@mpieva/psydb-core-utils');
 
 var executeSystemEvents = async (context) => {
-    var { message, cache, dispatch } = context;
+    var { message, cache, dispatch, personnelId } = context;
+
     var { studyConsentFormId, subjectId, props } = message.payload;
     var { studyConsentForm, subject } = cache.get();
     var { studyId } = studyConsentForm;
@@ -25,7 +26,8 @@ var executeSystemEvents = async (context) => {
             studyId,
             studyConsentFormId,
             subjectId,
-            subjectType
+            subjectType,
+            personnelId,
         },
 
         payload: { $set: {

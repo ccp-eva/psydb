@@ -54,6 +54,7 @@ describe('study-consent-doc/create', function () {
             '/0/studyId': ids('IH-Study'),
             '/0/studyConsentFormId': ids('Tiny-Test'),
             '/0/subjectId': ids('Test Kind, Alice'),
+            '/0/personnelId': ids('root@example.com'),
             '/0/subjectType': 'child',
             '/0/state': {
                 ...PROPS_AS_STATE(payload).state,
