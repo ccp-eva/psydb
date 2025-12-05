@@ -8,7 +8,10 @@ import RecordCreator from './record-creator';
 const FullScreenCreator = (ps) => {
     var history = useHistory();
     var [ query ] = useURLSearchParamsB64();
-    var { studyId, studyConsentFormId, subjectId } = query;
+    var {
+        studyId, studyConsentFormId, subjectId,
+        experimentId = true
+    } = query;
     
     if (!(studyId && studyConsentFormId && subjectId)) {
         return (
@@ -24,6 +27,7 @@ const FullScreenCreator = (ps) => {
                 studyId={ studyId }
                 studyConsentFormId={ studyConsentFormId }
                 subjectId={ subjectId }
+                experimentId={ experimentId }
 
                 onSuccessfulUpdate={ () => history.replace(
                     '/full-screen/study-consent-doc/success'

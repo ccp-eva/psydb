@@ -8,6 +8,7 @@ import {
 } from '@mpieva/psydb-ui-lib/src/modals';
 
 import { RemoveSubjectManualModal } from '../../remove-subject-manual-modal';
+import { ConsentFormSelectModal } from '../../consent-form-select-modal';
 
 const Modals = (ps) => {
     var {
@@ -15,6 +16,7 @@ const Modals = (ps) => {
         studyData,
         subjectDataByType,
 
+        consentFormSelectModal,
         commentModal,
         moveModal,
         followupModal,
@@ -24,20 +26,26 @@ const Modals = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
+    var sharedBag = {
+        experimentData,
+        onSuccessfulUpdate,
+    }
     return (
         <>
+            <ConsentFormSelectModal
+                { ...sharedBag }
+                { ...consentFormSelectModal.passthrough }
+            />
+
             <RemoveSubjectManualModal
-                experimentData={ experimentData }
-                onSuccessfulUpdate={ onSuccessfulUpdate }
+                { ...sharedBag }
                 { ...removeManualModal.passthrough }
             />
 
-            <PerSubjectCommentModal { ...({
-                ...commentModal.passthrough,
-
-                experimentData,
-                onSuccessfulUpdate,
-            }) } />
+            <PerSubjectCommentModal
+                { ...sharedBag }
+                { ...commentModal.passthrough }
+            />
 
             <MoveSubjectModal { ...({
                 ...moveModal.passthrough,

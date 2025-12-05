@@ -2,21 +2,25 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { CRTSettings } from '@mpieva/psydb-common-lib';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-import { useFetch } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator, Markdown } from '@mpieva/psydb-ui-layout';
+import { useFetch, useSend, useRevision } from '@mpieva/psydb-ui-hooks';
+import { LoadingIndicator, Markdown, A4Wrapper }
+    from '@mpieva/psydb-ui-layout';
 
 import { ThemeProvider, useThemeContext } from '@mpieva/psydb-ui-lib/src/data-viewers/core/theme-context'; // XXX
 import { CustomField } from '@mpieva/psydb-ui-lib/src/data-viewers/utility-components/custom-field'; // XXX
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
+
+import FlagAndCommentForm from './flag-and-comment-form';
  
 const RecordDetails = (ps) => {
     var { studyConsentDocId } = useParams();
+    var revision = useRevision();
     //var { studyConsentDocId } = ps;
     var [{ translate, language }] = useI18N();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.studyConsentDoc.read({ studyConsentDocId })
-    ), [ studyConsentDocId ]);
+    ), [ studyConsentDocId, revision.value ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
@@ -31,39 +35,68 @@ const RecordDetails = (ps) => {
     return (
         <ThemeProvider value={ Themes.HorizontalSplit }>
             <div>
-                <Metadata record={ record } />
+                <Metadata record={ record } revision={ revision } />
                 <hr />
-                <h1>{ titleI18N?.[language] || title }</h1>
-                <hr />
-                { elements.map((it, ix) => (
-                    <ConsentDocElement
-                        { ...it } key={ ix }
-                        value={ elementValues[ix] } subjectCRT={ subjectCRT }
-                    />
-                )) }
+                <div className='bg-white border'>
+                    <A4Wrapper className='bg-light border'>
+                        <h1>{ titleI18N?.[language] || title }</h1>
+                        <hr />
+                        { elements.map((it, ix) => (
+                            <ConsentDocElement
+                                key={ ix }
+                                { ...it }
+                                value={ elementValues[ix] }
+                                subjectCRT={ subjectCRT }
+                            />
+                        )) }
+                    </A4Wrapper>
+                </div>
             </div>
         </ThemeProvider>
     )
 }
 
 const Metadata = (ps) => {
-    var { record } = ps;
-    var { _rohrpostMetadata, personnelId } = record;
+    var { record, revision } = ps;
+    var { _rohrpostMetadata, experimentId, personnelId, subjectId, state }
+        = record;
+
     var { createdAt } = _rohrpostMetadata;
+    var { hasIssue = 'unknown', comment = '' } = state;
     
     var [{ translate, fdatetime }] = useI18N();
 
     var context = useThemeContext();
     var { Field } = context;
 
+    var send = useSend((formData) => ({
+        type: 'study-consent-doc/flag-and-comment',
+        payload: { _id: record._id, props: formData }
+    }), { onSuccessfulUpdate: [ revision.up ] })
+
     return (
         <>
-            <Field label={ translate('Timestamp') }>
-                { fdatetime(createdAt) }
+            <Field label={ translate('Subject ID') }>
+                { subjectId }
+            </Field>
+            <Field label={ translate('Appointment ID') }>
+                { experimentId || (
+                    <span className='text-muted'>
+                        { translate('Not Specified') }
+                    </span>
+                ) }
             </Field>
             <Field label={ translate('Personnel ID') }>
                 { personnelId }
             </Field>
+            <Field label={ translate('Timestamp') }>
+                { fdatetime(createdAt) }
+            </Field>
+            <hr />
+            <FlagAndCommentForm.Component
+                initialValues={{ hasIssue, comment }}
+                onSubmit={ send.exec }
+            />
         </>
     )
 }
@@ -118,15 +151,6 @@ const SubjectField = (ps) => {
     return (
         <CustomField definition={ definition } value={ value } />
     )
-
-    //var { systemType } = definition;
-    //var Component = Fields[systemType];
-    //return (
-    //    <Component
-    //        dataXPath={ `$.elementValues.${index}` }
-    //        label={ translate.fieldDefinition(definition) }
-    //    />
-    //)
 }
 
 const ExtraField = (ps) => {
@@ -139,14 +163,6 @@ const ExtraField = (ps) => {
     return (
         <CustomField definition={ definition } value={ value } />
     )
-    
-    //var Component = Fields[systemType];
-    //return (
-    //    <Component
-    //        dataXPath={ `$.elementValues.${index}` }
-    //        label={ displayNameI18N?.[language] || displayName }
-    //    />
-    //)
 }
 
 const HR = (ps) => {

@@ -57,6 +57,10 @@ const IntraRecordRoutingBody = (ps) => {
             label: translate('Study Participations'),
             show: canReadParticipation, enabled: hasWorkflows
         },
+        [`#/lab-operation/reservation/${recordType}/${recordId}`]: {
+            label: translate('Reservation'),
+            show: true, enabled: hasWorkflows // FIXME
+        },
     }
 
     var consentLinks = {

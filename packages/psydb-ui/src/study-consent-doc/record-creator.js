@@ -14,6 +14,7 @@ const FormSelectionWrapper = (ps) => {
         studyId,
         subjectId: props_subjectId,
         studyConsentFormId: props_studyConsentFormId,
+        experimentId = undefined,
         enableFullScreenLink = false,
         onSuccessfulUpdate
     } = ps;
@@ -74,6 +75,7 @@ const FormSelectionWrapper = (ps) => {
                 <FullRecordCreator
                     studyConsentFormId={ studyConsentFormId }
                     subjectId={ subjectId }
+                    experimentId={ experimentId }
                     onSuccessfulUpdate={ onSuccessfulUpdate }
                 />
             )}
@@ -137,12 +139,17 @@ const SubjectPicker = (ps) => {
 }
 
 const FullRecordCreator = (ps) => {
-    var { studyConsentFormId, subjectId, onSuccessfulUpdate } = ps;
+    var {
+        studyConsentFormId,
+        subjectId,
+        experimentId = undefined,
+        onSuccessfulUpdate
+    } = ps;
 
     var send = useSend((formData) => {
         var { elements, ...pass } = formData;
         return { type: 'study-consent-doc/create', payload: {
-            studyConsentFormId, subjectId,
+            studyConsentFormId, subjectId, experimentId,
             props: { ...formData }
         }}
     }, { onSuccessfulUpdate });

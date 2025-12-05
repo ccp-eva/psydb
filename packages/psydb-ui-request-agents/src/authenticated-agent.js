@@ -953,6 +953,7 @@ const createAgent = (options = {}) => {
     agent.study = {
         list: dumpPOST({ url: '/api/study/list' }),
         extendedSearch: dumpPOST({ url: '/api/extended-search/studies' }),
+        relatedStudyConsentForms: dumpPOST({ url: '/api/study/related-study-consent-forms' })
     };
     agent.helperSet = {
         list: dumpPOST({ url: '/api/helperSet/list' }),

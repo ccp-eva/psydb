@@ -1,11 +1,19 @@
 'use strict';
-var { ClosedObject, ForeignId } = require('@mpieva/psydb-schema-fields');
+var { ExactObject, ForeignId } = require('@mpieva/psydb-schema-fields');
 
 var Schema = async (context) => {
-    var schema = ClosedObject({
+    var required = {
         'studyConsentFormId': ForeignId({ collection: 'studyConsentForm' }),
         'subjectId': ForeignId({ collection: 'subject' }),
         'props': { type: 'object' }, // XXX
+    }
+    var optional = {
+        'experimentId': ForeignId({ collection: 'experiment' })
+    }
+
+    var schema = ExactObject({
+        properties: { ...required, ...optional },
+        required: Object.keys(required),
     });
     
     return schema;

@@ -14,6 +14,11 @@ export const StudyIconButton = withIconButton({
     defaultTitle: 'Study'
 });
 
+export const StudyConsentDocIconButton = withIconButton({
+    Icon: Icons.FileEarmarkCheck,
+    defaultTitle: 'Study Consent Doc'
+});
+
 export const ExperimentIconButton = withIconButton({
     Icon: Icons.CalendarDate,
     defaultTitle: 'Appointment'
@@ -33,7 +38,7 @@ export const SubjectIconButton = withIconButton({
     defaultIconStyle: {
         width: '22px',
         height: '22px',
-        marginTop: '2px'
+        marginTop: '1px'
     },
 });
 
