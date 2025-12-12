@@ -25,7 +25,9 @@ const ExistingConsent = (ps) => {
                     <i>{ translate('No consent found!') }</i>
                 </Alert>
                 <SmallFormFooter>
-                    <Button>{ translate('Refresh') }</Button>
+                    <Button onClick={ revision.up }>
+                        { translate('Refresh') }
+                    </Button>
                 </SmallFormFooter>
             </div>
         )
