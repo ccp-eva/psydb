@@ -1,9 +1,5 @@
 import React from 'react';
 
-import {
-    format as formatDateInterval
-} from '@mpieva/psydb-date-interval-fns';
-
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useModalReducer } from '@mpieva/psydb-ui-hooks';
 
@@ -14,24 +10,21 @@ import {
     SubjectIconButton,
     Alert,
     Table,
+    Button,
 } from '@mpieva/psydb-ui-layout';
 
 import { PostprocessSubjectForm } from '@mpieva/psydb-ui-lib';
 import { DetailedPostprocessModal } from '@mpieva/psydb-ui-compositions';
+import ConsentPostprocessModal from './consent-postprocess-modal';
 
 const InhouseList = (ps) => {
     var {
-        subjectType,
-
-        records,
-        relatedCustomRecordTypeLabels,
-        relatedHelperSetItems,
-        relatedRecordLabels,
-
+        subjectType, subjectCRT,
+        records, related,
         onSuccessfulUpdate
     } = ps;
 
-    var subjectModal = useModalReducer();
+    var [ subjectModal, postprocessModal ] = useModalReducer.many(2);
 
     var permissions = usePermissions();
     var canReadSubjects = permissions.hasFlag('canReadSubjects');
@@ -47,6 +40,10 @@ const InhouseList = (ps) => {
                 { ...subjectModal.passthrough }
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
+            <ConsentPostprocessModal
+                { ...postprocessModal.passthrough }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
+            />
             <Table>
                 <TableHead />
                 <tbody>
@@ -54,13 +51,11 @@ const InhouseList = (ps) => {
                         <ExperimentSubjectItems { ...({
                             key: index,
                             
-                            subjectType,
-                            experimentRecord,
-                            relatedRecordLabels,
+                            subjectType, subjectCRT,
+                            experimentRecord, related,
                             
-                            canReadSubjects,
-                            canWriteSubjects,
-                            subjectModal,
+                            canReadSubjects, canWriteSubjects,
+                            subjectModal, postprocessModal,
                             onSuccessfulUpdate
                         })} />
                     )) }
@@ -72,40 +67,30 @@ const InhouseList = (ps) => {
 
 const ExperimentSubjectItems = (ps) => {
     var {
-        subjectType,
-        experimentRecord,
-        relatedRecordLabels,
-        
-        canReadSubjects,
-        canWriteSubjects,
-        subjectModal,
+        subjectType, subjectCRT,
+        experimentRecord, related,
+        canReadSubjects, canWriteSubjects,
+
+        subjectModal, postprocessModal,
         onSuccessfulUpdate
     } = ps;
 
-    var [{ translate, locale }] = useI18N();
+    var [{ translate, locale, fdate }] = useI18N();
 
     var { _enableFollowUpExperiments, state } = experimentRecord;
-    var { subjectData } = state;
+    var { studyId, subjectData, interval } = state;
+    
     subjectData = subjectData.filter(it => (
         it.subjectType === subjectType && it.participationStatus === 'unknown'
     ))
-    var studyLabel = (
-        relatedRecordLabels
-        .study[experimentRecord.state.studyId]._recordLabel
-    );
 
-    var {
-        startDate,
-        startTime,
-        endTime
-    } = formatDateInterval(experimentRecord.state.interval, { locale });
+    var studyLabel = related.records.study[studyId]._recordLabel;
 
     return (
         <>
             { subjectData.map((it, index) => {
                 var subjectLabel = (
-                    relatedRecordLabels
-                    .subject[it.subjectId]._recordLabel
+                    related.records.subject[it.subjectId]._recordLabel
                 );
 
                 var onClickEdit = () => subjectModal.handleShow({
@@ -116,10 +101,8 @@ const ExperimentSubjectItems = (ps) => {
                             study: studyLabel
                         }
                     ),
-                    subjectType,
-                    subjectId: it.subjectId,
-                    experimentRecord,
-                    relatedRecordLabels,
+                    subjectType, subjectCRT, subjectId: it.subjectId,
+                    experimentRecord, related,
                 });
 
                 return (
@@ -139,11 +122,9 @@ const ExperimentSubjectItems = (ps) => {
                             )}
                         </Cell>
                         <Cell>
-                            { startDate }
-                            {' '}
-                            { startTime }
+                            { fdate(interval.start, 'P p') }
                             {' - '}
-                            { endTime }
+                            { fdate(interval.end, 'p') }
                             {' '}
                             <ExperimentIconButton
                                 to={`/experiments/${experimentRecord.type}/${experimentRecord._id}`}
@@ -152,7 +133,15 @@ const ExperimentSubjectItems = (ps) => {
                         </Cell>
                         <Cell>{ studyLabel }</Cell>
                         <Cell>
-                            <PostprocessSubjectForm { ...({
+                            <Button onClick={ () => (
+                                postprocessModal.handleShow({
+                                    experimentRecord,
+                                    subjectId: it.subjectId,
+                                })
+                            )}>
+                                { translate('Postprocess') }
+                            </Button>
+                            {/*<PostprocessSubjectForm { ...({
                                 subjectLabel,
                                 experimentId: experimentRecord._id,
                                 subjectId: it.subjectId,
@@ -160,7 +149,7 @@ const ExperimentSubjectItems = (ps) => {
                                 enableFollowUpExperiments: (
                                     _enableFollowUpExperiments
                                 )
-                            }) } />
+                            }) } />*/}
                         </Cell>
                     </tr>
                 );

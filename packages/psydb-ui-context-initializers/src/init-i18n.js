@@ -17,12 +17,12 @@ const initI18N = (bag) => {
 
     var fdate = (datelike, fmt = 'P') => (
         datelike
-        ? datefns.format(new Date(datelike), fmt, { locale })
+        ? datefns.format(new Date(_fixmillis(datelike)), fmt, { locale })
         : '-'
     );
     var fdatetime = (datelike, fmt = 'P p') => (
         datelike
-        ? datefns.format(new Date(datelike), fmt, { locale })
+        ? datefns.format(new Date(_fixmillis(datelike)), fmt, { locale })
         : '-'
     );
 
@@ -88,6 +88,10 @@ var getDefaultLanguageLocaleCode = (language) => {
         'en': 'en-US',
         'de': 'de' 
     }[language] || 'en-US')
+}
+
+var _fixmillis = (datelike) => {
+    return new Date(new Date(datelike).getTime() + 1)
 }
 
 export default initI18N;

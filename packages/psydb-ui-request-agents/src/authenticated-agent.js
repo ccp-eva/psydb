@@ -973,6 +973,11 @@ const createAgent = (options = {}) => {
             url: '/api/study-consent-doc/read-by-experiment-and-subject'
         }),
     };
+    agent.experiment = {
+        listPostprocessing: dumpPOST({
+            url: '/api/experiment/list-postprocessing'
+        }),
+    };
     
     // XXX
     agent.fetchFixedEventDetails = (bag) => {

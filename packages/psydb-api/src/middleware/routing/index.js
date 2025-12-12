@@ -19,6 +19,7 @@ var addStudyRoutes = require('./add-study-routes');
 var addStudyConsentFormRoutes = require('./add-study-consent-form-routes');
 var addStudyConsentDocRoutes = require('./add-study-consent-doc-routes');
 var addSubjectRoutes = require('./add-subject-routes');
+var addExperimentRoutes = require('./add-experiment-routes');
 var addCSVImportRoutes = require('./add-csv-import-routes');
 var addAuditRoutes = require('./add-audit-routes');
 
@@ -297,12 +298,12 @@ var createRouting = (bag = {}) => {
         endpoints.special.extendedExperimentData
     );
 
-    router.post('/experiment-postprocessing',
-        withSelfAuth(),
-        withPermissions(),
-        withKoaBody(),
-        endpoints.special.experimentPostprocessing
-    );
+    //router.post('/experiment-postprocessing',
+    //    withSelfAuth(),
+    //    withPermissions(),
+    //    withKoaBody(),
+    //    endpoints.special.experimentPostprocessing
+    //);
 
     router.post('/experiment-variants',
         withSelfAuth(),
@@ -530,6 +531,7 @@ var createRouting = (bag = {}) => {
     addStudyConsentFormRoutes({ router });
     addStudyConsentDocRoutes({ router });
     addSubjectRoutes({ router });
+    addExperimentRoutes({ router });
     addCSVImportRoutes({ router });
     addAuditRoutes({ router });
     

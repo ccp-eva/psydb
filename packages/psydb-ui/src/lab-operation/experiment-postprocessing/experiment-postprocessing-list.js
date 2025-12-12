@@ -42,9 +42,9 @@ const ExperimentPostprocessingListLoader = (ps) => {
     var revision = useRevision();
 
     var [ didFetch, fetched ] = useFetch((agent) => {
-        return agent.fetchExperimentPostprocessing({
-            experimentType,
-            subjectRecordType: subjectType,
+        return agent.experiment.listPostprocessing({
+            labMethod: experimentType,
+            subjectType,
             researchGroupId,
         })
     }, [ researchGroupId, subjectType, revision.value ]);
@@ -54,22 +54,16 @@ const ExperimentPostprocessingListLoader = (ps) => {
     }
 
     var {
+        subjectCRT,
         records,
-        relatedCustomRecordTypeLabels,
-        relatedHelperSetItems,
-        relatedRecordLabels,
+        related,
     } = fetched.data;
 
     if (experimentType === 'inhouse') {
         return (
             <InhouseList {...({
-                subjectType,
-
-                records,
-                relatedCustomRecordTypeLabels,
-                relatedHelperSetItems,
-                relatedRecordLabels,
-
+                subjectType, subjectCRT,
+                records, related,
                 onSuccessfulUpdate: revision.up
             }) } />
         );
@@ -77,13 +71,8 @@ const ExperimentPostprocessingListLoader = (ps) => {
     else if (experimentType === 'online-video-call') {
         return (
             <InhouseList {...({
-                subjectType,
-
-                records,
-                relatedCustomRecordTypeLabels,
-                relatedHelperSetItems,
-                relatedRecordLabels,
-
+                subjectType, subjectCRT,
+                records, related,
                 onSuccessfulUpdate: revision.up
             }) } />
         );
@@ -91,11 +80,8 @@ const ExperimentPostprocessingListLoader = (ps) => {
     else if (experimentType === 'away-team') {
         return (
             <ExperimentPostprocessingList {...({
-                records,
-                relatedCustomRecordTypeLabels,
-                relatedHelperSetItems,
-                relatedRecordLabels,
-
+                subjectType, subjectCRT,
+                records, related,
                 onSuccessfulUpdate: revision.up
             }) } />
         );
@@ -104,12 +90,9 @@ const ExperimentPostprocessingListLoader = (ps) => {
 
 
 const ExperimentPostprocessingList = (ps) => {
-    // FIXME
-    var ps = __fixRelated(ps);
     var { records, related, onSuccessfulUpdate } = ps;
 
-    var [ i18n ] = useI18N();
-    var { translate, locale } = i18n;
+    var [{ translate, locale }] = useI18N();
 
     if (records.length < 1) {
         return <Fallback />
