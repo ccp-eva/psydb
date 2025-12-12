@@ -34,6 +34,8 @@ var verifySubjectRecord = verifyOneRecord({
     cache: true
 });
 
+// TODO: verify labOperatorIds
+
 var verifyElementValues = async (context) => {
     var { message, cache } = context;
 

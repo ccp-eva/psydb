@@ -4,7 +4,8 @@ import { CRTSettings } from '@mpieva/psydb-common-lib';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useFetchChain, useSend } from '@mpieva/psydb-ui-hooks';
 
-import { LoadingIndicator, Alert, LinkQ64 } from '@mpieva/psydb-ui-layout';
+import { LoadingIndicator, Alert, LinkQ64, Grid, A4Wrapper }
+    from '@mpieva/psydb-ui-layout';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
 import { RecordPicker } from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
@@ -12,8 +13,9 @@ import MainForm from './main-form';
 const FormSelectionWrapper = (ps) => {
     var {
         studyId,
-        subjectId: props_subjectId,
         studyConsentFormId: props_studyConsentFormId,
+        subjectId: props_subjectId,
+        labOperatorIds: props_labOperatorIds,
         experimentId = undefined,
         enableFullScreenLink = false,
         onSuccessfulUpdate
@@ -25,59 +27,103 @@ const FormSelectionWrapper = (ps) => {
     var [ subjectId, setSubjectId ] = useState(
         //'64d42dcb443aa279ca4caede'
     );
+    var [ labOperatorIds, setLabOperatorIds ] = useState([
+        //
+    ]);
     var [{ translate, language }] = useI18N();
 
     studyConsentFormId = props_studyConsentFormId || studyConsentFormId;
     subjectId = props_subjectId || subjectId;
+    labOperatorIds = props_labOperatorIds || labOperatorIds;
 
     return (
         <div>
-            { !props_studyConsentFormId && (
-                <StudyConsentFormSelect
-                    studyId={ studyId }
-                    value={ studyConsentFormId }
-                    onChange={ setStudyConsentFormId }
-                />
-            )}
-            { (studyConsentFormId && !props_subjectId) && (
-                <SubjectPicker
-                    studyConsentFormId={ studyConsentFormId }
-                    value={{ _id: subjectId }}
-                    onChange={ (record) => (
-                        setSubjectId(record._id || record)
-                    )}
-                />
-            )}
-            { (studyConsentFormId && subjectId && enableFullScreenLink) && (
+            <Grid cols={[ '200px', '1fr' ]} gap='1rem' style={{
+                placeItems: 'center stretch'
+            }}>
+                { !props_studyConsentFormId && (
+                    <>
+                        <b>{ translate('Consent Form') }</b>
+                        <StudyConsentFormSelect
+                            studyId={ studyId }
+                            value={ studyConsentFormId }
+                            onChange={ setStudyConsentFormId }
+                        />
+                    </>
+                )}
+                { (studyConsentFormId && !props_subjectId) && (
+                    <>
+                        <b>{ translate('Subject') }</b>
+                        <SubjectPicker
+                            studyConsentFormId={ studyConsentFormId }
+                            value={{ _id: subjectId }}
+                            onChange={ (record) => (
+                                setSubjectId(record._id || record)
+                            )}
+                        />
+                    </>
+                )}
+                { (studyConsentFormId && !props_labOperatorIds?.length) && (
+                    <>
+                        <b>{ translate('Lab Operator') }</b>
+                        <PersonnelPicker
+                            value={{ _id: labOperatorIds[0] }}
+                            onChange={ (record) => (
+                                setLabOperatorIds([ record._id || record ])
+                            )}
+                        />
+                    </>
+                )}
+            </Grid>
+
+            { (
+                studyConsentFormId && subjectId && labOperatorIds?.length > 0
+                && enableFullScreenLink
+            ) && (
                 <div className='d-flex justify-content-end mt-3'>
                     <LinkQ64
                         className='btn btn-primary btn-sm m-0'
                         href='#/full-screen/study-consent-doc/fill'
                         target='_blank'
-                        payload={{ studyId, subjectId, studyConsentFormId }}
+                        payload={{
+                            studyId, subjectId, labOperatorIds,
+                            studyConsentFormId,
+                        }}
                     >
                         { translate('Go Fullscreen ->') }
                     </LinkQ64>
                 </div>
             )}
-            { (!props_studyConsentFormId || !props_subjectId) && (
+            { (
+                !props_studyConsentFormId || !props_subjectId
+                || !props_labOperatorIds
+            ) && (
                 <hr />
             )}
-            { (!props_studyConsentFormId && !studyConsentFormId) ? (
+            { (!studyConsentFormId) ? (
                 <Alert variant='info'><i>
                     { translate('Please select a consent form.') }
                 </i></Alert>
-            ) : (!props_subjectId && !subjectId) ? (
+            ) : (!subjectId) ? (
                 <Alert variant='info'><i>
                     { translate('Please select a subject.') }
                 </i></Alert>
+            ) : (labOperatorIds?.length < 1) ? (
+                <Alert variant='info'><i>
+                    { translate('Please select a lab operator.') }
+                </i></Alert>
             ) : (
-                <FullRecordCreator
-                    studyConsentFormId={ studyConsentFormId }
-                    subjectId={ subjectId }
-                    experimentId={ experimentId }
-                    onSuccessfulUpdate={ onSuccessfulUpdate }
-                />
+                <div className='bg-white border'>
+                    <A4Wrapper className='bg-light border'>
+                        <FullRecordCreator
+                            studyConsentFormId={ studyConsentFormId }
+                            subjectId={ subjectId }
+                            labOperatorIds={ labOperatorIds }
+                            experimentId={ experimentId }
+                            onSuccessfulUpdate={ onSuccessfulUpdate }
+                        />
+                    </A4Wrapper>
+                </div>
             )}
         </div>
     )
@@ -127,7 +173,7 @@ const SubjectPicker = (ps) => {
     var { subjectType } = record;
 
     return (
-        <div className='mt-3'>
+        <div>
             <RecordPicker
                 value={ value }
                 onChange={ onChange }
@@ -138,18 +184,31 @@ const SubjectPicker = (ps) => {
     )
 }
 
+const PersonnelPicker = (ps) => {
+    var { value, onChange } = ps;
+    
+    return (
+        <div>
+            <RecordPicker
+                value={ value }
+                onChange={ onChange }
+                collection='personnel'
+            />
+        </div>
+    )
+}
+
 const FullRecordCreator = (ps) => {
     var {
         studyConsentFormId,
-        subjectId,
-        experimentId = undefined,
+        subjectId, labOperatorIds, experimentId = undefined,
         onSuccessfulUpdate
     } = ps;
 
     var send = useSend((formData) => {
         var { elements, ...pass } = formData;
         return { type: 'study-consent-doc/create', payload: {
-            studyConsentFormId, subjectId, experimentId,
+            studyConsentFormId, subjectId, labOperatorIds, experimentId,
             props: { ...formData }
         }}
     }, { onSuccessfulUpdate });
@@ -191,5 +250,9 @@ const FullRecordCreator = (ps) => {
         />
     );
 }
+
+
+// FIXME: i dont like 'Inner' as a name
+FormSelectionWrapper.Inner = FullRecordCreator;
 
 export default FormSelectionWrapper;

@@ -11,6 +11,13 @@ var addStudyConsentDocRoutes = (bag) => {
     router.post('/study-consent-doc/list', ...withPostStages({
         endpoint: endpoints.studyConsentDoc.list
     }));
+    
+    router.post(
+        '/study-consent-doc/read-by-experiment-and-subject',
+        ...withPostStages({
+            endpoint: endpoints.studyConsentDoc.readByExperimentAndSubject
+        })
+    );
 }
 
 module.exports = addStudyConsentDocRoutes;

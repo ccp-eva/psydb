@@ -9,11 +9,14 @@ const FullScreenCreator = (ps) => {
     var history = useHistory();
     var [ query ] = useURLSearchParamsB64();
     var {
-        studyId, studyConsentFormId, subjectId,
-        experimentId = true
+        studyId, studyConsentFormId, subjectId, labOperatorIds,
+        experimentId = undefined,
     } = query;
     
-    if (!(studyId && studyConsentFormId && subjectId)) {
+    if (!(
+        studyId && studyConsentFormId && subjectId
+        && labOperatorIds?.length
+    )) {
         return (
             <Alert variant='danger'>
                 <b>ERROR: Incomplete Query!</b>
@@ -23,10 +26,10 @@ const FullScreenCreator = (ps) => {
 
     return (
         <A4Wrapper className='bg-light border'>
-            <RecordCreator
-                studyId={ studyId }
+            <RecordCreator.Inner
                 studyConsentFormId={ studyConsentFormId }
                 subjectId={ subjectId }
+                labOperatorIds={ labOperatorIds }
                 experimentId={ experimentId }
 
                 onSuccessfulUpdate={ () => history.replace(

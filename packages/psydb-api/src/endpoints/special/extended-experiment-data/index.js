@@ -7,11 +7,13 @@ var {
     ejson,
     keyBy,
     groupBy,
+    merge,
     compareIds,
     convertPointerToPath,
 } = require('@mpieva/psydb-core-utils');
 
 var {
+    SmartArray,
     checkLabOperationAccess,
     convertCRTRecordToSettings,
     findCRTAgeFrameField,
@@ -31,6 +33,9 @@ var {
     fetchRelatedLabelsForMany,
     fetchRecordDisplayDataById,
 } = require('@mpieva/psydb-api-lib');
+
+var { __fixRelated, __fixDefinitions }
+    = require('@mpieva/psydb-common-compat');
 
 var fetchOneExperimentData = require('./fetch-one-experiment-data');
 var fetchOneStudyData = require('./fetch-one-study-data');
@@ -272,6 +277,16 @@ var extendedExperimentData = async (context, next) => {
     debug('...done iterating contained subject types');
 
 
+    var __related = merge(...SmartArray([
+        __fixRelated(experimentData.related, { isResponse: false }),
+        __fixRelated(studyData.related, { isResponse: false }),
+        //__fixRelated(locationData.related, { isResponse: false }),
+        __fixRelated(labProcedureSettingData.related, { isResponse: false }),
+        ( opsTeamData && (
+            __fixRelated(opsTeamData?.related, { isResponse: false })
+        )),
+    ]));
+
     context.body = ResponseBody({
         data: {
             experimentData: {
@@ -295,6 +310,8 @@ var extendedExperimentData = async (context, next) => {
             
             locationData,
             subjectDataByType,
+
+            related: __related,
         },
     });
 

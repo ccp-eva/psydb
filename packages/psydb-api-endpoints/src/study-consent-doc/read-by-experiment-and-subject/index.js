@@ -1,5 +1,5 @@
 'use strict';
-var debug = require('../debug-helper')('read');
+var debug = require('../debug-helper')('read-by-experiment-and-subject');
 
 var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
 var { ResponseBody, validateOrThrow, fetchCRTSettings }
@@ -8,7 +8,7 @@ var { ResponseBody, validateOrThrow, fetchCRTSettings }
 var BodySchema = require('./body-schema');
 
 
-var readEndpoint = async (context, next) => {
+var endpoint = async (context, next) => {
     var { db, request, permissions } = context;
     
     // TODO: check headers with ajv
@@ -20,15 +20,19 @@ var readEndpoint = async (context, next) => {
         payload: request.body,
     });
     
-    var { studyConsentDocId } = request.body;
+    var { experimentId, subjectId } = request.body;
     
     var record = await aggregateOne({ db, studyConsentDoc: {
-        '_id': studyConsentDocId
+        'experimentId': experimentId,
+        'subjectId': subjectId,
     }});
 
-    var subjectCRT = await fetchCRTSettings({
-        db, collectionName: 'subject', recordType: record.subjectType
-    });
+    var subjectCRT = undefined;
+    if (record) {
+        subjectCRT = await fetchCRTSettings({
+            db, collectionName: 'subject', recordType: record.subjectType
+        });
+    }
 
     context.body = ResponseBody({
         data: {
@@ -38,4 +42,4 @@ var readEndpoint = async (context, next) => {
     });
 }
 
-module.exports = readEndpoint;
+module.exports = endpoint;

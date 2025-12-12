@@ -24,7 +24,10 @@ const Subjects = (ps) => {
         experimentData,
         labProcedureSettingData,
         studyData,
+        opsTeamData,
         subjectDataByType,
+
+        related,
         onSuccessfulUpdate,
     } = ps;
     var { type: experimentType } = experimentData.record;
@@ -57,7 +60,10 @@ const Subjects = (ps) => {
             <Modals { ...({
                 experimentData,
                 studyData,
+                opsTeamData,
                 subjectDataByType,
+                
+                related,
 
                 consentFormSelectModal,
                 commentModal,
@@ -93,6 +99,7 @@ const Subjects = (ps) => {
                     labProcedureSettingData,
                     studyData,
                     subjectDataByType,
+                    related,
                     
                     ActionsComponent,
                 }) } />

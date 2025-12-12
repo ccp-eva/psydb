@@ -14,7 +14,10 @@ const Modals = (ps) => {
     var {
         experimentData,
         studyData,
+        opsTeamData,
         subjectDataByType,
+
+        related,
 
         consentFormSelectModal,
         commentModal,
@@ -33,7 +36,10 @@ const Modals = (ps) => {
     return (
         <>
             <ConsentFormSelectModal
-                { ...sharedBag }
+                experimentRecord={ experimentData.record }
+                labTeamRecord={ opsTeamData?.record }
+                related={ related }
+
                 { ...consentFormSelectModal.passthrough }
             />
 

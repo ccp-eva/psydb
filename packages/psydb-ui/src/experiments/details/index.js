@@ -24,10 +24,12 @@ const ExperimentDetails = (ps) => {
         studyData,
         subjectDataByType,
 
+        related,
+
         onSuccessfulUpdate,
     } = ps;
     var { type: experimentType } = experimentData.record;
-    
+   
     var [{ translate }] = useI18N();
     var permissions = usePermissions();
 
@@ -63,6 +65,8 @@ const ExperimentDetails = (ps) => {
                     opsTeamData,
                     locationData,
                     studyData,
+
+                    related,
                     onSuccessfulUpdate,
                 }) } />
                 { showFunctions && (
@@ -79,6 +83,7 @@ const ExperimentDetails = (ps) => {
                                     experimentData,
                                     opsTeamData,
                                     studyData,
+                                    related,
                                     onSuccessfulUpdate,
                                 }) } />
                             </div>
@@ -91,7 +96,10 @@ const ExperimentDetails = (ps) => {
                     experimentData,
                     labProcedureSettingData,
                     studyData,
+                    opsTeamData,
                     subjectDataByType,
+                    
+                    related,
                     onSuccessfulUpdate,
                 }) } />
             </div>

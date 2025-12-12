@@ -13,7 +13,11 @@ import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 import FlagAndCommentForm from './flag-and-comment-form';
  
 const RecordDetails = (ps) => {
+    var { studyConsentDocId: props_studyConsentDocId } = ps;
     var { studyConsentDocId } = useParams();
+
+    studyConsentDocId = props_studyConsentDocId || studyConsentDocId;
+
     var revision = useRevision();
     //var { studyConsentDocId } = ps;
     var [{ translate, language }] = useI18N();
@@ -27,6 +31,23 @@ const RecordDetails = (ps) => {
     }
 
     var { record, subjectCRT } = fetched.data;
+    return (
+        <div>
+            <ThemeProvider value={ Themes.HorizontalSplit }>
+                <Metadata record={ record } revision={ revision } />
+            </ThemeProvider>
+            <hr />
+            <div className='bg-white border'>
+                <A4Wrapper className='bg-light border'>
+                    <Inner record={ record } subjectCRT={ subjectCRT } />
+                </A4Wrapper>
+            </div>
+        </div>
+    )
+}
+
+const Inner = (ps) => {
+    var { record, subjectCRT } = ps;
     subjectCRT = CRTSettings({ data: subjectCRT });
 
     var { elementValues, studyConsentFormSnapshot } = record.state;
@@ -35,22 +56,16 @@ const RecordDetails = (ps) => {
     return (
         <ThemeProvider value={ Themes.HorizontalSplit }>
             <div>
-                <Metadata record={ record } revision={ revision } />
+                <h1>{ titleI18N?.[language] || title }</h1>
                 <hr />
-                <div className='bg-white border'>
-                    <A4Wrapper className='bg-light border'>
-                        <h1>{ titleI18N?.[language] || title }</h1>
-                        <hr />
-                        { elements.map((it, ix) => (
-                            <ConsentDocElement
-                                key={ ix }
-                                { ...it }
-                                value={ elementValues[ix] }
-                                subjectCRT={ subjectCRT }
-                            />
-                        )) }
-                    </A4Wrapper>
-                </div>
+                { elements.map((it, ix) => (
+                    <ConsentDocElement
+                        key={ ix }
+                        { ...it }
+                        value={ elementValues[ix] }
+                        subjectCRT={ subjectCRT }
+                    />
+                )) }
             </div>
         </ThemeProvider>
     )
@@ -174,4 +189,5 @@ const Fallback = (ps) => {
     return `UNKNODNW ${type}`
 }
 
+RecordDetails.Inner = Inner; // FIXME: i dont like 'Inner' as a name
 export default RecordDetails;
