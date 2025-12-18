@@ -1,6 +1,6 @@
 import React from 'react';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-import { AsyncButton } from '@mpieva/psydb-ui-layout';
+import { Grid, AsyncButton } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 
 export const Component = (ps) => {
@@ -14,15 +14,17 @@ export const Component = (ps) => {
             useAjvAsync
         >
             {({ isSubmitting }) => (
-                <>
+                <div style={{ position: 'relative' }}>
                     <FormFields />
-                    <AsyncButton
-                        isTransmitting={ isSubmitting }
-                        type='submit'
-                    >
-                        { translate('Save') }
-                    </AsyncButton>
-                </>
+                    <div style={{ position: 'absolute', right: 0, top: 0 }}>
+                        <AsyncButton
+                            isTransmitting={ isSubmitting }
+                            type='submit'
+                        >
+                            { translate('Save') }
+                        </AsyncButton>
+                    </div>
+                </div>
             )}
         </DefaultForm>
     );
@@ -46,6 +48,7 @@ const FormFields = (ps) => {
             <Fields.FullText
                 label={ translate('Comment') }
                 dataXPath='$.comment'
+                rows={ 3 }
             />
         </>
     )

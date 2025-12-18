@@ -8,6 +8,7 @@ var Schema = async (context) => {
         '_id': ForeignId({ collection: 'studyConsentDoc' }),
         'props': ClosedObject({
             'hasIssue': ExtBool(),
+            'containsSubjectUpdate': ExtBool(),
             'comment': FullText(),
         })
     });

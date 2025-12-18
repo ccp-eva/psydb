@@ -14,7 +14,11 @@ const PostprocessingCells = (ps) => {
         onSuccessfulUpdate
     } = ps;
     
-    var bag = { experimentRecord, subjectData, onSuccessfulUpdate }
+    var bag = {
+        shouldHaveStudyConsentDoc,
+        experimentRecord, subjectData,
+        onSuccessfulUpdate
+    }
 
     if (shouldHaveStudyConsentDoc) {
         return (
@@ -36,7 +40,7 @@ const StudyConsentDocCell = (ps) => {
     var { experimentRecord, subjectData, onSuccessfulUpdate } = ps;
     var {
         subjectId,
-        _studyConsentDocId, _studyConsentHasIssue
+        _studyConsentDocId, _studyConsentDocHasIssue
     } = subjectData;
 
     var [{ translate }] = useI18N();
@@ -50,14 +54,16 @@ const StudyConsentDocCell = (ps) => {
         )
     }
 
-    var onClick = () => modal.handleShow({ experimentRecord, subjectId });
+    var onClick = () => modal.handleShow({
+        studyConsentDocId: _studyConsentDocId
+    });
     var renderedButton = (
-        ['yes', 'no'].includes(_studyConsentHasIssue) ? (
-            <Button onClick={ onClick }>
+        ['yes', 'no'].includes(_studyConsentDocHasIssue) ? (
+            <Button size='sm' onClick={ onClick }>
                 { translate('Edit') }
             </Button>
         ) : (
-            <Button onClick={ onClick } variant='danger'>
+            <Button size='sm' onClick={ onClick } variant='danger'>
                 { translate('Postprocess') }
             </Button>
         )
@@ -86,12 +92,12 @@ const StatusUpdateCell = (ps) => {
     var { _enableFollowUpExperiments } = experimentRecord; // FIXME
     var {
         subjectId,
-        _studyConsentDocId, _studyConsentHasIssue
+        _studyConsentDocId, _studyConsentDocHasIssue
     } = subjectData;
 
 
     var hasPostrocessedStudyConsentDoc = (
-        _studyConsentDocId && ['yes', 'no'].includes(_studyConsentHasIssue)
+        _studyConsentDocId && ['yes', 'no'].includes(_studyConsentDocHasIssue)
     );
     var enableForm = (
         !shouldHaveStudyConsentDoc

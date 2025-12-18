@@ -25,7 +25,7 @@ var augmentStudyConsentDocInfo = async (bag) => {
         }},
         { $project: {
             '_id': true, 'experimentId': true, 'subjectId': true,
-            'state.hasIssues': true
+            'state.hasIssue': true
         }}
     ]});
 
@@ -42,9 +42,9 @@ var augmentStudyConsentDocInfo = async (bag) => {
             var studyConsentDoc = studyConsentDocsByKey[key];
 
             if (studyConsentDoc) {
-                var { _id, state: { hasIssues }} = studyConsentDoc;
+                var { _id, state: { hasIssue }} = studyConsentDoc;
                 sd._studyConsentDocId = _id;
-                sd._studyConsentDocHasIssues = hasIssues;
+                sd._studyConsentDocHasIssue = hasIssue;
             }
         }
     }

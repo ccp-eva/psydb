@@ -77,7 +77,11 @@ const Metadata = (ps) => {
         = record;
 
     var { createdAt } = _rohrpostMetadata;
-    var { hasIssue = 'unknown', comment = '' } = state;
+    var {
+        hasIssue = 'unknown',
+        containsSubjectUpdate = 'unknown',
+        comment = ''
+    } = state;
     
     var [{ translate, fdatetime }] = useI18N();
 
@@ -109,7 +113,7 @@ const Metadata = (ps) => {
             </Field>
             <hr />
             <FlagAndCommentForm.Component
-                initialValues={{ hasIssue, comment }}
+                initialValues={{ hasIssue, containsSubjectUpdate, comment }}
                 onSubmit={ send.exec }
             />
         </>
