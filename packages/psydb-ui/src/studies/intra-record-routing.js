@@ -69,7 +69,7 @@ const IntraRecordRoutingBody = (ps) => {
             show: true, enabled: true
         },
         [`${hashurl}/consent-docs`]: {
-            label: translate('Consent Documents'),
+            label: translate('Consent Docs'),
             show: true, enabled: true
         },
     }

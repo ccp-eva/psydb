@@ -87,8 +87,8 @@ const MetadataEditor = (ps) => {
     var { record, onSuccessfulUpdate } = ps;
     var { _id, state } = record;
     var {
-        hasIssue = 'unknown',
-        containsSubjectUpdate = 'unknown',
+        hasIssue,
+        containsSubjectUpdate,
         comment = ''
     } = state;
     

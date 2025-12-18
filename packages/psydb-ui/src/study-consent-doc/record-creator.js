@@ -65,7 +65,7 @@ const FormSelectionWrapper = (ps) => {
                 )}
                 { (studyConsentFormId && !props_labOperatorIds?.length) && (
                     <>
-                        <b>{ translate('Lab Operator') }</b>
+                        <b>{ translate('Experimenter') }</b>
                         <PersonnelPicker
                             value={{ _id: labOperatorIds[0] }}
                             onChange={ (record) => (
@@ -110,7 +110,7 @@ const FormSelectionWrapper = (ps) => {
                 </i></Alert>
             ) : (labOperatorIds?.length < 1) ? (
                 <Alert variant='info'><i>
-                    { translate('Please select a lab operator.') }
+                    { translate('Please select an experimenter.') }
                 </i></Alert>
             ) : (
                 <div className='bg-white border'>

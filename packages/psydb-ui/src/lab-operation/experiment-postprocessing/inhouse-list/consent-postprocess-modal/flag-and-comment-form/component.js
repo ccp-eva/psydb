@@ -41,7 +41,7 @@ const FormFields = (ps) => {
                 inverted={ true }
             />
             <Fields.ExtBool
-                label={ translate('Has Update') }
+                label={ translate('Has Data Update') }
                 dataXPath='$.containsSubjectUpdate'
                 inverted={ true }
             />

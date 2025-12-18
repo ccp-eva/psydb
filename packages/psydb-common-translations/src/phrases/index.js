@@ -14,6 +14,7 @@ module.exports = [
     ...require('./crt-editor'),
     ...require('./csv-imports'),
     ...require('./duplicates'),
+    ...require('./study-consent-workflow'),
 
     ...require('./_error-response-modal'),
     ...require('./_fieldtype'),
