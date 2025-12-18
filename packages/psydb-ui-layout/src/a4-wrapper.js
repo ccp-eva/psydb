@@ -3,7 +3,8 @@ import React from 'react';
 export const A4Wrapper = (ps) => {
     var {
         children, className,
-        wrapperClassName = 'py-5'
+        wrapperClassName = 'py-5',
+        pageMargin = '20mm',
     } = ps;
 
     return (
@@ -11,7 +12,7 @@ export const A4Wrapper = (ps) => {
             maxWidth: '210mm', marginLeft: 'auto', marginRight: 'auto'
         }}>
             <div className={ className } style={{
-                padding: '20mm'
+                padding: pageMargin
             }}>
                 { children }
             </div>

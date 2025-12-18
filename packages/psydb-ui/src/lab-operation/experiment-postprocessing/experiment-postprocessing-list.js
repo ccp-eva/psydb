@@ -14,18 +14,8 @@ import {
     usePermissions
 } from '@mpieva/psydb-ui-hooks';
 
-import {
-    LoadingIndicator,
-    DetailsIconButton,
-    ExperimentIconButton,
-    Alert,
-    Table,
-} from '@mpieva/psydb-ui-layout';
-
-import {
-    datefns,
-    PostprocessSubjectForm
-} from '@mpieva/psydb-ui-lib';
+import { LoadingIndicator, ExperimentIconButton, Alert, Table }
+    from '@mpieva/psydb-ui-layout';
 
 import InhouseList from './inhouse-list';
 
@@ -33,10 +23,7 @@ const ExperimentPostprocessingListLoader = (ps) => {
     var { path, url } = useRouteMatch();
 
     var {
-        studyType,
-        experimentType,
-        subjectType,
-        researchGroupId,
+        studyType, experimentType, subjectType, researchGroupId,
     } = useParams();
 
     var revision = useRevision();
@@ -53,15 +40,12 @@ const ExperimentPostprocessingListLoader = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var {
-        subjectCRT,
-        records,
-        related,
-    } = fetched.data;
+    var { subjectCRT, records, related } = fetched.data;
 
     if (experimentType === 'inhouse') {
         return (
             <InhouseList {...({
+                experimentType,
                 subjectType, subjectCRT,
                 records, related,
                 onSuccessfulUpdate: revision.up
@@ -71,6 +55,7 @@ const ExperimentPostprocessingListLoader = (ps) => {
     else if (experimentType === 'online-video-call') {
         return (
             <InhouseList {...({
+                experimentType,
                 subjectType, subjectCRT,
                 records, related,
                 onSuccessfulUpdate: revision.up
@@ -92,7 +77,7 @@ const ExperimentPostprocessingListLoader = (ps) => {
 const ExperimentPostprocessingList = (ps) => {
     var { records, related, onSuccessfulUpdate } = ps;
 
-    var [{ translate, locale }] = useI18N();
+    var [{ translate, locale, fdate }] = useI18N();
 
     if (records.length < 1) {
         return <Fallback />

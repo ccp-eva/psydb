@@ -1,23 +1,23 @@
 'use strict';
 var debug = require('../debug-helper')('listPostprocessing');
-var datefns = require('date-fns');
 
-var { keyBy } = require('@mpieva/psydb-core-utils');
 var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var { SystemPermissionStages } = require('@mpieva/psydb-mongo-stages');
 var { __fixRelated } = require('@mpieva/psydb-common-compat');
 
 var {
-    ApiError,
-    ResponseBody,
-
-    validateOrThrow,
-    fetchCRTSettings,
-    verifyLabOperationAccess,
+    ApiError, ResponseBody,
+    validateOrThrow, fetchCRTSettings, verifyLabOperationAccess,
     fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
 
 var BodySchema = require('./body-schema');
+var {
+    augmentEnableFollowUpExperiments,
+    augmentStudyConsentDocInfo,
+    filterBeforeNoon,
+} = require('./utils');
+
 
 var experimentPostprocessing = async (context, next) => {
     var { db, request, permissions } = context;
@@ -35,10 +35,8 @@ var experimentPostprocessing = async (context, next) => {
     var { labMethod, subjectType, researchGroupId } = request.body;
 
     verifyLabOperationAccess({
-        researchGroupId,
-        labOperationType: labMethod,
-        flag: 'canPostprocessExperiments',
-        permissions,
+        permissions, researchGroupId,
+        labOperationType: labMethod, flag: 'canPostprocessExperiments',
     });
 
     var subjectCRT = await fetchCRTSettings({
@@ -48,13 +46,8 @@ var experimentPostprocessing = async (context, next) => {
     var studyRecords = await aggregateToArray({ db, study: [
         ...SystemPermissionStages({ collection: 'study', permissions }),
 
-        { $match: {
-            'state.researchGroupIds': researchGroupId
-        }},
-        { $project: {
-            '_id': true,
-            'state.enableFollowUpExperiments': true,
-        }}
+        { $match: { 'state.researchGroupIds': researchGroupId }},
+        { $project: { '_id': true, 'state.enableFollowUpExperiments': true }}
     ]});
     
     var studyIds = studyRecords.map(it => it._id);
@@ -72,45 +65,23 @@ var experimentPostprocessing = async (context, next) => {
     ]});
 
     if (labMethod === 'away-team') {
-        experimentRecords = experimentRecords.filter(it => {
-            var { start } = it.state.interval;
-            
-            var noonifiedStart = datefns.add(
-                datefns.startOfDay(start),
-                { hours: 12 }
-            );
-
-            return ( noonifiedStart < now )
-        })
+        experimentRecords = filterBeforeNoon({ experimentRecords, now });
     }
-
-    var studyConsentDocs = [];
     if (labMethod === 'inhouse') {
-        studyConsentDocs = await aggregateToArray({ db, studyConsentDoc: [
-            { $match: {
-                'experimentId': { $in: experimentRecords.map(it => it._id) }
-            }},
-            { $project: {
-                '_id': true, 'experimentId': true, 'subjectId': true
-            }}
-        ]});
+        await augmentStudyConsentDocInfo({ db, experimentRecords });
     }
+    
+    augmentEnableFollowUpExperiments({
+        experimentRecords, studyRecords
+    });
 
     var experimentRelated = await fetchRelatedLabelsForMany({
         db, collectionName: 'experiment', records: experimentRecords, ...i18n
     });
 
-    var studiesById = keyBy({ items: studyRecords, byProp: '_id' });
-    var augmented = experimentRecords.map(it => ({
-        ...it,
-        _enableFollowUpExperiments: (
-            studiesById[it.state.studyId].state.enableFollowUpExperiments
-        )
-    }));
-
     context.body = ResponseBody({ data: {
         subjectCRT,
-        records: augmented,
+        records: experimentRecords,
         related: __fixRelated(experimentRelated, { isResponse: false })
     }});
 
