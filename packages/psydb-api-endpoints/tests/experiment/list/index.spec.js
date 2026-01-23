@@ -8,8 +8,8 @@ var endpoint = endpoints.experiment.list;
 describe('experiment/list', function () {
     var db, session;
     beforeEach(async function () {
-        //db = await this.restore('2024-03-29__1914_fieldsites');
-        db = await this.connectLocal();
+        db = await this.restore('2024-07-12__0202_wkprc-fieldsite');
+        //db = await this.connectLocal();
         session = await this.createFakeSession('root@example.com');
     });
 

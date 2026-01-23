@@ -36,11 +36,25 @@ var BaselineDeltas_Extended = (options) => {
     };
 
     that.test = (bag) => {
-        var { expected, asFlatEJSON = false, ...pass } = bag;
+        var {
+            expected,
+            asEJSON = true,
+            asFlatEJSON = false,
+            ...pass
+        } = bag;
+
         if (asFlatEJSON) {
             expected = pathify(expected, {
                 delimiter: '/', prefix: '', traverseArrays: true
             });
+            // NOTE: we need to keep functions AnyDate etc helpers 
+            for (var [key, value] of Object.entries(expected)) {
+                expected[key] = typeof value === 'function' ? value : (
+                    ejson(value)
+                );
+            }
+        }
+        else if (asEJSON) {
             // NOTE: we need to keep functions AnyDate etc helpers 
             for (var [key, value] of Object.entries(expected)) {
                 expected[key] = typeof value === 'function' ? value : (

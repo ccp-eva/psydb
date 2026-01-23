@@ -1,14 +1,15 @@
 import React from 'react';
 
 import { only, entries } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useFetch, useSend, useSendRemove, usePermissions } from '@mpieva/psydb-ui-hooks';
 import {
     Pair,
     Button,
     Icons,
     LoadingIndicator,
     Alert,
+    AsyncButton,
 } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -29,7 +30,8 @@ const SafetyForm = (ps) => {
     var { record } = fetched;
     var { sequenceNumber, _recordLabel } = record;
 
-    var translate = useUITranslation();
+    var permissions = usePermissions();
+    var [{ translate }] = useI18N();
 
     var send = useSendRemove({
         collection,
@@ -37,6 +39,11 @@ const SafetyForm = (ps) => {
         record,
         onSuccessfulUpdate
     });
+    
+    var send_distclean = useSend(() => ({
+        type: 'study/remove-distclean',
+        payload: { studyId: record._id }
+    }), { onSuccessfulUpdate });
 
     var [ didFetchRefs, fetchedReverseRefs ] = useFetch((agent) => (
         agent.fetchRecordReverseRefs({
@@ -104,6 +111,19 @@ const SafetyForm = (ps) => {
             >
                 { translate('Delete') }
             </Button>
+
+            { permissions.isRoot() && (
+                <>
+                    <hr />
+                    <AsyncButton
+                        variant='danger'
+                        onClick={ send_distclean.exec }
+                        isTransmitting={ send_distclean.isTransmitting }
+                    >
+                        { translate('DIST CLEAN') }
+                    </AsyncButton>
+                </>
+            )}
         </FormBox>
     )
 }
@@ -113,7 +133,7 @@ const ParticipationList = (ps) => {
         dataBySubjectType
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var allSubjectsById = {};
     for (var [ subjectType, data ] of entries(dataBySubjectType)) {
@@ -155,7 +175,7 @@ const ParticipationList = (ps) => {
 
 const SuccessInfo = (ps) => {
     var { successInfoBackLink } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <FormBox
             titleClassName='text-success'

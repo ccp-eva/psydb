@@ -144,6 +144,8 @@ const TableHeadCols = (ps) => {
             </th>
             { IS_WKPRC ? (
                 <>
+                    <th>{ translate('_wkprc_experimentName') }</th>
+                    <th>{ translate('_wkprc_conditionName') }</th>
                     <th>{ translate('_wkprc_subjectRole') }</th>
                     <th>{ translate('_wkprc_totalSubjectCount_short') }</th>
                 </>
@@ -228,6 +230,8 @@ const ParticipationListRow = (ps) => {
             }</td>
             { IS_WKPRC ? (
                 <>
+                    <td>{ participationData.experimentName }</td>
+                    <td>{ participationData.conditionName }</td>
                     <td>{ participationData.role }</td>
                     <td>{ participationData.totalSubjectCount }</td>
                 </>

@@ -9,14 +9,15 @@ var {
     SaneString,
 } = require('@mpieva/psydb-schema-fields');
 
-var createSchemaForRecordType = ({
-    collectionName,
-    recordType,
-    subChannelKey,
-    fullSchema,
-    prefetchedCustomRecordTypes,
-    additionalSchemaCreatorArgs,
-}) => {
+var createSchemaForRecordType = (bag) => {
+    var {
+        collectionName,
+        recordType,
+        subChannelKey,
+        fullSchema,
+        prefetchedCustomRecordTypes,
+        additionalSchemaCreatorArgs,
+    } = bag;
 
     var collectionCreatorData = allSchemaCreators[collectionName];
     if (!collectionCreatorData) {
@@ -107,6 +108,12 @@ var createSchemaForRecordType = ({
         enableOnlineId,
         enableSequenceNumber
     } = additionalSchemaCreatorArgs;
+
+    // XXX; if not set record label definition handler complains
+    // even thugh theese collections dont have that option
+    if (['externalOrganization', 'location'].includes(collectionName)) {
+        enableSequenceNumber = true;
+    }
 
     var SchemaCreator = (
         fullSchema === true

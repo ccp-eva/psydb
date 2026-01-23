@@ -6,7 +6,12 @@ var UNSET = (channel, opData) => {
         var [ lastToken, ...rHead ] = pointer.split('\/').reverse();
         var parentPointer = rHead.reverse().join('/');
         var parent = jsonpointer.get(channel, parentPointer);
-        delete parent[lastToken];
+
+        // XXX: hotfix for issue in history subject id
+        // 6312c3f99607f23aadf4e2c4
+        if (parent) {
+            delete parent[lastToken];
+        }
     }
 }
 

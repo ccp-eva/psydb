@@ -6,7 +6,14 @@ var debug = require('debug')(
 var sift = require('sift');
 var inline = require('@cdxoo/inline-string');
 
+var { ejson } = require('@mpieva/psydb-core-utils');
 var {
+    aggregateToArray,
+    aggregateCount
+} = require('@mpieva/psydb-mongo-adapter');
+
+var {
+    SmartArray,
     fromFacets,
 
     fetchOneCustomRecordType,
@@ -155,8 +162,6 @@ var extendedSearchCore = async (bag) => {
                 filters: customGdprFilters,
             }),
         }
-
-        console.log(customFieldMatchStages);
     }
     else {
         var permissionStatePath = 'state';
@@ -188,26 +193,28 @@ var extendedSearchCore = async (bag) => {
 
     //console.dir(customQueryValues, { depth: null })
     //console.log(specialFilterConditions);
-
-    var mainStages = [
+    //
+    var mainStages = SmartArray([
         { $match: {
             isDummy: { $ne: true },
             'scientific.state.internals.isRemoved': { $ne: true },
+            'state.internals.isRemoved': { $ne: true },
             ...(recordType && { type: recordType }),
             //...customQueryValues,
             //...specialFilterConditions,
         }},
 
         ...customFieldMatchStages,
+        
+        ( specialFilterConditions && { $match: (
+            specialFilterConditions
+        )}),
 
-        { $match: specialFilterConditions },
-        ...(permissions.isRoot() ? [] : [
-            { $match: {
-                [permissionFullPath]: { $in: (
-                    permissions.getCollectionFlagIds(collection, 'read')
-                )}
-            }},
-        ]),
+        ( !permissions.isRoot() && { $match: {
+            [permissionFullPath]: { $in: (
+                permissions.getCollectionFlagIds(collection, 'read')
+            )}
+        }}),
         
         { $project: {
             sequenceNumber: true,
@@ -231,51 +238,37 @@ var extendedSearchCore = async (bag) => {
         //    ],
         //    recordsCount: [{ $count: 'COUNT' }]
         //}}
-    ].filter(it => !!it);
+    ]).filter(it => !!it);
 
     debug('counting records');
-    var countResult = await (
-        db.collection(collection)
-        .aggregate(
-            [ ...mainStages, { $count: 'COUNT' } ],
-            { allowDiskUse: true }
-        )
-        .toArray()
-    );
-    debug('done counting records');
-    var recordsCount = (
-        countResult && countResult[0] ? countResult[0].COUNT : 0
-    );
+    var recordsCount = await aggregateCount({
+        db, [collection]: mainStages,
+        mongoSettings: { allowDiskUse: true }
+    }) || 0;
+    debug('done counting records: ', recordsCount);
 
     debug('searching records');
-    var records = await (
-        db.collection(collection).aggregate(
-            [
-                ...mainStages,
-                SortStage({ ...sort }),
-                { $skip: offset },
-                ...(limit ? [{ $limit: limit }] : [])
-            ],
-            {
-                allowDiskUse: true,
-                collation: { locale: 'de@collation=phonebook' }
-            }
-        ).toArray()
-    );
+    var records = await aggregateToArray({
+        db, [collection]: [
+            ...mainStages,
+            SortStage({ ...sort }),
+            { $skip: offset },
+            ...(limit ? [{ $limit: limit }] : [])
+        ],
+        mongoSettings: {
+            allowDiskUse: true,
+            collation: { locale: 'de@collation=phonebook' }
+        }
+    });
     debug('done searching records');
     
     var related = await fetchRelatedLabelsForMany({
-        db,
-        collectionName: collection,
-        recordType,
-        records,
+        db, collectionName: collection,
+        recordType, records,
     });
 
     return {
-        records,
-        recordsCount,
-        related,
-
+        records, recordsCount, related,
         displayFieldData: availableDisplayFieldData,
     };
 }

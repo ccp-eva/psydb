@@ -1,10 +1,11 @@
 #!/bin/sh
 SCRIPT_DIR=$(dirname "$0")
-BASE_DIR=$SCRIPT_DIR/../../
+BASE_DIR=$SCRIPT_DIR/../
 
 SUFFIX=$1
 
-VERSION=$(node -pe "require('$BASE_DIR/packages/psydb-web/package.json').version");
+VERSION=$(git describe --tags --abbrev=0)
+#VERSION=$(node -pe "require('$BASE_DIR/packages/psydb-web/package.json').version");
 DATE=$(date +%Y%m%d%H%M)
 
 echo $VERSION;

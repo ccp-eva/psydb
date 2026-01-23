@@ -1,5 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:experiment:list');
+var mingo = require('mingo'); require('mingo/init/system');
+
+var { unique } = require('@mpieva/psydb-core-utils');
 var { __fixRelated } = require('@mpieva/psydb-common-compat');
 var { SmartArray } = require('@mpieva/psydb-common-lib');
 
@@ -55,8 +58,8 @@ var listEndpoint = async (context, next) => {
                 availableStudyTypes.map(it => it.key)
             ) },
 
-            //'isPostprocessed': true,
-            'isCanceled': { $ne: true },
+            'state.isPostprocessed': true,
+            //'state.isCanceled': { $ne: true },
         }},
     ]);
 
@@ -73,12 +76,41 @@ var listEndpoint = async (context, next) => {
     var fromItems = mappifyPointer(records, { spreadArrays: true });
     var relatedRecordLabels = await fetchRecordLabelsManual(db, {
         subject: fromItems('/state/selectedSubjectIds'),
+        subjectGroup: fromItems('/state/subjectGroupId'),
         location: fromItems('/state/locationId'),
         study: fromItems('/state/studyId'),
         personnel: fromItems('/state/experimentOperatorIds'),
     }, i18n);
 
+    var x = [];
+    for (var i = 0; i < 1000; i += 1) {
+        x.push(...records);
+    }
+    debug('mingo start')
+    for (var i = 0; i < 10; i += 1) {
+        var a = mingo.aggregate(x, [
+            { $project: {
+                'key': '$state.subjectData.subjectType'
+            }},
+            { $unwind: '$key' },
+        ]).map(it => it.key);
+
+        a = unique(a);
+    }
+    debug('mingo end')
+    console.log(a);
+    throw new Error();
+
+    var crtypes = [
+        ...fromItems('/state/locationRecordType'),
+        ...fromItems('/state/studyRecordType'),
+        ...fromItems('/state/subjectData/subjectType')
+    ]
+    console.log(crtypes);
+
     // TODO: related crts
+    //var relatedCustomRecordTypes = await fetchCRTLabelsManual(db, [
+    //], i18n);
 
     context.body = ResponseBody({
         data: {

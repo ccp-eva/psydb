@@ -5,6 +5,7 @@ import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
     SplitPartitioned,
+    Grid,
     DetailsBox,
 } from '@mpieva/psydb-ui-layout';
 
@@ -37,16 +38,17 @@ const Details = (ps) => {
         <>
             <CSVImport { ...csvImportBag }>
                 <DetailsBox title={ title }>
-                    <SplitPartitioned partitions={[ 1,1 ]}>
+                    <Grid cols={[ '1fr', '1fr' ]} gap='1rem'>
                         <div>
                             <CSVImport.StudyId __useNewRelated />
                             <CSVImport.Type />
+                            <CSVImport.FileId />
                         </div>
                         <div>
                             <CSVImport.CreatedAt />
                             <CSVImport.CreatedBy __useNewRelated />
                         </div>
-                    </SplitPartitioned>
+                    </Grid>
                 </DetailsBox>
             </CSVImport>
 

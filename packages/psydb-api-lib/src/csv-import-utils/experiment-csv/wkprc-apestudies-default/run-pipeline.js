@@ -1,0 +1,77 @@
+'use strict';
+var { ejson } = require('@mpieva/psydb-core-utils');
+var { CSVColumnRemappers } = require('@mpieva/psydb-common-lib');
+var {
+    parseSchemaCSV,
+    injectRefids,
+
+    runDefaultPipeline
+} = require('../../common');
+
+var CSVSchema = require('./csv-schema');
+var verifySameSubjectType = require('./verify-same-subject-type');
+var verifySameSubjectGroup = require('./verify-same-subject-group');
+var verifyExperimentNames = require('./verify-experiment-names');
+var transformPrepared = require('./transform-prepared');
+var preinjectCombinationRefs = require('./preinject-combination-refs');
+
+var runPipeline = async (bag) => {
+    var {
+        db,
+        csvLines: csvData,
+   
+        subjectType,
+        study,
+        timezone: unmarshalClientTimezone
+    } = bag;
+
+    var schema = CSVSchema();
+    var customColumnRemap = (
+        CSVColumnRemappers.Experiment.WKPRCApestudiesDefault().csv2obj
+    );
+
+    var parsed = parseSchemaCSV({
+        csvData, schema, customColumnRemap,
+        unmarshalClientTimezone
+    });
+
+    await preinjectCombinationRefs({ db, parsed, subjectType });
+    //console.dir(ejson(parsed), { depth: null });
+    //return;
+
+
+    var { pipelineData, preparedObjects } = await runDefaultPipeline({
+        db, parsed, schema, customColumnRemap, unmarshalClientTimezone,
+        extraRecordResolvePointers: {
+            subject: [
+                '/scientific/state/custom/wkprcIdCode',
+                '/scientific/state/custom/name'
+            ],
+            location: [ '/state/custom/name' ],
+            subjectGroup: [ '/state/name' ],
+        },
+    });
+
+    var okPipelineData = (
+        pipelineData.filter(it => it.isValid && it.isRefReplacementOk)
+    );
+
+    await verifyExperimentNames({ db, study, preparedObjects });
+    await verifySameSubjectType({ db, subjectType, preparedObjects });
+    await verifySameSubjectGroup({ db, preparedObjects });
+
+    var transformed = transformPrepared({
+        pipelineData: okPipelineData,
+
+        subjectType,
+        study,
+        timezone: unmarshalClientTimezone
+    });
+
+    return {
+        pipelineData,
+        transformed
+    }
+}
+
+module.exports = runPipeline;

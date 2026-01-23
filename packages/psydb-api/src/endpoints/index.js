@@ -18,7 +18,7 @@ module.exports = {
 
     customRecordType: require('./entities/custom-record-type'),
     file: require('./entities/file'),
-    csvImport: require('./entities/csv-import'),
+    //csvImport: require('./entities/csv-import'),
 
     researchGroup: require('./entities/research-group'),
     opsTeam: require('./entities/ops-team'),

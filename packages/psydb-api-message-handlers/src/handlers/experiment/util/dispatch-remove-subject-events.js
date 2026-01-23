@@ -57,7 +57,6 @@ var dispatchRemoveSubjectEvents = async ({
         experimentRecord.state.subjectData.length === canceledSubjectCount
     );
 
-    var ePath = `/state/subjectData/${subjectDataIndex}`;
     await dispatch({
         collection: 'experiment',
         channelId: experimentRecord._id,

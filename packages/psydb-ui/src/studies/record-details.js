@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { useRouteMatch  } from 'react-router-dom';
-import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation, useUIConfig } from '@mpieva/psydb-ui-contexts';
+import { useRouteMatch } from 'react-router-dom';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { LinkButton, Icons } from '@mpieva/psydb-ui-layout';
 
@@ -10,10 +9,9 @@ import { Study } from '@mpieva/psydb-ui-lib/data-viewers';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
 
-const EditLinkButton = ({
-    to,
-    label
-}) => {
+const EditLinkButton = (ps) => {
+    var { to, label } = ps;
+
     return (
         <LinkButton
             className='d-flex align-items-center'
@@ -31,12 +29,12 @@ const StudyRecordDetails = (ps) => {
         onSuccessfulUpdate,
     } = ps;
     
-    var { dev_enableWKPRCPatches } = useUIConfig();
-
     var { record, crtSettings, related } = fetched;
     var { path, url } = useRouteMatch();
     
-    var translate = useUITranslation();
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
+    var [{ translate }] = useI18N();
+
     var permissions = usePermissions();
     var canEdit = permissions.hasCollectionFlag('study', 'write');
 
@@ -52,16 +50,21 @@ const StudyRecordDetails = (ps) => {
             <Study { ...studyBag }>
                 <Study.SequenceNumber />
                 <Study.Name />
-                <Study.Shorthand />
+                { !IS_WKPRC && (
+                    <Study.Shorthand />
+                )}
                 <hr />
                 <Study.Start />
                 <Study.End />
-                { !dev_enableWKPRCPatches && (
+                { !IS_WKPRC && (
                     <Study.EnableFollowUpExperiments />
                 )}
                 <Study.ResearchGroupIds />
                 <Study.ScientistIds />
                 <Study.StudyTopicIds />
+                { IS_WKPRC && (
+                    <Study.ExperimentNames />
+                )}
                 <Study.Custom />
                 <hr />
                 <Study.SystemPermissions />

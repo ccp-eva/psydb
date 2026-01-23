@@ -23,4 +23,9 @@ var injectRefIds = async (bag) => {
     return replacementData;
 }
 
+injectRefIds.gatherPossibleRefs = gatherPossibleRefs;
+injectRefIds.createRefMappings = createRefMappings;
+injectRefIds.resolveRefs = resolveRefs;
+injectRefIds.replaceRefsByMapping = replaceRefsByMapping;
+
 module.exports = injectRefIds;

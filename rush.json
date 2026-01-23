@@ -57,6 +57,16 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-axios-wrapper-web",
+       "projectFolder": "packages/psydb-axios-wrapper-web",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-axios-wrapper-nodejs",
+       "projectFolder": "packages/psydb-axios-wrapper-nodejs",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-axios-test-wrapper",
        "projectFolder": "packages/psydb-axios-test-wrapper",
        "reviewCategory": "production"
@@ -92,6 +102,16 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-custom-fields-faker",
+       "projectFolder": "packages/psydb-custom-fields-faker",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-faker",
+       "projectFolder": "packages/psydb-faker",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-rohrpost-utils",
        "projectFolder": "packages/psydb-rohrpost-utils",
        "reviewCategory": "production"
@@ -104,6 +124,11 @@
     {
        "packageName": "@mpieva/psydb-ajv-formats",
        "projectFolder": "packages/psydb-ajv-formats",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-schema",
+       "projectFolder": "packages/psydb-schema",
        "reviewCategory": "production"
     },
     {
@@ -154,6 +179,11 @@
     {
        "packageName": "@mpieva/psydb-driver-nodejs",
        "projectFolder": "packages/psydb-driver-nodejs",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-driver-nodejs-tests",
+       "projectFolder": "packages/psydb-driver-nodejs-tests",
        "reviewCategory": "production"
     },
     {
@@ -312,6 +342,21 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-ui-date-locales",
+       "projectFolder": "packages/psydb-ui-date-locales",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-ui-cookies",
+       "projectFolder": "packages/psydb-ui-cookies",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-ui-context-initializers",
+       "projectFolder": "packages/psydb-ui-context-initializers",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-ui-contexts",
        "projectFolder": "packages/psydb-ui-contexts",
        "reviewCategory": "production"
@@ -352,8 +397,18 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-ui-public-landing",
+       "projectFolder": "packages/psydb-ui-public-landing",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-ui",
        "projectFolder": "packages/psydb-ui",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-api-automation-scripts",
+       "projectFolder": "packages/psydb-api-automation-scripts",
        "reviewCategory": "production"
     },
     

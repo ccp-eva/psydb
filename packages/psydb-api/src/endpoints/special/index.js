@@ -1,7 +1,4 @@
 module.exports = {
-    serverTimezone: (
-        require('./server-timezone')
-    ),
     subjectTypeDataForStudy: (
         require('./subject-type-data-for-study')
     ),

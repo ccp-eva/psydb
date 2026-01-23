@@ -66,6 +66,8 @@ const IssueItemWrapper = (ps) => {
 const RefIssueItem = (ps) => {
     var { item, remapper, demapping } = ps;
     var { index, csvLine, replacementErrors } = item;
+
+    console.log({ replacementErrors })
     
     return (
         <IssueItemWrapper index={ index }>
@@ -185,7 +187,7 @@ var ValidationError = (ps) => {
         );
         var cols = (
             remapper
-            ? remapper.obj2csv({ path: dataPath })
+            ? remapper.ajvpath2csv({ path: dataPath })
             : demap({ dataPath, demapping })
         )
         return cols.map((it, ix) => (
@@ -196,17 +198,32 @@ var ValidationError = (ps) => {
         var { additionalProperty } = params;
         var cols = (
             remapper
-            ? remapper.obj2csv({ path: additionalProperty })
+            ? remapper.ajvpath2csv({ path: additionalProperty })
             : demap({ dataPath: additionalProperty, demapping })
         )
         return cols.map((it, ix) => (
             <div key={ ix }><b>{' - '}"{ it }" is unknown</b></div>
         ))
     }
+    else if (keyword === 'enum') {
+        var { allowedValues } = params;
+        var cols = (
+            remapper
+            ? remapper.ajvpath2csv({ path: dataPath })
+            : demap({ dataPath, demapping })
+        )
+        return cols.map((it, ix) => (
+            <div key={ ix }><b>
+                {' - '}"{ it }"
+                {' '}{ message }
+                {' '}{ allowedValues.map(it => `"${it}"`).join(', ') }
+            </b></div>
+        ))
+    }
     else {
         var cols = (
             remapper
-            ? remapper.obj2csv({ path: dataPath })
+            ? remapper.ajvpath2csv({ path: dataPath })
             : demap({ dataPath, demapping })
         )
         return cols.map((it, ix) => (
@@ -224,9 +241,10 @@ var ReplacementError = (ps) => {
     console.log({ csvColumn });
     var cols = (
         remapper
-        ? remapper.obj2csv({ path: csvColumn })
+        ? remapper.ajvpath2csv({ path: csvColumn })
         : demap({ dataPath: csvColumn, demapping })
     )
+    console.log({ remapper, cols })
 
     return cols.map((it, ix) => (
         <div key={ ix }><b>

@@ -2,6 +2,7 @@ module.exports = {
     sift: require('sift'),
     inlineText: require('@cdxoo/inline-text'),
 
+    keyRecords: require('./key-records'),
     excapeRX: require('./escape-rx'),
     makeRX: require('./make-rx'),
     makeDiaRX: require('./make-dia-rx'),
@@ -60,6 +61,7 @@ module.exports = {
     ),
 
     calculateTestableIntervals: require('./calculate-testable-intervals'),
-   
+  
+    SimpleCache: require('./simple-cache'),
     SmartArray: require('./smart-array'),
 }

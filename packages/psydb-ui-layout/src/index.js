@@ -1,5 +1,6 @@
 export { LinkContainer } from 'react-router-bootstrap';
 
+export { default as CopyNotice } from './copy-notice';
 export { default as LinkButton } from './link-button';
 export { default as LoadingIndicator } from './loading-indicator';
 export { default as Pagination } from './pagination';

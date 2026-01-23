@@ -16,7 +16,7 @@ var runPipeline = async (bag) => {
         timezone: unmarshalClientTimezone
     } = bag;
 
-    var schema = CSVSchema({ locationType });
+    var schema = CSVSchema({ subjectType, locationType });
     var customColumnRemap = (
         CSVColumnRemappers.Experiment.ManualOnlyParticipation().csv2obj
     );

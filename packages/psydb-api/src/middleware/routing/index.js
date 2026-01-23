@@ -20,6 +20,8 @@ var addSubjectRoutes = require('./add-subject-routes');
 var addCSVImportRoutes = require('./add-csv-import-routes');
 var addAuditRoutes = require('./add-audit-routes');
 
+var addWKPRCCSVExportRoutes = require('./add-wkprc-csv-export-routes');
+
 var createRouting = (bag = {}) => {
     var { prefix = '/' } = bag;
 
@@ -60,11 +62,6 @@ var createRouting = (bag = {}) => {
             withSelfAuth(),
             withPermissions(),
         ]})
-    );
-
-    router.get('/server-timezone',
-        withSelfAuth(),
-        endpoints.special.serverTimezone
     );
 
     router.get('/self', ...withGetStages({
@@ -490,6 +487,9 @@ var createRouting = (bag = {}) => {
     router.post('/file/read', ...withPostStages({
         endpoint: endpoints.file.read
     }));
+    router.get('/file/download', ...withGetStages({
+        endpoint: endpoints.file.download,
+    }));
     
 
     
@@ -528,6 +528,8 @@ var createRouting = (bag = {}) => {
     addSubjectRoutes({ router });
     addCSVImportRoutes({ router });
     addAuditRoutes({ router });
+    
+    addWKPRCCSVExportRoutes({ router });
 
     return compose([
         router.routes(),

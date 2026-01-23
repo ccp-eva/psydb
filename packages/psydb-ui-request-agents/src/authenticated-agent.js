@@ -55,10 +55,6 @@ const createAgent = (options = {}) => {
         }, extraAxiosConfig);
     }
 
-    agent.fetchServerTimezone = () => {
-        return axios.get(`/api/server-timezone`);
-    }
-
     agent.readCustomRecordTypeMetadata = ({
         only, ignoreResearchGroups
     } = {}) => {

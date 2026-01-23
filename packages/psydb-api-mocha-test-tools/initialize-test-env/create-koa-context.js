@@ -12,6 +12,8 @@ var localesByCode = [
     [locale.code]: locale
 }), {});
 
+var apiConfig = require('@mpieva/psydb-api-config');
+
 var createKoaContext = function (extraContext) {
     var {
         client, dbName, dbHandle,
@@ -31,7 +33,8 @@ var createKoaContext = function (extraContext) {
         permissions: { isRoot: true },
         request: {},
         response: {},
-        ip: '127.0.0.1'
+        ip: '127.0.0.1',
+        apiConfig,
     }
     return { ...koaContext, ...extraContext };
 }
