@@ -1,5 +1,5 @@
 'use strict';
 var Debug = require('debug');
 module.exports = (str) => (
-    Debug('psydb:api:endpoints:studyTemplateForm:' + str)
+    Debug('psydb:api:endpoints:studyConsentForm:' + str)
 )

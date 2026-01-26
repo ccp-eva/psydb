@@ -77,6 +77,10 @@ module.exports = [
         de: 'Markdown'
     },
     {
+        en: 'Markdown (DE)',
+        de: 'Markdown (DE)'
+    },
+    {
         en: 'No further settings available.',
         de: 'Keine weiteren Einstellungen.'
     },
@@ -108,4 +112,28 @@ module.exports = [
         en: 'Please select an experimenter.',
         de: 'Bitte eine Experimenter:in wählen.'
     },
+    {
+        en: 'Input is Required',
+        de: 'Pflichteingabe'
+    },
+    {
+        en: 'Please select consent form and lab operators.',
+        de: 'Bitte Einwilligungs-Formular und Experimenter wählen.'
+    },
+    {
+        en: 'No consent found!',
+        de: 'Keine Einwilligung gefunden!'
+    },
+    {
+        en: 'Go to Consent ->',
+        de: 'Zur Einwilligung ->',
+    },
+    {
+        en: 'Refresh',
+        de: 'Aktualisieren'
+    },
+    {
+        en: 'other Staff Member',
+        de: 'andere Mitarbeiter:in'
+    }
 ]

@@ -12,6 +12,11 @@ export const InfoTextMarkdown = (ps) => {
                 dataXPath={ `${dataXPath}.markdown` }
                 required={ true }
             />
+            <Fields.FullText
+                label={ translate('Markdown (DE)') }
+                dataXPath={ `${dataXPath}.markdownI18N.de` }
+                required={ true }
+            />
         </>
     );
 }
@@ -30,6 +35,11 @@ export const SubjectField = (ps) => {
                 dataXPath={ `${dataXPath}.pointer` }
                 require={ true }
                 options={ options }
+            />
+            <Fields.DefaultBool
+                label={ translate('Input is Required') }
+                dataXPath={ `${dataXPath}.isRequired` }
+                required={ true }
             />
         </>
     );
@@ -52,6 +62,16 @@ export const ExtraField = (ps) => {
             <Fields.SaneString
                 label={ translate('Display Name') }
                 dataXPath={ `${dataXPath}.displayName` }
+                required={ true }
+            />
+            <Fields.SaneString
+                label={ translate('Display Name (DE)') }
+                dataXPath={ `${dataXPath}.displayNameI18N.de` }
+                required={ true }
+            />
+            <Fields.DefaultBool
+                label={ translate('Input is Required') }
+                dataXPath={ `${dataXPath}.isRequired` }
                 required={ true }
             />
         </>

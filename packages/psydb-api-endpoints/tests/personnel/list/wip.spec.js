@@ -3,9 +3,9 @@ var { ejson } = require('@mpieva/psydb-core-utils');
 var { expect } = require('@mpieva/psydb-api-mocha-test-tools/chai');
 var endpoints = require('../../../src');
 
-var endpoint = endpoints.studyConsentForm.list;
+var endpoint = endpoints.personnel.list;
 
-describe('study-consent-form/list wip', function () {
+describe('personnel/list wip', function () {
     var db, session;
     beforeEach(async function () {
         //db = await this.restore('2024-03-29__1914_fieldsites');
@@ -19,10 +19,7 @@ describe('study-consent-form/list wip', function () {
             request: {
                 headers: { language: 'en', locale: 'en', timezone: 'UTC' },
                 body: {
-                    constraints: {
-                        '/studyId': '64d42dcb443aa279ca4caeee',
-                    },
-                    quicksearch: {},
+                    filters: {},
                     offset: 0,
                     limit: 1000,
                 }

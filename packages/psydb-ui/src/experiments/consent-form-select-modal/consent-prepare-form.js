@@ -2,10 +2,16 @@ import React, { useState } from 'react';
 
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSelectionReducer } from '@mpieva/psydb-ui-hooks';
-import { Grid, Alert, SmallFormFooter } from '@mpieva/psydb-ui-layout';
+import { Grid, Alert, SmallFormFooter, PaddedText }
+    from '@mpieva/psydb-ui-layout';
+
 import { GenericEnum } from '@mpieva/psydb-ui-form-controls';
 
-import { LabOperatorCheckbox, GotoButton } from './utils';
+import {
+    LabOperatorCheckbox,
+    LabOperatorDropdown,
+    GotoButton
+} from './utils';
 
 const ConsentPrepareForm = (ps) => {
     var {
@@ -63,7 +69,7 @@ const ConsentPrepareForm = (ps) => {
                 />
             </Grid>
             <Grid cols={[ '200px', '1fr' ]} className='align-items-center'>
-                <b>{ translate('Experimenters') }</b>
+                <PaddedText><b>{ translate('Experimenters') }</b></PaddedText>
                 <div>
                     { labOperatorIds.map((it, ix) => (
                         <LabOperatorCheckbox
@@ -71,6 +77,16 @@ const ConsentPrepareForm = (ps) => {
                             selection={ selectedLabOperatorIds }
                         />
                     )) }
+                </div>
+                <div />
+                <div>
+                    <i className='text-muted'>
+                        { translate('other Staff Member') }:
+                    </i>
+                    <LabOperatorDropdown
+                        selection={ selectedLabOperatorIds }
+                        excludedIds={ labOperatorIds }
+                    />
                 </div>
             </Grid>
             { !(

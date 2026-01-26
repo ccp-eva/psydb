@@ -1,5 +1,7 @@
 'use strict';
 module.exports = {
+    personnel: require('./personnel'),
+
     study: require('./study'),
     studyConsentForm: require('./study-consent-form'),
     studyConsentDoc: require('./study-consent-doc'),

@@ -37,6 +37,7 @@ var ExtraField = (bag) => {
         'displayNameI18N': MaxObject({
             'de': SaneString({ minLength: 0 })
         }),
+        'isRequired': DefaultBool(),
     });
 
     return schema;
@@ -46,6 +47,7 @@ var SubjectField = (bag) => {
     var schema = ClosedObject({
         'type': StringConst('subject-field'),
         'pointer': JsonPointer(),
+        'isRequired': DefaultBool(),
     });
 
     return schema;
