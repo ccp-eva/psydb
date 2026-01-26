@@ -16,7 +16,7 @@ describe('csv-import/experiment/create-wkprc-apestudies-default', function () {
     var db, sendMessage, fileId;
     beforeEach(async function () {
         //await this.restore('2024-04-03__0435_wkprc-and-fs');
-        await this.restore('2025-09-22__1105');
+        await this.restore('2026-01-23__0620');
         
         db = this.getDbHandle();
         ([ sendMessage ] = this.createMessenger({
