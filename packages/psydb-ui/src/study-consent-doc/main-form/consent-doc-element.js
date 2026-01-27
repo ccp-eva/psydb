@@ -39,7 +39,7 @@ const InfoTextMarkdown = (ps) => {
 }
 
 const SubjectField = (ps) => {
-    var { index, pointer, subjectCRT } = ps;
+    var { index, pointer, subjectCRT, isRequired = false } = ps;
     var [{ translate }] = useI18N();
     
     var definition = subjectCRT.findOneCustomField({ 'pointer': pointer });
@@ -56,12 +56,18 @@ const SubjectField = (ps) => {
         <Component
             dataXPath={ `$.elementValues.${index}` }
             label={ translate.fieldDefinition(definition) }
+            required={ isRequired }
         />
     )
 }
 
 const ExtraField = (ps) => {
-    var { index, systemType, displayName, displayNameI18N } = ps;
+    var {
+        index, systemType,
+        displayName, displayNameI18N,
+        isRequired = false
+    } = ps;
+
     var [{ language }] = useI18N();
     
     var Component = Fields[systemType];
@@ -69,6 +75,7 @@ const ExtraField = (ps) => {
         <Component
             dataXPath={ `$.elementValues.${index}` }
             label={ displayNameI18N?.[language] || displayName }
+            required={ isRequired }
         />
     )
 }

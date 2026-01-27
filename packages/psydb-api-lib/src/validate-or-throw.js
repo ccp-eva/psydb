@@ -10,7 +10,12 @@ var validateOrThrow = (bag) => {
         schema,
         apiStatus = 'InvalidRequestSchema',
         unmarshalClientTimezone,
+        i18n,
     } = bag;
+
+    if (i18n) {
+        unmarshalClientTimezone = i18n.timezone;
+    }
 
     var ajv = Ajv({
         unmarshalClientTimezone,

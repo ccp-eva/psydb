@@ -245,6 +245,7 @@ const FullRecordCreator = (ps) => {
         <MainForm.Component
             studyConsentForm={ studyConsentForm.record }
             subjectCRT={ subjectCRT }
+            labOperatorIds={ labOperatorIds }
             initialValues={ initialValues }
             onSubmit={ send.exec }
         />

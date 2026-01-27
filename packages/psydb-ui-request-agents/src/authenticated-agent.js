@@ -952,11 +952,14 @@ const createAgent = (options = {}) => {
     };
     agent.personnel = {
         list: dumpPOST({ url: '/api/personnel/list' }),
+        readManyLabels: dumpPOST({ url: '/api/personnel/read-many-labels' }),
     };
     agent.study = {
         list: dumpPOST({ url: '/api/study/list' }),
+        readManyLabels: dumpPOST({ url: '/api/study/read-many-labels' }),
+        relatedStudyConsentForms: dumpPOST({ url: '/api/study/related-study-consent-forms' }),
+        
         extendedSearch: dumpPOST({ url: '/api/extended-search/studies' }),
-        relatedStudyConsentForms: dumpPOST({ url: '/api/study/related-study-consent-forms' })
     };
     agent.helperSet = {
         list: dumpPOST({ url: '/api/helperSet/list' }),

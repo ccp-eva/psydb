@@ -12,7 +12,9 @@ var addPersonnelRoutes = (bag) => {
     
     router.post('/personnel/list', ...withPostStages({
         endpoint: endpoints_SPLIT.personnel.list,
-        enableApiKeyAuth: true,
+    }));
+    router.post('/personnel/read-many-labels', ...withPostStages({
+        endpoint: endpoints_SPLIT.personnel.readManyLabels,
     }));
 }
 
