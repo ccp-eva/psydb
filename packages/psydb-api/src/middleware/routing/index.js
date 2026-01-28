@@ -17,6 +17,7 @@ var { withPostStages, withGetStages } = require('./stage-helpers');
 var addCRTSettingsRoutes = require('./add-crt-settings-routes');
 var addStudyRoutes = require('./add-study-routes');
 var addSubjectRoutes = require('./add-subject-routes');
+var addLocationRoutes = require('./add-location-routes');
 var addCSVImportRoutes = require('./add-csv-import-routes');
 var addAuditRoutes = require('./add-audit-routes');
 
@@ -356,12 +357,6 @@ var createRouting = (bag = {}) => {
         withKoaBody(),
         endpoints.extendedSearch.studies
     );
-    router.post('/extended-search/locations',
-        withSelfAuth(),
-        withPermissions(),
-        withKoaBody(),
-        endpoints.extendedSearch.locations
-    );
 
     router.post('/extended-search-export/subject',
         withSelfAuth(),
@@ -526,6 +521,7 @@ var createRouting = (bag = {}) => {
     addCRTSettingsRoutes({ router });
     addStudyRoutes({ router });
     addSubjectRoutes({ router });
+    addLocationRoutes({ router });
     addCSVImportRoutes({ router });
     addAuditRoutes({ router });
     

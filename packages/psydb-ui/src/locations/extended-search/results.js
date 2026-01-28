@@ -43,7 +43,7 @@ export const Results = (ps) => {
         return (
             agent
             .getAxios()
-            .post('/api/extended-search/locations', {
+            .post('/api/location/extended-search', {
                 ...saneData, offset, limit, timezone,
             })
             .then((response) => {
