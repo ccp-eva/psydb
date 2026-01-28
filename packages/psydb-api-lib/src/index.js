@@ -17,6 +17,7 @@ module.exports = {
     CSV: require('./csv'),
 
     validateOrThrow: require('./validate-or-throw'),
+    validateMessageOrThrow: require('./validate-message-or-throw'),
     ...require('./verify-collection-access'),
 
     verifyRecordExists: require('./verify-record-exists'),

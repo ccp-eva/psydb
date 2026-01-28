@@ -10,7 +10,7 @@ describe('study-consent-doc/create', function () {
     var db, ids, send;
     before(async function () {
         ids = await this.restore([
-            'tiny_2025-11-24__1002__consent-doc-starter'
+            'tiny_2026-01-28__0437__consent-doc-starter',
         ], { gatherIds: true });
         
         db = this.getDbHandle();

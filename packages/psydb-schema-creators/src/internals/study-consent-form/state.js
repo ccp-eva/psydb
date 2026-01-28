@@ -1,7 +1,8 @@
 'use strict';
 var {
-    ClosedObject, DefaultArray, DefaultBool, ForeignId,
+    ClosedObject, DefaultArray, DefaultBool, ForeignId, StringEnum,
     SaneString, FullText, StringConst, MinObject, MaxObject, JsonPointer,
+    ExactObject,
 } = require('@mpieva/psydb-schema-fields');
 
 var State = (context) => {
@@ -20,7 +21,8 @@ var State = (context) => {
 
 var StudyConsentFormElement = (bag) => {
     var schema = OneOf([
-        ExtraField(),
+        ExtraField.DefaultBool(),
+        ExtraField.Other(),
         SubjectField(),
         InfoTextMarkdown(),
         HR(),
@@ -30,9 +32,46 @@ var StudyConsentFormElement = (bag) => {
 }
 
 var ExtraField = (bag) => {
+    var schema = OneOf([
+        ExtraField.DefaultBool(),
+        ExtraField.Other(),
+    ]); 
+    return schema;
+}
+
+ExtraField.DefaultBool = () => {
+    var required = {
+        'type': StringConst('extra-field'),
+        'systemType': StringConst('DefaultBool'),
+        'displayName': SaneString({ minLength: 1 }),
+        'displayNameI18N': MaxObject({
+            'de': SaneString({ minLength: 0 })
+        }),
+        'isRequired': DefaultBool(),
+    }
+
+    var optional = {
+        'requiredValue': {
+            type: [ 'string', 'boolean' ],
+            enum: [ 'any', true, false ]
+        }
+    }
+
+    var schema = ExactObject({
+        properties: { ...required, ...optional },
+        required: Object.keys(required),
+    });
+
+    return schema;
+}
+
+ExtraField.Other = () => {
     var schema = MinObject({
         'type': StringConst('extra-field'),
-        'systemType': { type: 'string' },
+        'systemType': StringEnum([
+            'SaneString', 'DateOnlyServerSide', 'Address',
+            'BiologicalGender',
+        ]),
         'displayName': SaneString({ minLength: 1 }),
         'displayNameI18N': MaxObject({
             'de': SaneString({ minLength: 0 })

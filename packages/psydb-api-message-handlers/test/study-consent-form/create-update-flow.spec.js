@@ -68,6 +68,7 @@ describe('study-consent-form/[create|update] flow', function () {
                     systemType: 'DefaultBool',
                     displayName: 'ADDED FIELD',
                     displayNameI18N: { 'de': 'ZUSATZ FIELD' },
+                    isRequired: false,
                 }]
             }
         }
@@ -89,6 +90,7 @@ describe('study-consent-form/[create|update] flow', function () {
                     systemType: 'DefaultBool',
                     displayName: 'ADDED FIELD',
                     displayNameI18N: { 'de': 'ZUSATZ FIELD' },
+                    isRequired: false,
                 }}
             }
         }}, asFlatEJSON: true });
@@ -105,18 +107,22 @@ var elements = [
         systemType: 'SaneString',
         displayName: 'Some Extra Text Field',
         displayNameI18N: { 'de': 'Ein Extra Text Feld' },
+        isRequired: false,
     },
     {
         type: 'subject-field',
         pointer: '/gdpr/state/custom/firstname',
+        isRequired: true,
     },
     {
         type: 'subject-field',
         pointer: '/gdpr/state/custom/lastname',
+        isRequired: true,
     },
     {
         type: 'subject-field',
         pointer: '/scientific/state/custom/dateOfBirth',
+        isRequired: true,
     },
     { 
         type: 'info-text-markdown',
@@ -129,18 +135,21 @@ var elements = [
         systemType: 'DefaultBool',
         displayName: 'Siblings?',
         displayNameI18N: { 'de': 'Geschwister' },
+        isRequired: false,
     },
     {
         type: 'extra-field',
         systemType: 'BiologicalGender',
         displayName: 'Gender',
         displayNameI18N: { 'de': 'Geschlecht' },
+        isRequired: false,
     },
     {
         type: 'extra-field',
         systemType: 'DateOnlyServerSide',
         displayName: 'Date of Birth',
         displayNameI18N: { 'de': 'Geburtsdatum' },
+        isRequired: false,
     },
     { type: 'hr' },
     {
@@ -148,10 +157,12 @@ var elements = [
         systemType: 'DefaultBool',
         displayName: 'Multi Lang?',
         displayNameI18N: { 'de': 'Mehrsprachig?' },
+        isRequired: false,
     },
     {
         type: 'subject-field',
         pointer: '/scientific/state/custom/languageIds',
+        isRequired: false,
     },
     { type: 'hr' },
     {
@@ -159,24 +170,21 @@ var elements = [
         systemType: 'DefaultBool',
         displayName: 'Kiga?',
         displayNameI18N: { 'de': 'Kiga?' },
-    },
-    {
-        type: 'extra-field',
-        systemType: 'DefaultBool',
-        displayName: 'Kiga?',
-        displayNameI18N: { 'de': 'Kiga?' },
+        isRequired: false,
     },
     {
         type: 'extra-field',
         systemType: 'SaneString',
         displayName: 'Kiga-Name',
         displayNameI18N: { 'de': 'Kiga-Name' },
+        isRequired: false,
     },
     {
         type: 'extra-field',
         systemType: 'Address',
         displayName: 'Kiga-Address',
         displayNameI18N: { 'de': 'Kiga-Anschrift' },
+        isRequired: false,
     },
     { type: 'hr' },
     {
@@ -184,6 +192,16 @@ var elements = [
         systemType: 'DefaultBool',
         displayName: 'Online?',
         displayNameI18N: { 'de': 'Online?' },
+        isRequired: true,
+        requiredValue: 'any',
+    },
+    {
+        type: 'extra-field',
+        systemType: 'DefaultBool',
+        displayName: 'I Accept',
+        displayNameI18N: { 'de': 'Ich Akzeptiere' },
+        isRequired: true,
+        requiredValue: true,
     },
     { 
         type: 'info-text-markdown',

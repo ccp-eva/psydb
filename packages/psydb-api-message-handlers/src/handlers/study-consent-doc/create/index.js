@@ -5,9 +5,8 @@ var { MessageHandler, presets }
 var handler = MessageHandler({
     type: 'study-consent-doc/create',
     stages: {
-        ...presets.default({
-            createMessagePayloadSchema: require('./schema'),
-        }),
+        ...presets.empty(),
+        ...require('./validate'),
         ...require('./verify'),
         ...require('./execute-system'),
         //...require('./response'),

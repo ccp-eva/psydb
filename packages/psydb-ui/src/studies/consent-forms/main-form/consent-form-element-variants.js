@@ -1,6 +1,6 @@
 import React from 'react';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-import { Fields } from '@mpieva/psydb-ui-lib';
+import { Fields, useFormikContext } from '@mpieva/psydb-ui-lib';
 
 export const InfoTextMarkdown = (ps) => {
     var { dataXPath } = ps;
@@ -48,6 +48,11 @@ export const SubjectField = (ps) => {
 export const ExtraField = (ps) => {
     var { dataXPath } = ps;
     var [{ translate }] = useI18N();
+
+    var { getFieldProps } = useFormikContext();
+    var { value: systemType } = getFieldProps(`${dataXPath}.systemType`);
+    var { value: isRequired } = getFieldProps(`${dataXPath}.isRequired`);
+
     return (
         <>
             <Fields.CustomFieldType
@@ -74,6 +79,21 @@ export const ExtraField = (ps) => {
                 dataXPath={ `${dataXPath}.isRequired` }
                 required={ true }
             />
+            {(systemType === 'DefaultBool' && isRequired) && (
+                <Fields.GenericEnum
+                    label={ translate('Required Value') }
+                    dataXPath={ `${dataXPath}.requiredValue` }
+                    required={ true }
+                    enum={{
+                        keys: [ 'any', true, false ],
+                        labels: [
+                            translate('_requiredValue_any'),
+                            translate('Yes'),
+                            translate('No')
+                        ]
+                    }}
+                />
+            )}
         </>
     );
 }

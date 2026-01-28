@@ -26,15 +26,13 @@ export const LabOperatorDropdown = (ps) => {
     var { records } = fetched.data;
     var options = {};
     for (var it of records) {
-
         // FIXME: pass to fetch
         if (excludedIds.includes(it._id)) {
             continue;
         }
 
-        options[it._id] = (
-            `${it.gdpr.state.lastname}, ${it.gdpr.state.firstname}`
-        );
+        var { firstname, lastname } = it.gdpr.state;
+        options[it._id] = `${firstname} ${lastname}`;
     }
 
     // NOTE: this should be fine as all the ids that are possible

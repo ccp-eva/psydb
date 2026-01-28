@@ -135,5 +135,22 @@ module.exports = [
     {
         en: 'other Staff Member',
         de: 'andere Mitarbeiter:in'
-    }
+    },
+    {
+        en: 'Required Value',
+        de: 'Pflichtwert'
+    },
+    {
+        internal: '_requiredValue_any',
+        en: 'Any',
+        de: 'Egal'
+    },
+    {
+        en: 'Edit Consent Form',
+        de: 'Einwilligungsformular Bearbeiten'
+    },
+    {
+        en: 'Study Investigator',
+        de: 'Studiendurchführende:r'
+    },
 ]

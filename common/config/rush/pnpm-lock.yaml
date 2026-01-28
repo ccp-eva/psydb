@@ -740,6 +740,9 @@ importers:
       '@mpieva/psydb-schema-fields':
         specifier: workspace:~0.1.0-alpha
         version: link:../psydb-schema-fields
+      '@mpieva/psydb-schema-helpers':
+        specifier: workspace:~0.1.0-alpha
+        version: link:../psydb-schema-helpers
       '@mpieva/psydb-schema-utils':
         specifier: workspace:~0.1.0-alpha
         version: link:../psydb-schema-utils

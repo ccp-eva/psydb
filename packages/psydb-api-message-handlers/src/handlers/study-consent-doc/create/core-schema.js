@@ -2,7 +2,7 @@
 var { ExactObject, ForeignId, ForeignIdList }
     = require('@mpieva/psydb-schema-fields');
 
-var Schema = async (context) => {
+var CoreSchema = () => {
     var required = {
         'studyConsentFormId': ForeignId({ collection: 'studyConsentForm' }),
         'subjectId': ForeignId({ collection: 'subject' }),
@@ -23,4 +23,4 @@ var Schema = async (context) => {
     return schema;
 }
 
-module.exports = Schema;
+module.exports = CoreSchema;
