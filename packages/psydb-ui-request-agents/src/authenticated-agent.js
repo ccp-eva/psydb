@@ -954,6 +954,9 @@ const createAgent = (options = {}) => {
         list: dumpPOST({ url: '/api/study/list' }),
         extendedSearch: dumpPOST({ url: '/api/extended-search/studies' }),
     };
+    agent.location = {
+        extendedSearch: dumpPOST({ url: '/api/location/extended-search' }),
+    };
     agent.helperSet = {
         list: dumpPOST({ url: '/api/helperSet/list' }),
     };
