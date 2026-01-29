@@ -1,9 +1,7 @@
 'use strict';
-var { hasNone } = require('@mpieva/psydb-core-utils');
-var {
-    MatchIntervalAroundStage,
-    StripEventsStage,
-} = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
+var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
+var { MatchIntervalAroundStage }
+    = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
 
 var fetchStudyRecords = async (bag) => {
@@ -11,39 +9,27 @@ var fetchStudyRecords = async (bag) => {
 
     var studyRecords = []
     if (studyId) {
-        studyRecords = await (
-            db.collection('study').aggregate([
-                { $match: {
-                    _id: studyId,
-                    'state.researchGroupIds': { $in: (
-                        allowedResearchGroupIds
-                    )}
-                }},
-                { $sort: {
-                    'state.shorthand': 1
-                }}
-            ], {
-                collation: { locale: 'de@collation=phonebook' }
-            })
-            .toArray()
-        );
+        studyRecords = await aggregateToArray({ db, study: [
+            { $match: {
+                '_id': studyId,
+                //'state.internals.isRemoved': { $ne: true },
+                'state.researchGroupIds': { $in: allowedResearchGroupIds }
+            }},
+        ]});
     }
     else {
-        studyRecords = await (
-            db.collection('study').aggregate([
-                MatchIntervalAroundStage({
-                    recordIntervalPath: 'state.runningPeriod',
-                    recordIntervalEndCanBeNull: true,
-                    start,
-                    end,
-                }),
-                { $match: {
-                    'state.researchGroupIds': { $in: (
-                        allowedResearchGroupIds
-                    )}
-                }},
-            ]).toArray()
-        );
+        studyRecords = await aggregateToArray({ db, study: [
+            { $match: {
+                //'state.internals.isRemoved': { $ne: true },
+                'state.researchGroupIds': { $in: allowedResearchGroupIds }
+            }},
+            MatchIntervalAroundStage({
+                recordIntervalPath: 'state.runningPeriod',
+                recordIntervalEndCanBeNull: true,
+                start,
+                end,
+            })
+        ]});
     }
 
     return studyRecords;

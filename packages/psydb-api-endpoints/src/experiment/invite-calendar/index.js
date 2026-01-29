@@ -9,6 +9,8 @@ var {
     keyBy,
     groupBy,
     compareIds,
+    forcePush,
+    merge,
 } = require('@mpieva/psydb-core-utils');
 
 var {
@@ -42,6 +44,9 @@ var RequestBodySchema = require('./request-body-schema');
 var fetchStudyRecords = require('./fetch-study-records');
 var getFilteredStudyIds = require('./get-filtered-study-ids');
 var fetchExperimentRecords = require('./fetch-experiment-records');
+
+var { fetchRelated } = require('@mpieva/psydb-api-endpoint-lib');
+var lookupSubjects = require('./lookup-subjects');
 
 var experimentCalendar = async (context, next) => {
     var { 
@@ -131,79 +136,107 @@ var experimentCalendar = async (context, next) => {
     );
 
     var subjectIds = [];
-    for (var it of experimentRecords) {
-        subjectIds = [
-            ...subjectIds, // XXX
-            ...(
-                it.state.subjectData
-                .filter(it => (
-                    !enums.unparticipationStatus.keys.includes(
-                        it.participationStatus
-                    )
-                ))
-                .map(it => it.subjectId)
-            )
-        ]
+    var subjectTypes = [];
+    var subjectIdsByCRT = {};
+    for (var exp of experimentRecords) {
+        for (var sd of exp.state.subjectData) {
+            
+            if (enums.unparticipationStatus.keys.includes(
+                sd.participationStatus
+            )) {
+                continue;
+            }
+            
+            subjectIds.push(sd.subjectId);
+            subjectTypes.push(sd.subjectType);
+
+            forcePush({
+                into: subjectIdsByCRT,
+                pointer: `/${sd.subjectType}`,
+                values: [ sd.subjectId ]
+            });
+        }
     }
 
-    var allCRTSettings = await fetchAllCRTSettings(db, [
-        {
-            collection: 'subject',
-            ...(subjectRecordType && { recordTypes: [subjectRecordType] })
-        },
-    ], { wrap: true });
+    //var foo = await gatherSubjectDisplayFields({ subjectTypes });
 
-    var availableDisplayFieldsByCRT = {};
+
     var shownDisplayFieldsByCRT = {};
     var allSubjectRecords = [];
-    for (var crtSettings of Object.values(allCRTSettings.subject)) {
-        var type = crtSettings.getType();
-        
-        var availableDisplayFields
-            = availableDisplayFieldsByCRT[type]
-            = crtSettings.availableDisplayFields();
+    var __subjectRelated = {};
+    for (var it of subjectTypes) {
+        var lookup = await lookupSubjects.onlyDisplayFields({
+            db, subjectType: it, subjectIds: subjectIdsByCRT[it]
+        });
 
-        var shownDisplayFields = shownDisplayFieldsByCRT[type] = [
-            ...crtSettings.augmentedDisplayFields('table'),
-            ...crtSettings.augmentedDisplayFields('selectionRow'),
-        ];
-      
-        console.log('SSSSSSSSSSSSSSSSSSSSSSSSSs')
-        console.log(type);
-        console.log(availableDisplayFieldsByCRT[type]);
-        console.log(shownDisplayFields);
-        
-        var subjectRecords = await (
-            db.collection('subject').aggregate([
-                { $match: {
-                    _id: { $in: subjectIds }
-                }},
+        var { records, definitions } = lookup;
+        var related = await fetchRelated({ db, records, definitions, i18n });
 
-                ProjectDisplayFieldsStage({
-                    displayFields: shownDisplayFields,
-                    additionalProjection: {
-                        type: true,
-                    }
-                }),
-            ]).toArray()
-        );
+        shownDisplayFieldsByCRT[it] = definitions;
+        allSubjectRecords.push(...records);
 
-        // FIXME: perf difference?
-        allSubjectRecords.push(...subjectRecords);
-        //allSubjectRecords = [ ...allSubjectRecords, ...subjectRecords ];
+        __subjectRelated = merge(__subjectRelated, related);
     }
 
-    console.dir(ejson({ subjectRecords }), { depth: null });
-    var subjectRelated = await fetchRelatedLabelsForMany({
-        db, 
-        timezone, language, locale,
-        collectionName: 'subject',
-        records: subjectRecords,
-    })
+    // XXX
+    __subjectRelated.relatedRecords = __subjectRelated.relatedRecordLabels;
+    __subjectRelated.relatedCustomRecordTypes = {};
+
+    //var allCRTSettings = await fetchAllCRTSettings(db, [
+    //    {
+    //        collection: 'subject',
+    //        ...(subjectRecordType && { recordTypes: [subjectRecordType] })
+    //    },
+    //], { wrap: true });
+
+    //var shownDisplayFieldsByCRT = {};
+    //var allSubjectRecords = [];
+    //for (var crtSettings of Object.values(allCRTSettings.subject)) {
+    //    var type = crtSettings.getType();
+    //    
+    //    var availableDisplayFields
+    //        = availableDisplayFieldsByCRT[type]
+    //        = crtSettings.availableDisplayFields();
+
+    //    var shownDisplayFields = shownDisplayFieldsByCRT[type] = [
+    //        ...crtSettings.augmentedDisplayFields('table'),
+    //        ...crtSettings.augmentedDisplayFields('selectionRow'),
+    //    ];
+    //  
+    //    console.log('SSSSSSSSSSSSSSSSSSSSSSSSSs')
+    //    console.log(type);
+    //    console.log(shownDisplayFields);
+    //    
+    //    var subjectRecords = await (
+    //        db.collection('subject').aggregate([
+    //            { $match: {
+    //                _id: { $in: subjectIds }
+    //            }},
+
+    //            ProjectDisplayFieldsStage({
+    //                displayFields: shownDisplayFields,
+    //                additionalProjection: {
+    //                    type: true,
+    //                }
+    //            }),
+    //        ]).toArray()
+    //    );
+
+    //    // FIXME: perf difference?
+    //    allSubjectRecords.push(...subjectRecords);
+    //    //allSubjectRecords = [ ...allSubjectRecords, ...subjectRecords ];
+    //}
+
+    //console.dir(ejson({ subjectRecords }), { depth: null });
+    //var subjectRelated = await fetchRelatedLabelsForMany({
+    //    db, 
+    //    timezone, language, locale,
+    //    collectionName: 'subject',
+    //    records: allSubjectRecords,
+    //})
 
     var experimentRelated = await fetchRelatedLabelsForMany({
-        db,
-        timezone, language, locale,
+        db, ...i18n,
         collectionName: 'experiment',
         records: experimentRecords
     })
@@ -215,9 +248,10 @@ var experimentCalendar = async (context, next) => {
     var experimentOperatorTeamRecords = await (
         db.collection('experimentOperatorTeam').aggregate([
             { $match: {
+                //'studyId': { $in: filteredStudyIds },
                 $or: [
                     { 'state.hidden': false },
-                    { _id: { $in: experimentRecords.map(it => (
+                    { '_id': { $in: experimentRecords.map(it => (
                         it.state.experimentOperatorTeamId
                     ))}},
                 ]
@@ -229,8 +263,8 @@ var experimentCalendar = async (context, next) => {
     var _upcomingLabTeamExperimentCounts = await (
         fetchUpcomingLabTeamExperimentCounts({
             db,
+            studyIds: filteredStudyIds,
             experimentTypes: allowedExperimentTypes,
-            labTeamIds: experimentOperatorTeamRecords.map(it => it._id)
         })
     );
 
@@ -255,7 +289,7 @@ var experimentCalendar = async (context, next) => {
             experimentOperatorTeamRecords,
             experimentRelated,
             subjectRecordsById,
-            subjectRelated,
+            subjectRelated: __subjectRelated,
             subjectDisplayFieldData: (
                 subjectRecordType
                 ? shownDisplayFieldsByCRT[subjectRecordType]
@@ -268,14 +302,15 @@ var experimentCalendar = async (context, next) => {
 }
 
 var fetchUpcomingLabTeamExperimentCounts = async (bag) => {
-    var { db, experimentTypes, labTeamIds } = bag;
+    var { db, experimentTypes, studyIds } = bag;
     var now = new Date();
     var start = datefns.startOfDay(now);
 
     var upcoming = await (
         db.collection('experiment').aggregate([
             { $match: {
-                type: { $in: experimentTypes },
+                //'studyId': { $in: studyIds },
+                'type': { $in: experimentTypes },
                 'state.isCanceled': false,
                 'state.interval.start': { $gte: start }
             }},
