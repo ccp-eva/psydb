@@ -12,21 +12,21 @@ var {
 
 var RequestBodySchema = () => ExactObject({
     properties: {
-        interval: DateTimeInterval(),
+        'interval': DateTimeInterval(),
 
-        experimentTypes: DefaultArray({
+        'experimentTypes': DefaultArray({
             items: ExperimentTypeEnum(),
             minLength: 1,
         }),
-        subjectRecordType: CustomRecordTypeKey({ collection: 'subject' }),
-        researchGroupId: ForeignId({ collection: 'researchGroup' }),
-        studyId: ForeignId({ collection: 'study' }),
-        locationId: ForeignId({ collection: 'location' }),
+        'subjectRecordType': CustomRecordTypeKey({ collection: 'subject' }),
+        'researchGroupId': ForeignId({ collection: 'researchGroup' }),
+        'studyId': ForeignId({ collection: 'study' }),
+        'locationId': ForeignId({ collection: 'location' }),
 
-        experimentOperatorTeamIds: ForeignIdList({
+        'experimentOperatorTeamIds': ForeignIdList({
             collection: 'experimentOperatorTeam'
         }),
-        showPast: DefaultBool(),
+        'showPast': DefaultBool(),
     },
     required: [ 'interval' ]
 });

@@ -1,38 +1,52 @@
 'use strict';
+var { includes, compareIds } = require('@mpieva/psydb-core-utils');
 var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var { MatchIntervalAroundStage }
     = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
 
 var fetchStudyRecords = async (bag) => {
-    var { db, allowedResearchGroupIds, studyId, start, end } = bag;
+    var {
+        db, interval, researchGroupIds, labMethods,
+        studyId = undefined,
+    } = bag;
 
-    var studyRecords = [];
-    if (studyId) {
-        studyRecords = await aggregateToArray({ db, study: [
+    var studies = await aggregateToArray({ db, study: [
+        { $match: {
+            ...(studyId && { '_id': studyId }),
+
+            'state.internals.isRemoved': { $ne: true },
+            'state.researchGroupIds': { $in: researchGroupIds }
+        }},
+        MatchIntervalAroundStage({
+            ...interval,
+            recordIntervalPath: 'state.runningPeriod',
+            recordIntervalEndCanBeNull: true,
+        }),
+    ]});
+
+    var settings = await aggregateToArray({
+        db, experimentVariantSetting: [
             { $match: {
-                '_id': studyId,
-                'state.internals.isRemoved': { $ne: true },
-                'state.researchGroupIds': { $in: allowedResearchGroupIds }
+                'studyId': { $in: studies.map(it => it._id) },
+                'type': { $in: labMethods },
             }},
-        ]});
-    }
-    else {
-        studyRecords = await aggregateToArray({ db, study: [
-            { $match: {
-                'state.internals.isRemoved': { $ne: true },
-                'state.researchGroupIds': { $in: allowedResearchGroupIds }
-            }},
-            MatchIntervalAroundStage({
-                recordIntervalPath: 'state.runningPeriod',
-                recordIntervalEndCanBeNull: true,
-                start,
-                end,
-            })
-        ]});
+            { $project: { 'studyId': true }}
+        ]
+    });
+
+    var filteredStudies = [];
+    var checkStudyIdHasSettings = includes.lambda({
+        haystack: settings.map(it => it.studyId),
+        compare: compareIds,
+    });
+    for (var it of studies) {
+        if (checkStudyIdHasSettings({ needle: it._id })) {
+            filteredStudies.push(it)
+        }
     }
 
-    return studyRecords;
+    return filteredStudies;
 }
 
 module.exports = fetchStudyRecords;

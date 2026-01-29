@@ -31,25 +31,15 @@ var {
 
 var RequestBodySchema = require('./request-body-schema');
 var fetchStudyRecords = require('./fetch-study-records');
-var getFilteredStudyIds = require('./get-filtered-study-ids');
 var fetchExperimentRecords = require('./fetch-experiment-records');
 
 var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var { fetchRelated } = require('@mpieva/psydb-api-endpoint-lib');
+var verifyCalendarAccess = require('./verify-calendar-access');
 var lookupSubjects = require('./lookup-subjects');
 
 var experimentCalendar = async (context, next) => {
-    var { 
-        db,
-        permissions,
-        request,
-        
-        timezone,
-        language,
-        locale,
-
-        i18n,
-    } = context;
+    var { db, permissions, request, i18n } = context;
     
     validateOrThrow({
         schema: RequestBodySchema(),
@@ -59,15 +49,19 @@ var experimentCalendar = async (context, next) => {
     var {
         interval,
 
-        experimentTypes,
-        subjectRecordType,
-        studyId,
-        researchGroupId,
-        locationId,
+        experimentTypes = undefined,
+        subjectRecordType = undefined,
+        studyId = undefined,
+        researchGroupId = undefined,
+        locationId = undefined,
 
-        experimentOperatorTeamIds,
-        showPast,
+        experimentOperatorTeamIds = undefined,
+        showPast = false,
     } = request.body;
+    
+    verifyCalendarAccess({
+        permissions, researchGroupId, labMethods: experimentTypes
+    });
 
     if (!permissions.isRoot()) {
         showPast = false;
@@ -75,16 +69,6 @@ var experimentCalendar = async (context, next) => {
 
     var { start, end } = interval;
 
-    // can view any calendar
-    verifyLabOperationAccess({
-        researchGroupId,
-        labOperationTypes: experimentTypes,
-        flag: 'canViewExperimentCalendar',
-        permissions,
-        
-        matchTypes: 'some',
-        matchFlags: 'every',
-    });
 
     // what types of calendars
     var allowedExperimentTypes = permissions.getAllowedLabOpsForFlags({
@@ -99,18 +83,19 @@ var experimentCalendar = async (context, next) => {
     );
 
     var studyRecords = await fetchStudyRecords({
-        db, allowedResearchGroupIds, studyId, start, end
+        db, studyId, interval,
+        researchGroupIds: allowedResearchGroupIds,
+        labMethods: allowedExperimentTypes,
     });
+    var studyIds = studyRecords.map(it => it._id);
+    var studiesById = keyBy({ items: studyRecords, byProp: '_id' });
 
     // XXX: why are ids filtered but records arent??
-    var filteredStudyIds = await getFilteredStudyIds({
-        db, studyRecords, allowedExperimentTypes
-    });
+    //var filteredStudyIds = await getFilteredStudyIds({
+    //    db, studyRecords, allowedExperimentTypes
+    //});
     
-    var studiesById = keyBy({
-        items: studyRecords,
-        byProp: '_id'
-    });
+    var filteredStudyIds = studyIds;
 
     var experimentRecords = await fetchExperimentRecords({
         db,
