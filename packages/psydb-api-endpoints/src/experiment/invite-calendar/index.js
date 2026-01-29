@@ -14,30 +14,19 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
-    convertCRTRecordToSettings
-} = require('@mpieva/psydb-common-lib');
-
-var {
     ApiError,
     ResponseBody,
     
     validateOrThrow,
     verifyLabOperationAccess,
 
-    convertPointerToPath,
-
     fetchAllCRTSettings,
-    fetchOneCustomRecordType,
-    gatherDisplayFieldsForRecordType,
     fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
 
 var {
-    MatchIntervalAroundStage,
-    MatchIntervalOverlapStage,
     StripEventsStage,
     ProjectDisplayFieldsStage,
-    SystemPermissionStages,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
 var RequestBodySchema = require('./request-body-schema');
@@ -45,6 +34,7 @@ var fetchStudyRecords = require('./fetch-study-records');
 var getFilteredStudyIds = require('./get-filtered-study-ids');
 var fetchExperimentRecords = require('./fetch-experiment-records');
 
+var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var { fetchRelated } = require('@mpieva/psydb-api-endpoint-lib');
 var lookupSubjects = require('./lookup-subjects');
 
@@ -182,93 +172,34 @@ var experimentCalendar = async (context, next) => {
     __subjectRelated.relatedRecords = __subjectRelated.relatedRecordLabels;
     __subjectRelated.relatedCustomRecordTypes = {};
 
-    //var allCRTSettings = await fetchAllCRTSettings(db, [
-    //    {
-    //        collection: 'subject',
-    //        ...(subjectRecordType && { recordTypes: [subjectRecordType] })
-    //    },
-    //], { wrap: true });
-
-    //var shownDisplayFieldsByCRT = {};
-    //var allSubjectRecords = [];
-    //for (var crtSettings of Object.values(allCRTSettings.subject)) {
-    //    var type = crtSettings.getType();
-    //    
-    //    var availableDisplayFields
-    //        = availableDisplayFieldsByCRT[type]
-    //        = crtSettings.availableDisplayFields();
-
-    //    var shownDisplayFields = shownDisplayFieldsByCRT[type] = [
-    //        ...crtSettings.augmentedDisplayFields('table'),
-    //        ...crtSettings.augmentedDisplayFields('selectionRow'),
-    //    ];
-    //  
-    //    console.log('SSSSSSSSSSSSSSSSSSSSSSSSSs')
-    //    console.log(type);
-    //    console.log(shownDisplayFields);
-    //    
-    //    var subjectRecords = await (
-    //        db.collection('subject').aggregate([
-    //            { $match: {
-    //                _id: { $in: subjectIds }
-    //            }},
-
-    //            ProjectDisplayFieldsStage({
-    //                displayFields: shownDisplayFields,
-    //                additionalProjection: {
-    //                    type: true,
-    //                }
-    //            }),
-    //        ]).toArray()
-    //    );
-
-    //    // FIXME: perf difference?
-    //    allSubjectRecords.push(...subjectRecords);
-    //    //allSubjectRecords = [ ...allSubjectRecords, ...subjectRecords ];
-    //}
-
-    //console.dir(ejson({ subjectRecords }), { depth: null });
-    //var subjectRelated = await fetchRelatedLabelsForMany({
-    //    db, 
-    //    timezone, language, locale,
-    //    collectionName: 'subject',
-    //    records: allSubjectRecords,
-    //})
-
     var experimentRelated = await fetchRelatedLabelsForMany({
         db, ...i18n,
         collectionName: 'experiment',
         records: experimentRecords
-    })
+    });
 
-    //console.dir(subjectRelated, { depth: null });
-
-    //console.log(experimentRecords);
-
-    var experimentOperatorTeamRecords = await (
-        db.collection('experimentOperatorTeam').aggregate([
-            { $match: {
-                //'studyId': { $in: filteredStudyIds },
-                $or: [
-                    { 'state.hidden': false },
-                    { '_id': { $in: experimentRecords.map(it => (
-                        it.state.experimentOperatorTeamId
-                    ))}},
-                ]
-            }},
-            StripEventsStage(),
-        ]).toArray()
-    );
+    var labTeams = await aggregateToArray({ db,  experimentOperatorTeam : [
+        { $match: {
+            'studyId': { $in: filteredStudyIds },
+            $or: [
+                { 'state.hidden': { $ne: true }},
+                { '_id': { $in: experimentRecords.map(it => (
+                    it.state.experimentOperatorTeamId
+                ))}},
+            ]
+        }},
+        StripEventsStage(),
+    ]});
 
     var _upcomingLabTeamExperimentCounts = await (
         fetchUpcomingLabTeamExperimentCounts({
             db,
-            studyIds: filteredStudyIds,
+            labTeamIds: labTeams.map(it => it._id),
             experimentTypes: allowedExperimentTypes,
         })
     );
 
-    for (var it of experimentOperatorTeamRecords) {
+    for (var it of labTeams) {
         it._upcomingExperimentCount = (
             _upcomingLabTeamExperimentCounts[it._id]
         );
@@ -286,7 +217,7 @@ var experimentCalendar = async (context, next) => {
                 ...it,
                 _canFollowUp: studiesById[it.state.studyId].state.enableFollowUpExperiments
             })),
-            experimentOperatorTeamRecords,
+            experimentOperatorTeamRecords: labTeams,
             experimentRelated,
             subjectRecordsById,
             subjectRelated: __subjectRelated,
@@ -302,24 +233,22 @@ var experimentCalendar = async (context, next) => {
 }
 
 var fetchUpcomingLabTeamExperimentCounts = async (bag) => {
-    var { db, experimentTypes, studyIds } = bag;
+    var { db, experimentTypes, labTeamIds } = bag;
     var now = new Date();
     var start = datefns.startOfDay(now);
 
-    var upcoming = await (
-        db.collection('experiment').aggregate([
-            { $match: {
-                //'studyId': { $in: studyIds },
-                'type': { $in: experimentTypes },
-                'state.isCanceled': false,
-                'state.interval.start': { $gte: start }
-            }},
-            { $project: {
-                _id: true,
-                'state.experimentOperatorTeamId': true
-            }}
-        ]).toArray()
-    );
+    var upcoming = await aggregateToArray({ db, experiment: [
+        { $match: {
+            'state.experimentOperatorTeamId': { $in: labTeamIds },
+            'type': { $in: experimentTypes },
+            'state.isCanceled': false,
+            'state.interval.start': { $gte: start }
+        }},
+        { $project: {
+            '_id': true,
+            'state.experimentOperatorTeamId': true
+        }}
+    ]});
 
     var upcomingForLabTeamId = groupBy({
         items: upcoming,

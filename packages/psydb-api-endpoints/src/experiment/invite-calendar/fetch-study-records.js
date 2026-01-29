@@ -7,12 +7,12 @@ var { MatchIntervalAroundStage }
 var fetchStudyRecords = async (bag) => {
     var { db, allowedResearchGroupIds, studyId, start, end } = bag;
 
-    var studyRecords = []
+    var studyRecords = [];
     if (studyId) {
         studyRecords = await aggregateToArray({ db, study: [
             { $match: {
                 '_id': studyId,
-                //'state.internals.isRemoved': { $ne: true },
+                'state.internals.isRemoved': { $ne: true },
                 'state.researchGroupIds': { $in: allowedResearchGroupIds }
             }},
         ]});
@@ -20,7 +20,7 @@ var fetchStudyRecords = async (bag) => {
     else {
         studyRecords = await aggregateToArray({ db, study: [
             { $match: {
-                //'state.internals.isRemoved': { $ne: true },
+                'state.internals.isRemoved': { $ne: true },
                 'state.researchGroupIds': { $in: allowedResearchGroupIds }
             }},
             MatchIntervalAroundStage({

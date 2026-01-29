@@ -34,8 +34,16 @@ describe('experiment/inviteCalendar wip', function () {
         await endpoint(koaContext, async () => {});
         console.ejson(koaContext.body);
         var { data } = koaContext.body;
+        console.log(Object.keys(data));
+        console.log(data.experimentOperatorTeamRecords);
+        expect(data.studyRecords).toMatchSnapshot();
+        expect(data.experimentRecords).toMatchSnapshot();
         expect(data.experimentOperatorTeamRecords).toMatchSnapshot();
-        expect(koaContext.body).toMatchSnapshot();
+        expect(data.experimentRelated).toMatchSnapshot();
+        expect(data.subjectRecordsById).toMatchSnapshot();
+        expect(data.subjectRelated).toMatchSnapshot();
+        expect(data.subjectDisplayFieldData).toMatchSnapshot();
+        //expect(koaContext.body).toMatchSnapshot();
     });
 
 });

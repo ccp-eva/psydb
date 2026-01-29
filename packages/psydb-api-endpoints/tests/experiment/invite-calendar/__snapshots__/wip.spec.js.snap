@@ -3,8 +3,565 @@
 exports[`experiment/inviteCalendar wip stub 1`] = `
 Array [
   Object {
+    "_id": "64d42dcb443aa279ca4caeee",
+    "_rohrpostMetadata": Object {
+      "createdAt": 2023-08-10T00:22:35.682Z,
+      "eventIds": Array [
+        "64d42dcb443aa279ca4caef0",
+      ],
+      "hasSubChannels": false,
+      "lastKnownEventId": "64d42dcb443aa279ca4caef0",
+      "lastKnownSessionId": "64d42dcb443aa279ca4caeef",
+      "unprocessedEventIds": Array [],
+      "updatedAt": 2023-08-10T00:22:35.682Z,
+    },
+    "isDummy": false,
+    "sequenceNumber": "1",
+    "state": Object {
+      "custom": Object {
+        "assistents": Array [
+          "64d42dc8443aa279ca4cae9c",
+        ],
+        "description": "",
+        "novels": Array [],
+      },
+      "enableFollowUpExperiments": false,
+      "excludedOtherStudyIds": Array [],
+      "inhouseTestLocationSettings": Array [],
+      "isCreateFinalized": true,
+      "name": "Test InHouse Studie",
+      "researchGroupIds": Array [
+        "64d42dc8443aa279ca4cae99",
+      ],
+      "runningPeriod": Object {
+        "end": null,
+        "start": 2001-01-01T00:00:00.000Z,
+      },
+      "scientistIds": Array [
+        "64d42dc8443aa279ca4caea2",
+      ],
+      "shorthand": "IH-Study",
+      "studyTopicIds": Array [
+        "64d42dc8443aa279ca4cae96",
+      ],
+      "systemPermissions": Object {
+        "accessRightsByResearchGroup": Array [
+          Object {
+            "permission": "write",
+            "researchGroupId": "64d42dc8443aa279ca4cae99",
+          },
+        ],
+        "isHidden": false,
+      },
+    },
+    "type": "default",
+  },
+  Object {
+    "_id": "64d42dcc443aa279ca4caf00",
+    "_rohrpostMetadata": Object {
+      "createdAt": 2023-08-10T00:22:36.151Z,
+      "eventIds": Array [
+        "64d42dcc443aa279ca4caf02",
+      ],
+      "hasSubChannels": false,
+      "lastKnownEventId": "64d42dcc443aa279ca4caf02",
+      "lastKnownSessionId": "64d42dcc443aa279ca4caf01",
+      "unprocessedEventIds": Array [],
+      "updatedAt": 2023-08-10T00:22:36.151Z,
+    },
+    "isDummy": false,
+    "sequenceNumber": "2",
+    "state": Object {
+      "custom": Object {
+        "assistents": Array [
+          "64d42dc8443aa279ca4cae9c",
+        ],
+        "description": "",
+        "novels": Array [],
+      },
+      "enableFollowUpExperiments": false,
+      "excludedOtherStudyIds": Array [],
+      "inhouseTestLocationSettings": Array [],
+      "isCreateFinalized": true,
+      "name": "Test Online-Video Studie",
+      "researchGroupIds": Array [
+        "64d42dc8443aa279ca4cae99",
+      ],
+      "runningPeriod": Object {
+        "end": null,
+        "start": 2001-01-01T00:00:00.000Z,
+      },
+      "scientistIds": Array [
+        "64d42dc8443aa279ca4caea2",
+      ],
+      "shorthand": "OV-Study",
+      "studyTopicIds": Array [
+        "64d42dc8443aa279ca4cae96",
+      ],
+      "systemPermissions": Object {
+        "accessRightsByResearchGroup": Array [
+          Object {
+            "permission": "write",
+            "researchGroupId": "64d42dc8443aa279ca4cae99",
+          },
+        ],
+        "isHidden": false,
+      },
+    },
+    "type": "default",
+  },
+  Object {
+    "_id": "64d42dcc443aa279ca4caf12",
+    "_rohrpostMetadata": Object {
+      "createdAt": 2023-08-10T00:22:36.450Z,
+      "eventIds": Array [
+        "64d42dcc443aa279ca4caf14",
+      ],
+      "hasSubChannels": false,
+      "lastKnownEventId": "64d42dcc443aa279ca4caf14",
+      "lastKnownSessionId": "64d42dcc443aa279ca4caf13",
+      "unprocessedEventIds": Array [],
+      "updatedAt": 2023-08-10T00:22:36.450Z,
+    },
+    "isDummy": false,
+    "sequenceNumber": "3",
+    "state": Object {
+      "custom": Object {
+        "assistents": Array [
+          "64d42dc8443aa279ca4cae9c",
+        ],
+        "description": "",
+        "novels": Array [],
+      },
+      "enableFollowUpExperiments": false,
+      "excludedOtherStudyIds": Array [],
+      "inhouseTestLocationSettings": Array [],
+      "isCreateFinalized": true,
+      "name": "Test Kiga Studie",
+      "researchGroupIds": Array [
+        "64d42dc8443aa279ca4cae99",
+      ],
+      "runningPeriod": Object {
+        "end": null,
+        "start": 2001-01-01T00:00:00.000Z,
+      },
+      "scientistIds": Array [
+        "64d42dc8443aa279ca4caea2",
+      ],
+      "shorthand": "Kiga-Study",
+      "studyTopicIds": Array [
+        "64d42dc8443aa279ca4cae96",
+      ],
+      "systemPermissions": Object {
+        "accessRightsByResearchGroup": Array [
+          Object {
+            "permission": "write",
+            "researchGroupId": "64d42dc8443aa279ca4cae99",
+          },
+        ],
+        "isHidden": false,
+      },
+    },
+    "type": "default",
+  },
+  Object {
+    "_id": "64d42dd1443aa279ca4cb02c",
+    "_rohrpostMetadata": Object {
+      "createdAt": 2023-08-10T00:22:41.920Z,
+      "eventIds": Array [
+        "64d42dd1443aa279ca4cb02e",
+      ],
+      "hasSubChannels": false,
+      "lastKnownEventId": "64d42dd1443aa279ca4cb02e",
+      "lastKnownSessionId": "64d42dd1443aa279ca4cb02d",
+      "unprocessedEventIds": Array [],
+      "updatedAt": 2023-08-10T00:22:41.920Z,
+    },
+    "isDummy": false,
+    "sequenceNumber": "4",
+    "state": Object {
+      "custom": Object {
+        "assistents": Array [
+          "64d42dc8443aa279ca4cae9c",
+        ],
+        "description": "",
+        "novels": Array [],
+      },
+      "enableFollowUpExperiments": false,
+      "excludedOtherStudyIds": Array [],
+      "inhouseTestLocationSettings": Array [],
+      "isCreateFinalized": true,
+      "name": "FS Kamerun Dummy-Studie",
+      "researchGroupIds": Array [
+        "64d42dc8443aa279ca4cae99",
+        "64d42dcd443aa279ca4caf59",
+      ],
+      "runningPeriod": Object {
+        "end": null,
+        "start": 2001-01-01T00:00:00.000Z,
+      },
+      "scientistIds": Array [
+        "64d42dd0443aa279ca4cb002",
+        "64d42dd0443aa279ca4cb008",
+      ],
+      "shorthand": "Kam-Study",
+      "studyTopicIds": Array [
+        "64d42dc8443aa279ca4cae96",
+      ],
+      "systemPermissions": Object {
+        "accessRightsByResearchGroup": Array [
+          Object {
+            "permission": "write",
+            "researchGroupId": "64d42dc8443aa279ca4cae99",
+          },
+          Object {
+            "permission": "read",
+            "researchGroupId": "64d42dcd443aa279ca4caf59",
+          },
+        ],
+        "isHidden": false,
+      },
+    },
+    "type": "default",
+  },
+  Object {
+    "_id": "64d42dd3443aa279ca4cb071",
+    "_rohrpostMetadata": Object {
+      "createdAt": 2023-08-10T00:22:43.700Z,
+      "eventIds": Array [
+        "64d42dd3443aa279ca4cb073",
+      ],
+      "hasSubChannels": false,
+      "lastKnownEventId": "64d42dd3443aa279ca4cb073",
+      "lastKnownSessionId": "64d42dd3443aa279ca4cb072",
+      "unprocessedEventIds": Array [],
+      "updatedAt": 2023-08-10T00:22:43.700Z,
+    },
+    "isDummy": false,
+    "sequenceNumber": "5",
+    "state": Object {
+      "custom": Object {
+        "assistents": Array [
+          "64d42dc8443aa279ca4cae9c",
+        ],
+        "description": "",
+        "novels": Array [],
+      },
+      "enableFollowUpExperiments": false,
+      "excludedOtherStudyIds": Array [],
+      "inhouseTestLocationSettings": Array [],
+      "isCreateFinalized": true,
+      "name": "FS Namibia Dummy-Studie",
+      "researchGroupIds": Array [
+        "64d42dc8443aa279ca4cae99",
+        "64d42dce443aa279ca4caf8e",
+      ],
+      "runningPeriod": Object {
+        "end": null,
+        "start": 2001-01-01T00:00:00.000Z,
+      },
+      "scientistIds": Array [
+        "64d42dd2443aa279ca4cb047",
+        "64d42dd2443aa279ca4cb04d",
+      ],
+      "shorthand": "Nam-Study",
+      "studyTopicIds": Array [
+        "64d42dc8443aa279ca4cae96",
+      ],
+      "systemPermissions": Object {
+        "accessRightsByResearchGroup": Array [
+          Object {
+            "permission": "write",
+            "researchGroupId": "64d42dc8443aa279ca4cae99",
+          },
+          Object {
+            "permission": "read",
+            "researchGroupId": "64d42dce443aa279ca4caf8e",
+          },
+        ],
+        "isHidden": false,
+      },
+    },
+    "type": "default",
+  },
+  Object {
+    "_id": "64d42dd5443aa279ca4cb0b6",
+    "_rohrpostMetadata": Object {
+      "createdAt": 2023-08-10T00:22:45.423Z,
+      "eventIds": Array [
+        "64d42dd5443aa279ca4cb0b8",
+      ],
+      "hasSubChannels": false,
+      "lastKnownEventId": "64d42dd5443aa279ca4cb0b8",
+      "lastKnownSessionId": "64d42dd5443aa279ca4cb0b7",
+      "unprocessedEventIds": Array [],
+      "updatedAt": 2023-08-10T00:22:45.423Z,
+    },
+    "isDummy": false,
+    "sequenceNumber": "6",
+    "state": Object {
+      "custom": Object {
+        "assistents": Array [
+          "64d42dc8443aa279ca4cae9c",
+        ],
+        "description": "",
+        "novels": Array [],
+      },
+      "enableFollowUpExperiments": false,
+      "excludedOtherStudyIds": Array [],
+      "inhouseTestLocationSettings": Array [],
+      "isCreateFinalized": true,
+      "name": "FS Kongo Dummy-Studie",
+      "researchGroupIds": Array [
+        "64d42dc8443aa279ca4cae99",
+        "64d42dcf443aa279ca4cafc3",
+      ],
+      "runningPeriod": Object {
+        "end": null,
+        "start": 2001-01-01T00:00:00.000Z,
+      },
+      "scientistIds": Array [
+        "64d42dd4443aa279ca4cb08c",
+        "64d42dd4443aa279ca4cb092",
+      ],
+      "shorthand": "Kon-Study",
+      "studyTopicIds": Array [
+        "64d42dc8443aa279ca4cae96",
+      ],
+      "systemPermissions": Object {
+        "accessRightsByResearchGroup": Array [
+          Object {
+            "permission": "write",
+            "researchGroupId": "64d42dc8443aa279ca4cae99",
+          },
+          Object {
+            "permission": "read",
+            "researchGroupId": "64d42dcf443aa279ca4cafc3",
+          },
+        ],
+        "isHidden": false,
+      },
+    },
+    "type": "default",
+  },
+  Object {
+    "_id": "64d42dd7443aa279ca4cb0fb",
+    "_rohrpostMetadata": Object {
+      "createdAt": 2023-08-10T00:22:47.124Z,
+      "eventIds": Array [
+        "64d42dd7443aa279ca4cb0fd",
+      ],
+      "hasSubChannels": false,
+      "lastKnownEventId": "64d42dd7443aa279ca4cb0fd",
+      "lastKnownSessionId": "64d42dd7443aa279ca4cb0fc",
+      "unprocessedEventIds": Array [],
+      "updatedAt": 2023-08-10T00:22:47.124Z,
+    },
+    "isDummy": false,
+    "sequenceNumber": "7",
+    "state": Object {
+      "custom": Object {
+        "assistents": Array [
+          "64d42dc8443aa279ca4cae9c",
+        ],
+        "description": "",
+        "novels": Array [],
+      },
+      "enableFollowUpExperiments": false,
+      "excludedOtherStudyIds": Array [],
+      "inhouseTestLocationSettings": Array [],
+      "isCreateFinalized": true,
+      "name": "FS Malaysia Dummy-Studie",
+      "researchGroupIds": Array [
+        "64d42dc8443aa279ca4cae99",
+        "64d42dd0443aa279ca4caff8",
+      ],
+      "runningPeriod": Object {
+        "end": null,
+        "start": 2001-01-01T00:00:00.000Z,
+      },
+      "scientistIds": Array [
+        "64d42dd5443aa279ca4cb0d1",
+        "64d42dd6443aa279ca4cb0d7",
+      ],
+      "shorthand": "Mal-Study",
+      "studyTopicIds": Array [
+        "64d42dc8443aa279ca4cae96",
+      ],
+      "systemPermissions": Object {
+        "accessRightsByResearchGroup": Array [
+          Object {
+            "permission": "write",
+            "researchGroupId": "64d42dc8443aa279ca4cae99",
+          },
+          Object {
+            "permission": "read",
+            "researchGroupId": "64d42dd0443aa279ca4caff8",
+          },
+        ],
+        "isHidden": false,
+      },
+    },
+    "type": "default",
+  },
+  Object {
+    "_id": "64d42dd7443aa279ca4cb116",
+    "_rohrpostMetadata": Object {
+      "createdAt": 2023-08-10T00:22:47.532Z,
+      "eventIds": Array [
+        "64d42dd7443aa279ca4cb118",
+      ],
+      "hasSubChannels": false,
+      "lastKnownEventId": "64d42dd7443aa279ca4cb118",
+      "lastKnownSessionId": "64d42dd7443aa279ca4cb117",
+      "unprocessedEventIds": Array [],
+      "updatedAt": 2023-08-10T00:22:47.532Z,
+    },
+    "isDummy": false,
+    "sequenceNumber": "8",
+    "state": Object {
+      "custom": Object {
+        "assistents": Array [
+          "64d42dc8443aa279ca4cae9c",
+        ],
+        "description": "",
+        "novels": Array [],
+      },
+      "enableFollowUpExperiments": false,
+      "excludedOtherStudyIds": Array [],
+      "inhouseTestLocationSettings": Array [],
+      "isCreateFinalized": true,
+      "name": "Multi-Group Dummy-Studie",
+      "researchGroupIds": Array [
+        "64d42dc8443aa279ca4cae99",
+        "64d42dcd443aa279ca4caf59",
+        "64d42dce443aa279ca4caf8e",
+        "64d42dcf443aa279ca4cafc3",
+        "64d42dd0443aa279ca4caff8",
+      ],
+      "runningPeriod": Object {
+        "end": null,
+        "start": 2001-01-01T00:00:00.000Z,
+      },
+      "scientistIds": Array [
+        "64d42dd0443aa279ca4cb002",
+        "64d42dd2443aa279ca4cb047",
+        "64d42dd4443aa279ca4cb08c",
+        "64d42dd5443aa279ca4cb0d1",
+      ],
+      "shorthand": "MG-Study",
+      "studyTopicIds": Array [
+        "64d42dc8443aa279ca4cae96",
+      ],
+      "systemPermissions": Object {
+        "accessRightsByResearchGroup": Array [
+          Object {
+            "permission": "write",
+            "researchGroupId": "64d42dc8443aa279ca4cae99",
+          },
+          Object {
+            "permission": "read",
+            "researchGroupId": "64d42dcd443aa279ca4caf59",
+          },
+          Object {
+            "permission": "read",
+            "researchGroupId": "64d42dce443aa279ca4caf8e",
+          },
+          Object {
+            "permission": "read",
+            "researchGroupId": "64d42dcf443aa279ca4cafc3",
+          },
+          Object {
+            "permission": "read",
+            "researchGroupId": "64d42dd0443aa279ca4caff8",
+          },
+        ],
+        "isHidden": false,
+      },
+    },
+    "type": "default",
+  },
+]
+`;
+
+exports[`experiment/inviteCalendar wip stub 2`] = `
+Array [
+  Object {
+    "_canFollowUp": false,
+    "_id": "6976f0fa45ce10a14d774a83",
+    "state": Object {
+      "color": "",
+      "experimentOperatorIds": Array [],
+      "experimentOperatorTeamId": "64d42dcb443aa279ca4caef1",
+      "generalComment": "",
+      "interval": Object {
+        "end": 2026-01-28T08:59:59.999Z,
+        "start": 2026-01-28T08:15:00.000Z,
+      },
+      "isCanceled": false,
+      "isPostprocessed": false,
+      "locationId": "64d42dca443aa279ca4caecf",
+      "locationRecordType": "instituteroom",
+      "selectedSubjectGroupIds": Array [],
+      "selectedSubjectIds": Array [
+        "64d42dcb443aa279ca4caee2",
+      ],
+      "seriesId": "6976f0fa45ce10a14d774a82",
+      "studyId": "64d42dcb443aa279ca4caeee",
+      "subjectData": Array [
+        Object {
+          "comment": "",
+          "invitationStatus": "scheduled",
+          "participationStatus": "unknown",
+          "subjectId": "64d42dcb443aa279ca4caee2",
+          "subjectType": "child",
+        },
+      ],
+    },
+    "type": "inhouse",
+  },
+  Object {
+    "_canFollowUp": false,
+    "_id": "6976f0f145ce10a14d774a7d",
+    "state": Object {
+      "color": "",
+      "experimentOperatorIds": Array [],
+      "experimentOperatorTeamId": "64d42dcb443aa279ca4caef1",
+      "generalComment": "",
+      "interval": Object {
+        "end": 2026-01-31T07:59:59.999Z,
+        "start": 2026-01-31T07:00:00.000Z,
+      },
+      "isCanceled": false,
+      "isPostprocessed": false,
+      "locationId": "64d42dca443aa279ca4caecf",
+      "locationRecordType": "instituteroom",
+      "selectedSubjectGroupIds": Array [],
+      "selectedSubjectIds": Array [
+        "64d42dcb443aa279ca4caede",
+      ],
+      "seriesId": "6976f0f145ce10a14d774a7c",
+      "studyId": "64d42dcb443aa279ca4caeee",
+      "subjectData": Array [
+        Object {
+          "comment": "",
+          "invitationStatus": "scheduled",
+          "participationStatus": "unknown",
+          "subjectId": "64d42dcb443aa279ca4caede",
+          "subjectType": "child",
+        },
+      ],
+    },
+    "type": "inhouse",
+  },
+]
+`;
+
+exports[`experiment/inviteCalendar wip stub 3`] = `
+Array [
+  Object {
     "_id": "64d42dcb443aa279ca4caef1",
-    "_upcomingExperimentCount": undefined,
+    "_upcomingExperimentCount": 1,
     "state": Object {
       "color": "#53e782",
       "hidden": false,
@@ -14,33 +571,6 @@ Array [
       ],
     },
     "studyId": "64d42dcb443aa279ca4caeee",
-  },
-  Object {
-    "_id": "64d42dcc443aa279ca4caf03",
-    "_upcomingExperimentCount": undefined,
-    "state": Object {
-      "color": "#0cd0ba",
-      "hidden": false,
-      "name": "ChildLab Experimenter, Bob; ChildLab Experimenter, Charlie",
-      "personnelIds": Array [
-        "64d42dc9443aa279ca4caeba",
-        "64d42dca443aa279ca4caec0",
-      ],
-    },
-    "studyId": "64d42dcc443aa279ca4caf00",
-  },
-  Object {
-    "_id": "64d42dcc443aa279ca4caf15",
-    "_upcomingExperimentCount": undefined,
-    "state": Object {
-      "color": "#f772e5",
-      "hidden": false,
-      "name": "ChildLab Experimenter, Mallory",
-      "personnelIds": Array [
-        "64d42dca443aa279ca4caec6",
-      ],
-    },
-    "studyId": "64d42dcc443aa279ca4caf12",
   },
   Object {
     "_id": "64d42dd1443aa279ca4cb02f",
@@ -219,1080 +749,219 @@ Array [
     },
     "studyId": "64d42dd7443aa279ca4cb116",
   },
-  Object {
-    "_id": "697abe243c42ca2b624c9932",
-    "_upcomingExperimentCount": undefined,
-    "state": Object {
-      "color": "#fd9696",
-      "hidden": false,
-      "name": "ChildLab Experimenter, Alice; ChildLab Experimenter, Bob",
-      "personnelIds": Array [
-        "64d42dc9443aa279ca4caeb4",
-        "64d42dc9443aa279ca4caeba",
-      ],
-      "researchGroupId": "64d42dc8443aa279ca4cae99",
-    },
-    "studyId": "697abdfd3c42ca2b624c9923",
-  },
 ]
 `;
 
-exports[`experiment/inviteCalendar wip stub 2`] = `
+exports[`experiment/inviteCalendar wip stub 4`] = `
 Object {
-  "apiStatus": "OK",
-  "data": Object {
-    "experimentOperatorTeamRecords": Array [
-      Object {
-        "_id": "64d42dcb443aa279ca4caef1",
-        "_upcomingExperimentCount": undefined,
+  "relatedCustomRecordTypes": Object {
+    "location": Object {
+      "instituteroom": Object {
+        "_id": "64d42dc6443aa279ca4cae13",
+        "collection": "location",
         "state": Object {
-          "color": "#53e782",
-          "hidden": false,
-          "name": "ChildLab Experimenter, Alice",
-          "personnelIds": Array [
-            "64d42dc9443aa279ca4caeb4",
-          ],
+          "label": "Instituts-Räume",
         },
-        "studyId": "64d42dcb443aa279ca4caeee",
-      },
-      Object {
-        "_id": "64d42dcc443aa279ca4caf03",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#0cd0ba",
-          "hidden": false,
-          "name": "ChildLab Experimenter, Bob; ChildLab Experimenter, Charlie",
-          "personnelIds": Array [
-            "64d42dc9443aa279ca4caeba",
-            "64d42dca443aa279ca4caec0",
-          ],
-        },
-        "studyId": "64d42dcc443aa279ca4caf00",
-      },
-      Object {
-        "_id": "64d42dcc443aa279ca4caf15",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#f772e5",
-          "hidden": false,
-          "name": "ChildLab Experimenter, Mallory",
-          "personnelIds": Array [
-            "64d42dca443aa279ca4caec6",
-          ],
-        },
-        "studyId": "64d42dcc443aa279ca4caf12",
-      },
-      Object {
-        "_id": "64d42dd1443aa279ca4cb02f",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#845ec2",
-          "hidden": false,
-          "name": "ChildLab, Test Hiwi",
-          "personnelIds": Array [
-            "64d42dc8443aa279ca4caea8",
-          ],
-        },
-        "studyId": "64d42dd1443aa279ca4cb02c",
-      },
-      Object {
-        "_id": "64d42dd2443aa279ca4cb032",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#d65db1",
-          "hidden": false,
-          "name": "FS Kamerun Experimenter, Kassandra; FS Kamerun Experimenter, Ken",
-          "personnelIds": Array [
-            "64d42dd1443aa279ca4cb00e",
-            "64d42dd1443aa279ca4cb014",
-          ],
-        },
-        "studyId": "64d42dd1443aa279ca4cb02c",
-      },
-      Object {
-        "_id": "64d42dd3443aa279ca4cb074",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#ff6f91",
-          "hidden": false,
-          "name": "ChildLab, Test Hiwi",
-          "personnelIds": Array [
-            "64d42dc8443aa279ca4caea8",
-          ],
-        },
-        "studyId": "64d42dd3443aa279ca4cb071",
-      },
-      Object {
-        "_id": "64d42dd3443aa279ca4cb077",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#ff9671",
-          "hidden": false,
-          "name": "FS Namibia Experimenter, Natalie; FS Namibia Experimenter, Nico",
-          "personnelIds": Array [
-            "64d42dd2443aa279ca4cb053",
-            "64d42dd3443aa279ca4cb059",
-          ],
-        },
-        "studyId": "64d42dd3443aa279ca4cb071",
-      },
-      Object {
-        "_id": "64d42dd5443aa279ca4cb0b9",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#ffc75f",
-          "hidden": false,
-          "name": "ChildLab, Test Hiwi",
-          "personnelIds": Array [
-            "64d42dc8443aa279ca4caea8",
-          ],
-        },
-        "studyId": "64d42dd5443aa279ca4cb0b6",
-      },
-      Object {
-        "_id": "64d42dd5443aa279ca4cb0bc",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#f9f871",
-          "hidden": false,
-          "name": "FS Kongo Experimenter, Olivia; FS Kongo Experimenter, Owen",
-          "personnelIds": Array [
-            "64d42dd4443aa279ca4cb098",
-            "64d42dd4443aa279ca4cb09e",
-          ],
-        },
-        "studyId": "64d42dd5443aa279ca4cb0b6",
-      },
-      Object {
-        "_id": "64d42dd7443aa279ca4cb0fe",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#f3c5ff",
-          "hidden": false,
-          "name": "ChildLab, Test Hiwi",
-          "personnelIds": Array [
-            "64d42dc8443aa279ca4caea8",
-          ],
-        },
-        "studyId": "64d42dd7443aa279ca4cb0fb",
-      },
-      Object {
-        "_id": "64d42dd7443aa279ca4cb101",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#00c9a7",
-          "hidden": false,
-          "name": "FS Malaysia Experimenter, Mona; FS Malaysia Experimenter, Miles",
-          "personnelIds": Array [
-            "64d42dd6443aa279ca4cb0dd",
-            "64d42dd6443aa279ca4cb0e3",
-          ],
-        },
-        "studyId": "64d42dd7443aa279ca4cb0fb",
-      },
-      Object {
-        "_id": "64d42dd7443aa279ca4cb119",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#fefedf",
-          "hidden": false,
-          "name": "ChildLab, Test Hiwi",
-          "personnelIds": Array [
-            "64d42dc8443aa279ca4caea8",
-          ],
-        },
-        "studyId": "64d42dd7443aa279ca4cb116",
-      },
-      Object {
-        "_id": "64d42dd7443aa279ca4cb11c",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#ff8066",
-          "hidden": false,
-          "name": "FS Kamerun Experimenter, Kassandra; FS Kamerun Experimenter, Ken",
-          "personnelIds": Array [
-            "64d42dd1443aa279ca4cb00e",
-            "64d42dd1443aa279ca4cb014",
-          ],
-        },
-        "studyId": "64d42dd7443aa279ca4cb116",
-      },
-      Object {
-        "_id": "64d42dd7443aa279ca4cb11f",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#c34a36",
-          "hidden": false,
-          "name": "FS Namibia Experimenter, Natalie; FS Namibia Experimenter, Nico",
-          "personnelIds": Array [
-            "64d42dd2443aa279ca4cb053",
-            "64d42dd3443aa279ca4cb059",
-          ],
-        },
-        "studyId": "64d42dd7443aa279ca4cb116",
-      },
-      Object {
-        "_id": "64d42dd7443aa279ca4cb122",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#b0a8b9",
-          "hidden": false,
-          "name": "FS Kongo Experimenter, Olivia; FS Kongo Experimenter, Owen",
-          "personnelIds": Array [
-            "64d42dd4443aa279ca4cb098",
-            "64d42dd4443aa279ca4cb09e",
-          ],
-        },
-        "studyId": "64d42dd7443aa279ca4cb116",
-      },
-      Object {
-        "_id": "64d42dd7443aa279ca4cb125",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#4e8397",
-          "hidden": false,
-          "name": "FS Malaysia Experimenter, Mona; FS Malaysia Experimenter, Miles",
-          "personnelIds": Array [
-            "64d42dd6443aa279ca4cb0dd",
-            "64d42dd6443aa279ca4cb0e3",
-          ],
-        },
-        "studyId": "64d42dd7443aa279ca4cb116",
-      },
-      Object {
-        "_id": "697abe243c42ca2b624c9932",
-        "_upcomingExperimentCount": undefined,
-        "state": Object {
-          "color": "#fd9696",
-          "hidden": false,
-          "name": "ChildLab Experimenter, Alice; ChildLab Experimenter, Bob",
-          "personnelIds": Array [
-            "64d42dc9443aa279ca4caeb4",
-            "64d42dc9443aa279ca4caeba",
-          ],
-          "researchGroupId": "64d42dc8443aa279ca4cae99",
-        },
-        "studyId": "697abdfd3c42ca2b624c9923",
-      },
-    ],
-    "experimentRecords": Array [
-      Object {
-        "_canFollowUp": false,
-        "_id": "6976f0f145ce10a14d774a7d",
-        "state": Object {
-          "color": "",
-          "experimentOperatorIds": Array [],
-          "experimentOperatorTeamId": "64d42dcb443aa279ca4caef1",
-          "generalComment": "",
-          "interval": Object {
-            "end": 2026-01-28T08:14:59.999Z,
-            "start": 2026-01-28T07:00:00.000Z,
-          },
-          "isCanceled": false,
-          "isPostprocessed": false,
-          "locationId": "64d42dca443aa279ca4caecf",
-          "locationRecordType": "instituteroom",
-          "selectedSubjectGroupIds": Array [],
-          "selectedSubjectIds": Array [
-            "64d42dcb443aa279ca4caede",
-          ],
-          "seriesId": "6976f0f145ce10a14d774a7c",
-          "studyId": "64d42dcb443aa279ca4caeee",
-          "subjectData": Array [
-            Object {
-              "comment": "",
-              "invitationStatus": "scheduled",
-              "participationStatus": "unknown",
-              "subjectId": "64d42dcb443aa279ca4caede",
-              "subjectType": "child",
-            },
-          ],
-        },
-        "type": "inhouse",
-      },
-      Object {
-        "_canFollowUp": false,
-        "_id": "6976f0fa45ce10a14d774a83",
-        "state": Object {
-          "color": "",
-          "experimentOperatorIds": Array [],
-          "experimentOperatorTeamId": "64d42dcb443aa279ca4caef1",
-          "generalComment": "",
-          "interval": Object {
-            "end": 2026-01-28T08:59:59.999Z,
-            "start": 2026-01-28T08:15:00.000Z,
-          },
-          "isCanceled": false,
-          "isPostprocessed": false,
-          "locationId": "64d42dca443aa279ca4caecf",
-          "locationRecordType": "instituteroom",
-          "selectedSubjectGroupIds": Array [],
-          "selectedSubjectIds": Array [
-            "64d42dcb443aa279ca4caee2",
-          ],
-          "seriesId": "6976f0fa45ce10a14d774a82",
-          "studyId": "64d42dcb443aa279ca4caeee",
-          "subjectData": Array [
-            Object {
-              "comment": "",
-              "invitationStatus": "scheduled",
-              "participationStatus": "unknown",
-              "subjectId": "64d42dcb443aa279ca4caee2",
-              "subjectType": "child",
-            },
-          ],
-        },
-        "type": "inhouse",
-      },
-    ],
-    "experimentRelated": Object {
-      "relatedCustomRecordTypes": Object {
-        "location": Object {
-          "instituteroom": Object {
-            "_id": "64d42dc6443aa279ca4cae13",
-            "collection": "location",
-            "state": Object {
-              "label": "Instituts-Räume",
-            },
-            "type": "instituteroom",
-          },
-        },
-        "subject": Object {
-          "child": Object {
-            "_id": "64d42dc6443aa279ca4cae26",
-            "collection": "subject",
-            "state": Object {
-              "label": "Kinder",
-            },
-            "type": "child",
-          },
-        },
-      },
-      "relatedHelperSetItems": Object {},
-      "relatedRecordLabels": Object {
-        "experimentOperatorTeam": Object {
-          "64d42dcb443aa279ca4caef1": Object {
-            "_id": "64d42dcb443aa279ca4caef1",
-            "_recordLabel": "ChildLab Experimenter, Alice",
-          },
-        },
-        "location": Object {
-          "64d42dca443aa279ca4caecf": Object {
-            "_id": "64d42dca443aa279ca4caecf",
-            "_recordLabel": "Pinguin (R.1)",
-          },
-        },
-        "personnel": Object {},
-        "study": Object {
-          "64d42dcb443aa279ca4caeee": Object {
-            "_id": "64d42dcb443aa279ca4caeee",
-            "_recordLabel": "IH-Study",
-          },
-        },
-        "subject": Object {
-          "64d42dcb443aa279ca4caede": Object {
-            "_id": "64d42dcb443aa279ca4caede",
-            "_recordLabel": "Test Kind, Alice (f)",
-          },
-          "64d42dcb443aa279ca4caee2": Object {
-            "_id": "64d42dcb443aa279ca4caee2",
-            "_recordLabel": "Test Kind, Bob (m)",
-          },
-        },
-        "subjectGroup": Object {},
-      },
-      "relatedRecords": Object {
-        "experimentOperatorTeam": Object {
-          "64d42dcb443aa279ca4caef1": Object {
-            "_id": "64d42dcb443aa279ca4caef1",
-            "_recordLabel": "ChildLab Experimenter, Alice",
-          },
-        },
-        "location": Object {
-          "64d42dca443aa279ca4caecf": Object {
-            "_id": "64d42dca443aa279ca4caecf",
-            "_recordLabel": "Pinguin (R.1)",
-          },
-        },
-        "personnel": Object {},
-        "study": Object {
-          "64d42dcb443aa279ca4caeee": Object {
-            "_id": "64d42dcb443aa279ca4caeee",
-            "_recordLabel": "IH-Study",
-          },
-        },
-        "subject": Object {
-          "64d42dcb443aa279ca4caede": Object {
-            "_id": "64d42dcb443aa279ca4caede",
-            "_recordLabel": "Test Kind, Alice (f)",
-          },
-          "64d42dcb443aa279ca4caee2": Object {
-            "_id": "64d42dcb443aa279ca4caee2",
-            "_recordLabel": "Test Kind, Bob (m)",
-          },
-        },
-        "subjectGroup": Object {},
+        "type": "instituteroom",
       },
     },
-    "studyRecords": Array [
-      Object {
+    "subject": Object {
+      "child": Object {
+        "_id": "64d42dc6443aa279ca4cae26",
+        "collection": "subject",
+        "state": Object {
+          "label": "Kinder",
+        },
+        "type": "child",
+      },
+    },
+  },
+  "relatedHelperSetItems": Object {},
+  "relatedRecordLabels": Object {
+    "experimentOperatorTeam": Object {
+      "64d42dcb443aa279ca4caef1": Object {
+        "_id": "64d42dcb443aa279ca4caef1",
+        "_recordLabel": "ChildLab Experimenter, Alice",
+      },
+    },
+    "location": Object {
+      "64d42dca443aa279ca4caecf": Object {
+        "_id": "64d42dca443aa279ca4caecf",
+        "_recordLabel": "Pinguin (R.1)",
+      },
+    },
+    "personnel": Object {},
+    "study": Object {
+      "64d42dcb443aa279ca4caeee": Object {
         "_id": "64d42dcb443aa279ca4caeee",
-        "_rohrpostMetadata": Object {
-          "createdAt": 2023-08-10T00:22:35.682Z,
-          "eventIds": Array [
-            "64d42dcb443aa279ca4caef0",
-          ],
-          "hasSubChannels": false,
-          "lastKnownEventId": "64d42dcb443aa279ca4caef0",
-          "lastKnownSessionId": "64d42dcb443aa279ca4caeef",
-          "unprocessedEventIds": Array [],
-          "updatedAt": 2023-08-10T00:22:35.682Z,
-        },
-        "isDummy": false,
-        "sequenceNumber": "1",
-        "state": Object {
-          "custom": Object {
-            "assistents": Array [
-              "64d42dc8443aa279ca4cae9c",
-            ],
-            "description": "",
-            "novels": Array [],
-          },
-          "enableFollowUpExperiments": false,
-          "excludedOtherStudyIds": Array [],
-          "inhouseTestLocationSettings": Array [],
-          "isCreateFinalized": true,
-          "name": "Test InHouse Studie",
-          "researchGroupIds": Array [
-            "64d42dc8443aa279ca4cae99",
-          ],
-          "runningPeriod": Object {
-            "end": null,
-            "start": 2001-01-01T00:00:00.000Z,
-          },
-          "scientistIds": Array [
-            "64d42dc8443aa279ca4caea2",
-          ],
-          "shorthand": "IH-Study",
-          "studyTopicIds": Array [
-            "64d42dc8443aa279ca4cae96",
-          ],
-          "systemPermissions": Object {
-            "accessRightsByResearchGroup": Array [
-              Object {
-                "permission": "write",
-                "researchGroupId": "64d42dc8443aa279ca4cae99",
-              },
-            ],
-            "isHidden": false,
-          },
-        },
-        "type": "default",
+        "_recordLabel": "IH-Study",
       },
-      Object {
-        "_id": "64d42dcc443aa279ca4caf00",
-        "_rohrpostMetadata": Object {
-          "createdAt": 2023-08-10T00:22:36.151Z,
-          "eventIds": Array [
-            "64d42dcc443aa279ca4caf02",
-          ],
-          "hasSubChannels": false,
-          "lastKnownEventId": "64d42dcc443aa279ca4caf02",
-          "lastKnownSessionId": "64d42dcc443aa279ca4caf01",
-          "unprocessedEventIds": Array [],
-          "updatedAt": 2023-08-10T00:22:36.151Z,
-        },
-        "isDummy": false,
-        "sequenceNumber": "2",
-        "state": Object {
-          "custom": Object {
-            "assistents": Array [
-              "64d42dc8443aa279ca4cae9c",
-            ],
-            "description": "",
-            "novels": Array [],
-          },
-          "enableFollowUpExperiments": false,
-          "excludedOtherStudyIds": Array [],
-          "inhouseTestLocationSettings": Array [],
-          "isCreateFinalized": true,
-          "name": "Test Online-Video Studie",
-          "researchGroupIds": Array [
-            "64d42dc8443aa279ca4cae99",
-          ],
-          "runningPeriod": Object {
-            "end": null,
-            "start": 2001-01-01T00:00:00.000Z,
-          },
-          "scientistIds": Array [
-            "64d42dc8443aa279ca4caea2",
-          ],
-          "shorthand": "OV-Study",
-          "studyTopicIds": Array [
-            "64d42dc8443aa279ca4cae96",
-          ],
-          "systemPermissions": Object {
-            "accessRightsByResearchGroup": Array [
-              Object {
-                "permission": "write",
-                "researchGroupId": "64d42dc8443aa279ca4cae99",
-              },
-            ],
-            "isHidden": false,
-          },
-        },
-        "type": "default",
-      },
-      Object {
-        "_id": "64d42dcc443aa279ca4caf12",
-        "_rohrpostMetadata": Object {
-          "createdAt": 2023-08-10T00:22:36.450Z,
-          "eventIds": Array [
-            "64d42dcc443aa279ca4caf14",
-          ],
-          "hasSubChannels": false,
-          "lastKnownEventId": "64d42dcc443aa279ca4caf14",
-          "lastKnownSessionId": "64d42dcc443aa279ca4caf13",
-          "unprocessedEventIds": Array [],
-          "updatedAt": 2023-08-10T00:22:36.450Z,
-        },
-        "isDummy": false,
-        "sequenceNumber": "3",
-        "state": Object {
-          "custom": Object {
-            "assistents": Array [
-              "64d42dc8443aa279ca4cae9c",
-            ],
-            "description": "",
-            "novels": Array [],
-          },
-          "enableFollowUpExperiments": false,
-          "excludedOtherStudyIds": Array [],
-          "inhouseTestLocationSettings": Array [],
-          "isCreateFinalized": true,
-          "name": "Test Kiga Studie",
-          "researchGroupIds": Array [
-            "64d42dc8443aa279ca4cae99",
-          ],
-          "runningPeriod": Object {
-            "end": null,
-            "start": 2001-01-01T00:00:00.000Z,
-          },
-          "scientistIds": Array [
-            "64d42dc8443aa279ca4caea2",
-          ],
-          "shorthand": "Kiga-Study",
-          "studyTopicIds": Array [
-            "64d42dc8443aa279ca4cae96",
-          ],
-          "systemPermissions": Object {
-            "accessRightsByResearchGroup": Array [
-              Object {
-                "permission": "write",
-                "researchGroupId": "64d42dc8443aa279ca4cae99",
-              },
-            ],
-            "isHidden": false,
-          },
-        },
-        "type": "default",
-      },
-      Object {
-        "_id": "64d42dd1443aa279ca4cb02c",
-        "_rohrpostMetadata": Object {
-          "createdAt": 2023-08-10T00:22:41.920Z,
-          "eventIds": Array [
-            "64d42dd1443aa279ca4cb02e",
-          ],
-          "hasSubChannels": false,
-          "lastKnownEventId": "64d42dd1443aa279ca4cb02e",
-          "lastKnownSessionId": "64d42dd1443aa279ca4cb02d",
-          "unprocessedEventIds": Array [],
-          "updatedAt": 2023-08-10T00:22:41.920Z,
-        },
-        "isDummy": false,
-        "sequenceNumber": "4",
-        "state": Object {
-          "custom": Object {
-            "assistents": Array [
-              "64d42dc8443aa279ca4cae9c",
-            ],
-            "description": "",
-            "novels": Array [],
-          },
-          "enableFollowUpExperiments": false,
-          "excludedOtherStudyIds": Array [],
-          "inhouseTestLocationSettings": Array [],
-          "isCreateFinalized": true,
-          "name": "FS Kamerun Dummy-Studie",
-          "researchGroupIds": Array [
-            "64d42dc8443aa279ca4cae99",
-            "64d42dcd443aa279ca4caf59",
-          ],
-          "runningPeriod": Object {
-            "end": null,
-            "start": 2001-01-01T00:00:00.000Z,
-          },
-          "scientistIds": Array [
-            "64d42dd0443aa279ca4cb002",
-            "64d42dd0443aa279ca4cb008",
-          ],
-          "shorthand": "Kam-Study",
-          "studyTopicIds": Array [
-            "64d42dc8443aa279ca4cae96",
-          ],
-          "systemPermissions": Object {
-            "accessRightsByResearchGroup": Array [
-              Object {
-                "permission": "write",
-                "researchGroupId": "64d42dc8443aa279ca4cae99",
-              },
-              Object {
-                "permission": "read",
-                "researchGroupId": "64d42dcd443aa279ca4caf59",
-              },
-            ],
-            "isHidden": false,
-          },
-        },
-        "type": "default",
-      },
-      Object {
-        "_id": "64d42dd3443aa279ca4cb071",
-        "_rohrpostMetadata": Object {
-          "createdAt": 2023-08-10T00:22:43.700Z,
-          "eventIds": Array [
-            "64d42dd3443aa279ca4cb073",
-          ],
-          "hasSubChannels": false,
-          "lastKnownEventId": "64d42dd3443aa279ca4cb073",
-          "lastKnownSessionId": "64d42dd3443aa279ca4cb072",
-          "unprocessedEventIds": Array [],
-          "updatedAt": 2023-08-10T00:22:43.700Z,
-        },
-        "isDummy": false,
-        "sequenceNumber": "5",
-        "state": Object {
-          "custom": Object {
-            "assistents": Array [
-              "64d42dc8443aa279ca4cae9c",
-            ],
-            "description": "",
-            "novels": Array [],
-          },
-          "enableFollowUpExperiments": false,
-          "excludedOtherStudyIds": Array [],
-          "inhouseTestLocationSettings": Array [],
-          "isCreateFinalized": true,
-          "name": "FS Namibia Dummy-Studie",
-          "researchGroupIds": Array [
-            "64d42dc8443aa279ca4cae99",
-            "64d42dce443aa279ca4caf8e",
-          ],
-          "runningPeriod": Object {
-            "end": null,
-            "start": 2001-01-01T00:00:00.000Z,
-          },
-          "scientistIds": Array [
-            "64d42dd2443aa279ca4cb047",
-            "64d42dd2443aa279ca4cb04d",
-          ],
-          "shorthand": "Nam-Study",
-          "studyTopicIds": Array [
-            "64d42dc8443aa279ca4cae96",
-          ],
-          "systemPermissions": Object {
-            "accessRightsByResearchGroup": Array [
-              Object {
-                "permission": "write",
-                "researchGroupId": "64d42dc8443aa279ca4cae99",
-              },
-              Object {
-                "permission": "read",
-                "researchGroupId": "64d42dce443aa279ca4caf8e",
-              },
-            ],
-            "isHidden": false,
-          },
-        },
-        "type": "default",
-      },
-      Object {
-        "_id": "64d42dd5443aa279ca4cb0b6",
-        "_rohrpostMetadata": Object {
-          "createdAt": 2023-08-10T00:22:45.423Z,
-          "eventIds": Array [
-            "64d42dd5443aa279ca4cb0b8",
-          ],
-          "hasSubChannels": false,
-          "lastKnownEventId": "64d42dd5443aa279ca4cb0b8",
-          "lastKnownSessionId": "64d42dd5443aa279ca4cb0b7",
-          "unprocessedEventIds": Array [],
-          "updatedAt": 2023-08-10T00:22:45.423Z,
-        },
-        "isDummy": false,
-        "sequenceNumber": "6",
-        "state": Object {
-          "custom": Object {
-            "assistents": Array [
-              "64d42dc8443aa279ca4cae9c",
-            ],
-            "description": "",
-            "novels": Array [],
-          },
-          "enableFollowUpExperiments": false,
-          "excludedOtherStudyIds": Array [],
-          "inhouseTestLocationSettings": Array [],
-          "isCreateFinalized": true,
-          "name": "FS Kongo Dummy-Studie",
-          "researchGroupIds": Array [
-            "64d42dc8443aa279ca4cae99",
-            "64d42dcf443aa279ca4cafc3",
-          ],
-          "runningPeriod": Object {
-            "end": null,
-            "start": 2001-01-01T00:00:00.000Z,
-          },
-          "scientistIds": Array [
-            "64d42dd4443aa279ca4cb08c",
-            "64d42dd4443aa279ca4cb092",
-          ],
-          "shorthand": "Kon-Study",
-          "studyTopicIds": Array [
-            "64d42dc8443aa279ca4cae96",
-          ],
-          "systemPermissions": Object {
-            "accessRightsByResearchGroup": Array [
-              Object {
-                "permission": "write",
-                "researchGroupId": "64d42dc8443aa279ca4cae99",
-              },
-              Object {
-                "permission": "read",
-                "researchGroupId": "64d42dcf443aa279ca4cafc3",
-              },
-            ],
-            "isHidden": false,
-          },
-        },
-        "type": "default",
-      },
-      Object {
-        "_id": "64d42dd7443aa279ca4cb0fb",
-        "_rohrpostMetadata": Object {
-          "createdAt": 2023-08-10T00:22:47.124Z,
-          "eventIds": Array [
-            "64d42dd7443aa279ca4cb0fd",
-          ],
-          "hasSubChannels": false,
-          "lastKnownEventId": "64d42dd7443aa279ca4cb0fd",
-          "lastKnownSessionId": "64d42dd7443aa279ca4cb0fc",
-          "unprocessedEventIds": Array [],
-          "updatedAt": 2023-08-10T00:22:47.124Z,
-        },
-        "isDummy": false,
-        "sequenceNumber": "7",
-        "state": Object {
-          "custom": Object {
-            "assistents": Array [
-              "64d42dc8443aa279ca4cae9c",
-            ],
-            "description": "",
-            "novels": Array [],
-          },
-          "enableFollowUpExperiments": false,
-          "excludedOtherStudyIds": Array [],
-          "inhouseTestLocationSettings": Array [],
-          "isCreateFinalized": true,
-          "name": "FS Malaysia Dummy-Studie",
-          "researchGroupIds": Array [
-            "64d42dc8443aa279ca4cae99",
-            "64d42dd0443aa279ca4caff8",
-          ],
-          "runningPeriod": Object {
-            "end": null,
-            "start": 2001-01-01T00:00:00.000Z,
-          },
-          "scientistIds": Array [
-            "64d42dd5443aa279ca4cb0d1",
-            "64d42dd6443aa279ca4cb0d7",
-          ],
-          "shorthand": "Mal-Study",
-          "studyTopicIds": Array [
-            "64d42dc8443aa279ca4cae96",
-          ],
-          "systemPermissions": Object {
-            "accessRightsByResearchGroup": Array [
-              Object {
-                "permission": "write",
-                "researchGroupId": "64d42dc8443aa279ca4cae99",
-              },
-              Object {
-                "permission": "read",
-                "researchGroupId": "64d42dd0443aa279ca4caff8",
-              },
-            ],
-            "isHidden": false,
-          },
-        },
-        "type": "default",
-      },
-      Object {
-        "_id": "64d42dd7443aa279ca4cb116",
-        "_rohrpostMetadata": Object {
-          "createdAt": 2023-08-10T00:22:47.532Z,
-          "eventIds": Array [
-            "64d42dd7443aa279ca4cb118",
-          ],
-          "hasSubChannels": false,
-          "lastKnownEventId": "64d42dd7443aa279ca4cb118",
-          "lastKnownSessionId": "64d42dd7443aa279ca4cb117",
-          "unprocessedEventIds": Array [],
-          "updatedAt": 2023-08-10T00:22:47.532Z,
-        },
-        "isDummy": false,
-        "sequenceNumber": "8",
-        "state": Object {
-          "custom": Object {
-            "assistents": Array [
-              "64d42dc8443aa279ca4cae9c",
-            ],
-            "description": "",
-            "novels": Array [],
-          },
-          "enableFollowUpExperiments": false,
-          "excludedOtherStudyIds": Array [],
-          "inhouseTestLocationSettings": Array [],
-          "isCreateFinalized": true,
-          "name": "Multi-Group Dummy-Studie",
-          "researchGroupIds": Array [
-            "64d42dc8443aa279ca4cae99",
-            "64d42dcd443aa279ca4caf59",
-            "64d42dce443aa279ca4caf8e",
-            "64d42dcf443aa279ca4cafc3",
-            "64d42dd0443aa279ca4caff8",
-          ],
-          "runningPeriod": Object {
-            "end": null,
-            "start": 2001-01-01T00:00:00.000Z,
-          },
-          "scientistIds": Array [
-            "64d42dd0443aa279ca4cb002",
-            "64d42dd2443aa279ca4cb047",
-            "64d42dd4443aa279ca4cb08c",
-            "64d42dd5443aa279ca4cb0d1",
-          ],
-          "shorthand": "MG-Study",
-          "studyTopicIds": Array [
-            "64d42dc8443aa279ca4cae96",
-          ],
-          "systemPermissions": Object {
-            "accessRightsByResearchGroup": Array [
-              Object {
-                "permission": "write",
-                "researchGroupId": "64d42dc8443aa279ca4cae99",
-              },
-              Object {
-                "permission": "read",
-                "researchGroupId": "64d42dcd443aa279ca4caf59",
-              },
-              Object {
-                "permission": "read",
-                "researchGroupId": "64d42dce443aa279ca4caf8e",
-              },
-              Object {
-                "permission": "read",
-                "researchGroupId": "64d42dcf443aa279ca4cafc3",
-              },
-              Object {
-                "permission": "read",
-                "researchGroupId": "64d42dd0443aa279ca4caff8",
-              },
-            ],
-            "isHidden": false,
-          },
-        },
-        "type": "default",
-      },
-      Object {
-        "_id": "697abdfd3c42ca2b624c9923",
-        "_rohrpostMetadata": Object {
-          "createdAt": 2026-01-29T01:55:09.689Z,
-          "eventIds": Array [
-            "697abeb29636d12c6d8a3958",
-            "697abe9a9636d12c6d8a3956",
-            "697abdfd3c42ca2b624c9925",
-          ],
-          "hasSubChannels": false,
-          "lastKnownEventId": "697abeb29636d12c6d8a3958",
-          "lastKnownSessionId": "697abeb29636d12c6d8a3957",
-          "unprocessedEventIds": Array [],
-          "updatedAt": 2026-01-29T01:58:10.140Z,
-        },
-        "isDummy": false,
-        "sequenceNumber": "10",
-        "state": Object {
-          "custom": Object {
-            "assistents": Array [
-              "64d42dc8443aa279ca4cae9c",
-            ],
-            "description": "",
-            "novels": Array [],
-          },
-          "enableFollowUpExperiments": false,
-          "excludedOtherStudyIds": Array [],
-          "experimentNames": Array [
-            "fofofof",
-          ],
-          "inhouseTestLocationSettings": Array [],
-          "internals": Object {
-            "isRemoved": true,
-          },
-          "isCreateFinalized": true,
-          "name": "Del-Study",
-          "researchGroupIds": Array [
-            "64d42dc8443aa279ca4cae99",
-          ],
-          "runningPeriod": Object {
-            "end": null,
-            "start": 2026-01-01T00:00:00.000Z,
-          },
-          "scientistIds": Array [
-            "64d42dc8443aa279ca4cae9c",
-          ],
-          "shorthand": "DEL",
-          "studyTopicIds": Array [
-            "64d42dc8443aa279ca4cae96",
-          ],
-          "systemPermissions": Object {
-            "accessRightsByResearchGroup": Array [
-              Object {
-                "permission": "write",
-                "researchGroupId": "64d42dc8443aa279ca4cae99",
-              },
-            ],
-            "isHidden": false,
-          },
-        },
-        "type": "default",
-      },
-    ],
-    "subjectDisplayFieldData": Array [
-      Object {
-        "dataPointer": "/sequenceNumber",
-        "displayName": "ID No.",
-        "displayNameI18N": Object {
-          "de": "ID Nr.",
-        },
-        "key": "_sequenceNumber",
-        "pointer": "/sequenceNumber",
-        "props": Object {},
-        "systemType": "SaneString",
-        "type": "SaneString",
-      },
-      Object {
-        "dataPointer": "/gdpr/state/custom/lastname",
-        "displayName": "Nachname",
-        "key": "lastname",
-        "pointer": "/gdpr/state/custom/lastname",
-        "props": Object {
-          "minLength": 1,
-        },
-        "subChannel": "gdpr",
-        "systemType": "SaneString",
-        "type": "SaneString",
-      },
-      Object {
-        "dataPointer": "/gdpr/state/custom/firstname",
-        "displayName": "Vorname",
-        "key": "firstname",
-        "pointer": "/gdpr/state/custom/firstname",
-        "props": Object {
-          "minLength": 1,
-        },
-        "subChannel": "gdpr",
-        "systemType": "SaneString",
-        "type": "SaneString",
-      },
-      Object {
-        "dataPointer": "/scientific/state/custom/biologicalGender",
-        "displayName": "Geschlecht",
-        "key": "biologicalGender",
-        "pointer": "/scientific/state/custom/biologicalGender",
-        "props": Object {
-          "enableUnknownValue": true,
-        },
-        "subChannel": "scientific",
-        "systemType": "BiologicalGender",
-        "type": "BiologicalGender",
-      },
-      Object {
-        "dataPointer": "/scientific/state/custom/dateOfBirth",
-        "displayName": "Geburtsdatum",
-        "key": "dateOfBirth",
-        "pointer": "/scientific/state/custom/dateOfBirth",
-        "props": Object {
-          "isNullable": false,
-          "isSpecialAgeFrameField": true,
-        },
-        "subChannel": "scientific",
-        "systemType": "DateOnlyServerSide",
-        "type": "DateOnlyServerSide",
-      },
-    ],
-    "subjectRecordsById": Object {
+    },
+    "subject": Object {
       "64d42dcb443aa279ca4caede": Object {
         "_id": "64d42dcb443aa279ca4caede",
-        "gdpr": Object {
-          "state": Object {
-            "custom": Object {
-              "firstname": "Alice",
-              "lastname": "Test Kind",
-            },
-          },
-        },
-        "scientific": Object {
-          "state": Object {
-            "custom": Object {
-              "biologicalGender": "female",
-              "dateOfBirth": 2001-01-01T00:00:00.000Z,
-            },
-          },
-        },
-        "sequenceNumber": "1",
-        "type": "child",
+        "_recordLabel": "Test Kind, Alice (f)",
       },
       "64d42dcb443aa279ca4caee2": Object {
         "_id": "64d42dcb443aa279ca4caee2",
-        "gdpr": Object {
-          "state": Object {
-            "custom": Object {
-              "firstname": "Bob",
-              "lastname": "Test Kind",
-            },
-          },
-        },
-        "scientific": Object {
-          "state": Object {
-            "custom": Object {
-              "biologicalGender": "male",
-              "dateOfBirth": 2001-01-01T00:00:00.000Z,
-            },
-          },
-        },
-        "sequenceNumber": "2",
-        "type": "child",
+        "_recordLabel": "Test Kind, Bob (m)",
       },
     },
-    "subjectRelated": Object {
-      "relatedCustomRecordTypes": Object {},
-      "relatedHelperSetItems": Object {},
-      "relatedRecordLabels": Object {},
-      "relatedRecords": Object {},
-    },
+    "subjectGroup": Object {},
   },
-  "remoteErrors": undefined,
-  "status": "OK",
-  "statusCode": 200,
+  "relatedRecords": Object {
+    "experimentOperatorTeam": Object {
+      "64d42dcb443aa279ca4caef1": Object {
+        "_id": "64d42dcb443aa279ca4caef1",
+        "_recordLabel": "ChildLab Experimenter, Alice",
+      },
+    },
+    "location": Object {
+      "64d42dca443aa279ca4caecf": Object {
+        "_id": "64d42dca443aa279ca4caecf",
+        "_recordLabel": "Pinguin (R.1)",
+      },
+    },
+    "personnel": Object {},
+    "study": Object {
+      "64d42dcb443aa279ca4caeee": Object {
+        "_id": "64d42dcb443aa279ca4caeee",
+        "_recordLabel": "IH-Study",
+      },
+    },
+    "subject": Object {
+      "64d42dcb443aa279ca4caede": Object {
+        "_id": "64d42dcb443aa279ca4caede",
+        "_recordLabel": "Test Kind, Alice (f)",
+      },
+      "64d42dcb443aa279ca4caee2": Object {
+        "_id": "64d42dcb443aa279ca4caee2",
+        "_recordLabel": "Test Kind, Bob (m)",
+      },
+    },
+    "subjectGroup": Object {},
+  },
 }
+`;
+
+exports[`experiment/inviteCalendar wip stub 5`] = `
+Object {
+  "64d42dcb443aa279ca4caede": Object {
+    "_id": "64d42dcb443aa279ca4caede",
+    "gdpr": Object {
+      "state": Object {
+        "custom": Object {
+          "firstname": "Alice",
+          "lastname": "Test Kind",
+        },
+      },
+    },
+    "scientific": Object {
+      "state": Object {
+        "custom": Object {
+          "biologicalGender": "female",
+          "dateOfBirth": 2001-01-01T00:00:00.000Z,
+        },
+      },
+    },
+    "sequenceNumber": "1",
+    "type": "child",
+  },
+  "64d42dcb443aa279ca4caee2": Object {
+    "_id": "64d42dcb443aa279ca4caee2",
+    "gdpr": Object {
+      "state": Object {
+        "custom": Object {
+          "firstname": "Bob",
+          "lastname": "Test Kind",
+        },
+      },
+    },
+    "scientific": Object {
+      "state": Object {
+        "custom": Object {
+          "biologicalGender": "male",
+          "dateOfBirth": 2001-01-01T00:00:00.000Z,
+        },
+      },
+    },
+    "sequenceNumber": "2",
+    "type": "child",
+  },
+}
+`;
+
+exports[`experiment/inviteCalendar wip stub 6`] = `
+Object {
+  "relatedCustomRecordTypes": Object {},
+  "relatedHelperSetItems": Object {},
+  "relatedRecordLabels": Object {},
+  "relatedRecords": Object {},
+}
+`;
+
+exports[`experiment/inviteCalendar wip stub 7`] = `
+Array [
+  Object {
+    "dataPointer": "/sequenceNumber",
+    "displayName": "ID No.",
+    "displayNameI18N": Object {
+      "de": "ID Nr.",
+    },
+    "key": "_sequenceNumber",
+    "pointer": "/sequenceNumber",
+    "props": Object {},
+    "systemType": "SaneString",
+    "type": "SaneString",
+  },
+  Object {
+    "dataPointer": "/gdpr/state/custom/lastname",
+    "displayName": "Nachname",
+    "key": "lastname",
+    "pointer": "/gdpr/state/custom/lastname",
+    "props": Object {
+      "minLength": 1,
+    },
+    "subChannel": "gdpr",
+    "systemType": "SaneString",
+    "type": "SaneString",
+  },
+  Object {
+    "dataPointer": "/gdpr/state/custom/firstname",
+    "displayName": "Vorname",
+    "key": "firstname",
+    "pointer": "/gdpr/state/custom/firstname",
+    "props": Object {
+      "minLength": 1,
+    },
+    "subChannel": "gdpr",
+    "systemType": "SaneString",
+    "type": "SaneString",
+  },
+  Object {
+    "dataPointer": "/scientific/state/custom/biologicalGender",
+    "displayName": "Geschlecht",
+    "key": "biologicalGender",
+    "pointer": "/scientific/state/custom/biologicalGender",
+    "props": Object {
+      "enableUnknownValue": true,
+    },
+    "subChannel": "scientific",
+    "systemType": "BiologicalGender",
+    "type": "BiologicalGender",
+  },
+  Object {
+    "dataPointer": "/scientific/state/custom/dateOfBirth",
+    "displayName": "Geburtsdatum",
+    "key": "dateOfBirth",
+    "pointer": "/scientific/state/custom/dateOfBirth",
+    "props": Object {
+      "isNullable": false,
+      "isSpecialAgeFrameField": true,
+    },
+    "subChannel": "scientific",
+    "systemType": "DateOnlyServerSide",
+    "type": "DateOnlyServerSide",
+  },
+]
 `;
