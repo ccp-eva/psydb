@@ -256,11 +256,11 @@ var createRouting = (bag = {}) => {
         endpoints.special.receptionCalendar
     );
 
-    router.post('/experiment-calendar',
+    router.post('/experiment/invite-calendar',
         withSelfAuth(),
         withPermissions(),
         withKoaBody(),
-        endpoints.special.experimentCalendar
+        endpoints_SPLIT.experiment.inviteCalendar
     );
 
     router.post('/location-experiment-calendar',

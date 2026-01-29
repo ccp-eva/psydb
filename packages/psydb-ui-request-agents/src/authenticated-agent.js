@@ -442,7 +442,7 @@ const createAgent = (options = {}) => {
         showPast,
     }) => {
         return axios.post(
-            '/api/experiment-calendar',
+            '/api/experiment/invite-calendar',
             {
                 interval,
 

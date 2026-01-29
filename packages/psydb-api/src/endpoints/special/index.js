@@ -57,9 +57,9 @@ module.exports = {
         require('./invite-confirmation-list')
     ),
 
-    experimentCalendar: (
-        require('./calendars/experiment-calendar')
-    ),
+    //experimentCalendar: (
+    //    require('./calendars/experiment-calendar')
+    //),
     locationExperimentCalendar: (
         require('./calendars/location-experiment-calendar')
     ),

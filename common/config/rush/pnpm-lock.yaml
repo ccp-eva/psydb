@@ -628,6 +628,9 @@ importers:
       '@mpieva/psydb-rohrpost-utils':
         specifier: workspace:*
         version: link:../psydb-rohrpost-utils
+      '@mpieva/psydb-schema-enums':
+        specifier: workspace:*
+        version: link:../psydb-schema-enums
       '@mpieva/psydb-schema-fields':
         specifier: workspace:*
         version: link:../psydb-schema-fields

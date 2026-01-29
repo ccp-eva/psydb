@@ -1,7 +1,5 @@
 'use strict';
-var debug = require('debug')(
-    'psydb:api:endpoints:inhouseExperimentCalendar'
-);
+var debug = require('../debug-helper')('inviteCalendar');
 
 var datefns = require('date-fns');
 var enums = require('@mpieva/psydb-schema-enums');
@@ -50,9 +48,12 @@ var experimentCalendar = async (context, next) => {
         db,
         permissions,
         request,
+        
         timezone,
         language,
         locale,
+
+        i18n,
     } = context;
     
     validateOrThrow({
@@ -79,6 +80,7 @@ var experimentCalendar = async (context, next) => {
 
     var { start, end } = interval;
 
+    // can view any calendar
     verifyLabOperationAccess({
         researchGroupId,
         labOperationTypes: experimentTypes,
@@ -89,6 +91,7 @@ var experimentCalendar = async (context, next) => {
         matchFlags: 'every',
     });
 
+    // what types of calendars
     var allowedExperimentTypes = permissions.getAllowedLabOpsForFlags({
         onlyTypes: experimentTypes,
         flags: [ 'canViewExperimentCalendar' ],
@@ -192,13 +195,15 @@ var experimentCalendar = async (context, next) => {
 
     console.dir(ejson({ subjectRecords }), { depth: null });
     var subjectRelated = await fetchRelatedLabelsForMany({
-        db, timezone, language, locale,
+        db, 
+        timezone, language, locale,
         collectionName: 'subject',
         records: subjectRecords,
     })
 
     var experimentRelated = await fetchRelatedLabelsForMany({
-        db, timezone, language, locale,
+        db,
+        timezone, language, locale,
         collectionName: 'experiment',
         records: experimentRecords
     })
