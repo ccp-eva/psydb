@@ -1,48 +1,27 @@
 'use strict';
 var debug = require('../debug-helper')('inviteCalendar');
 
-var datefns = require('date-fns');
 var enums = require('@mpieva/psydb-schema-enums');
-
-var {
-    ejson,
-    keyBy,
-    groupBy,
-    compareIds,
-    forcePush,
-    merge,
-} = require('@mpieva/psydb-core-utils');
-
-var {
-    ApiError,
-    ResponseBody,
-    
-    validateOrThrow,
-    verifyLabOperationAccess,
-
-    fetchAllCRTSettings,
-    fetchRelatedLabelsForMany,
-} = require('@mpieva/psydb-api-lib');
-
-var {
-    StripEventsStage,
-    ProjectDisplayFieldsStage,
-} = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
-
-var RequestBodySchema = require('./request-body-schema');
-var fetchStudyRecords = require('./fetch-study-records');
-var fetchExperimentRecords = require('./fetch-experiment-records');
-
+var { keyBy, forcePush, merge } = require('@mpieva/psydb-core-utils');
 var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var { fetchRelated } = require('@mpieva/psydb-api-endpoint-lib');
+var {
+    ApiError, ResponseBody,
+    validateOrThrow, verifyLabOperationAccess, fetchRelatedLabelsForMany
+} = require('@mpieva/psydb-api-lib');
+
+var BodySchema = require('./body-schema');
 var verifyCalendarAccess = require('./verify-calendar-access');
+var fetchStudyRecords = require('./fetch-study-records');
+var fetchExperimentRecords = require('./fetch-experiment-records');
+var fetchLabTeamRecords = require('./fetch-lab-team-records');
 var lookupSubjects = require('./lookup-subjects');
 
 var experimentCalendar = async (context, next) => {
     var { db, permissions, request, i18n } = context;
     
     validateOrThrow({
-        schema: RequestBodySchema(),
+        schema: BodySchema(),
         payload: request.body
     });
 
@@ -90,11 +69,6 @@ var experimentCalendar = async (context, next) => {
     var studyIds = studyRecords.map(it => it._id);
     var studiesById = keyBy({ items: studyRecords, byProp: '_id' });
 
-    // XXX: why are ids filtered but records arent??
-    //var filteredStudyIds = await getFilteredStudyIds({
-    //    db, studyRecords, allowedExperimentTypes
-    //});
-    
     var filteredStudyIds = studyIds;
 
     var experimentRecords = await fetchExperimentRecords({
@@ -106,6 +80,15 @@ var experimentCalendar = async (context, next) => {
         experimentOperatorTeamIds,
     });
  
+    var labTeams = await fetchLabTeamRecords({
+        db,
+        studyIds: filteredStudyIds,
+        labMethods: allowedExperimentTypes,
+        labTeamIds: experimentRecords.map(it => (
+            it.state.experimentOperatorTeamId
+        )),
+    });
+
     var experimentStudyIds = (
         experimentRecords.map(it => it.state.studyId)
     );
@@ -132,9 +115,6 @@ var experimentCalendar = async (context, next) => {
             });
         }
     }
-
-    //var foo = await gatherSubjectDisplayFields({ subjectTypes });
-
 
     var shownDisplayFieldsByCRT = {};
     var allSubjectRecords = [];
@@ -163,33 +143,6 @@ var experimentCalendar = async (context, next) => {
         records: experimentRecords
     });
 
-    var labTeams = await aggregateToArray({ db,  experimentOperatorTeam : [
-        { $match: {
-            'studyId': { $in: filteredStudyIds },
-            $or: [
-                { 'state.hidden': { $ne: true }},
-                { '_id': { $in: experimentRecords.map(it => (
-                    it.state.experimentOperatorTeamId
-                ))}},
-            ]
-        }},
-        StripEventsStage(),
-    ]});
-
-    var _upcomingLabTeamExperimentCounts = await (
-        fetchUpcomingLabTeamExperimentCounts({
-            db,
-            labTeamIds: labTeams.map(it => it._id),
-            experimentTypes: allowedExperimentTypes,
-        })
-    );
-
-    for (var it of labTeams) {
-        it._upcomingExperimentCount = (
-            _upcomingLabTeamExperimentCounts[it._id]
-        );
-    }
-
     var subjectRecordsById = keyBy({
         items: allSubjectRecords,
         byProp: '_id'
@@ -215,36 +168,6 @@ var experimentCalendar = async (context, next) => {
     });
 
     await next();
-}
-
-var fetchUpcomingLabTeamExperimentCounts = async (bag) => {
-    var { db, experimentTypes, labTeamIds } = bag;
-    var now = new Date();
-    var start = datefns.startOfDay(now);
-
-    var upcoming = await aggregateToArray({ db, experiment: [
-        { $match: {
-            'state.experimentOperatorTeamId': { $in: labTeamIds },
-            'type': { $in: experimentTypes },
-            'state.isCanceled': false,
-            'state.interval.start': { $gte: start }
-        }},
-        { $project: {
-            '_id': true,
-            'state.experimentOperatorTeamId': true
-        }}
-    ]});
-
-    var upcomingForLabTeamId = groupBy({
-        items: upcoming,
-        byPointer: '/state/experimentOperatorTeamId'
-    });
-
-    for (var key of Object.keys(upcomingForLabTeamId)) {
-        upcomingForLabTeamId[key] = upcomingForLabTeamId[key].length
-    }
-
-    return upcomingForLabTeamId;
 }
 
 module.exports = experimentCalendar;

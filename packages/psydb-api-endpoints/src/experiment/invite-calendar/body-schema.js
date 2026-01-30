@@ -10,7 +10,7 @@ var {
     ExperimentTypeEnum,
 } = require('@mpieva/psydb-schema-fields');
 
-var RequestBodySchema = () => ExactObject({
+var BodySchema = () => ExactObject({
     properties: {
         'interval': DateTimeInterval(),
 
@@ -31,4 +31,4 @@ var RequestBodySchema = () => ExactObject({
     required: [ 'interval' ]
 });
 
-module.exports = RequestBodySchema;
+module.exports = BodySchema;
