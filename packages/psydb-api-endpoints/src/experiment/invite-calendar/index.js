@@ -155,7 +155,7 @@ var experimentCalendar = async (context, next) => {
                 ...it,
                 _canFollowUp: studiesById[it.state.studyId].state.enableFollowUpExperiments
             })),
-            experimentOperatorTeamRecords: labTeamsRecords,
+            experimentOperatorTeamRecords: labTeamRecords,
             experimentRelated,
             subjectRecordsById,
             subjectRelated: __subjectRelated,
