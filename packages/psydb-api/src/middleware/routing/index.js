@@ -267,7 +267,7 @@ var createRouting = (bag = {}) => {
         withSelfAuth(),
         withPermissions(),
         withKoaBody(),
-        endpoints.special.locationExperimentCalendar
+        endpoints_SPLIT.experiment.awayCalendar
     );
 
     router.post('/selectable-studies',

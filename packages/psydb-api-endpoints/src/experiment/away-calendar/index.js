@@ -1,30 +1,15 @@
-throw new Error('OBSOLETE');
-
 'use strict';
-// XXX: this is actually ONLY the way team calendar
-var debug = require('debug')(
-    'psydb:api:endpoints:locationExperimentCalendar'
-);
+var debug = require('../debug-helper')('awayCalendar');
 
 var enums = require('@mpieva/psydb-schema-enums');
-
+var { keyBy } = require('@mpieva/psydb-core-utils');
 var {
-    keyBy,
-    groupBy,
-    compareIds,
-} = require('@mpieva/psydb-core-utils');
-
-var {
-    ApiError,
-    ResponseBody,
-    validateOrThrow,
-    verifyLabOperationAccess,
+    ApiError, ResponseBody,
+    validateOrThrow, verifyLabOperationAccess, fetchRelatedLabelsForMany,
     
-    convertPointerToPath,
     fetchOneCustomRecordType,
     gatherDisplayFieldsForRecordType,
     createRecordLabel,
-    fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
 
 var {

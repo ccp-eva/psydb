@@ -60,9 +60,9 @@ module.exports = {
     //experimentCalendar: (
     //    require('./calendars/experiment-calendar')
     //),
-    locationExperimentCalendar: (
-        require('./calendars/location-experiment-calendar')
-    ),
+    //locationExperimentCalendar: (
+    //    require('./calendars/location-experiment-calendar')
+    //),
     
     reservableLocationTimeTable: (
         require('./calendars/reservable-location-time-table')
