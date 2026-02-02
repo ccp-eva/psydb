@@ -21,42 +21,15 @@ var {
     SeperateRecordLabelDefinitionFieldsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
-var {
-    ExactObject,
-    ForeignId,
-    CustomRecordTypeKey,
-    DateTimeInterval,
-} = require('@mpieva/psydb-schema-fields');
-
-var RequestBodySchema = () => ExactObject({
-    properties: {
-        locationType: CustomRecordTypeKey({ collection: 'location' }),
-        researchGroupId: ForeignId({ collection: 'researchGroup' }),
-        interval: DateTimeInterval(),
-        
-        studyId: ForeignId({ collection: 'study' }),
-        experimentType: {
-            type: 'string',
-            enum: ['inhouse', 'online-video-call', 'away-team'],
-        },
-    },
-    required: [
-        'locationType',
-        'researchGroupId',
-        'experimentType',
-        'interval',
-    ]
-})
+var BodySchema = require('./body-schema');
+var fetchStudyRecords = require('./fetch-study-records');
+var fetchLabTeamRecords = require('./fetch-lab-team-records');
 
 var locationExperimentCalendar = async (context, next) => {
-    var { 
-        db,
-        permissions,
-        request,
-    } = context;
+    var {  db, permissions, request, } = context;
 
     validateOrThrow({
-        schema: RequestBodySchema(),
+        schema: BodySchema(),
         payload: request.body
     });
 
@@ -83,36 +56,19 @@ var locationExperimentCalendar = async (context, next) => {
         ],
         checkJoin: 'or',
     });
+    
+    // FIXME:root should have all available research groups in permissions
+    var allowedResearchGroupIds = permissions.getResearchGroupIds(
+        researchGroupId ? [ researchGroupId ] : undefined
+    );
 
-    var studyRecords = []
-    if (studyId) {
-        studyRecords = await (
-            db.collection('study').find({
-                _id: studyId,
-            }).toArray()
-        );
-    }
-    else {
-        studyRecords = await (
-            db.collection('study').aggregate([
-                MatchIntervalAroundStage({
-                    recordIntervalPath: 'state.runningPeriod',
-                    recordIntervalEndCanBeNull: true,
-                    start,
-                    end,
-                }),
-                { $match: {
-                    // FIXME: showPast needs to control that
-                    // also i assume someone set study to hidden
-                    // but didnt set runningPeriod.end?
-                    'state.systemPermissions.isHidden': { $ne: true },
-                    'state.researchGroupIds': researchGroupId
-                }}
-            ]).toArray()
-        );
-    }
-
+    var studyRecords = await fetchStudyRecords({
+        db, studyId, interval,
+        researchGroupIds: allowedResearchGroupIds,
+        labMethods: [ experimentType ],
+    });
     var studyIds = studyRecords.map(it => it._id);
+    //var studiesById = keyBy({ items: studyRecords, byProp: '_id' });
 
     var experimentRecords = await (
         db.collection('experiment').aggregate([
@@ -227,28 +183,16 @@ var locationExperimentCalendar = async (context, next) => {
         records: reservationRecords
     })
 
-    //console.dir(locationRelated, { depth: null });
-
-    //console.log(experimentRecords);
-
-    var experimentOperatorTeamRecords = await (
-        db.collection('experimentOperatorTeam').aggregate([
-            { $match: {
-                studyId: { $in: studyIds },
-                $or: [
-                    { 'state.hidden': false },
-                    { _id: { $in: [
-                        ...experimentRecords.map(it => (
-                            it.state.experimentOperatorTeamId
-                        )),
-                        ...reservationRecords.map(it => (
-                            it.state.experimentOperatorTeamId
-                        ))
-                    ]}},
-                ]
-            }},
-        ]).toArray()
-    );
+    var labTeamRecords = await fetchLabTeamRecords({
+        db, studyIds, labMethods: [ experimentType ], labTeamIds: [
+            ...experimentRecords.map(it => (
+                it.state.experimentOperatorTeamId
+            )),
+            ...reservationRecords.map(it => (
+                it.state.experimentOperatorTeamId
+            ))
+        ]
+    });
 
     var locationRecordsById = keyBy({
         items: locationRecords,
@@ -281,7 +225,7 @@ var locationExperimentCalendar = async (context, next) => {
             reservationRecords,
             reservationRelated,
 
-            experimentOperatorTeamRecords,
+            experimentOperatorTeamRecords: labTeamRecords,
 
             locationRecordsById,
             locationRelated,

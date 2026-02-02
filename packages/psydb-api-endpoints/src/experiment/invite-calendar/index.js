@@ -80,7 +80,7 @@ var experimentCalendar = async (context, next) => {
         experimentOperatorTeamIds,
     });
  
-    var labTeams = await fetchLabTeamRecords({
+    var labTeamRecords = await fetchLabTeamRecords({
         db,
         studyIds: filteredStudyIds,
         labMethods: allowedExperimentTypes,
@@ -155,7 +155,7 @@ var experimentCalendar = async (context, next) => {
                 ...it,
                 _canFollowUp: studiesById[it.state.studyId].state.enableFollowUpExperiments
             })),
-            experimentOperatorTeamRecords: labTeams,
+            experimentOperatorTeamRecords: labTeamsRecords,
             experimentRelated,
             subjectRecordsById,
             subjectRelated: __subjectRelated,
