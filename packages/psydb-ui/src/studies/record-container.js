@@ -10,7 +10,7 @@ import {
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     useRevision,
     usePermissions,
@@ -55,7 +55,9 @@ const StudyRecordContainer = (ps) => {
     var { id, tabKey } = useParams();
     var history =  useHistory();
 
-    var translate = useUITranslation();
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
+    var [{ translate }] = useI18N();
+
     var permissions = usePermissions();
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
     var canViewStudyLabOpsSettings = permissions.hasFlag('canViewStudyLabOpsSettings');
@@ -105,6 +107,16 @@ const StudyRecordContainer = (ps) => {
         ),
     ].filter(it => !!it);
 
+    var titleparts = [
+        translate('Study Details'),
+        ' - ',
+        fetchedStudy.record.state.name
+    ]
+
+    if (!IS_WKPRC) {
+        titleparts.push(' ', `(${fetchedStudy.record.state.shorthand})`)
+    }
+
     return (
         <>
             <div className='border pl-3 bg-light'>
@@ -112,11 +124,7 @@ const StudyRecordContainer = (ps) => {
                     className='d-flex justify-content-between align-items-end'
                     style={{ minHeight: '38px' }}
                 >
-                    { translate('Study Details') }
-                    {' - '}
-                    { fetchedStudy.record.state.name }
-                    {' '}
-                    ({ fetchedStudy.record.state.shorthand })
+                    { titleparts.join('') }
                 </h5>
                 <hr />
 

@@ -27,8 +27,6 @@ export const NegatableHelperSetItemIdList = withField({ Control: (ps) => {
         setFieldValue(dataXPath, { any: true, negate: true, values: [] })
     );
 
-    console.log(value);
-
     var activeTab = 'no-condition';
     if (value) {
         activeTab = 'specific';

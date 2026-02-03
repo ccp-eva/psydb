@@ -12,12 +12,13 @@ COPY rush.json /usr/src/app/
 
 COPY common common
 COPY packages packages
+COPY tools-extra tools-extra
 # NOTE make image smaller
 RUN rm -rf ./packages/psydb-fixtures/bson
 
 RUN NODE_ENV=production \
    && apk add --no-cache make gcc g++ python3 curl git sed grep \
-   && node ./common/scripts/install-run-rush.js update \
+   && MONGOMS_DISABLE_POSTINSTALL=1 node ./common/scripts/install-run-rush.js update \
    && node ./common/scripts/install-run-rush.js deploy --target-folder deploy/ \
    && rm -rf ./common/temp/install-run \
    && apk del make gcc g++ python3 curl git sed grep
@@ -25,7 +26,7 @@ RUN NODE_ENV=production \
 COPY packages/psydb-ui/dist/ deploy/packages/psydb-ui/dist
 
 # NEW STAGE
-FROM node:18.20.4-alpine3.20
+FROM node:22.14.0-alpine3.20
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app

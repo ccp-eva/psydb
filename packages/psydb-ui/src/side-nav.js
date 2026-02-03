@@ -45,10 +45,10 @@ var generateNavItems = (ps) => {
     var pass = { permissions, config, translate };
 
     var out = [];
-    for (var it of items) {
+    for (var [ ix, it ] of items.entries()) {
         if (typeof it === 'string') {
             out.push(
-                <div className='border-top mt-2 mb-2' />
+                <div key={ ix } className='border-top mt-2 mb-2' />
             )
             continue;
         }
@@ -57,7 +57,7 @@ var generateNavItems = (ps) => {
         if (prefix) {
             path = prefix + path
         }
-
+            
         var label = getNavItemLabel({ path });
 
         if (subnav) {
@@ -66,21 +66,27 @@ var generateNavItems = (ps) => {
             });
             if (subitems.length > 0) {
                 out.push(
-                    <Link to={ path }><b>{ translate(label) }</b></Link>
+                    <Link to={ path } key={ ix }>
+                        <b>{ translate(label) }</b>
+                    </Link>
                 )
                 out.push(
-                    <Nav className='flex-column pl-3'>{ subitems }</Nav>
+                    <Nav className='flex-column pl-3' key={ ix + 'SN'}>
+                        { subitems }
+                    </Nav>
                 );
             }
         }
         else {
-            var show = (
-                checkNavItemEnabled({ path, config })
-                && checkNavItemAllowed({ path, permissions })
-            );
+            var isEnabled = checkNavItemEnabled({ path, config });
+            var isAllowed = checkNavItemAllowed({ path, permissions });
+            var show = (isEnabled && isAllowed);
+            
             if (show) {
                 out.push(
-                    <Link to={ path }>{ translate(label) }</Link>
+                    <Link to={ path } key={ ix }>
+                        { translate(label) }
+                    </Link>
                 )
             }
         }
@@ -116,26 +122,28 @@ var checkNavItemEnabled = (bag) => {
 
 var checkNavItemAllowed = (bag) => {
     var { path, permissions } = bag;
-    var { hasSomeLabOperationLags, hasSomeFlags, isRoot } = permissions;
-
-    console.log(permissions);
+    var { hasSomeLabOperationFlags, hasSomeFlags, isRoot } = permissions;
 
     if (isRoot()) {
         return true;
     }
-    
+   
     switch (path) {
-        case '/calendars/inhouse-appointments':
+        case '/calendars/reception':
+            return hasSomeFlags([
+                'canViewReceptionCalendar',
+            ]);
+        case '/calendars/inhouse':
             return hasSomeLabOperationFlags({
                 types: [ 'inhouse' ],
                 flags: [ 'canViewExperimentCalendar' ]
             });
-        case '/calendars/away-team-appointments':
+        case '/calendars/away-team':
             return hasSomeLabOperationFlags({
                 types: [ 'away-team' ],
                 flags: [ 'canViewExperimentCalendar' ]
             });
-        case '/calendars/video-appointments':
+        case '/calendars/online-video-call':
             return hasSomeLabOperationFlags({
                 types: [ 'online-video-call' ],
                 flags: [ 'canViewExperimentCalendar' ]
@@ -143,7 +151,7 @@ var checkNavItemAllowed = (bag) => {
 
         case '/lab-operation/reservation':
             return hasSomeLabOperationFlags({ types: 'any', flags: [
-                'canWriteResevations'
+                'canWriteReservations'
             ]});
         case '/lab-operation/subject-selection':
             return hasSomeLabOperationFlags({ types: 'any', flags: [
@@ -167,6 +175,11 @@ var checkNavItemAllowed = (bag) => {
             return hasSomeFlags([
                 'canReadStudies',
                 'canWriteStudies'
+            ]);
+        case '/locations':
+            return hasSomeFlags([
+                'canReadLocations',
+                'canWriteLocations'
             ]);
         case '/external-persons':
             return hasSomeFlags([

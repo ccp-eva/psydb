@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"psydb.mqMessageQueue"}],"uuid":"69fa4d0bb6dd480b948b9534136e37c3","collectionName":"mqMessageQueue"}

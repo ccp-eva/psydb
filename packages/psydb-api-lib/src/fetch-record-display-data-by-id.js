@@ -3,7 +3,7 @@ var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
 
 var fetchOneCustomRecordType = require('./fetch-one-custom-record-type');
 var gatherDisplayFieldsForRecordType = require('./gather-display-fields-for-record-type');
-var fetchRelatedLabelsForMany = require('./fetch-related-labels-for-many');
+var fetchRelatedLabelsForMany = require('./fetch-related-labels-for-many-ng');
 var createRecordLabel = require('./create-record-label');
 
 var {

@@ -10,8 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "debug": "~4.3.4",
-    "superagent": "~6.1.0",
-    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-timezone-helpers": "workspace:~0.1.0-alpha"
+    "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-timezone-helpers": "workspace:*",
+    "@mpieva/psydb-axios-wrapper-nodejs": "workspace:*"
   }
 }

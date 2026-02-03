@@ -15,11 +15,7 @@ var RequestBodySchema = require('./request-body-schema');
 
 
 var studyExtendedSearch = async (context, next) => {
-    var {
-        db,
-        permissions,
-        request
-    } = context;
+    var { db, permissions, request, apiConfig } = context;
 
     var precheckBody = copy(request.body);
     validateOrThrow({
@@ -27,16 +23,13 @@ var studyExtendedSearch = async (context, next) => {
         payload: precheckBody
     });
 
-    var {
-        studyType
-    } = precheckBody;
-
+    var { studyType } = precheckBody;
     var crtSettings = await fetchCRTSettings({
         db, collectionName: 'study', recordType: studyType,
     });
 
     validateOrThrow({
-        schema: RequestBodySchema.Full(crtSettings),
+        schema: RequestBodySchema.Full({ apiConfig, crtSettings }),
         payload: request.body
     });
 

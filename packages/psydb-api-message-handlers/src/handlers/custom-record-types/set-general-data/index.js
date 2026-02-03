@@ -123,10 +123,11 @@ var triggerSystemEvents = async (context) => {
 }
 
 var maybeUpdateFormOrder = (record, key, flag) => {
-    if (record.state.formOrder.includes(key) && !flag) {
+    // FIXME: initialize form order empty [] on create?
+    if (record.state.formOrder?.includes(key) && !flag) {
         return { $pull: { 'state.formOrder': { $in: [ key ] }}}
     }
-    else if (!record.state.formOrder.includes(key) && flag) {
+    else if (!record.state.formOrder?.includes(key) && flag) {
         return { $push: { 'state.formOrder': { $each: [ key ] }}}
     }
     else {

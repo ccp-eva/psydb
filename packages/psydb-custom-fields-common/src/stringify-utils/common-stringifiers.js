@@ -39,15 +39,26 @@ var JustTranslate = (options = {}) => {
 }
 
 var JustLocaleDate = (options = {}) => {
-    var { format = 'P p', ...pass } = options;
+    var {
+        format = 'P p',
+        fallbackFormat = 'yyyy-MM-dd HH:mm:ss',
+        ...pass
+    } = options;
 
     return createStringifyValue({ ...pass, fn: (bag) => {
-        var { value, i18n: { locale, timezone = undefined }} = bag;
+        var { value, i18n = {}} = bag;
+        var { locale = undefined, timezone = undefined } = i18n;
         
+        var _format = format;
+        if (!locale) {
+            _format = fallbackFormat;
+        }
+
+        var d = new Date(value);
         return (
             timezone
-            ? formatInTimeZone(new Date(value), timezone, format, { locale })
-            : formatDate(new Date(value), format, { locale })
+            ? formatInTimeZone(d, timezone, _format, { locale })
+            : formatDate(d, _format, { locale })
         )
     }});
 }

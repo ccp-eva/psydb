@@ -10,8 +10,8 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
         if (col === 'experiment_name') {
             return 'experimentName';
         }
-        if (col === 'daily_running_No' || col === 'daily_running_no') {
-            return 'intradaySeqNumber';
+        if (col === 'condition') {
+            return 'conditionName';
         }
         if (col === 'year') {
             return 'year';
@@ -25,6 +25,9 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
         if (col === 'location') {
             return 'locationId';
         }
+        if (col === 'group') {
+            return 'subjectGroupId';
+        }
         if (col === 'room_enclosure') {
             return 'roomOrEnclosure';
         }
@@ -35,11 +38,14 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
             var [ _unused, ix = 0 ] = col.split('_');
             return `subjectData[${ix}].subjectId`;
         }
-        if (/^role(_\d+?)/.test(col)) {
+        if (/^role(_\d+)?/.test(col)) {
             var [ _unused, ix = 0 ] = col.split('_');
             return `subjectData[${ix}].role`;
         }
-        if (/^comment(_\d?)/.test(col)) {
+        if (/^comment$/.test(col)) {
+            return '__subjectData_comment';
+        }
+        if (/^comment(_\d+)?/.test(col)) {
             var [ _unused, ix = 0 ] = col.split('_');
             return `subjectData[${ix}].comment`;
         }
@@ -48,7 +54,7 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
         }
     }
 
-    remapper.obj2csv = (bag) => {
+    remapper.ajvpath2csv = remapper.obj2csv = (bag) => {
         var { path } = bag;
 
         var mapping = {
@@ -70,8 +76,8 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
             ],
 
             experiment_name: [{ key: 'experimentName', type: 'scalar' }],
+            condition: [{ key: 'conditionName', type: 'scalar' }],
             room_enclosure: [{ key: 'roomOrEnclosure', type: 'scalar' }],
-            daily_running_No: [{ key: 'intradaySeqNumber', type: 'scalar' }],
             location: [{ key: 'locationId', type: 'scalar' }],
             trial_participants: [
                 { key: 'totalSubjectCount', type: 'scalar' }

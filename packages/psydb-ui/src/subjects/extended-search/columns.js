@@ -1,8 +1,8 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
-import { CRTSettings } from '@mpieva/psydb-common-lib';
-import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { CRTSettings, SmartArray } from '@mpieva/psydb-common-lib';
+import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib';
@@ -16,21 +16,32 @@ const ColumnSelect = withField({
 export const Columns = (ps) => {
     var { formData, crtSettings, schema } = ps;
     
-    var [ language ] = useUILanguage();
-    var translate = useUITranslation();
-    var permissions = usePermissions();
-    
+    var {
+        showOnlineId,
+        showSequenceNumber,
+        requiresTestingPermissions,
+    } = crtSettings;
+
+    var [{ translate, language }] = useI18N();
+    var { isRoot, hasFlag } = usePermissions();
+    var {
+        dev_enableWKPRCPatches = false,
+        dev_enableSubjectDuplicatesSearch = false
+    } = useUIConfig();
+
     var crt = CRTSettings({ data: crtSettings });
     var customColumns = (
-        crt.allCustomFields()
-        .filter(it => !it.isRemoved)
-        .map(it => {
-            var { pointer, displayName, displayNameI18N = {} } = it;
-            return {
-                pointer,
-                label: displayNameI18N[language] || displayName
-            }
+        crt.findCustomFields({
+            'isRemoved': { $ne: true },
+            $or: [
+                { 'props.isSensitive': { $ne: true }},
+                { 'props.isSensitive': hasFlag('canAccessSensitiveFields') },
+            ]
         })
+        .map(it => ({
+            pointer: it.pointer,
+            label: translate.fieldDefinition(it),
+        }))
     );
 
     // FIXME: generalzie the creation of the field parts
@@ -69,67 +80,82 @@ export const Columns = (ps) => {
         }
     }
 
-    var sortableColumns = [
-        { pointer: '/sequenceNumber', label: translate('ID No.') },
-        { pointer: '/onlineId', label: translate('Online ID Code') },
-        ...(permissions.isRoot() ? [
+    var sortableColumns = SmartArray([
+        ( showSequenceNumber && (
+            { pointer: '/sequenceNumber', label: translate('ID No.') }
+        )),
+        ( showOnlineId && (
+            { pointer: '/onlineId', label: translate('Online ID Code') }
+        )),
+        ( isRoot() &&  (
             { pointer: '/_id', label: translate('Internal ID') }
-        ] : []),
+        )),
         ...customColumns,
 
         ...addressFieldExtraBlocks.reduce((acc, block) => ([
             ...acc, ...block
         ]), []),
-    ];
+    ]);
 
     var specialColumns = [
-        { 
-            pointer: '/_specialStudyParticipation',
-            label: translate('Studies')
-        },
+        ...(!dev_enableWKPRCPatches ? [
+            { 
+                pointer: '/_specialStudyParticipation',
+                label: translate('Studies')
+            },
+            {
+                pointer: '/_specialUpcomingExperiments',
+                label: translate('Appointments')
+            },
+            {
+                pointer: '/_specialHistoricExperimentLocations',
+                label: translate('Historical Appointment Locations')
+            },
+            {
+                pointer: '/_specialAgeToday',
+                label: translate('Age Today')
+            },
+        ] : []),
+
         {
-            pointer: '/_specialUpcomingExperiments',
-            label: translate('Appointments')
-        },
-        {
-            pointer: '/_specialHistoricExperimentLocations',
-            label: translate('Historical Appointment Locations')
-        },
-        {
-            pointer: '/_specialAgeToday',
-            label: translate('Age Today')
-        },
-        ...((
-            !crtSettings.commentFieldIsSensitive
-            || permissions.hasFlag('canAccessSensitiveFields')
-        ) ? [{
             pointer: '/scientific/state/comment',
             label: translate('Comment')
-        }] : []),
+        }
     ];
 
     var columnBlocks = [
-        [
-            { pointer: '/sequenceNumber', label: translate('ID No.') },
-            { 
-                pointer: '/_mergedDuplicateSequenceNumber',
-                label: translate('ID No. (from Duplicate)')
-            },
+        SmartArray([
+            ( showSequenceNumber && (
+                { pointer: '/sequenceNumber', label: translate('ID No.') }
+            )),
+            ( showSequenceNumber && dev_enableSubjectDuplicatesSearch && (
+                { 
+                    pointer: '/_mergedDuplicateSequenceNumber',
+                    label: translate('ID No. (from Duplicate)')
+                }
+            )),
 
-            { pointer: '/onlineId', label: translate('Online ID Code') },
-            {
-                pointer: '/_mergedDuplicateOnlineId',
-                label: translate('Online ID Code (from Duplicate)')
-            },
+            ( showOnlineId && (
+                { pointer: '/onlineId', label: translate('Online ID Code') }
+            )),
+            ( showOnlineId && dev_enableSubjectDuplicatesSearch && (
+                {
+                    pointer: '/_mergedDuplicateOnlineId',
+                    label: translate('Online ID Code (from Duplicate)')
+                }
+            )),
 
-            ...(permissions.isRoot() ? [
-                { pointer: '/_id', label: translate('Internal ID') },
+            ( isRoot() && (
+                { pointer: '/_id', label: translate('Internal ID') }
+            )),
+            ( isRoot() && dev_enableSubjectDuplicatesSearch && (
                 {
                     pointer: '/_mergedDuplicateId',
                     label: translate('Internal ID (from Duplicate)')
-                },
-            ] : []),
-        ],
+                }
+            )),
+        ]),
+
         customColumns,
         ...addressFieldExtraBlocks,
         specialColumns,

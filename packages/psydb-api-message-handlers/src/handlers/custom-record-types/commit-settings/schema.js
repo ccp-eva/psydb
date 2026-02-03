@@ -15,7 +15,7 @@ var Schema = () => {
         payload: ExactObject({
             properties: {
                 id: Id(),
-                lastKnownEventId: EventId(),
+                lastKnownEventId: EventId(), // FIXME: remove
             },
             required: [
                 'id',

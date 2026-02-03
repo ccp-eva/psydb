@@ -1,6 +1,6 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { ButtonGroup, Button } from '@mpieva/psydb-ui-layout';
 import { GenericEnum } from './generic-enum';
 
@@ -9,7 +9,7 @@ export const ExtBool = withField({ Control: (ps) => {
     var { setFieldValue } = formikForm;
     var { value } = formikField;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var bag = {
         value,
@@ -29,11 +29,18 @@ export const ExtBool = withField({ Control: (ps) => {
 
 var Yes = (ps) => {
     var { value, onChange, disabled } = ps;
+    var { branding } = useUIConfig();
+    
     var variant = (
-        disabled
-        ? 'secondary'
+        branding?.options?.useSuccessColorForYesValues
+        ? 'success'
         : 'primary'
     );
+
+    if (disabled) {
+        variant = 'secondary';
+    }
+
     return (
         <YNButton
             active={ value === 'yes' }

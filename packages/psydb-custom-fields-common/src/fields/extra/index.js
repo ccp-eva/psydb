@@ -14,4 +14,6 @@ module.exports = {
     PersonnelResearchGroupSettingsList: (
         require('./personnel-research-group-settings-list')
     ),
+
+    CustomRecordTypeKey: require('./custom-record-type-key'),
 }

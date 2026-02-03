@@ -15,5 +15,20 @@ if [ -z $DUMP ]; then
 fi
 
 echo $DUMP
-mongo --host localhost:47017 psydb --eval "printjson(db.dropDatabase())"
-mongorestore --gzip --host localhost:47017 --drop -d psydb $DUMP/psydb/
+DID_DROP=0
+if [ -z "$(which mongo)" ]; then
+    mongosh --host localhost:47017 \
+        --eval "db.getSiblingDB('psydb').dropDatabase()" \
+        && DID_DROP=1
+else
+    mongo --host localhost:47017 psydb \
+        --eval "printjson(db.dropDatabase())" \
+        && DID_DROP=1
+fi
+
+if [ "$DID_DROP" -eq 0 ]; then
+    echo "could not drop db, exiting"
+    exit 1;
+else
+    mongorestore --gzip --host localhost:47017 --drop -d psydb $DUMP/psydb/
+fi

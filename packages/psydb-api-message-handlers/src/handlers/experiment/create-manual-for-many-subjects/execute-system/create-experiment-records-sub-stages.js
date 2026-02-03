@@ -77,7 +77,7 @@ var addApestudiesWKPRCDefaultExtraState = async (context, next) => {
     
     var pass = only({ from: message.payload, keys: [
         'subjectGroupId', 'experimentName', 'roomOrEnclosure',
-        'intradaySeqNumber', 'totalSubjectCount',
+        'totalSubjectCount',
     ]})
     var { subjectGroupId } = pass; 
     var {

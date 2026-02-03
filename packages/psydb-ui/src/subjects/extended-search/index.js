@@ -129,8 +129,6 @@ const ExtendedSearch = (ps) => {
         ))
     );
 
-    console.log(defaultColumns);
-
     var defaultValues = {
         subjectType: recordType,
         customGdprFilters: {},

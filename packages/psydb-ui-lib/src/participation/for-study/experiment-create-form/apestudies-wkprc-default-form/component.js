@@ -181,11 +181,6 @@ const BranchFields = (ps) => {
         return (
             <>
                 <Fields.DateOnlyTimestamp required />
-                <Fields.Integer
-                    label={ translate('_wkprc_intradaySeqNumber') }
-                    dataXPath='$.intradaySeqNumber'
-                    required
-                />
 
                 <Fields.ForeignId
                     label={ translate('Subject') }
@@ -213,11 +208,6 @@ const BranchFields = (ps) => {
         return (
             <>
                 <Fields.DateOnlyTimestamp required />
-                <Fields.Integer
-                    label={ translate('_wkprc_intradaySeqNumber') }
-                    dataXPath='$.intradaySeqNumber'
-                    required
-                />
                 <GroupExpSubjectFields
                     label={ translate('Subjects') }
                     { ...getMultiSubjectsBag(ps) }

@@ -51,6 +51,7 @@ const Defaults = () => {
 
         canReadPersonnel: false,
         canWritePersonnel: false,
+        canAllowLogin: false,
         canSetPersonnelPassword: false,
 
         canReadStudies: false,

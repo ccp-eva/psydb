@@ -5,7 +5,6 @@ import { withField } from '@cdxoo/formik-utils';
 export const PlainRadio = withField({
     Control: (ps) => {
         var { dataXPath, formikField, disabled, label } = ps;
-        console.log(ps);
         return (
             <Form.Check
                 id={ `${dataXPath}-${formikField.value}` }

@@ -1,8 +1,7 @@
 'use strict';
-var { 
-    groupBy, entries, convertPointerToPath
-} = require('@mpieva/psydb-core-utils');
-var aggregateToArray = require('../../../aggregate-to-array');
+var { groupBy, entries, convertPointerToPath, ejson }
+    = require('@mpieva/psydb-core-utils');
+var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 
 var aggregateFromRefs = async (bag) => {
     var { db, pointers, extraMatch, ...rest } = bag;
@@ -16,6 +15,10 @@ var aggregateFromRefs = async (bag) => {
             { $match: {
                 [path]: { $in: values },
                 ...extraMatch,
+                $and: [
+                    { 'scentific.state.internals.isRemoved': { $ne: true }},
+                    { 'state.internals.isRemoved': { $ne: true }},
+                ]
             }},
             { $project: {
                 _id: true,
@@ -26,7 +29,7 @@ var aggregateFromRefs = async (bag) => {
             }}
         ];
 
-        //console.log(stages);
+        //console.dir(ejson(stages), { depth: null });
 
         return aggregateToArray({ db, [collection]: stages })
     }));

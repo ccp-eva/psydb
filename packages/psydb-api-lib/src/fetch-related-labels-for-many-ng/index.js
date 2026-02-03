@@ -17,8 +17,8 @@ var resolvePossibleRefs = require('../resolve-possible-refs');
 var gatherAllRefValues = require('../gather-all-ref-values');
 var createSchemaForRecordType = require('../create-schema-for-record-type');
 
+var fetchCRTLabels = require('../fetch-crt-labels');
 var fetchRecordLabels = require('./fetch-record-labels');
-var fetchCRTLabels = require('./fetch-crt-labels');
 var fetchHelperSetItemLabels = require('./fetch-helper-set-item-labels');
 
 var fetchRelatedLabelsForMany = async (bag) => {

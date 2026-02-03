@@ -1,20 +1,33 @@
 'use strict';
+var locale = require('date-fns/locale/de');
+
 var mongoHelpers = require('@cdxoo/mongo-test-helpers');
 var restore = require('@cdxoo/mongodb-restore');
+
+var { ejson } = require('@mpieva/psydb-core-utils');
 
 var doConnectLocal = require('./do-connect-local');
 var doRestore = require('./do-restore');
 var createKoaContext = require('./create-koa-context');
 
+console.ejson = (that, options = {}) => {
+    console.dir(ejson(that), { depth: null, ...options })
+}
+
 var beforeAll = async function () {
     this.context = {
         mongo: {},
+        i18n: { timezone: 'Europe/Berlin', language: 'de', locale }
     };
     
     await mongoHelpers.startup(this.context.mongo)();
 
     this.getMongoContext = () => {
         return this.context.mongo.local || this.context.mongo;
+    }
+
+    this.getI18N = () => {
+        return this.context.i18n;
     }
 
     this.getDbHandle = () => {

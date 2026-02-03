@@ -13,11 +13,13 @@ var openChannel = async (options) => {
         id,
         sequenceNumber,
     } = options;
-   
-    var sequenceNumber = await findAndUpdateSequenceNumber({
-        db, collection, recordType,
-        desiredSequenceNumber: sequenceNumber
-    });
+
+    if (op === 'create') {
+        var sequenceNumber = await findAndUpdateSequenceNumber({
+            db, collection, recordType,
+            desiredSequenceNumber: sequenceNumber
+        });
+    }
 
     await db.collection(collection).ensureIndex({
         ...( recordType && { type: 1 }),

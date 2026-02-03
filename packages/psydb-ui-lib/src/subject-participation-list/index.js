@@ -137,7 +137,7 @@ const ParticipationByType = (ps) => {
     if (studyTypes.length < 1) {
         return (
             <Alert variant='info'>
-                <i className='text-muted'>
+                <i>
                     { translate('No study participations found.') }
                 </i>
             </Alert>

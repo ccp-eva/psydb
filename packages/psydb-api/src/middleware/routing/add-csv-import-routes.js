@@ -1,6 +1,5 @@
 'use strict';
 var endpoints_SPLIT = require('@mpieva/psydb-api-endpoints');
-var endpoints = require('../../endpoints/');
 var { withPostStages, withGetStages } = require('./stage-helpers');
 
 var addCSVImportRoutes = (bag) => {
@@ -9,7 +8,7 @@ var addCSVImportRoutes = (bag) => {
     // XXX: is that still used??
     router.post(
         '/csv-import/preview/wkprc-apestudies-default',
-        ...withPostStages({ endpoint: endpoints.csvImport.preview })
+        ...withPostStages({ endpoint: endpoints_SPLIT.csvImport.preview })
     );
 
     addExperimentImportRoutes({ router });
@@ -21,7 +20,7 @@ var addExperimentImportRoutes = (bag) => {
     
     var {
         search, read, relatedExperiments, preview
-    } = endpoints.csvImport.experiment;
+    } = endpoints_SPLIT.csvImport.experiment;
     
     router.post(
         '/csv-import/experiment/search',
@@ -54,7 +53,7 @@ var addSubjectImportRoutes = (bag) => {
    
     var {
         search, read, relatedSubjects, preview
-    } = endpoints.csvImport.subject;
+    } = endpoints_SPLIT.csvImport.subject;
 
     router.post(
         '/csv-import/subject/search',

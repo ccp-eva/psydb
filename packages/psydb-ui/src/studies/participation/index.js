@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 import { __fixRelated, __fixDefinitions } from '@mpieva/psydb-common-compat';
-import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetchAll,
@@ -19,6 +19,7 @@ import {
 
 import { CreateModal } from '@mpieva/psydb-ui-lib/src/participation/for-study';
 import ParticipationList from './participation-list';
+import WKPRCCSVExportButton from './wkprc-csv-export-button';
 import CSVImportModal from './csv-import-modal';
 
 
@@ -30,6 +31,7 @@ const StudyParticipation = (ps) => {
     var { path, url } = useRouteMatch();
     var { id } = useParams();
 
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
     var [{ translate, locale, language }] = useI18N();
     var revision = useRevision();
 
@@ -131,11 +133,19 @@ const StudyParticipation = (ps) => {
                     ) : (
                         <div />
                     )}
-                    <div>
+                    <div className='d-flex gapx-3'>
                         { canAddSubjects && (
                             <Button onClick={ createModal.handleShow }>
                                 { translate('Add Participation') }
                             </Button>
+                        )}
+                        { IS_WKPRC && (
+                            <WKPRCCSVExportButton
+                                endpoint='wkprc-csv-export/participation'
+                                outputName='participation-export.csv'
+                                studyId={ id }
+                                subjectType={ selectedSubjectType }
+                            />
                         )}
                         
                         {/* canImportCSV && (

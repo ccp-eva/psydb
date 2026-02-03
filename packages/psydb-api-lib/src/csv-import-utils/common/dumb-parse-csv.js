@@ -8,13 +8,24 @@ var { CSVImportError } = require('../errors');
 
 var dumbParseCSV = (data, { customColumnRemap } = {}) => {
     var csvColumns, csvLines;
+
+    var commonParseOptions = {
+        delimiter: [ ',', ';' ],
+        trim: true,
+        skip_empty_lines: true,
+        skip_records_with_empty_values: true,
+    }
+
     try {
         // XXX: i think csvLines is used in ui for error message
         // so we just parse this twice for now
-        var [ csvColumns, ...csvLines ] = parseCSV(data);
+        var [ csvColumns, ...csvLines ] = parseCSV(data, {
+            ...commonParseOptions,
+        });
 
         var parsed = parseCSV(data, {
-            columns: true,
+            ...commonParseOptions,
+            columns: true, // make object literals
             cast: (value) => {
                 if (['TRUE','FALSE', 'true', 'false'].includes(value)) {
                     return (value.toLowerCase() === 'true')

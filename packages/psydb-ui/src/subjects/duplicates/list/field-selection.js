@@ -4,12 +4,12 @@ import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
 
 const FieldSelection = (ps) => {
-    var { crtSettings, selection } = ps;
+    var { recordType, crtSettings, selection } = ps;
     var { dev_subjectDuplicatesSearchFields } = useUIConfig();
     var [{ translate }] = useI18N();
 
     var definitions = crtSettings.findCustomFields({
-        pointer: { $in: dev_subjectDuplicatesSearchFields.child.map(
+        pointer: { $in: dev_subjectDuplicatesSearchFields[recordType].map(
             it => arrify(it)[0]
         )}
     });
