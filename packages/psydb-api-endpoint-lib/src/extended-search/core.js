@@ -199,7 +199,7 @@ var extendedSearchCore = async (bag) => {
    
     var [ sortdef ] = crtSettings.findCustomFields({ pointer: sort.column });
     // XXX: hotfix
-    if (sortdef.systemType === 'Address') {
+    if (sortdef?.systemType === 'Address') {
         sort.column += '/street'
     }
 
