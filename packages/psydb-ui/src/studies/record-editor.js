@@ -3,7 +3,7 @@ import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { only } from '@mpieva/psydb-core-utils';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
 import { Pair } from '@mpieva/psydb-ui-layout';
 import {
@@ -27,8 +27,9 @@ const EditForm = (ps) => {
     
     var { path, url } = useRouteMatch();
     
-    var translate = useUITranslation();
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
     var permissions = usePermissions();
+    var [{ translate }] = useI18N();
 
     var send = useSendPatch({
         collection,
@@ -41,21 +42,28 @@ const EditForm = (ps) => {
         fieldDefinitions,
         permissions
     });
-    
+   
+    var paths = [
+        'name',
+        'shorthand',
+        'runningPeriod',
+        'enableFollowUpExperiments',
+        'researchGroupIds',
+        'scientistIds',
+        'studyTopicIds',
+
+        'custom',
+        'systemPermissions',
+    ];
+
+    if (IS_WKPRC) {
+        paths = paths.filter(it => (![ 'shorthand' ].includes(it)));
+        paths.push('experimentNames');
+    }
+
     var initialValues = only({
         from: record.state,
-        paths: [
-            'name',
-            'shorthand',
-            'runningPeriod',
-            'enableFollowUpExperiments',
-            'researchGroupIds',
-            'scientistIds',
-            'studyTopicIds',
-
-            'custom',
-            'systemPermissions',
-        ]
+        paths: paths
     });
 
     // FIXME: use deep merge
@@ -68,10 +76,7 @@ const EditForm = (ps) => {
         }
     }
 
-    var {
-        sequenceNumber,
-        onlineId
-    } = record;
+    var { sequenceNumber } = record;
 
     var renderedContent = (
         <>

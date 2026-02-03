@@ -128,8 +128,13 @@ var inviteConfirmationList = async (context, next) => {
             { $match: {
                 'type': { $in: experimentTypes },
                 'state.studyId': { $in: studyRecords.map(it => it._id) },
+                'state.isCanceled': { $ne: true },
+                'state.isPostprocessed': { $ne: true },
                 // TODO: only for invitation
+                // XXX: we need to unwind and group back again
+                // to filter partially postprocessed data of experiments
                 'state.subjectData.invitationStatus': 'scheduled',
+                //'state.subjectData.participationStatus': 'unknown',
                 'state.subjectData.subjectType': subjectRecordType
             }},
             StripEventsStage(),

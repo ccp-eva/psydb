@@ -15,6 +15,7 @@ module.exports = [
     ...require('./csv-imports'),
     ...require('./duplicates'),
 
+    ...require('./_error-response-modal'),
     ...require('./_fieldtype'),
     ...require('./_participationStatus'),
     ...require('./_phone'),
@@ -1340,33 +1341,9 @@ module.exports = [
         en: 'Contains invalid duplicate data.',
         de: 'Enthält ungültige Duplikat-Daten.'
     },
-    {
-        internal: '_404_not_found',
-        en: 'Not Found',
-        de: 'Nicht Gefunden'
-    },
-    {
-        internal: '_400_bad_request',
-        en: 'Invalid Values',
-        de: 'Fehlerhafte Eingaben'
-    },
-    {
-        internal: '_XXX_system_error',
-        en: 'System Error',
-        de: 'System-Fehler'
-    },
-    {
-        en: 'The given url could not be found.',
-        de: 'Die angegebene URL konnte nicht gefunden werden.'
-    },
-    {
-        en: 'The data sent contains invalid values.',
-        de: 'Die abgesendeten Daten enthalten fehlerhafte Eingaben.'
-    },
 
     //////////////
     
-
 
     {
         en: 'Missing',
@@ -1485,6 +1462,11 @@ module.exports = [
         de: 'Gruppe'
     },
     {
+        internal: '_wkprc_experimentNames',
+        en: 'Experiment Names',
+        de: 'Namen der Experimente'
+    },
+    {
         internal: '_wkprc_experimentName',
         en: 'Experiment Name',
         de: 'Name des Experiments'
@@ -1538,14 +1520,6 @@ module.exports = [
     {
         en: 'Warning',
         de: 'Warnung'
-    },
-    {
-        en: 'Could not send email!',
-        de: 'E-Mail konnte nicht versand werden!'
-    },
-    {
-        en: 'Mail-Server response is:',
-        de: 'Reponse des Mail-Servers ist:'
     },
 
 
@@ -1660,7 +1634,7 @@ module.exports = [
         de: 'Zwei-Factor-Authentifizierung Erforderlich'
     },
     {
-        en: 'You should have receved an e-mail containing a code, please enter it here.',
+        en: 'You should have received an e-mail containing a code, please enter it here.',
         de: 'Sie sollten eine E-Mail mit einem Code erhalten haben, bitte geben Sie diesen hier ein.'
     },
     {

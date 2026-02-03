@@ -18,7 +18,7 @@ RUN rm -rf ./packages/psydb-fixtures/bson
 
 RUN NODE_ENV=production \
    && apk add --no-cache make gcc g++ python3 curl git sed grep \
-   && node ./common/scripts/install-run-rush.js update \
+   && MONGOMS_DISABLE_POSTINSTALL=1 node ./common/scripts/install-run-rush.js update \
    && node ./common/scripts/install-run-rush.js deploy --target-folder deploy/ \
    && rm -rf ./common/temp/install-run \
    && apk del make gcc g++ python3 curl git sed grep

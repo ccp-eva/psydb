@@ -1,5 +1,5 @@
 import React from 'react';
-import { __fixDefinitions } from '@mpieva/psydb-common-compat';
+import { __fixDefinitions, __fixRelated } from '@mpieva/psydb-common-compat';
 import { Fields } from '@mpieva/psydb-custom-fields-common';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
@@ -29,6 +29,8 @@ const AwayTeamVariant = (ps) => {
     var commentModal = useModalReducer();
     var [{ translate, locale, language }] = useI18N();
 
+    
+    locationData = __fixRelated(locationData);
     var { type: locationType } = locationData.record;
 
     var weekStart = datefns.startOfWeek(new Date(interval.start));

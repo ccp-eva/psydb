@@ -1,8 +1,9 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
-import { CRTSettings } from '@mpieva/psydb-common-lib';
-import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { keyBy } from '@mpieva/psydb-core-utils';
+import { CRTSettings, SmartArray } from '@mpieva/psydb-common-lib';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib';
@@ -14,32 +15,33 @@ const ColumnSelect = withField({
 })
 
 export const Columns = (ps) => {
-    var { formData, crtSettings, schema } = ps;
+    var { formData, crtSettings } = ps;
     
-    var [ language ] = useUILanguage();
-    var translate = useUITranslation();
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
+    var [{ language, translate }] = useI18N();
     var permissions = usePermissions();
     
     var crt = CRTSettings({ data: crtSettings });
     var customColumns = (
-        crt.allCustomFields()
-        .filter(it => !it.isRemoved)
-        .map(it => {
-            var { pointer, displayName, displayNameI18N = {} } = it;
-            return {
-                pointer,
-                label: displayNameI18N[language] || displayName
-            }
-        })
+        crt.findCustomFields({ 'isRemoved': { $ne: true }})
+        .map(it => ({
+            pointer: it.pointer,
+            label: translate.fieldDefinition(it)
+        }))
     );
 
-    var sortableColumns = [
+    var sortableColumns = SmartArray([
         { pointer: '/sequenceNumber', label: translate('ID No.') },
-        ...(permissions.isRoot() ? [
+        
+        ( permissions.isRoot() && (
             { pointer: '/_id', label: translate('Internal ID') }
-        ] : []),
+        )),
+
         { pointer: '/state/name', label: translate('Name') },
-        { pointer: '/state/shorthand', label: translate('Shorthand') },
+
+        ( !IS_WKPRC && (
+            { pointer: '/state/shorthand', label: translate('Shorthand') }
+        )),
 
         { pointer: '/state/runningPeriod/start', label: translate('Start') },
         { pointer: '/state/runningPeriod/end', label: translate('End') },
@@ -48,11 +50,21 @@ export const Columns = (ps) => {
         { pointer: '/state/scientistIds', label: translate('Scientists') },
         { pointer: '/state/studyTopicIds', label: translate('Study Topics') },
         ...customColumns
-    ];
+    ]);
 
-    var staticColumns = [
+    var idColumns = SmartArray([
+        { pointer: '/sequenceNumber', label: translate('ID No.') },
+        ( permissions.isRoot()  && (
+            { pointer: '/_id', label: translate('Internal ID') }
+        )),
+    ])
+
+    var staticColumns = SmartArray([
         { pointer: '/state/name', label: translate('Name') },
-        { pointer: '/state/shorthand', label: translate('Shorthand') },
+        
+        ( !IS_WKPRC && (
+            { pointer: '/state/shorthand', label: translate('Shorthand') }
+        )),
 
         { pointer: '/state/runningPeriod/start', label: translate('Start') },
         { pointer: '/state/runningPeriod/end', label: translate('End') },
@@ -60,7 +72,12 @@ export const Columns = (ps) => {
         { pointer: '/state/researchGroupIds', label: translate('Research Groups') },
         { pointer: '/state/scientistIds', label: translate('Scientists') },
         { pointer: '/state/studyTopicIds', label: translate('Study Topics') },
-    ];
+        
+        ( IS_WKPRC && {
+            pointer: '/state/experimentNames',
+            label: translate('Experiment Name')
+        }),
+    ]);
 
     var specialColumns = [];
 
@@ -71,12 +88,7 @@ export const Columns = (ps) => {
                 orderLabel={ translate('Column Order') }
                 dataXPath='$.columns'
                 columnBlocks={[
-                    [
-                        { pointer: '/sequenceNumber', label: translate('ID No.') },
-                        ...(permissions.isRoot() ? [
-                            { pointer: '/_id', label: translate('Internal ID') }
-                        ] : []),
-                    ],
+                    idColumns,
                     staticColumns,
                     customColumns,
                     //specialColumns,
@@ -88,10 +100,10 @@ export const Columns = (ps) => {
                 <Fields.GenericEnum
                     dataXPath='$.sort.column'
                     label={ translate('Column') }
-                    options={ sortableColumns.reduce((acc, it) => ({
-                        ...acc,
-                        [it.pointer]: it.label
-                    }), {})}
+                    options={ keyBy({
+                        items: sortableColumns, byProp: 'pointer',
+                        transform: it => it.label
+                    })}
                 />
                 <Fields.GenericEnum
                     dataXPath='$.sort.direction'

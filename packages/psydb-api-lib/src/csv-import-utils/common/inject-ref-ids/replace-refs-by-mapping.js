@@ -12,14 +12,25 @@ var replaceRefs = (bag) => {
         var itemReplacements = [];
         var itemReplacementErrors = [];
         for (var m of itemRefMapping) {
-            var { dataPointer, collection, setId = undefined, value } = m;
+            var {
+                dataPointer,
+                collection,
+                setId = undefined,
+                recordType = undefined,
+                value
+            } = m;
+
             var bucket = (
                 collection === 'helperSetItem'
                 ? resolvedHSIs[setId]
                 : resolvedRecords[collection]
             ) || [];
           
-            var matchingItems = bucket.filter(it => it.value === value);
+            var matchingItems = bucket.filter(it => (
+                recordType
+                ? (it.type === recordType && it.value === value)
+                : it.value === value
+            ));
             if (matchingItems.length === 1) {
                 var [ matched ] = matchingItems;
                 jsonpointer.set(targetObjects[ix], dataPointer, matched._id);

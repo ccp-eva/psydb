@@ -35,8 +35,9 @@ const DetailsBody = (ps) => {
         onlineId
     } = record;
 
-    var { isHidden } = record.scientific.state.systemPermissions;
-    var { mergedDuplicates = [] } = record.scientific.state.internals;
+    var { isHidden } = record.scientific.state.systemPermissions || {};
+    // FIXME: make sure internals is initialized properly
+    var { mergedDuplicates = [] } = record.scientific.state.internals || {};
     
     var subjectBag = {
         theme: Themes.HorizontalSplit,

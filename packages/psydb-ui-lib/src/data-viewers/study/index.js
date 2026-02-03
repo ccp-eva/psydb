@@ -3,6 +3,7 @@ import { createBase, withPair, addComponents } from '../core';
 import {
     Custom,
     SaneString,
+    SaneStringList,
     ForeignIdList,
     DateOnlyServerSide,
     DefaultBool,
@@ -23,6 +24,7 @@ const labels = {
     '/state/researchGroupIds': 'Research Groups',
     '/state/scientistIds': 'Scientists',
     '/state/studyTopicIds': 'Study Topics',
+    '/state/experimentNames': '_wkprc_experimentNames',
 }
 
 const [ Study, StudyContext ] = createBase();
@@ -92,7 +94,13 @@ addComponents(Study, StudyContext, labels, [
     {
         cname: 'ExtraDescription',
         Component: ExtraDescription
-    }
+    },
+
+    {
+        cname: 'ExperimentNames',
+        path: '/state/experimentNames',
+        Component: withPair(SaneStringList)
+    },
 ]);
 
 export default Study;

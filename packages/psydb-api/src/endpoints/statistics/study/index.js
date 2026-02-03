@@ -3,11 +3,12 @@ var debug = require('debug')('psydb:api:endpoints:statistics:study');
 
 var datefns = require('date-fns');
 var { only, keyBy, groupBy, unique, ejson } = require('@mpieva/psydb-core-utils');
+var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var {
     ResponseBody,
     validateOrThrow,
     withRetracedErrors,
-    aggregateToArray,
+    fetchCRTLabels,
     SmartArray,
 } = require('@mpieva/psydb-api-lib');
 
@@ -100,7 +101,11 @@ var endpoint = async (context, next) => {
         }
     }
 
-    var participationCountsForStudy = await fetchGroupedParticipationCounts({
+    var workflowParticipationCountsForStudy = await fetchParticipationCountsByWorkflowType({
+        db, studyIds: prefiltered.map(it => it._id),
+        overlapInterval: participationInterval,
+    });
+    var subjectParticipationCountsForStudy = await fetchParticipationCountsBySubjectType({
         db, studyIds: prefiltered.map(it => it._id),
         overlapInterval: participationInterval,
     });
@@ -108,21 +113,34 @@ var endpoint = async (context, next) => {
     var final = [];
     for (var it of prefiltered) {
         var { _id: studyId } = it;
-        var participationCounts = participationCountsForStudy[studyId];
+        var workflowParticipationCounts = workflowParticipationCountsForStudy[studyId];
+        var subjectParticipationCounts = subjectParticipationCountsForStudy[studyId];
 
-        if (participationCounts?.total > 0) {
-            final.push({ ...it, participationCounts });
+        if (workflowParticipationCounts?.total > 0) {
+            final.push({
+                ...it,
+                workflowParticipationCounts,
+                subjectParticipationCounts
+            });
         }
     }
 
+    var related = {
+        crts: await fetchCRTLabels({ db, filter: {
+            collection: 'subject',
+            // recordType: { $in: ()} // FIXME
+        }, keyed: true })
+    }
+
     context.body = ResponseBody({ data: {
-        aggregateItems: final
+        aggregateItems: final,
+        related
     }})
 
     await next();
 }
 
-var fetchGroupedParticipationCounts = async (bag) => {
+var fetchParticipationCountsByWorkflowType = async (bag) => {
     var { db, studyIds, overlapInterval } = bag;
     
     var counts = await aggregateToArray({ db, experiment: SmartArray([
@@ -158,10 +176,49 @@ var fetchGroupedParticipationCounts = async (bag) => {
 
     return keyBy({
         items: counts, byProp: '_id',
-        transform: (it) => ({ total: it.total, ...it.byType })
+        transform: (it) => ({ total: it.total, byType: it.byType })
     });
 }
 
+var fetchParticipationCountsBySubjectType = async (bag) => {
+    var { db, studyIds, overlapInterval } = bag;
+    
+    var counts = await aggregateToArray({ db, experiment: SmartArray([
+        { $match: {
+            'state.studyId': { $in: studyIds },
+            'state.subjectData.participationStatus': 'participated',
+        }},
+        ( overlapInterval && match.IntervalOverlapsOurs({
+            dbpath: 'state.interval', interval: overlapInterval,
+        })),
+
+        { $unwind: '$state.subjectData' },
+        { $match: {
+            'state.subjectData.participationStatus': 'participated',
+        }},
+        { $group: {
+            '_id': {
+                studyId: '$state.studyId',
+                type: '$state.subjectData.subjectType'
+            },
+            'count': { $sum: 1 }
+        }},
+        { $group: {
+            '_id': '$_id.studyId',
+            'total': { $sum: '$count' },
+            'byType': { $push: { 'k': '$_id.type', 'v': '$count' }}
+        }},
+        { $project: {
+            'total': true,
+            'byType': { $arrayToObject: '$byType' }
+        }}
+    ])});
+
+    return keyBy({
+        items: counts, byProp: '_id',
+        transform: (it) => ({ total: it.total, byType: it.byType })
+    });
+}
 
 var sanitizeAgeFrameEdge = (ageFrameEdge) => {
     var { years, months, days } = ageFrameEdge;

@@ -1,3 +1,4 @@
+import { useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { createFieldDefaults } from '@mpieva/psydb-ui-lib';
 
 const {
@@ -7,6 +8,8 @@ const {
 
 export const createDefaults = (options) => {
     var { fieldDefinitions, permissions } = options;
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
+
     return {
         runningPeriod: { end: null },
         enableFollowUpExperiments: false,
@@ -15,5 +18,9 @@ export const createDefaults = (options) => {
         studyTopicIds: [],
         custom: Custom({ fieldDefinitions }),
         systemPermissions: SystemPermissions({ permissions }),
+
+        ...(IS_WKPRC && {
+            experimentNames: [ '' ]
+        })
     }
 }

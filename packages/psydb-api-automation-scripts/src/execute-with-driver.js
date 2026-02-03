@@ -1,18 +1,16 @@
 'use strict';
-var Driver = require('./wrapped-driver');
+var Driver = require('@mpieva/psydb-driver-nodejs');
 
 var executeWithDriver = async (bag) => {
-    var {
-        url,
-        script,
-        apiKey,
-        agent = undefined,
-        
-        extraOptions,
-    } = bag;
+    var { url, script, apiKey, extraOptions } = bag;
 
-    var driver = Driver({ agent, apiKey, url });
-    await script({ driver, apiKey, extraOptions });
+    var driver = Driver({ target: url, apiKey });
+
+    await script({
+        driver,
+        apiKey, // FIXME: deprecated; driver now stores it
+        extraOptions
+    });
 }
 
 module.exports = executeWithDriver;

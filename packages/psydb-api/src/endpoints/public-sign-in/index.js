@@ -26,10 +26,7 @@ var signIn = async (context, next) => {
     var self = await Self({
         db,
         query: {
-            'gdpr.state.emails': { $elemMatch: {
-                email,
-                isPrimary: true,
-            }},
+            '_primaryEmail': email.toLowerCase(),
             'scientific.state.canLogIn': true
         },
         projection: {

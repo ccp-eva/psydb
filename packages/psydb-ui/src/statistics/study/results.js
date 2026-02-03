@@ -24,7 +24,7 @@ const StudyStatisticsResults = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var { aggregateItems } = fetched.data;
+    var { aggregateItems, related } = fetched.data;
 
     var TableComponent = (
         aggregateItems.length > 0
@@ -33,7 +33,10 @@ const StudyStatisticsResults = (ps) => {
     );
 
     return (
-        <TableComponent aggregateItems={ aggregateItems } />
+        <TableComponent
+            aggregateItems={ aggregateItems }
+            related={ related }
+        />
     )
 }
 
@@ -60,6 +63,7 @@ const TableHead = (ps) => {
             <th>{ translate('End') }</th>
             <th>{ translate('_studyParticipations_short') }</th>
             <th>{ translate('Lab Workflows') }</th>
+            <th>{ translate('Subject Types') }</th>
             <th>{ translate('Age Ranges') }</th>
             <th></th>
         </tr></thead>
@@ -67,51 +71,73 @@ const TableHead = (ps) => {
 }
 
 const ResultTable = (ps) => {
-    var { aggregateItems } = ps;
+    var { aggregateItems, related } = ps;
     var translate = useUITranslation(); 
 
     var studyCount = aggregateItems.length;
-    var totals = {};
+    var participationTotal = 0;
+    var workflowTotals = {};
+    var subjectTotals = {};
+
     for (var it of aggregateItems) {
-        for (var [ k, v ] of Object.entries(it.participationCounts)) {
-            if (!totals[k]) {
-                totals[k] = 0;
+        var { workflowParticipationCounts, subjectParticipationCounts } = it;
+        participationTotal += workflowParticipationCounts.total;
+        
+        for (var [ k, v ] of Object.entries(workflowParticipationCounts.byType)) {
+            if (!workflowTotals[k]) {
+                workflowTotals[k] = 0;
             }
-            totals[k] += v;
+            workflowTotals[k] += v;
+        }
+        for (var [ k, v ] of Object.entries(subjectParticipationCounts.byType)) {
+            if (!subjectTotals[k]) {
+                subjectTotals[k] = 0;
+            }
+            subjectTotals[k] += v;
         }
     }
-
-    var { total: participationTotal, ...workflowTotals } = totals;
 
     return (
         <>
             <div className={`
                 bg-light pt-2 pb-2 pr-3 pl-3
-                d-flex align-items-center
+                d-flex
             `}>
                 <span style={{ width: '200px' }}>
                     <b>{ translate('Studies') }:</b>
                     {' '}
                     { studyCount }
                 </span>
-                <span>
-                    <b className='d-inline-block mr-3'>
-                        { translate('Study Participations') }:
-                    </b>
-                    <b>{ participationTotal } ({ translate('Total') })</b>
-                    {' - '}
-                    <LabMethods
-                        types={ Object.keys(workflowTotals) }
-                        counts={ workflowTotals }
-                    />
-                </span>
+                <div className='d-flex gapx-5'>
+                    <div>
+                        <b className='d-inline-block mr-3'>
+                            { translate('Study Participations') }:
+                        </b>
+                        <b>{ participationTotal } ({ translate('Total') })</b>
+                    </div>
+                    <div>
+                        <div>
+                            <LabMethods
+                                types={ Object.keys(workflowTotals) }
+                                counts={ workflowTotals }
+                            />
+                        </div>
+                        <div>
+                            <SubjectTypes
+                                types={ Object.keys(subjectTotals) }
+                                counts={ subjectTotals }
+                                related={ related }
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <Table>
                 <TableHead { ...ps } />
                 <tbody>
                     { aggregateItems.map((it) => (
-                        <Row key={ it._id } item={ it } />
+                        <Row key={ it._id } item={ it } related={ related } />
                     ))}
                 </tbody>
             </Table>
@@ -120,10 +146,11 @@ const ResultTable = (ps) => {
 }
 
 var Row = (ps) => {
-    var { item } = ps;
+    var { item, related } = ps;
     var {
         _id, type, shorthand, runningPeriod,
-        labMethods, ageFrames, participationCounts
+        labMethods, ageFrames,
+        workflowParticipationCounts, subjectParticipationCounts,
     } = item;
 
     var [ i18n ] = useI18N();
@@ -140,11 +167,18 @@ var Row = (ps) => {
                 value: runningPeriod.end, i18n
             }) }</td>
 
-            <td>{ participationCounts.total }</td>
+            <td>{ workflowParticipationCounts.total }</td>
             <td>
                 <LabMethods
                     types={ labMethods }
-                    counts={ participationCounts }
+                    counts={ workflowParticipationCounts.byType }
+                />
+            </td>
+            <td>
+                <SubjectTypes
+                    types={ Object.keys(subjectParticipationCounts.byType) }
+                    counts={ subjectParticipationCounts.byType }
+                    related={ related }
                 />
             </td>
             <td>{ ageFrames.map(a => (
@@ -186,7 +220,30 @@ const LabMethods = (ps) => {
         }
 
         return <span key={ it.key } style={ c === 0 ? { color: '#bbb' } : {}}>
-            { it.label} ({ c })
+            { it.label } ({ c })
+            { ix < (types.length - 1) && ', ' }
+        </span>
+    });
+}
+
+const SubjectTypes = (ps) => {
+    var { types, counts, related } = ps;
+    var translate = useUITranslation(); 
+    
+    types = types.map(it => ({
+        key: it,
+        label: translate.crt(related.crts.subject[it])
+    })).sort((a,b) => (a.label < b.label ? -1 : 1));
+
+    return types.map((it, ix) => {
+        var c = counts[it.key] || 0;
+
+        if (c === 0) {
+            return null; // TODO: add toggle for this
+        }
+
+        return <span key={ it.key } style={ c === 0 ? { color: '#bbb' } : {}}>
+            { it.label } ({ c })
             { ix < (types.length - 1) && ', ' }
         </span>
     });

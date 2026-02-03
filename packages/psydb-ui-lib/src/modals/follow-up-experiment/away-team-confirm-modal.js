@@ -5,7 +5,7 @@ import {
 } from '@mpieva/psydb-date-interval-fns';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -36,8 +36,7 @@ const FormContainer = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
-    var translate = useUITranslation();
-    var locale = useUILocale();
+    var [{ translate, locale }] = useI18N();
 
     var now = new Date();
     var { enableFollowUpExperiments } = studyData.record.state;
@@ -146,8 +145,13 @@ var SubjectOpField = (ps) => {
         enableFollowUpExperiments
     } = ps;
 
-    var translate = useUITranslation();
+    var { dev_enableSubjectCopyForUnprocessedExperiments } = useUIConfig();
+    var [{ translate }] = useI18N();
 
+    var canCopy = (
+        (dev_enableSubjectCopyForUnprocessedExperiments || isPostprocessed)
+        && enableFollowUpExperiments
+    );
     return (
         <Fields.GenericEnum
             dataXPath='$.subjectOp'
@@ -157,7 +161,7 @@ var SubjectOpField = (ps) => {
             options={{
                 'none': translate('_followUpExpSubjectOp_none'),
                 'move-unprocessed': translate('_followUpExpSubjectOp_move-unprocessed'), 
-                ...( isPostprocessed && enableFollowUpExperiments && {
+                ...( canCopy && {
                     'copy': translate('_followUpExpSubjectOp_copy'),
                 }),
             }}

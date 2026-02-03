@@ -12,11 +12,14 @@
   "dependencies": {
     "co": "~4.6.0",
     "mongodb": "~3.6.3",
+    "mysql": "~2.18.1",
     "axios": "~0.28.1",
     "commander": "~10.0.1",
     "debug": "~4.3.4",
     "@mpieva/psydb-core-utils": "workspace:*",
     "@mpieva/psydb-common-lib": "workspace:*",
+    "@mpieva/psydb-mongo-adapter": "workspace:*",
+    "@mpieva/psydb-faker": "workspace:*",
     "@mpieva/psydb-driver-nodejs": "workspace:*",
     "@mpieva/psydb-fixtures": "workspace:*",
     "@cdxoo/mongodb-restore": "2.0.0-alpha.2"

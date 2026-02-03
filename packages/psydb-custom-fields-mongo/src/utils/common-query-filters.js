@@ -158,6 +158,23 @@ var IncludesOneOf = (pointer, input = {}, options = {}) => {
     )
 }
 
+var __JustOneOf = (pointer, input = {}, options = {}) => {
+    var path = convertPointerToPath(pointer);
+
+    var { transform = false } = options;
+
+    input = input.filter(it => !!it);
+    if (transform) {
+        input = input.map(transform);
+    }
+
+    return (
+        input.length > 0
+        ? { [path]: { $in: input }}
+        : undefined
+    )
+}
+
 module.exports = {
     JustEqual,
     JustRegex,
@@ -172,5 +189,6 @@ module.exports = {
     EqualsOneOf,
     EqualsOneOfTruthyKeys,
 
-    PointWithinOurRange, 
+    PointWithinOurRange,
+    __JustOneOf,
 }

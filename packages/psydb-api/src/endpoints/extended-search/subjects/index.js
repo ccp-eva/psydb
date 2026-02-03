@@ -104,8 +104,6 @@ var subjectExtendedSearch = async (context, next) => {
         }
     });
 
-    console.dir(ejson(records), { depth: null });
-
     var now = new Date();
     if (dobFieldPointer && columns.includes('/_specialAgeToday')) {
         records = records.map(it => {

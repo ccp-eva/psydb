@@ -2,52 +2,43 @@
 var parseSchemaCSV = require('./parse-schema-csv');
 var injectRefIds = require('./inject-ref-ids');
 
+// NOTE: not happy with theese
+var __filterValidObjects = require('./__filter-valid-objects');
+var __mergedInjectionData = require('./__merge-injection-data');
+
 var runDefaultPipeline = async (bag) => {
     var {
         db,
         csvData,
+        // FIXME: not sure about preparsed; maybe split csv-parsing
+        // from default pipeline entirely?
+        parsed = undefined,
         schema,
         customColumnRemap,
         unmarshalClientTimezone,
         extraRecordResolvePointers,
     } = bag;
 
-    var parsed = parseSchemaCSV({
-        csvData, schema, customColumnRemap,
-        unmarshalClientTimezone
-    });
-
-    // NOTE: im not happy with this block
-    var validObjects = []
-    for (var it of parsed) {
-        var { obj, isValid } = it;
-        if (isValid) {
-            validObjects.push(obj);
-        }
+    if (!parsed) {
+        parsed = parseSchemaCSV({
+            csvData, schema, customColumnRemap,
+            unmarshalClientTimezone
+        });
     }
+
+    // NOTE: im not happy with this
+    var validObjects = __filterValidObjects({ parsed });
 
     var injectionData = await injectRefIds({ 
         db, schema, into: validObjects,
         extraRecordResolvePointers,
     });
 
-    // NOTE: im not happy with this block
+    // NOTE: im not happy with this
     var preparedObjects = [];
-    for (var it of parsed) {
-        if (it.isValid) {
-            var { obj, isOk, replacements, errors } = injectionData.shift();
-            if (isOk) {
-                it.isRefReplacementOk = true;
-                it.replacements = replacements;
-                preparedObjects.push(obj)
-            }
-            else {
-                it.isRefReplacementOk = false;
-                it.replacements = replacements;
-                it.replacementErrors = errors;
-            }
-        }
-    }
+    __mergedInjectionData({
+        parsed, injectionData, pushTarget: preparedObjects
+    });
 
     return { pipelineData: parsed, preparedObjects };
 }

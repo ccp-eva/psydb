@@ -6,7 +6,9 @@ var createQuickSearchSchema = () => {
     return SaneString();
 };
 
-var stringifyValue = JustLocaleDate({ format: 'P' });
+var stringifyValue = JustLocaleDate({
+    format: 'P', fallbackFormat: 'yyyy-MM-dd'
+});
 
 module.exports = {
     canBeCustomField: true,

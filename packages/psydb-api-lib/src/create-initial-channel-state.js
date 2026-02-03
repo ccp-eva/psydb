@@ -4,13 +4,14 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 var Ajv = require('./ajv');
 var createSchemaForRecordType = require('./create-schema-for-record-type');
 
-var createInitialChannelState = async ({
-    db,
-    collection,
-    recordType,
-    subChannelKey,
-    additionalSchemaCreatorArgs,
-}) => {
+var createInitialChannelState = async (bag) => {
+    var {
+        db,
+        collection,
+        recordType,
+        subChannelKey,
+        additionalSchemaCreatorArgs,
+    } = bag;
 
     // FIXME: ajv construction is a little slow
     var ajv = Ajv({

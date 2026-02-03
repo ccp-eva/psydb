@@ -1,0 +1,77 @@
+'use strict';
+var {
+    OpenObject,
+    DefaultArray,
+    Integer,
+    SaneString,
+    ForeignId,
+    ForeignIdList,
+    StringEnum,
+} = require('@mpieva/psydb-schema-fields');
+
+var CSVSchema = () => {
+    var schema = OpenObject({
+        properties: {
+            'experimentName': SaneString({ minLength: 1 }),
+            'conditionName': SaneString({ minLength: 1 }),
+
+            'year': Integer({ minimum: 1000 }),
+            'month': Integer({ minimum: 0 }),
+            'day': Integer({ minimum: 0 }),
+            
+            'locationId': ForeignId({
+                collection: 'location',
+                recordType: 'wkprc_ape_location', // XXX
+            }),
+            // XXX: no intergroup tests intended i guess
+            'subjectGroupId': ForeignId({
+                collection: 'subjectGroup'
+            }),
+            'roomOrEnclosure': StringEnum([
+                'Sleeping Room',
+                'Observation Room',
+                'Outdoor Enclosure',
+                'Indoor Enclosure'
+            ]),
+
+            
+            'experimentOperatorIds': ForeignIdList({
+                collection: 'personnel', minItems: 1,
+            }),
+
+            'subjectData': DefaultArray({
+                items: OpenObject({
+                    properties: {
+                        'subjectId': ForeignId({ collection: 'subject' }),
+                        'role': SaneString({ minLength: 1 }),
+                        'comment': SaneString(),
+                    },
+                    required: [ 'subjectId', 'role' ]
+                }),
+                minItems: 1
+            }),
+            
+            'totalSubjectCount': Integer({ minimum: 1 }),
+            '__subjectData_comment': SaneString(),
+        },
+        required: [
+            'experimentName',
+            'conditionName',
+            
+            'year',
+            'month',
+            'day',
+            
+            'locationId',
+            'subjectGroupId',
+            'roomOrEnclosure',
+            'experimentOperatorIds',
+            'subjectData',
+            'totalSubjectCount',
+        ]
+    });
+
+    return schema;
+}
+
+module.exports = CSVSchema;

@@ -9,9 +9,7 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
-    "axios": "~0.28.1",
-    "axios-cookiejar-support": "~4.0.7",
-    "tough-cookie": "~4.1.3"
+    "@mpieva/psydb-axios-wrapper-nodejs": "workspace:*"
   },
   "config": {}
 }

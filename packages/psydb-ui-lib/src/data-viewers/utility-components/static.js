@@ -5,7 +5,10 @@ import { calculateAge } from '@mpieva/psydb-common-lib';
 import {
     useUILanguage,
     useUITranslation,
-    useUILocale
+    useUILocale,
+
+    useI18N,
+    useUIConfig,
 } from '@mpieva/psydb-ui-contexts';
 
 import { Icons } from '@mpieva/psydb-ui-layout';
@@ -377,10 +380,15 @@ export const BiologicalGender = (ps) => {
 
 export const ExtBool = (ps) => {
     var { value = 'unknown' } = ps;
-    var translate = useUITranslation();
+    var { branding } = useUIConfig();
+    var [{ translate }] = useI18N();
 
     var colorClasses = {
-        'yes': 'text-primary',
+        'yes': (
+            branding?.options?.useSuccessColorForYesValues
+            ? 'text-success'
+            : 'text-primary'
+        ),
         'no': 'text-danger',
         'unknown': 'text-grey',
     };
@@ -414,10 +422,15 @@ export const DefaultBool = (ps) => {
     var { value } = ps;
     value = String(!!value);
     
-    var translate = useUITranslation();
+    var { branding } = useUIConfig();
+    var [{ translate }] = useI18N();
 
     var colorClasses = {
-        'true': 'text-primary',
+        'true': (
+            branding?.options?.useSuccessColorForYesValues
+            ? 'text-success'
+            : 'text-primary'
+        ),
         'false': 'text-danger',
     };
 
@@ -541,4 +554,12 @@ export const Email = (ps) => {
     }
 
     return String(value);
+}
+
+export const FileRef = (ps) => {
+    var { value, related } = ps;
+
+    return (
+        <a href={`/api/file/download?fileId=${value}`} target='_blank'>{ value }</a>
+    );
 }

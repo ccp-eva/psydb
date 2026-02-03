@@ -14,5 +14,6 @@ module.exports = {
     PhoneWithTypeList: require('./phone-with-type-list'),
     PhoneList: require('./phone-list'),
     SaneString: require('./sane-string'),
+    SaneStringList: require('./sane-string-list'),
     URLStringList: require('./url-string-list'),
 }

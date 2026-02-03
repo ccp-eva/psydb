@@ -23,24 +23,58 @@ var BaselineDeltas_Extended = (options) => {
     var that = BaselineDeltas(options);
     var base = { ...that };
 
+    var baseline_raw = undefined;
+    var current_raw = undefined;
+
     that.setBaseline = (...args) => {
         var [ obj, ...pass ] = args;
         obj = obj === undefined ? obj : ejson(obj);
         base.setBaseline(obj, ...pass);
+        baseline_raw = obj;
     };
     
     that.setCurrent = (...args) => {
         var [ obj, ...pass ] = args;
         obj = obj === undefined ? obj : ejson(obj);
         base.setCurrent(obj, ...pass);
+        current_raw = obj;
     };
 
+    that.getBaseline_RAW = () => baseline_raw;
+    that.getCurrent_RAW = () => current_raw;
+
     that.test = (bag) => {
-        var { expected, asFlatEJSON = false, ...pass } = bag;
+        var {
+            expected,
+            asEJSON = true,
+            asFlatEJSON = false,
+            ...pass
+        } = bag;
+
         if (asFlatEJSON) {
             expected = pathify(expected, {
                 delimiter: '/', prefix: '', traverseArrays: true
             });
+            // NOTE: we need to keep functions AnyDate etc helpers 
+            for (var [key, value] of Object.entries(expected)) {
+                expected[key] = typeof value === 'function' ? value : (
+                    ejson(value)
+                );
+            }
+
+            // FIXME: thats a hack for when base keys are already pointers
+            // this might lead to unexpected behavior when we actually have
+            // leading slashes in keys; but i dont see that
+            var __expected = {};
+            for (var [key, value] of Object.entries(expected)) {
+                if (key.startsWith('//')) {
+                    key = key.replace(/^\//, '');
+                }
+                __expected[key] = value;
+            }
+            expected = __expected;
+        }
+        else if (asEJSON) {
             // NOTE: we need to keep functions AnyDate etc helpers 
             for (var [key, value] of Object.entries(expected)) {
                 expected[key] = typeof value === 'function' ? value : (

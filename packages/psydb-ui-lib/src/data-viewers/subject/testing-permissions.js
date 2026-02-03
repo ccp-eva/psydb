@@ -1,6 +1,6 @@
 import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { Icons } from '@mpieva/psydb-ui-layout';
 import {
     ForeignId,
@@ -9,7 +9,7 @@ import {
 
 const TestingPermissions = (ps) => {
     var { value = [], related } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (value.length < 1) {
         return (
@@ -54,14 +54,20 @@ const ResearchGroupTestingPermissions = (ps) => {
 
 const PermissionItem = (ps) => {
     var { labProcedureTypeKey, value } = ps.value;
-    var translate = useUITranslation();
+    
+    var { branding } = useUIConfig();
+    var [{ translate }] = useI18N();
 
     if (value === 'unknown') {
         return null;
     }
     
     var colorClasses = {
-        'yes': 'text-primary',
+        'yes': (
+            branding?.options?.useSuccessColorForYesValues
+            ? 'text-success'
+            : 'text-primary'
+        ),
         'no': 'text-danger',
         'unknown': 'text-grey',
     };

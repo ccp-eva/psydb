@@ -14,4 +14,7 @@ module.exports = {
     replaceRefsByMapping: require('./inject-ref-ids/replace-refs-by-mapping'),
     
     //deserializers: require('./deserializers'), // FIXME: make obs
+
+    __filterValidObjects: require('./__filter-valid-objects'),
+    __mergedInjectionData: require('./__merge-injection-data'),
 }

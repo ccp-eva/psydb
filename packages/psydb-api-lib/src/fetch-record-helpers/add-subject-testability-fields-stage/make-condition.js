@@ -23,6 +23,7 @@ var makeCondition = (options) => {
         ageFrameValueFilters = [],
         ageFrameTargetDefinition,
 
+        subjectTypeRecord,
         studyRecord,
     } = options;
 
@@ -32,12 +33,16 @@ var makeCondition = (options) => {
         enableFollowUpExperiments,
     } = studyRecord.state;
 
-    var combinedTestingPermissions = { $or: (
-        makeTestingPermissionSubConditions({
-            researchGroupIds,
-            experimentVariant
-        })
-    )};
+
+    var combinedTestingPermissions = undefined;
+    if (subjectTypeRecord.state.requiresTestingPermissions) {
+        combinedTestingPermissions = { $or: (
+            makeTestingPermissionSubConditions({
+                researchGroupIds,
+                experimentVariant
+            })
+        )};
+    }
 
     var combinedAgeFrameConditions = undefined;
     if (
@@ -99,9 +104,11 @@ var MongoExpression = (options) => {
                 excludedStudyIds
             })},
         ]},
-        combinedTestingPermissions,
     ];
 
+    if (combinedTestingPermissions) {
+        AND.push(combinedTestingPermissions);
+    }
     if (combinedAgeFrameConditions) {
         AND.push(combinedAgeFrameConditions);
     }

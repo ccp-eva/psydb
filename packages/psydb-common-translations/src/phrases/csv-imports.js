@@ -36,5 +36,9 @@ module.exports = [
     {
         en: 'CSV Import Details',
         de: 'CSV-Import-Details'
-    }
+    },
+    {
+        en: 'Source File',
+        de: 'Quell-Datei'
+    },
 ]
