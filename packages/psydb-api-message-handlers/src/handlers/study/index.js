@@ -49,6 +49,7 @@ var StudyGroup = MessageHandlerGroup([
     require('./set-excluded-other-study-ids'),
     
     require('./remove'),
+    require('./remove-distclean'),
 ]);
 
 module.exports = StudyGroup;

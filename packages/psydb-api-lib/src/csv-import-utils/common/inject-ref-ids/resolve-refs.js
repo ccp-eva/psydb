@@ -3,7 +3,6 @@ var { entries, groupBy } = require('@mpieva/psydb-core-utils');
 var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 
 var SmartArray = require('../../../smart-array');
-var withRetracedErrors = require('../../../with-retraced-errors');
 var aggregateFromRefs = require('./aggregate-from-refs');
 
 var resolveRefs = async (bag) => {
@@ -35,7 +34,10 @@ var resolveRefs = async (bag) => {
         var [ collection, recordType = undefined ] = key.split('#');
 
         var extraPointers = extraRecordResolvePointers[collection] || [];
-        resolvedRecords[collection] = await withRetracedErrors(
+        if (!resolvedRecords[collection]) {
+            resolvedRecords[collection] = [];
+        }
+        var recordsForCurrentRefs = await (
             aggregateFromRefs({
                 db, [collection]: refs,
                 pointers: [
@@ -45,12 +47,13 @@ var resolveRefs = async (bag) => {
                     extraMatch: { type: recordType }
                 })
             })
-        )
+        );
+        resolvedRecords[collection].push(...recordsForCurrentRefs)
     }
 
     var resolvedHSIs = {};
     for (var [ setId, refs ] of entries(hsiRefs)) {
-        resolvedHSIs[setId] = await withRetracedErrors(
+        resolvedHSIs[setId] = await (
             aggregateFromRefs({
                 db, helperSetItem: refs,
                 pointers: [

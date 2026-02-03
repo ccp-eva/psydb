@@ -7,6 +7,7 @@ var sift = require('sift');
 var inline = require('@cdxoo/inline-string');
 
 var { ejson } = require('@mpieva/psydb-core-utils');
+var { CRTSettings } = require('@mpieva/psydb-common-lib');
 var {
     aggregateToArray,
     aggregateCount
@@ -21,6 +22,8 @@ var {
     gatherDisplayFieldsForRecordType,
     fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
+
+var fetchRelated = require('../fetch-related');
 
 var {
     createCustomQueryValues,
@@ -48,10 +51,9 @@ var extendedSearchCore = async (bag) => {
     } = bag;
 
     var crt = await fetchOneCustomRecordType({
-        db,
-        collection,
-        type: recordType
+        db, collection, type: recordType
     });
+    var crtSettings = CRTSettings.fromRecord(crt);
 
     if (
         !permissions.hasFlag('canAccessSensitiveFields')
@@ -75,6 +77,7 @@ var extendedSearchCore = async (bag) => {
     var addressFields = availableDisplayFieldData.filter(
         sift({ type: 'Address' })
     );
+
     if (addressFields.length > 0) {
         for (var it of addressFields) {
             var block = [
@@ -193,11 +196,18 @@ var extendedSearchCore = async (bag) => {
 
     //console.dir(customQueryValues, { depth: null })
     //console.log(specialFilterConditions);
-    //
+   
+    var [ sortdef ] = crtSettings.findCustomFields({ pointer: sort.column });
+    // XXX: hotfix
+    if (sortdef?.systemType === 'Address') {
+        sort.column += '/street'
+    }
+
     var mainStages = SmartArray([
         { $match: {
             isDummy: { $ne: true },
             'scientific.state.internals.isRemoved': { $ne: true },
+            'state.internals.isRemoved': { $ne: true },
             ...(recordType && { type: recordType }),
             //...customQueryValues,
             //...specialFilterConditions,
@@ -214,7 +224,7 @@ var extendedSearchCore = async (bag) => {
                 permissions.getCollectionFlagIds(collection, 'read')
             )}
         }}),
-        
+
         { $project: {
             sequenceNumber: true,
             type: true,
@@ -260,11 +270,21 @@ var extendedSearchCore = async (bag) => {
         }
     });
     debug('done searching records');
-    
+   
+    //var displayFields = crtSettings.findAvailableDisplayFields({
+    //    pointer: { $in: columns }
+    //});
+    //console.log(displayFields);
+    //var __related = await fetchRelated({
+    //    db, records, definitions: displayFields,
+    //    //i18n
+    //});
     var related = await fetchRelatedLabelsForMany({
         db, collectionName: collection,
         recordType, records,
     });
+
+    //console.dir(ejson(related), { depth: null });
 
     return {
         records, recordsCount, related,

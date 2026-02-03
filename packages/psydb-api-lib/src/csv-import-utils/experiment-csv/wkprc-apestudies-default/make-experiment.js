@@ -19,7 +19,7 @@ var makeExperiment = (bag) => {
     // NOTE: we assume that everything except subjectData s the same
     var [ primaryItem, ...otherItems ] = pipelineItemGroup;
     var {
-        year, month, day, subjectData,
+        year, month, day, subjectData, __subjectData_comment,
         ...shared
     } = onlyRelevantProps({ from: primaryItem.obj });
     
@@ -50,6 +50,13 @@ var makeExperiment = (bag) => {
             mergedSubjectData.push({
                 subjectType,
                 comment: '', // XXX: forceing default, can ajv do that?
+
+                // NOTE: when multiple subjects per line
+                // but only one column for 'comment' is used
+                ...(__subjectData_comment && {
+                    comment: __subjectData_comment
+                }),
+
                 ...it,
 
                 invitationStatus: 'scheduled',

@@ -111,7 +111,8 @@ var LinkRow = (ps) => {
 const asFriendlyType = (type) => ({
     'experiment/manual-only-participation': 'Field Sites',
     'experiment/online-survey': 'Online Survey',
-    'experiment/wkprc-evapecognition': 'WKPRC EVApeCognition',
+    //'experiment/wkprc-evapecognition': 'WKPRC EVApeCognition',
+    'experiment/wkprc-evapecognition': 'WKPRC',
     'experiment/wkprc-apestudies-default': 'WKPRC'
 }[type] || type);
 

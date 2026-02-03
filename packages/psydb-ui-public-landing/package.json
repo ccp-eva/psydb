@@ -1,0 +1,32 @@
+{
+  "name": "@mpieva/psydb-ui-public-landing",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cdxOo/psydb.git"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cdxOo/psydb/issues"
+  },
+  "homepage": "https://github.com/cdxOo/psydb#readme",
+  "devDependencies": {
+    "react": "~17.0.2",
+    "@cdxoo/react-compose-contexts": "~1.0.0-beta.0",
+    "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-common-lib": "workspace:*",
+    "@mpieva/psydb-ui-request-agents": "workspace:*",
+    "@mpieva/psydb-ui-contexts": "workspace:*",
+    "@mpieva/psydb-ui-hooks": "workspace:*",
+    "@mpieva/psydb-ui-layout": "workspace:*",
+    "@mpieva/psydb-ui-utils": "workspace:*",
+    "@mpieva/psydb-ui-lib": "workspace:*"
+  }
+}

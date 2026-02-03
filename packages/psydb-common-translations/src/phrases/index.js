@@ -1462,6 +1462,11 @@ module.exports = [
         de: 'Gruppe'
     },
     {
+        internal: '_wkprc_experimentNames',
+        en: 'Experiment Names',
+        de: 'Namen der Experimente'
+    },
+    {
         internal: '_wkprc_experimentName',
         en: 'Experiment Name',
         de: 'Name des Experiments'

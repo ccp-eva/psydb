@@ -11,6 +11,7 @@ var {
 var CSVSchema = require('./csv-schema');
 var verifySameSubjectType = require('./verify-same-subject-type');
 var verifySameSubjectGroup = require('./verify-same-subject-group');
+var verifyExperimentNames = require('./verify-experiment-names');
 var transformPrepared = require('./transform-prepared');
 var preinjectCombinationRefs = require('./preinject-combination-refs');
 
@@ -55,6 +56,7 @@ var runPipeline = async (bag) => {
         pipelineData.filter(it => it.isValid && it.isRefReplacementOk)
     );
 
+    await verifyExperimentNames({ db, study, preparedObjects });
     await verifySameSubjectType({ db, subjectType, preparedObjects });
     await verifySameSubjectGroup({ db, preparedObjects });
 

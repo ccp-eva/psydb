@@ -52,6 +52,7 @@ var CSVSchema = () => {
             }),
             
             'totalSubjectCount': Integer({ minimum: 1 }),
+            '__subjectData_comment': SaneString(),
         },
         required: [
             'experimentName',

@@ -5,7 +5,7 @@ var endpoints = require('../../../src');
 
 var endpoint = endpoints.study.list;
 
-describe('study/list', function () {
+describe('study/list wip', function () {
     var db, session;
     beforeEach(async function () {
         //db = await this.restore('2024-03-29__1914_fieldsites');
@@ -19,9 +19,8 @@ describe('study/list', function () {
             request: {
                 headers: { language: 'en', locale: 'en', timezone: 'UTC' },
                 body: {
-                    recordType: 'default',
-                    filters: {
-                    },
+                    recordType: 'wkprc_study',
+                    filters: {},
                     offset: 0,
                     limit: 1000,
                 }

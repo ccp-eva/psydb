@@ -42,7 +42,10 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
             var [ _unused, ix = 0 ] = col.split('_');
             return `subjectData[${ix}].role`;
         }
-        if (/^comment(_\d?)/.test(col)) {
+        if (/^comment$/.test(col)) {
+            return '__subjectData_comment';
+        }
+        if (/^comment(_\d+)?/.test(col)) {
             var [ _unused, ix = 0 ] = col.split('_');
             return `subjectData[${ix}].comment`;
         }
@@ -51,7 +54,7 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
         }
     }
 
-    remapper.obj2csv = (bag) => {
+    remapper.ajvpath2csv = remapper.obj2csv = (bag) => {
         var { path } = bag;
 
         var mapping = {

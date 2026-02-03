@@ -12,6 +12,7 @@ var makeParticipationItems = (bag) => {
         locationRecordType,
 
         experimentName,
+        conditionName,
         roomOrEnclosure,
         totalSubjectCount,
 
@@ -35,6 +36,7 @@ var makeParticipationItems = (bag) => {
             timezone, // FIXME: ????
             
             experimentName,
+            conditionName,
             roomOrEnclosure,
             totalSubjectCount,
             role,

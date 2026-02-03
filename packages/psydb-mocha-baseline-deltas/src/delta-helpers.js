@@ -6,6 +6,7 @@ var AnyRohrpostMeta = (options = {}) => (bag) => {
     var { eventIds } = options;
     var { baseline, current, pointer } = bag;
     try {
+        // FIXME: this sufficient?
         expect(current).to.not.eql(baseline);
         expect(current).to.be.an('object');
         if (eventIds) {
@@ -22,7 +23,9 @@ var AnyRohrpostMeta = (options = {}) => (bag) => {
 var AnyDate = (options = {}) => (bag) => {
     var { baseline, current, pointer } = bag;
     try {
-        expect(String(current)).to.not.eql(String(baseline));
+        expect(JSON.stringify(current))
+            .to.not.eql(JSON.stringify(baseline));
+
         expect(current).to.be.an('object');
         expect(ejson(current)).to.have.property('$date');
     }
@@ -36,9 +39,40 @@ var AnyDate = (options = {}) => (bag) => {
 var AnyObjectId = (options = {}) => (bag) => {
     var { baseline, current, pointer } = bag;
     try {
-        expect(String(current)).to.not.eql(String(baseline));
+        expect(JSON.stringify(current))
+            .to.not.eql(JSON.stringify(baseline));
+
         expect(current).to.be.an('object');
         expect(ejson(current)).to.have.property('$oid');
+    }
+    catch (error) {
+        // FIXME: this should trigger handleDeltaError
+        error.message += ` at pointer ${pointer}`;
+        throw error;
+    }
+}
+
+var AnyFileId = (options = {}) => (bag) => {
+    var { baseline, current, pointer } = bag;
+    try {
+        expect(JSON.stringify(current))
+            .to.not.eql(JSON.stringify(baseline));
+
+        expect(current).to.be.a('string');
+        expect(/^[a-f0-9]{24}\.[a-z]{3,4}$/.test(current)).to.eql(true);
+    }
+    catch (error) {
+        // FIXME: this should trigger handleDeltaError
+        error.message += ` at pointer ${pointer}`;
+        throw error;
+    }
+}
+
+var DeletedValue = (options = {}) => (bag) => {
+    var { baseline, current, pointer } = bag;
+    try {
+        expect(current).to.not.eql(baseline);
+        expect(current).to.not.exist;
     }
     catch (error) {
         // FIXME: this should trigger handleDeltaError
@@ -51,4 +85,6 @@ module.exports = {
     AnyRohrpostMeta,
     AnyDate,
     AnyObjectId,
+    AnyFileId,
+    DeletedValue
 }

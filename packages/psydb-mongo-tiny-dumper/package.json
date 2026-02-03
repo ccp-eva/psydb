@@ -15,6 +15,9 @@
         "mongodb": "4.x",
         "bson": "4.x",
         "relaxed-json": "^1.0.3",
+        "@cdxoo/mongodb-utils": "~1.0.0",
+        "@cdxoo/mongodb-dump-stream-processors": "0.1.0-alpha.1",
+        "@cdxoo/mongodb-dump-stream": "0.1.0-alpha.7",
         "@cdxoo/mongodb-dump": "0.1.0-alpha.5"
     },
     "devDependencies": {},

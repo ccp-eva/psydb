@@ -9,7 +9,7 @@ var {
 } = require('@mpieva/psydb-schema-fields');
 
 var CSVSchema = (bag = {}) => {
-    var { locationType } = bag;
+    var { locationType, subjectType } = bag;
 
     var schema = OpenObject({
         properties: {
@@ -28,7 +28,10 @@ var CSVSchema = (bag = {}) => {
             'subjectData': DefaultArray({
                 items: OpenObject({
                     properties: {
-                        'subjectId': ForeignId({ collection: 'subject' }),
+                        'subjectId': ForeignId({
+                            collection: 'subject',
+                            recordType: subjectType,
+                        }),
                         'comment': SaneString(),
                     },
                     required: [ 'subjectId' ]

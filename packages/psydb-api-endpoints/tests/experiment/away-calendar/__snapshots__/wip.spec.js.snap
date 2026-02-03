@@ -1,0 +1,326 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`experiment/awayCalendar wip stub 1`] = `
+Array [
+  Object {
+    "_id": "64d42dcc443aa279ca4caf12",
+    "_rohrpostMetadata": Object {
+      "createdAt": 2023-08-10T00:22:36.450Z,
+      "eventIds": Array [
+        "64d42dcc443aa279ca4caf14",
+      ],
+      "hasSubChannels": false,
+      "lastKnownEventId": "64d42dcc443aa279ca4caf14",
+      "lastKnownSessionId": "64d42dcc443aa279ca4caf13",
+      "unprocessedEventIds": Array [],
+      "updatedAt": 2023-08-10T00:22:36.450Z,
+    },
+    "isDummy": false,
+    "sequenceNumber": "3",
+    "state": Object {
+      "custom": Object {
+        "assistents": Array [
+          "64d42dc8443aa279ca4cae9c",
+        ],
+        "description": "",
+        "novels": Array [],
+      },
+      "enableFollowUpExperiments": false,
+      "excludedOtherStudyIds": Array [],
+      "inhouseTestLocationSettings": Array [],
+      "isCreateFinalized": true,
+      "name": "Test Kiga Studie",
+      "researchGroupIds": Array [
+        "64d42dc8443aa279ca4cae99",
+      ],
+      "runningPeriod": Object {
+        "end": null,
+        "start": 2001-01-01T00:00:00.000Z,
+      },
+      "scientistIds": Array [
+        "64d42dc8443aa279ca4caea2",
+      ],
+      "shorthand": "Kiga-Study",
+      "studyTopicIds": Array [
+        "64d42dc8443aa279ca4cae96",
+      ],
+      "systemPermissions": Object {
+        "accessRightsByResearchGroup": Array [
+          Object {
+            "permission": "write",
+            "researchGroupId": "64d42dc8443aa279ca4cae99",
+          },
+        ],
+        "isHidden": false,
+      },
+    },
+    "type": "default",
+  },
+]
+`;
+
+exports[`experiment/awayCalendar wip stub 2`] = `
+Array [
+  Object {
+    "_id": "64d42dcc443aa279ca4caf12",
+    "_recordLabel": "Kiga-Study",
+  },
+]
+`;
+
+exports[`experiment/awayCalendar wip stub 3`] = `
+Array [
+  Object {
+    "_id": "698024cd9a385ad40f830509",
+    "state": Object {
+      "color": "",
+      "comment": "",
+      "experimentOperatorIds": Array [],
+      "experimentOperatorTeamId": "64d42dcc443aa279ca4caf15",
+      "generalComment": "",
+      "interval": Object {
+        "end": 2026-02-12T22:59:59.999Z,
+        "start": 2026-02-11T23:00:00.000Z,
+      },
+      "isCanceled": false,
+      "isPostprocessed": false,
+      "locationId": "64d42dcb443aa279ca4caedb",
+      "locationRecordType": "kiga",
+      "selectedSubjectGroupIds": Array [],
+      "selectedSubjectIds": Array [
+        "64d42dcb443aa279ca4caee6",
+        "64d42dcb443aa279ca4caeea",
+      ],
+      "seriesId": "698024cd9a385ad40f830508",
+      "studyId": "64d42dcc443aa279ca4caf12",
+      "subjectData": Array [
+        Object {
+          "comment": "",
+          "invitationStatus": "scheduled",
+          "participationStatus": "unknown",
+          "subjectId": "64d42dcb443aa279ca4caee6",
+          "subjectType": "child",
+        },
+        Object {
+          "comment": "",
+          "invitationStatus": "scheduled",
+          "participationStatus": "unknown",
+          "subjectId": "64d42dcb443aa279ca4caeea",
+          "subjectType": "child",
+        },
+      ],
+    },
+    "type": "away-team",
+  },
+]
+`;
+
+exports[`experiment/awayCalendar wip stub 4`] = `
+Array [
+  Object {
+    "_id": "64d42dcc443aa279ca4caf15",
+    "state": Object {
+      "color": "#f772e5",
+      "hidden": false,
+      "name": "ChildLab Experimenter, Mallory",
+      "personnelIds": Array [
+        "64d42dca443aa279ca4caec6",
+      ],
+    },
+    "studyId": "64d42dcc443aa279ca4caf12",
+  },
+]
+`;
+
+exports[`experiment/awayCalendar wip stub 5`] = `
+Object {
+  "relatedCustomRecordTypes": Object {
+    "location": Object {
+      "kiga": Object {
+        "_id": "64d42dc5443aa279ca4cade8",
+        "collection": "location",
+        "state": Object {
+          "label": "Kindergärten",
+        },
+        "type": "kiga",
+      },
+    },
+    "subject": Object {
+      "child": Object {
+        "_id": "64d42dc6443aa279ca4cae26",
+        "collection": "subject",
+        "state": Object {
+          "label": "Kinder",
+        },
+        "type": "child",
+      },
+    },
+  },
+  "relatedHelperSetItems": Object {},
+  "relatedRecordLabels": Object {
+    "experimentOperatorTeam": Object {
+      "64d42dcc443aa279ca4caf15": Object {
+        "_id": "64d42dcc443aa279ca4caf15",
+        "_recordLabel": "ChildLab Experimenter, Mallory",
+      },
+    },
+    "location": Object {
+      "64d42dcb443aa279ca4caedb": Object {
+        "_id": "64d42dcb443aa279ca4caedb",
+        "_recordLabel": "Kigaweg 1 04103 Leipzig",
+      },
+    },
+    "personnel": Object {},
+    "study": Object {
+      "64d42dcc443aa279ca4caf12": Object {
+        "_id": "64d42dcc443aa279ca4caf12",
+        "_recordLabel": "Kiga-Study",
+      },
+    },
+    "subject": Object {
+      "64d42dcb443aa279ca4caee6": Object {
+        "_id": "64d42dcb443aa279ca4caee6",
+        "_recordLabel": "Test Kind, Charlie (m)",
+      },
+      "64d42dcb443aa279ca4caeea": Object {
+        "_id": "64d42dcb443aa279ca4caeea",
+        "_recordLabel": "Test Kind, Mallory (f)",
+      },
+    },
+    "subjectGroup": Object {},
+  },
+  "relatedRecords": Object {
+    "experimentOperatorTeam": Object {
+      "64d42dcc443aa279ca4caf15": Object {
+        "_id": "64d42dcc443aa279ca4caf15",
+        "_recordLabel": "ChildLab Experimenter, Mallory",
+      },
+    },
+    "location": Object {
+      "64d42dcb443aa279ca4caedb": Object {
+        "_id": "64d42dcb443aa279ca4caedb",
+        "_recordLabel": "Kigaweg 1 04103 Leipzig",
+      },
+    },
+    "personnel": Object {},
+    "study": Object {
+      "64d42dcc443aa279ca4caf12": Object {
+        "_id": "64d42dcc443aa279ca4caf12",
+        "_recordLabel": "Kiga-Study",
+      },
+    },
+    "subject": Object {
+      "64d42dcb443aa279ca4caee6": Object {
+        "_id": "64d42dcb443aa279ca4caee6",
+        "_recordLabel": "Test Kind, Charlie (m)",
+      },
+      "64d42dcb443aa279ca4caeea": Object {
+        "_id": "64d42dcb443aa279ca4caeea",
+        "_recordLabel": "Test Kind, Mallory (f)",
+      },
+    },
+    "subjectGroup": Object {},
+  },
+}
+`;
+
+exports[`experiment/awayCalendar wip stub 6`] = `
+Object {
+  "64d42dcb443aa279ca4caedb": Object {
+    "_id": "64d42dcb443aa279ca4caedb",
+    "_recordLabel": "Kigaweg 1 04103 Leipzig",
+    "sequenceNumber": "2",
+    "state": Object {
+      "custom": Object {
+        "address": Object {
+          "affix": "",
+          "city": "Leipzig",
+          "country": "DE",
+          "housenumber": "1",
+          "postcode": "04103",
+          "street": "Kigaweg",
+        },
+        "head": "",
+        "name": "Wunderland",
+        "phones": Array [],
+      },
+    },
+    "type": "kiga",
+  },
+}
+`;
+
+exports[`experiment/awayCalendar wip stub 7`] = `
+Object {
+  "relatedCustomRecordTypes": Object {},
+  "relatedHelperSetItems": Object {},
+  "relatedRecordLabels": Object {},
+  "relatedRecords": Object {},
+}
+`;
+
+exports[`experiment/awayCalendar wip stub 8`] = `
+Array [
+  Object {
+    "dataPointer": "/sequenceNumber",
+    "displayName": "ID No.",
+    "displayNameI18N": Object {
+      "de": "ID Nr.",
+    },
+    "key": "_sequenceNumber",
+    "pointer": "/sequenceNumber",
+    "props": Object {},
+    "systemType": "SaneString",
+    "type": "SaneString",
+  },
+  Object {
+    "dataPointer": "/state/custom/name",
+    "displayName": "Bezeichnung",
+    "key": "name",
+    "pointer": "/state/custom/name",
+    "props": Object {
+      "minLength": 1,
+    },
+    "systemType": "SaneString",
+    "type": "SaneString",
+  },
+  Object {
+    "dataPointer": "/state/custom/address",
+    "displayName": "Adresse",
+    "key": "address",
+    "pointer": "/state/custom/address",
+    "props": Object {
+      "isAffixRequired": false,
+      "isCityRequired": true,
+      "isCountryRequired": true,
+      "isHousenumberRequired": true,
+      "isPostcodeRequired": true,
+      "isStreetRequired": true,
+    },
+    "systemType": "Address",
+    "type": "Address",
+  },
+  Object {
+    "dataPointer": "/state/custom/head",
+    "displayName": "Leiter:in",
+    "key": "head",
+    "pointer": "/state/custom/head",
+    "props": Object {
+      "minLength": 0,
+    },
+    "systemType": "SaneString",
+    "type": "SaneString",
+  },
+  Object {
+    "dataPointer": "/state/custom/phones",
+    "displayName": "Telefon",
+    "key": "phones",
+    "pointer": "/state/custom/phones",
+    "props": Object {
+      "minItems": 0,
+    },
+    "systemType": "PhoneWithTypeList",
+    "type": "PhoneWithTypeList",
+  },
+]
+`;

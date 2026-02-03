@@ -1,157 +1,67 @@
 'use strict';
-var debug = require('debug')('psydb:driver-node-js');
+var debug = require('debug')('psydb:driver-nodejs');
 var { inspect } = require('util');
-var superagent = require('superagent');
 
-var { jsonpointer, only } = require('@mpieva/psydb-core-utils');
+var { only } = require('@mpieva/psydb-core-utils');
 var { getSystemTimezone } = require('@mpieva/psydb-timezone-helpers');
+var createNodeAgent = require('@mpieva/psydb-axios-wrapper-nodejs');
 
-var createDefaultAgent = (server) => (
-    superagent.agent(server)
-);
+var { DriverError, RequestError, ApiError } = require('./errors');
+var Cache = require('./cache');
 
-var Cache = () => {
-    var cache = {};
-    
-    cache.lastKnownEventIds_short = {};
-    cache.lastKnownEventIds = {};
-    cache.lastChannelIds = {};
+var maybeInjectApiKey = require('./maybe-inject-api-key');
+var defaultWriteRequest = require('./default-write-request');
+var inter = require('./interface');
 
-    cache.setLastKnownEventId = ({
-        collectionName, subChannelKey, channelId, lastKnownEventId
-    }) => {
-        var path = (
-            subChannelKey === undefined
-            ? `/${collectionName}/${channelId}`
-            : `/${collectionName}/${subChannelKey}/${channelId}`
-        );
-        jsonpointer.set(
-            cache.lastKnownEventIds,
-            path,
-            lastKnownEventId
-        );
-        var path_short = (
-            subChannelKey === undefined
-            ? `/${channelId}`
-            : `/${channelId}/${subChannelKey}`
-        );
-        jsonpointer.set(
-            cache.lastKnownEventIds_short,
-            path_short,
-            lastKnownEventId
-        );
-    }
-
-    cache.setLastChannelId = ({
-        collectionName, channelId
-    }) => {
-        cache.lastChannelIds[collectionName] = channelId;
-    }
-
-    cache.clear = () => {
-        cache.lastKnownEventIds = {};
-        cache.lastChannelIds = {};
-    }
-
-    return cache;
-}
-
-class DriverError extends Error {
-    constructor (...args) {
-        super(...args);
-        this.name = 'DriverError';
-    }
-}
-
-class RequestFailed extends DriverError {
-    constructor (response) {
-        var { data, status } = response;
-        var errorMessage = `RequestFailed : ${status}`;
-        var isApiError = !!data?.apiStatus;
-        
-        if (isApiError) {
-            errorMessage = data.data.message;
-        }
-
-        super(errorMessage);
-        this.name = 'RequestFailed';
-        this.response = response;
-
-        if (isApiError) {
-            this.httpsStatusCode = data.statusCode;
-            this.httpStatus = data.status;
-            this.apiStatus = data.apiStatus;
-            this.apiMessage = data.data.message;
-            this.apiStack = data.data.stack;
-        }
-
-        //super(JSON.stringify(data, null, '\t'));
-
-        //console.dir(body, { depth: null });
-    }
-}
-
-var defaultWriteRequest = async ({ agent, url, message, options = {} }) => {
-    var { forceTZ = false, apiKey } = options;
-    url = maybeInjectApiKey({ url, apiKey })
-
-    try {
-        var body = {
-            timezone: forceTZ || getSystemTimezone(),
-            ...message,
-        };
-        debug(agent?.defaults?.baseURL, url, JSON.stringify(body));
-        var { status, data } = await agent.post(url, body);
-    }
-    catch (e) {
-        if (e.response) {
-            throw new RequestFailed(e.response);
-        }
-        else {
-            throw new Error(e);
-        }
-    }
-
-    return { status, data };
-}
-
-var maybeInjectApiKey = ({ url, apiKey }) => {
-    var out = (
-        apiKey
-        ? `${url}?apiKey=${apiKey}`
-        : url
-    );
-    return out;
+var defaultI18N = {
+    language: 'en', locale: 'en_US',
+    timezone: getSystemTimezone()
 }
 
 var Driver = (options) => {
     var {
+        target,
         server,
         agent,
-        customWriteRequest,
+        customWriteRequest, // FIXME: why do i need that?
+
         apiKey: driverApiKey,
+        i18n: driverI18N,
     } = options;
 
-    if (!server && !agent) {
+    driverI18N = { ...defaultI18N, ...driverI18N };
+
+    if (server) {
+        console.warn('using "server" is deprecated, use "target" instead');
+        target = server;
+    }
+
+    if (!target && !agent) {
         throw new DriverError(
-            'one of "server" or "agent" parameters must be set'
+            'one of "target" or "agent" parameters must be set'
         )
     }
 
-    var driver = {},
-        cache = Cache();
+    var driver = {};
+    var cache = Cache();
 
     var writeRequest = customWriteRequest || defaultWriteRequest;
-    agent = agent || createDefaultAgent(server);
+    agent = agent || createNodeAgent(target);
 
     // FIXME: duh
     driver.post = async (bag) => {
-        var { url, payload, apiKey = driverApiKey } = bag;
-        url = maybeInjectApiKey({ url, apiKey });
+        var { url, payload, options = {} } = bag;
+        var {
+            apiKey = driverApiKey, i18n = driverI18N,
+            ...otherOptions
+        } = options;
 
         try {
-            var response = await agent.post(url, payload);
-            return response.data;
+            var response = await writeRequest({
+                agent, url, payload, options: {
+                    apiKey, i18n, ...otherOptions
+                }
+            });
         }
         catch (e) {
             if (e.response?.data?.data) {
@@ -161,18 +71,19 @@ var Driver = (options) => {
                         { depth: null, colors: true }
                     )
                 )
-                throw new Error('BadRequest')
             }
-            else {
-                throw e;
-            }
+
+            throw e;
         }
+
+        return response.data;
     };
 
     driver.get = async (bag) => {
         var { url, payload, apiKey = driverApiKey } = bag;
         url = maybeInjectApiKey({ url, apiKey });
         
+        debug('GET', agent?.defaults?.baseURL, url);
         return agent.get(url)
     };
     // FIXME:
@@ -188,11 +99,15 @@ var Driver = (options) => {
     )
 
     driver.sendMessage = async (message, options = {}) => {
-        var { apiKey = driverApiKey, ...otherOptions } = options;
+        var {
+            apiKey = driverApiKey, i18n = driverI18N,
+            ...otherOptions
+        } = options;
         try {
+            // NOTE: we could use drover post maybe?
             var { status, data } = await writeRequest({
-                agent, url: '/', message, options: {
-                    apiKey, ...otherOptions
+                agent, url: '/', payload: message, options: {
+                    apiKey, i18n, ...otherOptions
                 }
             });
 
@@ -207,9 +122,8 @@ var Driver = (options) => {
             return { status, data };
         }
         catch (e) {
-            if (e instanceof RequestFailed) {
-
-                if (e.response.status === 400) {
+            if (e instanceof RequestError) {
+                if (e.httpStatusCode === 400) {
                     // NOTE: i could potentially overwrite stack
                     // and put additional info there, but that would
                     // pretty hacky and would break stuff that
@@ -284,12 +198,25 @@ var Driver = (options) => {
         return cache; 
     }
 
+    for (var [ _key, _inter] of Object.entries(inter)) {
+        driver[_key] = __withDriver(driver, _inter);
+    }
+
     return driver;
 }
 
-Driver.errors = {
-    DriverError,
-    RequestFailed
+var __withDriver = (driver, obj) => {
+    var out = {};
+    //NOTE: let
+    for (let [key, fn] of Object.entries(obj)) {
+        out[key] = (bag) => fn({ driver, ...bag })
+    }
+
+    return out;
 }
+
+Driver.DriverError = DriverError;
+Driver.RequestError = RequestError;
+Driver.ApiError = ApiError;
 
 module.exports = Driver;

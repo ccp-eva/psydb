@@ -2,6 +2,7 @@
 var debug = require('debug')('psydb:api:endpoints:public:initUI');
 
 var { only } = require('@mpieva/psydb-core-utils');
+var { getSystemTimezone } = require('@mpieva/psydb-timezone-helpers');
 var { Permissions } = require('@mpieva/psydb-common-lib');
 var { ApiError, ResponseBody } = require('@mpieva/psydb-api-lib');
 var { performSelfAuth } = require('@mpieva/psydb-api-self-auth');
@@ -55,7 +56,10 @@ var publicInitUI = async (context, next) => {
         
         '/dev_enableSubjectDuplicatesSearch',
         '/dev_subjectDuplicatesSearchFields',
+        '/dev_enableSubjectCopyForUnprocessedExperiments',
     ]});
+
+    config.serverZimezone = getSystemTimezone();
 
     var configHashSum = '';
 
@@ -66,7 +70,7 @@ var publicInitUI = async (context, next) => {
         ...(self && { self: {
             record: self.record,
             permissions
-        }})
+        }}),
     }})
     
     await next();

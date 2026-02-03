@@ -55,6 +55,7 @@ module.exports = {
     fetchRecordsByFilter: require('./fetch-records-by-filter'),
     fetchRecordsInInterval: require('./fetch-records-in-interval'),
 
+    fetchCRTLabelsManual: require('./fetch-crt-labels-manual'),
     fetchRecordLabelsManual: require('./fetch-record-labels-manual'),
     fetchHelperSetItemLabelsManual: require('./fetch-helper-set-item-labels-manual'),
 

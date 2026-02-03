@@ -1,3 +1,5 @@
+throw new Error('OBSOLETE');
+
 'use strict';
 // XXX: this is actually ONLY the way team calendar
 var debug = require('debug')(

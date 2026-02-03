@@ -12,6 +12,7 @@ var futils = require('@mpieva/psydb-custom-fields-common');
 var SearchConstraints = () => {
     var schema = MaxObject({
         '/_id': IdList(),
+        '/sequenceNumber': { type: ['array', 'object', 'string' ] }, //XXX
     });
     return schema;
 }

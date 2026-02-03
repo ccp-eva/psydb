@@ -4,7 +4,7 @@ var restore = require('@cdxoo/mongodb-restore');
 
 var {
     merge, entries, pathify, flatten, ejson,
-    hasNone, hasOnlyOne
+    hasNone, hasOnlyOne, jsonify,
 } = require('@mpieva/psydb-core-utils');
 
 var fixtures = require('@mpieva/psydb-fixtures');
@@ -12,6 +12,8 @@ var { Permissions } = require('@mpieva/psydb-common-lib');
 var {
     compose, createId, Self, withRetracedErrors
 } = require('@mpieva/psydb-api-lib');
+
+console.ejson = (that) => console.dir(ejson(that), { depth: null });
 
 var {
     withEventEngine,
@@ -92,7 +94,7 @@ var beforeAll = async function () {
 
         var send = async (message, extraContext) => {
             var koaContext = this.createKoaContext(
-                message, { ...extraOptionsContext, ...extraContext }
+                jsonify(message), { ...extraOptionsContext, ...extraContext }
             );
             var next = async () => {}
 

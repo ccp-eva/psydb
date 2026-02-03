@@ -55,10 +55,6 @@ const createAgent = (options = {}) => {
         }, extraAxiosConfig);
     }
 
-    agent.fetchServerTimezone = () => {
-        return axios.get(`/api/server-timezone`);
-    }
-
     agent.readCustomRecordTypeMetadata = ({
         only, ignoreResearchGroups
     } = {}) => {
@@ -446,7 +442,7 @@ const createAgent = (options = {}) => {
         showPast,
     }) => {
         return axios.post(
-            '/api/experiment-calendar',
+            '/api/experiment/invite-calendar',
             {
                 interval,
 
@@ -957,6 +953,9 @@ const createAgent = (options = {}) => {
     agent.study = {
         list: dumpPOST({ url: '/api/study/list' }),
         extendedSearch: dumpPOST({ url: '/api/extended-search/studies' }),
+    };
+    agent.location = {
+        extendedSearch: dumpPOST({ url: '/api/location/extended-search' }),
     };
     agent.helperSet = {
         list: dumpPOST({ url: '/api/helperSet/list' }),
