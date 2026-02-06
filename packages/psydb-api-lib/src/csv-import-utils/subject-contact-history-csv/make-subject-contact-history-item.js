@@ -6,7 +6,7 @@ var makeSubjectContactHistoryItem = (bag) => {
     var { pipelineItem, subjectType, timezone } = bag
     var {
         subjectId, contactType, date, time,
-        status = 'delivered', comment = ''
+        status = 'sent', comment = ''
     } = pipelineItem.obj;
     
     var timestamp = convertYMDHMS({
@@ -14,8 +14,14 @@ var makeSubjectContactHistoryItem = (bag) => {
     });
   
     var _id = ObjectId();
-    var core = { type: contactType, csvImportId: null }
-    var state = { subjectId, timestamp, status, comment }
+    var core = {
+        type: contactType, csvImportId: null,
+        subjectId, subjectType, // NOTE: not sure if better in state
+        timezone,
+        contactedBy: null,
+        contactedAt: timestamp,
+    }
+    var state = { status, comment }
 
     return {
         record: { _id, ...core, state: state },

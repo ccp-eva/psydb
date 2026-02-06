@@ -9,6 +9,7 @@ var CSVImportGroup = MessageHandlerGroup([
     require('./experiment/create-manual-only-participation'),
     require('./experiment/create-online-survey'),
     require('./subject/create-default'),
+    require('./subject-contact-history/create'),
 ]);
 
 module.exports = CSVImportGroup;
