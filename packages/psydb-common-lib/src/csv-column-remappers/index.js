@@ -12,4 +12,5 @@ module.exports = {
             require('./experiment/manual-only-participation')
         ),
     },
+    SubjectContactHistory: require('./subject-contact-history'),
 }
