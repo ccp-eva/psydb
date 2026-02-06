@@ -89,3 +89,6 @@ module.exports.ManualOnlyParticipationExperimentVariantSettingState = (
 
 module.exports.ApiKeyFullSchema = require('./api-key/full-schema');
 module.exports.ApiKeyState = require('./api-key/state');
+
+module.exports.SubjectContactHistoryFullSchema = require('./subject-contact-history/full-schema');
+module.exports.SubjectContactHistoryState = require('./subject-contact-history/state');

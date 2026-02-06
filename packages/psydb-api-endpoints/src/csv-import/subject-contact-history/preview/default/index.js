@@ -49,7 +49,7 @@ var preview = async (context, next) => {
         csvImportId: null,
     }));
 
-    var relatedIds = { subject: [] };
+    var relatedIds = { subject: [], personnel: [] };
     for (var it of previewRecords) {
         var { subjectId } = it;
         relatedIds.subject.push(subjectId);

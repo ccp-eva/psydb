@@ -13,6 +13,7 @@ import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 import { CSVImport } from '@mpieva/psydb-ui-lib/data-viewers';
 
 //import RelatedExperiments from './related-experiments';
+import RelatedItems from './related-subject-contact-history-items';
 
 const Details = (ps) => {
     var { id: csvImportId } = useParams();
@@ -53,9 +54,7 @@ const Details = (ps) => {
             </CSVImport>
 
             <div className='mt-4'>
-                {/*<RelatedExperiments
-                    csvImportId={ csvImportId }
-                />*/}
+                <RelatedItems csvImportId={ csvImportId } />
             </div>
         </>
     )

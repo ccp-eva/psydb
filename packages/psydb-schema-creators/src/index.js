@@ -146,4 +146,10 @@ module.exports = {
         FullSchema: internals.ApiKeyFullSchema,
         State: internals.ApiKeyState,
     },
+    
+    subjectContactHistory: {
+        ...metadata.subjectContactHistory,
+        FullSchema: internals.SubjectContactHistoryFullSchema,
+        State: internals.SubjectContactHistoryState,
+    },
 }

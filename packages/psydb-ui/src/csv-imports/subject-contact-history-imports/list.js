@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { useI18N, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     useRevision,
     useModalReducer,
