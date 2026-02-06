@@ -6,6 +6,7 @@ module.exports = [
     ...require('./subject-groups'),
     ...require('./locations'),
     ...require('./external-organizations'),
+    ...require('./subject-contact-history'),
 
     ...require('./lab-workflows'),
 

@@ -1,4 +1,3 @@
-
 'use strict';
 module.exports = [
     {
@@ -40,14 +39,5 @@ module.exports = [
     {
         en: 'Source File',
         de: 'Quell-Datei'
-    },
-
-    {
-        en: 'Contacted At',
-        de: 'Kontaktiert Am',
-    },
-    {
-        en: 'Contacted By',
-        de: 'Kontaktiert Durch',
     },
 ]
