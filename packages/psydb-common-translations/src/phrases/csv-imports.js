@@ -6,8 +6,8 @@ module.exports = [
         de: 'CSV-Importe'
     },
     {
-        en: 'Participation Imports',
-        de: 'Teilnahme-Importe'
+        en: 'Subject Contact History Imports',
+        de: 'Proband:innen-Kontakt-Importe'
     },
     {
         en: 'Participation Imports',
@@ -40,5 +40,14 @@ module.exports = [
     {
         en: 'Source File',
         de: 'Quell-Datei'
+    },
+
+    {
+        en: 'Contacted At',
+        de: 'Kontaktiert Am',
+    },
+    {
+        en: 'Contacted By',
+        de: 'Kontaktiert Durch',
     },
 ]

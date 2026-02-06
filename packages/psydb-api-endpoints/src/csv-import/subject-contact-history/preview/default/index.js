@@ -51,7 +51,7 @@ var preview = async (context, next) => {
 
     var relatedIds = { subject: [] };
     for (var it of previewRecords) {
-        var { subjectId } = it.state;
+        var { subjectId } = it;
         relatedIds.subject.push(subjectId);
     }
     var related = {

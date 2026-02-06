@@ -844,6 +844,21 @@ const createAgent = (options = {}) => {
             url: '/api/csv-import/subject/related-subjects',
         })({ out, ...pass })
     );
+    
+    agent.searchCSVSubjectContactHistoryImports = dumpPOST({
+        url: '/api/csv-import/subject-contact-history/search',
+    });
+    agent.readCSVSubjectContactHistoryImport = dumpPOST({
+        url: '/api/csv-import/subject-contact-history/read',
+    });
+    agent.previewCSVSubjectContactHistoryImport = ({ importType, ...pass }) => dumpPOST({
+        url: `/api/csv-import/subject-contact-history/preview/${importType}`,
+    })(pass);
+    agent.fetchCSVSubjectContactHistoryImportItems = (
+        ({ out = 'full', ...pass }) => dumpPOST({
+            url: '/api/csv-import/subject-contact-history/related-subject-contact-history-items',
+        })({ out, ...pass })
+    );
 
     agent.fetchStudySubjectTypeInfos = (bag) => {
         var {

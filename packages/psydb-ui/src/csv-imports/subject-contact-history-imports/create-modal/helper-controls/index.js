@@ -1,2 +1,2 @@
-export * from './record-type-select';
+export * from './subject-type-select';
 

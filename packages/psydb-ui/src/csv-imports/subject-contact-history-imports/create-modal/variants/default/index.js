@@ -16,7 +16,7 @@ export const DefaultVariant = (ps) => {
 
     var [{ translate }] = useI18N();
     var initialValues = {
-        //fileId: '66909c1e373d99dc8b8605be',
+        fileId: '6985b192d1058599fa7e97c2',
     }
 
     return (

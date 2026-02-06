@@ -81,12 +81,13 @@ const RecordRow = (ps) => {
     var { _id, subjectType, createdAt, createdBy } = record;
     
     var { url } = useRouteMatch();
-    var [{ fdatetime }] = useI18N();
+    var [{ locale }] = useI18N();
     
     return (
         <LinkRow href={ `#${url}/${_id}` } values={[
-            related.crts.subject[subjectType],
-            fdatetime(createdAt),
+            //related.crts.subject[subjectType],
+            subjectType,
+            datefns.format(new Date(createdAt), 'P p', { locale }),
             related.records.personnel[createdBy],
         ]} />
     )

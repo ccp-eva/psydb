@@ -18,7 +18,7 @@ const PreviewRecord = (ps) => {
 
     return (
         <div className='bg-white py-2 px-3 border'>
-            <SplitPartitioned partitions={[ 1, 2 ]}>
+            <SplitPartitioned partitions={[ 1, 2, 1, 4 ]}>
                 <span>{ translate('Type') }</span>
                 <BE>{ type }</BE>
                 <span>{ translate('Subject') }</span>
@@ -29,12 +29,22 @@ const PreviewRecord = (ps) => {
                     newTab={ true }
                     __useNewRelated={ true }
                 /></BE>
+            </SplitPartitioned>
+            <SplitPartitioned partitions={[ 1, 2, 1, 4 ]}>
                 <span>{ translate('Contacted At') }</span>
                 <BE><DateTime value={ contactedAt } /></BE>
                 <span>{ translate('Contacted By') }</span>
-                <BE>{ contactedBy }</BE>
+                <BE><ForeignId
+                    value={ contactedBy }
+                    props={{ collection: 'personnel' }}
+                    related={ related }
+                    newTab={ true }
+                    __useNewRelated={ true }
+                /></BE>
+            </SplitPartitioned>
+            <SplitPartitioned partitions={[ 1, 2, 1, 4 ]}>
                 <span>{ translate('Status') }</span>
-                <BE>{ type }</BE>
+                <BE>{ status }</BE>
                 <span>{ translate('Comment') }</span>
                 <BE>{ comment }</BE>
             </SplitPartitioned>

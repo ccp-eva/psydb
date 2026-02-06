@@ -4,5 +4,5 @@ module.exports = {
 
     experiment: require('./experiment'),
     subject: require('./subject'),
-    subjectContactHistory: require('./suject-contact-history'),
+    subjectContactHistory: require('./subject-contact-history'),
 }

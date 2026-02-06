@@ -12,7 +12,7 @@ const SubjectContactHistoryRouting = (ps) => {
 
     return (
         <PageWrappers.Level2
-            title={ translate('Participation Imports') }
+            title={ translate('Subject Contact History Imports') }
             titleLinkUrl={ url }
         >
             <Switch>

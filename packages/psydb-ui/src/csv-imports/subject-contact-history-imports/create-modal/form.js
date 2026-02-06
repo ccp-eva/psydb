@@ -2,13 +2,9 @@ import React, { useState } from 'react';
 
 import { only } from '@mpieva/psydb-core-utils';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-import { useFetchAll, useFetch } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator, FormHelpers } from '@mpieva/psydb-ui-layout';
-import { RecordPicker } from '@mpieva/psydb-ui-lib';
-import * as Controls from '@mpieva/psydb-ui-form-controls';
 
-import { switchComponent } from './specific-importer-form-sections';
 import * as HelperControls from './helper-controls';
+import switchVariant from './switch-variant';
 
 const SubjectContactHistoryImportCreateForm = (ps) => {
     
@@ -17,30 +13,24 @@ const SubjectContactHistoryImportCreateForm = (ps) => {
     ]});
 
     var [{ translate }] = useI18N();
-    var [ stage, setStage ] = useState('prepare');
+    var [ stage, setStage ] = useState(
+        //'prepare'
+        'preview'
+    );
 
     var [ subjectType, setSubjectType ] = useState(
-        //'child'
+        'child'
     );
     
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.fetchAvailableCRTs({ collections: [ 'subject' ]}),
-    ), []);
-
-    if (!didFetch) {
-        return <LoadingIndicator size='lg' />
-    }
-    var subjectCRTs = fetched.data;
-    var helperBag = { subjectCRTs, subjectType, setSubjectType }
+    var helperBag = { subjectType, setSubjectType }
     return (
         <>
             { stage === 'prepare' && (
                 <HelperControlsContainer { ...helperBag } />
             )}
-            { csvImporter && (
+            { subjectType && (
                 <CSVImporterFormSwitch
                     subjectType={ subjectType }
-                    csvImporter={ csvImporter }
                     stage={ stage }
                     setStage={ setStage }
                     { ...triggerBag }
@@ -58,7 +48,7 @@ const CSVImporterFormSwitch = (ps) => {
         'onSuccessfulUpdate', 'onFailedUpdate'
     ]});
 
-    var CSVImporterForm = switchComponent(csvImporter);
+    var CSVImporterForm = switchVariant({ type: 'default' });
     return (
         <CSVImporterForm { ...pass }/>
     )
@@ -71,9 +61,8 @@ const HelperControlsContainer = (ps) => {
 
     return (
         <>
-            <HelperControls.RecordTypeSelect
+            <HelperControls.SubjectTypeSelect
                 label={ translate('Subject Type') }
-                crts={ subjectCRTs }
                 value={ subjectType }
                 onChange={ setSubjectType }
             />
