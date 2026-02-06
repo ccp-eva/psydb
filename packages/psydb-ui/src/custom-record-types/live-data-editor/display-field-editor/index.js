@@ -24,7 +24,7 @@ const DisplayFieldEditor = (ps) => {
     var modal = useModalReducer();
 
     var availableDisplayFieldData = gatherDisplayFieldData({
-        customRecordTypeData: record,
+        customRecordTypeData: record, applyGeneralFlags: true,
     });
 
     var availableFieldDataByPointer = keyBy({

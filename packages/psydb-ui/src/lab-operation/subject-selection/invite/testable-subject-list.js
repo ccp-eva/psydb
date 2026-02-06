@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { __fixRelated, __fixDefinitions } from '@mpieva/psydb-common-compat';
 
 import {
     Redirect,
@@ -10,7 +11,7 @@ import { Base64 } from 'js-base64';
 
 import intervalfns from '@mpieva/psydb-date-interval-fns';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetch,
@@ -21,10 +22,11 @@ import {
 
 import {
     Table,
-    TableHeadCustomCols,
     LoadingIndicator,
     Pagination,
 } from '@mpieva/psydb-ui-layout';
+
+import { TableHeadCustomCols } from '@mpieva/psydb-custom-fields-ui';
 
 import { datefns, QuickSearch } from '@mpieva/psydb-ui-lib';
 import { SubjectRecordViewModal } from '@mpieva/psydb-ui-compositions';
@@ -46,7 +48,7 @@ const InviteTestableSubjectList = (ps) => {
         throw new Error(`unknown inviteType "${inviteType}"`);
     }
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var { path, url } = useRouteMatch();
     var {
@@ -137,14 +139,22 @@ const InviteTestableSubjectList = (ps) => {
         subjectRecordLabelDefinition,
     } = fetched.data;
 
+    // FIXME
+    subjectData = __fixRelated(subjectData);
+    subjectData.definitions = __fixDefinitions(subjectData.displayFieldData);
+
+
     var {
         records,
+        related,
+        definitions,
         displayFieldData,
+
         relatedRecordLabels,
         relatedHelperSetItems,
         relatedCustomRecordTypeLabels,
     } = subjectData;
-
+    
     return (
         <>
             <InviteModal
@@ -203,9 +213,7 @@ const InviteTestableSubjectList = (ps) => {
                     </tr>
                     <tr className='bg-white'>
                         <th>{ translate('Subject') }</th>
-                        <TableHeadCustomCols { ...({
-                            definitions: subjectData.displayFieldData
-                        })} />
+                        <TableHeadCustomCols definitions={ definitions } />
                         <th>{ translate('Age Today') }</th>
                         <th>{ translate('Part. Studies') }</th>
                         <th>{ translate('Appointments') }</th>
@@ -231,9 +239,7 @@ const InviteTestableSubjectList = (ps) => {
 
 const DesiredTimeRange = (ps) => {
     var { interval } = ps;
-    
-    var translate = useUITranslation();
-    var locale = useUILocale();
+    var [{ translate, locale }] = useI18N();
 
     var { startDate, endDate } = intervalfns.format(
         interval, { offsetEnd: 0, locale }

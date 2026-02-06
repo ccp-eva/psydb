@@ -125,6 +125,11 @@ const FormBody = (ps) => {
                         dataXPath='$.experimentName'
                         required
                     />
+                    <Fields.SaneString
+                        label={ translate('_wkprc_conditionName') }
+                        dataXPath='$.conditionName'
+                        required
+                    />
 
                     <Fields.GenericEnum
                         label={ translate('_wkprc_roomOrEnclosure') }
@@ -176,11 +181,6 @@ const BranchFields = (ps) => {
         return (
             <>
                 <Fields.DateOnlyTimestamp required />
-                <Fields.Integer
-                    label={ translate('_wkprc_intradaySeqNumber') }
-                    dataXPath='$.intradaySeqNumber'
-                    required
-                />
 
                 <Fields.ForeignId
                     label={ translate('Subject') }
@@ -208,11 +208,6 @@ const BranchFields = (ps) => {
         return (
             <>
                 <Fields.DateOnlyTimestamp required />
-                <Fields.Integer
-                    label={ translate('_wkprc_intradaySeqNumber') }
-                    dataXPath='$.intradaySeqNumber'
-                    required
-                />
                 <GroupExpSubjectFields
                     label={ translate('Subjects') }
                     { ...getMultiSubjectsBag(ps) }

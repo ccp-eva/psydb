@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
-import {
-    useUILocale,
-    useUILanguage,
-    useUITranslation,
-} from '@mpieva/psydb-ui-contexts';
 import { useRouteMatch, useParams } from 'react-router-dom';
-
-import { keyBy } from '@mpieva/psydb-core-utils';
-import { createDefaultFieldDataTransformer } from '@mpieva/psydb-common-lib';
-import { fixRelated, __fixDefinitions } from '@mpieva/psydb-ui-utils';
+import { __fixRelated, __fixDefinitions } from '@mpieva/psydb-common-compat';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetchAll,
@@ -26,6 +19,7 @@ import {
 
 import { CreateModal } from '@mpieva/psydb-ui-lib/src/participation/for-study';
 import ParticipationList from './participation-list';
+import WKPRCCSVExportButton from './wkprc-csv-export-button';
 import CSVImportModal from './csv-import-modal';
 
 
@@ -37,11 +31,9 @@ const StudyParticipation = (ps) => {
     var { path, url } = useRouteMatch();
     var { id } = useParams();
 
+    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
+    var [{ translate, locale, language }] = useI18N();
     var revision = useRevision();
-
-    var locale = useUILocale();
-    var translate = useUITranslation();
-    var [ language ] = useUILanguage();
 
     var permissions = usePermissions();
     var canAddSubjects = permissions.hasFlag('canWriteParticipation');
@@ -104,13 +96,8 @@ const StudyParticipation = (ps) => {
     var { 
         records = [],
         related = {},
-    } = fixRelated(dataBySubjectType[selectedSubjectType] || {});
-
-    var transformer = createDefaultFieldDataTransformer({
-        related,
-        //timezone,
-        locale
-    })
+    } = __fixRelated(dataBySubjectType[selectedSubjectType] || {});
+    definitions = __fixDefinitions(definitions);
 
     var onSuccessfulUpdate = revision.up;
     var modalBag = { studyId: id, onSuccessfulUpdate };
@@ -146,11 +133,19 @@ const StudyParticipation = (ps) => {
                     ) : (
                         <div />
                     )}
-                    <div>
+                    <div className='d-flex gapx-3'>
                         { canAddSubjects && (
                             <Button onClick={ createModal.handleShow }>
                                 { translate('Add Participation') }
                             </Button>
+                        )}
+                        { IS_WKPRC && (
+                            <WKPRCCSVExportButton
+                                endpoint='wkprc-csv-export/participation'
+                                outputName='participation-export.csv'
+                                studyId={ id }
+                                subjectType={ selectedSubjectType }
+                            />
                         )}
                         
                         {/* canImportCSV && (
@@ -170,7 +165,6 @@ const StudyParticipation = (ps) => {
                     records,
                     related,
                     definitions,
-                    transformer,
                     sorter,
                     onSuccessfulUpdate,
                 }) } />

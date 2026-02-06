@@ -74,8 +74,9 @@ var addApestudiesWKPRCDefaultExtraState = async (context, next) => {
     var { experimentState } = cache.get();
     
     var pass = only({ from: message.payload, keys: [
-        'subjectGroupId', 'experimentName', 'roomOrEnclosure',
-        'intradaySeqNumber', 'totalSubjectCount',
+        'subjectGroupId',
+        'experimentName', 'conditionName', 'roomOrEnclosure',
+        'totalSubjectCount',
     ]})
     var { subjectGroupId } = pass; 
 

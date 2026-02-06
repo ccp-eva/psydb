@@ -11,6 +11,7 @@ var qsOptions = {
     encodeValuesOnly: true, // encode values but not columns
     strictNullHandling: true, // to be able to clean empty items
     //interpretNumericEntities: true, // i.e. utf8-special chars
+    plainObjects: true,
 }
 
 var dumbMakeObjects = (bag) => {

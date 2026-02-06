@@ -1,5 +1,5 @@
 'use strict';
-var { without } = require('@mpieva/psydb-core-utils');
+var { ejson, without } = require('@mpieva/psydb-core-utils');
 var { CRTSettingsList } = require('@mpieva/psydb-common-lib');
 var {
     compose,
@@ -72,8 +72,6 @@ var tryPrepareImport = async (context, next) => {
             researchGroup,
             timezone,
         });
-
-        cache.merge({ pipelineOutput });
     }
     catch (e) {
         if (e instanceof CSVImportError) {
@@ -87,6 +85,17 @@ var tryPrepareImport = async (context, next) => {
         }
     }
 
+    var { transformed, pipelineData } = pipelineOutput;
+    var { subjects } = transformed;
+
+    if (subjects.length < 1) {
+        throw new ApiError(409, {
+            apiStatus: 'NoSubjectsAreImportable',
+            data: pipelineData
+        })
+    }
+
+    cache.merge({ pipelineOutput });
     await next();
 }
 

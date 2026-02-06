@@ -1,5 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb-api-lib:api-error');
+
+var { inspect } = require('util');
+var { ejson } = require('@mpieva/psydb-core-utils');
 var { VerifyError } = require('@mpieva/psydb-common-verify-helpers');
 var getHttpStatus = require('./psydb-http-statuses');
 
@@ -30,7 +33,7 @@ class ApiError extends Error {
             data,
         };
 
-        debug('ApiError', this.__info);
+        debug('ApiError', inspect(ejson(this.__info), { depth: null }));
     }
 
     getInfo () {

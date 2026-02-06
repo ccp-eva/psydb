@@ -54,13 +54,21 @@ const EditFormOrderModalBody = (ps) => {
         >
             {(formikProps) => (
                 <>
-                    <ColumnOrder
-                        dataXPath='$.columns'
-                        columns={ columns }
-                    />
-                    <Button type='submit'>
-                        { translate('Save') }
-                    </Button>
+                    { currentDataPointers.length > 0 ? (
+                        <>
+                            <ColumnOrder
+                                dataXPath='$.columns'
+                                columns={ columns }
+                            />
+                            <Button type='submit'>
+                                { translate('Save') }
+                            </Button>
+                        </>
+                    ) : (
+                        <p><i className='text-muted'>
+                            { translate('No display fields set.') }
+                        </i></p>
+                    )}
                 </>
             )}
         </DefaultForm>

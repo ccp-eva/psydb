@@ -4,7 +4,7 @@ import {
     format as formatDateInterval
 } from '@mpieva/psydb-date-interval-fns';
 
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useModalReducer } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -82,8 +82,7 @@ const ExperimentSubjectItems = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var locale = useUILocale();
-    var translate = useUITranslation();
+    var [{ translate, locale }] = useI18N();
 
     var { _enableFollowUpExperiments, state } = experimentRecord;
     var { subjectData } = state;
@@ -177,7 +176,7 @@ const Cell = ({ children }) => (
 );
 
 const TableHead = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <thead>
             <tr>
@@ -191,7 +190,7 @@ const TableHead = (ps) => {
 }
 
 const Fallback = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <>
             <Table className='mb-1'>

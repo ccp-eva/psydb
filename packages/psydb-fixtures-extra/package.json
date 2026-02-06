@@ -4,6 +4,7 @@
   "description": "",
   "main": "./index.js",
   "scripts": {
+    "build": "",
     "fullmail:minimal": "node ./full-mail/minimal"
   },
   "author": "Jan Schwalbe",

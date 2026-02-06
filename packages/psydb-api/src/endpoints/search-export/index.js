@@ -1,14 +1,14 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:export');
-var jsonpointer = require('jsonpointer');
-var { copy } = require('copy-anything');
 
-var { keyBy } = require('@mpieva/psydb-core-utils');
-var { stringifyFieldValue } = require('@mpieva/psydb-common-lib');
+var { copy } = require('copy-anything');
+var { __fixRelated, __fixDefinitions } = require('@mpieva/psydb-common-compat');
+
+var { jsonpointer, keyBy } = require('@mpieva/psydb-core-utils');
+var { Fields } = require('@mpieva/psydb-custom-fields-common');
 
 var {
-    ApiError,
-    Ajv,
+    validateOrThrow,
     ResponseBody,
 
     gatherAvailableConstraintsForRecordType,
@@ -32,23 +32,16 @@ var FullBodySchema = require('./full-body-schema');
 
 var exportEndpoint = async (context, next) => {
     debug('endpoints/export');
-    var { db, permissions, request } = context;
+    var { db, permissions, request, i18n } = context;
+    var { timezone } = i18n;
 
-    var ajv = Ajv();
     var precheckBody = copy(request.body);
-    var isValidCore = ajv.validate(
-        CoreBodySchema(),
-        precheckBody
-    );
-    if (!isValidCore) {
-        debug('ajv errors', ajv.errors);
-        throw new ApiError(400, 'InvalidRequestSchema');
-    };
-    
-    var {
-        collection,
-        recordType,
-    } = precheckBody;
+    validateOrThrow({
+        schema: CoreBodySchema(),
+        payload: precheckBody
+    });
+
+    var { collection, recordType } = precheckBody;
     
     var collectionCreatorData = allSchemaCreators[collection];
     if (!collectionCreatorData) {
@@ -68,14 +61,10 @@ var exportEndpoint = async (context, next) => {
         permissions
     });
         
-    var isValidFull = ajv.validate(
-        await generateFullBodySchema(context, { displayFields }),
-        request.body
-    );
-    if (!isValidCore) {
-        debug('ajv errors', ajv.errors);
-        throw new ApiError(400, 'InvalidRequestSchema');
-    };
+    validateOrThrow({
+        schema: await generateFullBodySchema(context, { displayFields }),
+        payload: request.body
+    });
 
     var {
         searchOptions = {},
@@ -83,8 +72,6 @@ var exportEndpoint = async (context, next) => {
         constraints,
         sort,
         showHidden,
-
-        timezone
     } = request.body;
 
     var {
@@ -149,21 +136,21 @@ var exportEndpoint = async (context, next) => {
         dataPointer: it.dataPointer,
     }))
 
+    // FIXME
+    related = __fixRelated(related, { isResponse: false });
+    displayFieldData = __fixDefinitions(displayFieldData);
+
     var csv = CSV();
     csv.addLine(displayFieldData.map(it => it.displayName));
     for (var record of records) {
-        csv.addLine(displayFieldData.map(fieldDefinition => {
-            var { dataPointer } = fieldDefinition;
-            var rawValue = jsonpointer.get(record, dataPointer);
+        csv.addLine(displayFieldData.map(definition => {
+            var { systemType } = definition;
+
+            var stringify = Fields[systemType]?.stringifyValue;
+            var str = stringify ? (
+                stringify({ record, definition, related, i18n })
+            ) : '[!!ERROR!!]]';
             
-            var str = stringifyFieldValue({
-                rawValue,
-                fieldDefinition,
-                ...related,
-
-                timezone,
-            });
-
             return str;
         }))
     }

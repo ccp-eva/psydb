@@ -1,10 +1,6 @@
 'use strict';
-
-var {
-    createCustomQueryValues,
-    convertPointerKeys,
-    escapeRX, // FIXME: use makeRX
-} = require('../utils');
+var { makeRX } = require('@mpieva/psydb-common-lib');
+var { createCustomQueryValues } = require('../utils');
 
 var createSpecialFilterConditions = (filters) => {
     var {
@@ -14,9 +10,7 @@ var createSpecialFilterConditions = (filters) => {
 
     var AND = [];
     if (studyId) {
-        AND.push({
-            '_id': new RegExp(escapeRX(studyId), 'i')
-        });
+        AND.push({ '_id': makeRX(studyId) });
     }
     if (sequenceNumber !== undefined) {
         AND.push({ $expr: {
@@ -24,7 +18,7 @@ var createSpecialFilterConditions = (filters) => {
                 input: { $convert: {
                     input: '$sequenceNumber', to: 'string'
                 }},
-                regex: new RegExp(escapeRX(String(sequenceNumber)), 'i')
+                regex: makeRX(String(sequenceNumber)),
             }
         }});
     }
@@ -47,6 +41,12 @@ var createSpecialFilterConditions = (filters) => {
                 type: 'SaneString'
             },
             {
+                key: 'researchGroupIds',
+                pointer: '/state/researchGroupIds',
+                type: 'ForeignIdList',
+                props: { collection: 'researchGroup' }
+            },
+            {
                 key: 'scientistIds',
                 pointer: '/state/scientistIds',
                 type: 'ForeignIdList',
@@ -59,16 +59,15 @@ var createSpecialFilterConditions = (filters) => {
                 props: { collection: 'studyTopic' }
             },
             {
-                key: 'researchGroupIds',
-                pointer: '/state/researchGroupIds',
-                type: 'ForeignIdList',
-                props: { collection: 'researchGroup' }
-            }
+                key: 'experimentNames',
+                pointer: '/state/experimentNames',
+                type: 'SaneStringList'
+            },
         ],
         filters,
     });
     if (Object.keys(statics).length > 0 ) {
-        AND.push(convertPointerKeys(statics));
+        AND.push(statics);
     }
 
     return (

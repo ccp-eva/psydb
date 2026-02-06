@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import classnames from 'classnames';
 
 import { entries } from '@mpieva/psydb-core-utils';
-import { __fixDefinitions } from '@mpieva/psydb-ui-utils';
+import { __fixDefinitions } from '@mpieva/psydb-common-compat';
 
 import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
 import { Button, Icons } from '@mpieva/psydb-ui-layout';

@@ -1,19 +1,13 @@
 import React from 'react';
-
-import {
-    Route,
-    Switch,
-    Redirect,
-    useRouteMatch,
-    useHistory,
-    useParams
-} from 'react-router-dom';
+import { useRouteMatch, useParams } from 'react-router-dom';
 
 import {
     format as formatDateInterval
 } from '@mpieva/psydb-date-interval-fns';
 
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { __fixRelated } from '@mpieva/psydb-common-compat';
+import { Fields } from '@mpieva/psydb-custom-fields-common';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     useFetch,
     useRevision,
@@ -32,8 +26,6 @@ import {
     datefns,
     PostprocessSubjectForm
 } from '@mpieva/psydb-ui-lib';
-
-import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
 
 import InhouseList from './inhouse-list';
 
@@ -112,16 +104,12 @@ const ExperimentPostprocessingListLoader = (ps) => {
 
 
 const ExperimentPostprocessingList = (ps) => {
-    var {
-        records,
-        relatedCustomRecordTypeLabels,
-        relatedHelperSetItems,
-        relatedRecordLabels,
-        onSuccessfulUpdate,
-    } = ps;
+    // FIXME
+    var ps = __fixRelated(ps);
+    var { records, related, onSuccessfulUpdate } = ps;
 
-    var locale = useUILocale();
-    var translate = useUITranslation();
+    var [ i18n ] = useI18N();
+    var { translate, locale } = i18n;
 
     if (records.length < 1) {
         return <Fallback />
@@ -130,50 +118,37 @@ const ExperimentPostprocessingList = (ps) => {
     return (
         <Table>
             <TableHead />
-            <tbody>
-                { records.map(it => {
-                    var { _id, type, state } = it;
+            <tbody>{ records.map(it => {
+                var { _id, type, state } = it;
+                var { studyId, locationId, interval } = state;
+                var { startDate } = formatDateInterval(interval, { locale });
 
-                    var stringifyExperimentValue = createStringifier({
-                        record: it,
-                        relatedCustomRecordTypeLabels,
-                        relatedHelperSetItems,
-                        relatedRecordLabels,
-                    });
-
-                    var {
-                        startDate,
-                    } = formatDateInterval(state.interval, { locale });
-
-                    return <tr key={ it._id }>
-                        <td>{ translate(getExperimentTypeLabel(type)) }</td>
-                        <td>
-                            { stringifyExperimentValue({
-                                ptr: '/state/studyId',
-                                type: 'ForeignId',
-                                collection: 'study'
-                            })}
-                        </td>
-                        <td>
-                            { stringifyExperimentValue({
-                                ptr: '/state/locationId',
-                                type: 'ForeignId',
-                                collection: 'location'
-                            })}
-                        </td>
-                        <td>{ startDate }</td>
-                        <td className='d-flex justify-content-end'>
-                            <ExperimentIconButton to={`/experiments/${type}/${_id}`} />
-                        </td>
-                    </tr>
-                }) }
-            </tbody>
+                return <tr key={ it._id }>
+                    <td>{ translate(getExperimentTypeLabel(type)) }</td>
+                    <td>{
+                        Fields.ForeignId.stringifyValue({
+                            value: studyId, related, i18n,
+                            definition: { props: { collection: 'study' }}
+                        })
+                    }</td>
+                    <td>{
+                        Fields.ForeignId.stringifyValue({
+                            value: locationId, related, i18n,
+                            definition: { props: { collection: 'location' }}
+                        })
+                    }</td>
+                    <td>{ startDate }</td>
+                    <td className='d-flex justify-content-end'>
+                        <ExperimentIconButton to={`/experiments/${type}/${_id}`} />
+                    </td>
+                </tr>
+            }) }</tbody>
         </Table>
     )
 }
 
 const TableHead = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <thead>
             <tr>
@@ -188,7 +163,7 @@ const TableHead = (ps) => {
 }
 
 const Fallback = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <>
             <Table className='mb-1'>

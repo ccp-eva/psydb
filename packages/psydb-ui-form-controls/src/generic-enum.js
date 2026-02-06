@@ -31,6 +31,7 @@ export const GenericEnum = (ps) => {
         enum: enumeration,
         options,
         allowedValues,
+        disabledValues = [],
 
         value,
         onChange,
@@ -93,8 +94,14 @@ export const GenericEnum = (ps) => {
             continue;
         }
 
+        var isDisabled = disabledValues.includes(key);
         renderedOptions.push(
-            <option key={ ix } value={ useRawOnChange ? key : ix }>
+            <option
+                key={ ix }
+                disabled={ isDisabled }
+                value={ useRawOnChange ? key : ix }
+                style={ isDisabled ? { color: '#ccc' } : {}} // FIXME
+            >
                 { enumeration.labels[ix] }
             </option>
         );

@@ -1,6 +1,5 @@
 'use strict';
-var { entries, groupBy } = require('@mpieva/psydb-core-utils');
-var stringifiers = require('@mpieva/psydb-common-lib/src/field-stringifiers');
+var { groupBy } = require('@mpieva/psydb-core-utils');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var aggregateToArray = require('./aggregate-to-array');
@@ -62,7 +61,10 @@ var handleNoCRT = async (bag) => {
             'researchGroup': [
                 { 'state.shorthand': true },
                 { format: '${#}', tokens: [
-                    { dataPointer: '/state/shorthand' },
+                    {
+                        systemType: 'SaneString',
+                        dataPointer: '/state/shorthand'
+                    },
                 ]}
             ],
             'personnel': [
@@ -71,8 +73,14 @@ var handleNoCRT = async (bag) => {
                     'gdpr.state.lastname': true,
                 },
                 { format: '${#} ${#}', tokens: [
-                    { dataPointer: '/gdpr/state/firstname' },
-                    { dataPointer: '/gdpr/state/lastname' },
+                    {
+                        systemType: 'SaneString',
+                        dataPointer: '/gdpr/state/firstname'
+                    },
+                    {
+                        systemType: 'SaneString',
+                        dataPointer: '/gdpr/state/lastname'
+                    },
                 ]}
             ],
             'experiment': [
@@ -91,7 +99,10 @@ var handleNoCRT = async (bag) => {
             'subjectGroup': [
                 { 'state.name': true },
                 { format: '${#}', tokens: [
-                    { dataPointer: '/state/name' },
+                    {
+                        systemType: 'SaneString',
+                        dataPointer: '/state/name'
+                    },
                 ]}
             ],
         }[collection] || fallback;
@@ -159,20 +170,16 @@ var handleWithCRT = async (bag) => {
 
         related[collection] = {}
         for (var record of records) {
-            var label = createRecordLabel({
-                record,
-                definition: (
-                    allCRTSettings[collection][record.type]
-                    .getRecordLabelDefinition()
-                ),
-                from: '_labelProjection',
-                timezone, language, locale
+            var crt = allCRTSettings[collection][record.type];
+            var label = crt.getLabelForRecord({
+                record, from: '/_labelProjection',
+                i18n: { timezone, language, locale }
             });
             related[collection][record._id] = (
                 oldWrappedLabels
                 ? { _id: record._id, _recordLabel: label }
                 : label
-            )
+            );
         }
     }
     return related;

@@ -11,6 +11,7 @@ export * from './biological-gender';
 export * from './date-only-server-side';
 export * from './date-time';
 export * from './plain-checkbox';
+export * from './logic-gate';
 
 export * from './email';
 export * from './phone';

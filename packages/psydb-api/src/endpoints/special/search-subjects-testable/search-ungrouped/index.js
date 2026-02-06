@@ -25,6 +25,7 @@ var searchUngrouped = async (context, next) => {
         db,
         permissions,
         request,
+        i18n,
 
         experimentVariant,
     } = context;
@@ -79,7 +80,7 @@ var searchUngrouped = async (context, next) => {
         //console.dir(stages, { depth: null });
         var [ subjectRecords, subjectRecordsCount ] = fromFacets(result);
         var { upcomingSubjectExperimentData } = await postprocess({
-            db, subjectRecords, ...prepared
+            db, subjectRecords, ...prepared, i18n
         })
 
         context.body = ResponseBody({

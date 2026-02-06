@@ -1,5 +1,5 @@
 import React from 'react';
-import { fixRelated } from '@mpieva/psydb-ui-utils';
+import { __fixRelated } from '@mpieva/psydb-common-compat';
 import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { formatDateInterval } from '@mpieva/psydb-ui-lib';
@@ -26,7 +26,7 @@ const RelatedExperiments = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var { records, related } = fixRelated(fetched.data)
+    var { records, related } = __fixRelated(fetched.data)
     if (records.length < 1) {
         return (
             <i className='text-muted'>{ translate('None') }</i>

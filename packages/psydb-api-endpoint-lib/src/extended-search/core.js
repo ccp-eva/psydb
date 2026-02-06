@@ -6,7 +6,15 @@ var debug = require('debug')(
 var sift = require('sift');
 var inline = require('@cdxoo/inline-string');
 
+var { ejson } = require('@mpieva/psydb-core-utils');
+var { CRTSettings } = require('@mpieva/psydb-common-lib');
 var {
+    aggregateToArray,
+    aggregateCount
+} = require('@mpieva/psydb-mongo-adapter');
+
+var {
+    SmartArray,
     fromFacets,
 
     fetchOneCustomRecordType,
@@ -15,9 +23,11 @@ var {
     fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
 
+var fetchRelated = require('../fetch-related');
+
 var {
     createCustomQueryValues,
-    convertPointerKeys,
+    createCustomFieldMatchStages
 } = require('./utils');
 
 var extendedSearchCore = async (bag) => {
@@ -41,10 +51,9 @@ var extendedSearchCore = async (bag) => {
     } = bag;
 
     var crt = await fetchOneCustomRecordType({
-        db,
-        collection,
-        type: recordType
+        db, collection, type: recordType
     });
+    var crtSettings = CRTSettings.fromRecord(crt);
 
     if (
         !permissions.hasFlag('canAccessSensitiveFields')
@@ -68,6 +77,7 @@ var extendedSearchCore = async (bag) => {
     var addressFields = availableDisplayFieldData.filter(
         sift({ type: 'Address' })
     );
+
     if (addressFields.length > 0) {
         for (var it of addressFields) {
             var block = [
@@ -134,6 +144,17 @@ var extendedSearchCore = async (bag) => {
             )
         };
 
+        var customFieldMatchStages = [
+            ...createCustomFieldMatchStages({
+                definitions: customFields.scientific,
+                inputs: customScientificFilters,
+            }),
+            ...createCustomFieldMatchStages({
+                definitions: customFields.gdpr,
+                inputs: customGdprFilters,
+            }),
+        ]
+
         var customQueryValues = {
             ...createCustomQueryValues({
                 fields: customFields.scientific,
@@ -150,6 +171,13 @@ var extendedSearchCore = async (bag) => {
         var customFields = (
             fields.filter(it => !it.isRemoved)
         );
+
+        var customFieldMatchStages = [
+            ...createCustomFieldMatchStages({
+                definitions: customFields,
+                inputs: customFilters,
+            }),
+        ]
 
         var customQueryValues = {
             ...createCustomQueryValues({
@@ -168,24 +196,35 @@ var extendedSearchCore = async (bag) => {
 
     //console.dir(customQueryValues, { depth: null })
     //console.log(specialFilterConditions);
+   
+    var [ sortdef ] = crtSettings.findCustomFields({ pointer: sort.column });
+    // XXX: hotfix
+    if (sortdef?.systemType === 'Address') {
+        sort.column += '/street'
+    }
 
-    var mainStages = [
+    var mainStages = SmartArray([
         { $match: {
             isDummy: { $ne: true },
             'scientific.state.internals.isRemoved': { $ne: true },
+            'state.internals.isRemoved': { $ne: true },
             ...(recordType && { type: recordType }),
-            ...convertPointerKeys(customQueryValues),
-            ...specialFilterConditions,
+            //...customQueryValues,
+            //...specialFilterConditions,
         }},
 
-        ...(permissions.isRoot() ? [] : [
-            { $match: {
-                [permissionFullPath]: { $in: (
-                    permissions.getCollectionFlagIds(collection, 'read')
-                )}
-            }},
-        ]),
+        ...customFieldMatchStages,
         
+        ( specialFilterConditions && { $match: (
+            specialFilterConditions
+        )}),
+
+        ( !permissions.isRoot() && { $match: {
+            [permissionFullPath]: { $in: (
+                permissions.getCollectionFlagIds(collection, 'read')
+            )}
+        }}),
+
         { $project: {
             sequenceNumber: true,
             type: true,
@@ -208,51 +247,47 @@ var extendedSearchCore = async (bag) => {
         //    ],
         //    recordsCount: [{ $count: 'COUNT' }]
         //}}
-    ].filter(it => !!it);
+    ]).filter(it => !!it);
 
     debug('counting records');
-    var countResult = await (
-        db.collection(collection)
-        .aggregate(
-            [ ...mainStages, { $count: 'COUNT' } ],
-            { allowDiskUse: true }
-        )
-        .toArray()
-    );
-    debug('done counting records');
-    var recordsCount = (
-        countResult && countResult[0] ? countResult[0].COUNT : 0
-    );
+    var recordsCount = await aggregateCount({
+        db, [collection]: mainStages,
+        mongoSettings: { allowDiskUse: true }
+    }) || 0;
+    debug('done counting records: ', recordsCount);
 
     debug('searching records');
-    var records = await (
-        db.collection(collection).aggregate(
-            [
-                ...mainStages,
-                SortStage({ ...sort }),
-                { $skip: offset },
-                ...(limit ? [{ $limit: limit }] : [])
-            ],
-            {
-                allowDiskUse: true,
-                collation: { locale: 'de@collation=phonebook' }
-            }
-        ).toArray()
-    );
+    var records = await aggregateToArray({
+        db, [collection]: [
+            ...mainStages,
+            SortStage({ ...sort }),
+            { $skip: offset },
+            ...(limit ? [{ $limit: limit }] : [])
+        ],
+        mongoSettings: {
+            allowDiskUse: true,
+            collation: { locale: 'de@collation=phonebook' }
+        }
+    });
     debug('done searching records');
-    
+   
+    //var displayFields = crtSettings.findAvailableDisplayFields({
+    //    pointer: { $in: columns }
+    //});
+    //console.log(displayFields);
+    //var __related = await fetchRelated({
+    //    db, records, definitions: displayFields,
+    //    //i18n
+    //});
     var related = await fetchRelatedLabelsForMany({
-        db,
-        collectionName: collection,
-        recordType,
-        records,
+        db, collectionName: collection,
+        recordType, records,
     });
 
-    return {
-        records,
-        recordsCount,
-        related,
+    //console.dir(ejson(related), { depth: null });
 
+    return {
+        records, recordsCount, related,
         displayFieldData: availableDisplayFieldData,
     };
 }

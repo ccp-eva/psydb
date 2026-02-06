@@ -21,7 +21,11 @@ var runPipeline = async (bag) => {
     );
 
     var { pipelineData, preparedObjects } = await runDefaultPipeline({
-        db, csvData, schema, customColumnRemap, unmarshalClientTimezone
+        db, csvData, schema, customColumnRemap, unmarshalClientTimezone,
+        //extraRecordResolvePointers: {
+        //    location: [ '/sequenceNumber' ],
+        //    personnel: [ '/sequenceNumber' ]
+        //}
     });
 
     var transformed = transformPrepared({

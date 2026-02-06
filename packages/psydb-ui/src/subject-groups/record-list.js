@@ -3,6 +3,7 @@ import { useRouteMatch } from 'react-router-dom';
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 
 import { entries, keyBy, groupBy } from '@mpieva/psydb-core-utils';
+import { __fixRelated } from '@mpieva/psydb-common-compat';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
@@ -21,9 +22,6 @@ import {
     Icons
 } from '@mpieva/psydb-ui-layout';
 
-import {
-    fixRelated,
-} from '@mpieva/psydb-ui-utils';
 
 import {
     QuickSearch,
@@ -67,7 +65,7 @@ export const RecordList = (ps) => {
         recordsCount,
         displayFieldData,
         related
-    } = fixRelated(fetched.data);
+    } = __fixRelated(fetched.data);
 
     var subjectGroupsById = keyBy({
         items: records,

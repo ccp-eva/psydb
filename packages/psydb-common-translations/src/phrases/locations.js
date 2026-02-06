@@ -1,6 +1,7 @@
 'use strict';
 module.exports = [
     {
+        internal: '_sidenav_locations',
         en: 'Locations',
         de: 'Locations'
     },

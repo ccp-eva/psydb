@@ -11,10 +11,9 @@ export const HelperSetId = withField({ Control: (ps) => {
     var [ language ] = useUILanguage();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.searchRecords({
-            collection: 'helperSet',
-            showHidden: true,
-            limit: 1000 // FIXME
+        agent.fetch('/helperSet/list', {
+            filters: {}, showHidden: true,
+            offset: 0, limit: 1000,
         })
     ), []);
 

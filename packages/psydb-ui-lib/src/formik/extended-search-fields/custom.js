@@ -27,7 +27,7 @@ export const Custom = (ps) => {
         subChannelKey
         ? fieldDefinitions[subChannelKey]
         : fieldDefinitions
-    );
+    ) || [];
 
     fields = fields.map(it => ({
         definition: it,
@@ -94,19 +94,24 @@ const fixSystemType = (systemType) => {
 };
 const CustomField = (ps) => {
     var { dataXPath, definition, related, extraTypeProps = {} } = ps;
+    // FIXME: displayNameI18N can be null somehow
     var { displayName, displayNameI18N = {}, type, props } = definition;
     var [ language ] = useUILanguage();
 
     type = fixSystemType(type);
 
+    if (type === 'Lambda') {
+        return null;
+    }
+
     var Component = Fields[type] || CustomFieldFallback;
     return (
         <Component
             dataXPath={ dataXPath }
-            label={ displayNameI18N[language] || displayName }
+            label={ displayNameI18N?.[language] || displayName }
             related={ related }
             required={ false }
-            systemType={ type }
+            //systemType={ type }
             { ...props }
             { ...extraTypeProps[type] }
         />

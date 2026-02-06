@@ -106,11 +106,17 @@ const PreviewStage = (ps) => {
                 />
                 <hr />
                 { !allOk && (
-                    <IssueItemsAlert invalid={ invalid } remapper={
-                        CSVColumnRemappers.SubjectDefault({
-                            subjectCRT: CRTSettings({ data: crtSettings })
-                        })
-                    } />
+                    invalid.length > 0 ? (
+                        <IssueItemsAlert invalid={ invalid } remapper={
+                            CSVColumnRemappers.SubjectDefault({
+                                subjectCRT: CRTSettings({ data: crtSettings })
+                            })
+                        } />
+                    ) : (
+                        <Alert variant='danger'>
+                            <b>CSV has no data!</b>
+                        </Alert>
+                    )
                 )}
                 <SplitPartitioned partitions={[ 4, 8 ]}>
                     <div className='d-flex flex-column gapy-2'>

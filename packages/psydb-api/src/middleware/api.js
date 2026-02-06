@@ -13,8 +13,12 @@ var withSession = require('./session');
 var withErrorHandling = require('./errors');
 var withRouting = require('./routing');
 
+var encodeBrandingLogos = require('./encode-branding-logos');
+
 var createApi = (bag) => {
     var { app, config, prefix = '/' } = bag;
+
+    encodeBrandingLogos(config);
 
     var composition = compose([
         withApiConfig(config),

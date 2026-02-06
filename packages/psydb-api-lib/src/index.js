@@ -43,6 +43,7 @@ module.exports = {
     fetchCustomRecordTypes: require('./fetch-custom-record-types'),
 
     allCRTCollections: require('./all-crt-collections'),
+    fetchCRTLabels: require('./fetch-crt-labels'),
     fetchCRTSettings: require('./fetch-crt-settings'),
     fetchCRTSettingsById: require('./fetch-crt-settings-by-id'),
     fetchAllCRTSettings: require('./fetch-all-crt-settings'),
@@ -54,6 +55,7 @@ module.exports = {
     fetchRecordsByFilter: require('./fetch-records-by-filter'),
     fetchRecordsInInterval: require('./fetch-records-in-interval'),
 
+    fetchCRTLabelsManual: require('./fetch-crt-labels-manual'),
     fetchRecordLabelsManual: require('./fetch-record-labels-manual'),
     fetchHelperSetItemLabelsManual: require('./fetch-helper-set-item-labels-manual'),
 
@@ -78,6 +80,7 @@ module.exports = {
     // FIXME: make this include go away and use core-utils instead
     convertPointerToPath: require('@mpieva/psydb-core-utils').convertPointerToPath,
 
+    convertFiltersToQueryPairs: require('./convert-filters-to-query-pairs'),
     convertFiltersToQueryFields: require('./convert-filters-to-query-fields'),
     convertConstraintsToMongoPath: require('./convert-constraints-to-mongo-path'),
     

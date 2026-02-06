@@ -61,6 +61,11 @@ module.exports = [
         de: 'Unfixierte Feldänderungen'
     },
     {
+        internal: '_crt_new_record_type_hint',
+        en: 'This is a new record type! Use the Field-Editor to create data fields.',
+        de: 'Dies is ein neuer Datensatz-Typ! Nutze den Field-Editor um Daten-Felder zu erzeugen.'
+    },
+    {
         internal: '_crt_uncommited_fields_hint',
         en: 'The record type contains uncommited field changes! They have to be commited in the field editor before they are available in live settings and in records of this type.',
         de: 'Der Datensatz-Typ enthält unfixierte Feldänderungen! Diese müssen im Feld-Editor fixiert werden, bevor sie in den Live-Settings und in den Datensätzen dieses Datensatz-Types verfügbar sind.'

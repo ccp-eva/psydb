@@ -17,6 +17,8 @@ module.exports = {
 
     groupBy: require('./group-by'),
     keyBy: require('./key-by'),
+    keySequence: require('./key-sequence'),
+
     unwind: require('./unwind'),
     only: require('./only'),
     omit: require('./omit'),
@@ -33,9 +35,6 @@ module.exports = {
 
     isInstanceOf: require('./is-instance-of'),
     
-    convertPathToPointer: require('@cdxoo/objectpath-to-jsonpointer'),
-    convertPointerToPath: require('@cdxoo/jsonpointer-to-objectpath'),
-
     merge: require('./deep-merge'),
     pathify: require('./pathify'),
     queryObject: require('./query-object'),
@@ -44,16 +43,21 @@ module.exports = {
 
     convertSchemaPointerToMongoPath: require('./schemapointer-to-mongopath'),
     
+    prefixify: require('./prefixify'),
+    jsonify: require('./jsonify'),
+
+    keys: Object.keys,
+
+    convertPathToPointer: require('@cdxoo/objectpath-to-jsonpointer'),
+    convertPointerToPath: require('@cdxoo/jsonpointer-to-objectpath'),
     traverse: require('@cdxoo/traverse'),
     flatten: require('@cdxoo/flat').flatten,
     unflatten: require('@cdxoo/flat').unflatten,
     ejson: require('@cdxoo/tiny-ejson'),
    
-    prefixify: require('./prefixify'),
-
     jsonpointer: require('jsonpointer'),
-    keys: Object.keys,
+    copy: require('copy-anything').copy,
     escapeRX: require('escape-string-regexp'),
 
-    jsonify: require('./jsonify'),
+    JsonBase64: require('@cdxoo/json-base64').JsonBase64,
 }

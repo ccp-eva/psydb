@@ -12,7 +12,10 @@ var createUnmarshalSchema = (schema) => {
         if (isLeaf) {
             // adding unmarshal keywords to supported formats
             if (key === 'format') {
-                if (value === 'date-time') {
+                if (
+                    value === 'date-time'
+                    || value === 'date-only-server-side'
+                ) {
                     var { systemType } = parentNode.value;
                     if (systemType === 'DateTime') {
                         parentNode.value.type = [

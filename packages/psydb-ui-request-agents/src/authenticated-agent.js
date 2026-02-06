@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
-import { CRTSettingsList } from '@mpieva/psydb-common-lib';
+import { jsonpointer } from '@mpieva/psydb-core-utils';
+import { CRTSettings, CRTSettingsList } from '@mpieva/psydb-common-lib';
 
 const createAgent = (options = {}) => {
     var { language, localeCode } = options;
@@ -54,14 +55,12 @@ const createAgent = (options = {}) => {
         }, extraAxiosConfig);
     }
 
-    agent.fetchServerTimezone = () => {
-        return axios.get(`/api/server-timezone`);
-    }
-
     agent.readCustomRecordTypeMetadata = ({
         only, ignoreResearchGroups
     } = {}) => {
-        return axios.post(`/api/metadata/custom-record-types`, { only, ignoreResearchGroups });
+        return axios.post(`/api/metadata/custom-record-types`, {
+            only, ignoreResearchGroups
+        });
     }
 
     agent.readRecordSchema = ({
@@ -80,6 +79,8 @@ const createAgent = (options = {}) => {
         id,
         collection,
         recordType,
+        wrap,
+        
         extraAxiosConfig,
     }) => {
         var url = undefined;
@@ -98,7 +99,13 @@ const createAgent = (options = {}) => {
             url = `/api/metadata/crt-settings/${collection}`
         }
 
-        return axios.get(url, extraAxiosConfig);
+        var p = axios.get(url, extraAxiosConfig);
+        
+        if (wrap) {
+            CRTSettings.wrapResponsePromise(p);
+        }
+
+        return p;
     }
 
     agent.fetchCollectionCRTs = ({
@@ -435,7 +442,7 @@ const createAgent = (options = {}) => {
         showPast,
     }) => {
         return axios.post(
-            '/api/experiment-calendar',
+            '/api/experiment/invite-calendar',
             {
                 interval,
 
@@ -933,6 +940,30 @@ const createAgent = (options = {}) => {
         url: '/api/audit/rohrpost-event/read'
     });
 
+    ///////////////////////
+
+    agent.fetch = (tag, payload) => {
+        var fn = jsonpointer.get(agent, tag);
+        return fn(payload);
+    }
+    agent.subject = {
+        listDuplicates: dumpPOST({ url: '/api/subject/listDuplicates' }),
+        extendedSearch: dumpPOST({ url: '/api/extended-search/subjects' }),
+    };
+    agent.study = {
+        list: dumpPOST({ url: '/api/study/list' }),
+        extendedSearch: dumpPOST({ url: '/api/extended-search/studies' }),
+    };
+    agent.location = {
+        extendedSearch: dumpPOST({ url: '/api/location/extended-search' }),
+    };
+    agent.helperSet = {
+        list: dumpPOST({ url: '/api/helperSet/list' }),
+    };
+    agent.helperSetItem = {
+        list: dumpPOST({ url: '/api/helperSetItem/list' }),
+    };
+    
     // XXX
     agent.fetchFixedEventDetails = (bag) => {
         var { extraAxiosConfig, ...payload } = bag;

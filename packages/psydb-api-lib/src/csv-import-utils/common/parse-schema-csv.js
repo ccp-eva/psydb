@@ -12,12 +12,16 @@ var parseSchemaCSV = (bag) => {
         //deserializers = commonDeserializers,
     } = bag;
 
-    var { csvColumns, csvLines } = dumbParseCSV(csvData);
-
-    var parsed = dumbMakeObjects({
-        csvColumns: maybeRemapColumns({ csvColumns, customColumnRemap }),
-        csvLines
+    var { csvLines, parsed } = dumbParseCSV(csvData, {
+        customColumnRemap,
     });
+
+    //var { csvColumns = [], csvLines = [] } = dumbParseCSV(csvData);
+
+    //var parsed = dumbMakeObjects({
+    //    csvColumns: maybeRemapColumns({ csvColumns, customColumnRemap }),
+    //    csvLines
+    //});
 
     var validation = validateMany({ schema, items: parsed, ajvOptions: {
         coerceTypes: true,
@@ -39,7 +43,7 @@ var parseSchemaCSV = (bag) => {
 }
 
 var maybeRemapColumns = (bag) => {
-    var { csvColumns, customColumnRemap } = bag;
+    var { csvColumns = [], customColumnRemap } = bag;
 
     if (customColumnRemap) {
         var remappedColumns = [];

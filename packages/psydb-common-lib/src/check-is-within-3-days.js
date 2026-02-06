@@ -1,8 +1,8 @@
 'use strict';
-var maybeUseESM = require('./maybe-use-esm');
+var { __maybeUseESM } = require('@mpieva/psydb-common-compat');
 var datefns = {
-    add: maybeUseESM(require('date-fns/add')),
-    addBusinessDays: maybeUseESM(require('date-fns/addBusinessDays')),
+    add: __maybeUseESM(require('date-fns/add')),
+    addBusinessDays: __maybeUseESM(require('date-fns/addBusinessDays')),
     //set: maybeUseESM(require('date-fns/set')),
 }
 

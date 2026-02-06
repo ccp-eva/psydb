@@ -1,13 +1,12 @@
 'use strict';
-var maybeUseESM = require('./maybe-use-esm');
-
-var formatDate = maybeUseESM(require('date-fns/format'));
-//var formatDate_ESM = require('date-fns/format');
-//var formatDate = formatDate_ESM.default || formatDate_ESM;
+var { __maybeUseESM } = require('@mpieva/psydb-common-compat');
+var formatDate = __maybeUseESM(require('date-fns/format'));
 
 var { formatInTimeZone } = require('date-fns-tz');
 
 var { jsonpointer } = require('@mpieva/psydb-core-utils');
+var { Fields } = require('@mpieva/psydb-custom-fields-common');
+
 var ageFrameUtils = require('./age-frame-utils');
 var calculateAge = require('./calculate-age');
 
@@ -16,22 +15,14 @@ var AgeFrameEdge = (value) => {
     return `${years}/${months}/${days}`;
 }
 
-var Address = (value) => (
-    [
-        value.street,
-        value.housenumber,
-        value.affix,
-        value.postcode,
-        value.city,
-        // omitting country here,
-    ]
-    .filter(it => !!it)
-    .join(' ')
-);
-
-var SaneStringList = (value) => (
-    value.join(', ')
-);
+var wrap = (fn) => (value) => fn({ value });
+var out = {};
+for (var it of [
+    'Address',
+    'SaneStringList',
+]) {
+    out[it] = wrap(Fields[it].stringifyValue);
+}
 
 var URLStringList = (value) => (
     value.join(', ')
@@ -169,6 +160,7 @@ var ExtBool = (value, { short, language } = {}) => {
     }
 }
 
+// XXX: custom-fields-common cant handle that yet!!!!!!!!!!!!!!!!!!!!!!!
 var Lambda = (bag = {}) => {
     var { definition, record, timezone } = bag;
     var { fn, input } = definition.props;
@@ -199,7 +191,7 @@ var DefaultBool = (value, { language } = {}) => {
 }
 
 module.exports = {
-    Address,
+    ...out,
     
     // FIXME: obsolete
     AgeFrameEdge,
@@ -208,7 +200,6 @@ module.exports = {
     AgeFrameBoundary,
     AgeFrameInterval,
 
-    SaneStringList,
     URLStringList,
     EmailList,
     PhoneWithTypeList,

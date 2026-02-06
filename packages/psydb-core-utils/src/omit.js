@@ -22,6 +22,10 @@ var omit = (bag) => {
 
 var omitOne = (bag) => {
     var { from, paths } = bag;
+    if (Object.keys(from).length < 1) {
+        return {};
+    }
+
     var flatted = flatten(from);
 
     var out = {};
@@ -37,7 +41,10 @@ var omitOne = (bag) => {
             out[key] = value;
         }
     }
-    return unflatten(out);
+
+    // FIXME: this is an issue in unflatten {} => undefined
+    var r = unflatten(out) || {};
+    return r;
 }
 
 module.exports = omit;

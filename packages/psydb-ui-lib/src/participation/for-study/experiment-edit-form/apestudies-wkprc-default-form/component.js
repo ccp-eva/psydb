@@ -129,12 +129,12 @@ const FormBody = (ps) => {
                         dataXPath='$.experimentName'
                         required
                     />
-                    <Fields.DateOnlyTimestamp required />
-                    <Fields.Integer
-                        label={ translate('_wkprc_intradaySeqNumber') }
-                        dataXPath='$.intradaySeqNumber'
+                    <Fields.SaneString
+                        label={ translate('_wkprc_conditionName') }
+                        dataXPath='$.conditionName'
                         required
                     />
+                    <Fields.DateOnlyTimestamp required />
                     
                     <Fields.GenericEnum
                         label={ translate('_wkprc_roomOrEnclosure') }
@@ -192,8 +192,8 @@ const createInitialValues = (ps) => {
             'locationId',
             'subjectGroupId',
             'experimentName',
+            'conditionName',
             'roomOrEnclosure',
-            'intradaySeqNumber',
             'totalSubjectCount',
         ]}),
         timestamp: interval.start,

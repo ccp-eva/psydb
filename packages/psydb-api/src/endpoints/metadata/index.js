@@ -3,13 +3,15 @@ var compose = require('koa-compose');
 var KoaRouter = require('koa-router');
 var withKoaBody = require('koa-body');
 
-var getCustomRecordTypes = require('./get-custom-record-types');
-var getSchema = require('./get-schema');
-var getCRTSettingsByRecordId = require('./get-crt-settings-by-record-id');
-var getCRTSettingsById = require('./get-crt-settings-by-id');
-var getCRTSettings = require('./get-crt-settings');
-var getCollectionCRTs = require('./get-collection-crts');
-var getSubjectStudyCRTs = require('./get-subject-study-crts');
+var {
+    getCustomRecordTypes,
+    getSchema,
+    getCRTSettingsByRecordId,
+    getCRTSettingsById,
+    getCRTSettings,
+    getCollectionCRTs,
+    getSubjectStudyCRTs,
+} = require('./endpoints');
 
 var createMetadataRouting = ({ middleware }) => {
     var router = KoaRouter();

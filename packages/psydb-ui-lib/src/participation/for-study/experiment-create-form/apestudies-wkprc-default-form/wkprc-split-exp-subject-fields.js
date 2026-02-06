@@ -47,14 +47,6 @@ const Control = (ps) => {
                     dataXPath={`${dataXPath}.role`}
                     required
                 />
-                <Fields.Integer
-                    formGroupClassName='w-50 m-0'
-                    labelClassName='pl-5'
-                    uiSplit={[8,4]}
-                    label={ translate('_wkprc_intradaySeqNumber') }
-                    dataXPath={ `${dataXPath}.intradaySeqNumber` }
-                    required
-                />
             </div>
             <div className='pt-2 pb-3 border-bottom'>
                 <Fields.SaneString

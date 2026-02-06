@@ -13,31 +13,40 @@ module.exports = [
     ...require('./permissions'),
     ...require('./crt-editor'),
     ...require('./csv-imports'),
+    ...require('./duplicates'),
 
+    ...require('./_error-response-modal'),
     ...require('./_fieldtype'),
     ...require('./_participationStatus'),
     ...require('./_phone'),
     ...require('./_address'),
     ...require('./_record_picker'),
     ...require('./_form_array'),
+    ...require('./_stringify-fields'),
+
 
     {
+        internal: '_sidenav_calendars',
         en: 'Calendars',
         de: 'Kalender'
     },
     {
+        internal: '_sidenav_calendars_reception',
         en: 'Reception',
         de: 'Rezeption',
     },
     {
+        internal: '_sidenav_lab-operation',
         en: 'Lab Operation',
         de: 'Studienbetrieb'
     },
     {
+        internal: '_sidenav_lab-operation_reservation',
         en: 'Reservation',
         de: 'Reservierung'
     },
     {
+        internal: '_sidenav_lab-operation_experiment-postprocessing',
         en: 'Postprocessing',
         de: 'Nachbereitung'
     },
@@ -46,26 +55,32 @@ module.exports = [
         de: 'Nachbereitung (${subject} - ${study})',
     },
     {
+        internal: '_sidenav_external-persons',
         en: 'External Persons',
         de: 'Externe Personen'
     },
     {
+        internal: '_sidenav_study-topics',
         en: 'Study Topics',
         de: 'Themengebiete'
     },
     {
+        internal: '_sidenav_personnel',
         en: 'Staff Members',
         de: 'Mitarbeiter:innen'
     },
     {
+        internal: '_sidenav_research-groups',
         en: 'Research Groups',
         de: 'Forschungsgruppen'
     },
     {
+        internal: '_sidenav_system-roles',
         en: 'System Roles',
         de: 'System-Rollen'
     },
     {
+        internal: '_sidenav_custom-record-types',
         en: 'Record Types',
         de: 'Datensatz-Typen'
     },
@@ -336,6 +351,38 @@ module.exports = [
         de: 'Status'
     },
     {
+        internal: '_sidenav_statistics',
+        en: 'Statistics',
+        de: 'Statistiken'
+    },
+    {
+        en: 'Study Statistics',
+        de: 'Studien-Statistiken'
+    },
+    {
+        en: 'Subject Statistics',
+        de: 'Proband:innen-Statistiken'
+    },
+    {
+        en: 'Logic Operation',
+        de: 'Logische Verknüpfung'  
+    },
+    {
+        internal: '_logicGate_and',
+        en: 'AND',
+        de: 'UND'
+    },
+    {
+        internal: '_logicGate_or',
+        en: 'OR',
+        de: 'ODER'
+    },
+    {
+        internal: '_studyParticipations_short',
+        en: 'Part.',
+        de: 'Teiln.',
+    },
+    {
         internal: 'unknown_short',
         en: 'unk.',
         de: 'unb.',
@@ -466,6 +513,10 @@ module.exports = [
         de: 'Altersfenster'
     },
     {
+        en: 'Age Ranges',
+        de: 'Altersfenster'
+    },
+    {
         en: 'Desired Time Range',
         de: 'Gewünschter Zeitraum'
     },
@@ -526,8 +577,28 @@ module.exports = [
         de: 'Bedingungen'
     },
     {
+        en: 'Internal ID',
+        de: 'Interne ID',
+    },
+    {
+        en: 'Internal ID (from Duplicate)',
+        de: 'Interne ID (von Duplikat)',
+    },
+    {
         en: 'ID No.',
         de: 'ID Nr.'
+    },
+    {
+        en: 'ID No. (from Duplicate)',
+        de: 'ID Nr. (von Duplikat)'
+    },
+    {
+        en: 'Online ID Code',
+        de: 'Online ID Code'
+    },
+    {
+        en: 'Online ID Code (from Duplicate)',
+        de: 'Online ID Code (von Duplikat)'
     },
     {
         internal: '_designation',
@@ -537,6 +608,10 @@ module.exports = [
     {
         en: 'Shorthand',
         de: 'Kürzel'
+    },
+    {
+        en: 'Scientist',
+        de: 'Wissenschaftler:in'
     },
     {
         en: 'Scientists',
@@ -825,10 +900,6 @@ module.exports = [
         de: 'Proband:innen aus dieser Location herausnehmen (z.B. bei Kindergärten)'
     },
     {
-        en: 'Online ID Code',
-        de: 'Online ID Code'
-    },
-    {
         en: 'Save and Unhide',
         de: 'Speichern und Einblenden'
     },
@@ -1014,6 +1085,7 @@ module.exports = [
         de: 'Dieses Team wirklich ausblenden?'
     },
     {
+        internal: '_sidenav_csv-imports',
         en: 'CSV Import',
         de: 'CSV-Import'
     },
@@ -1101,8 +1173,14 @@ module.exports = [
         de: 'Ergebnisliste',
     },
     {
-        en: 'Internal ID',
-        de: 'Interne ID',
+        internal: '_statistics_filters_tab',
+        en: 'Search Conditions',
+        de: 'Suchbedingungen',
+    },
+    {
+        internal: '_statistics_results_tab',
+        en: 'Result List',
+        de: 'Ergebnisliste',
     },
     {
         en: 'Has Participation Permission',
@@ -1148,8 +1226,20 @@ module.exports = [
         de: 'Keine Bedingungen',
     },
     {
+        en: 'Specific Values',
+        de: 'Spezifische Werte',
+    },
+    {
         en: 'Not with theese Values',
         de: 'Nicht mit diesen Werten',
+    },
+    {
+        en: 'Has Any Value',
+        de: 'Mit beliebigem Wert',
+    },
+    {
+        en: 'Has No Value',
+        de: 'Mit keinem Wert',
     },
     {
         en: 'Values',
@@ -1164,6 +1254,10 @@ module.exports = [
         internal: '_range_to',
         en: 'To',
         de: 'Bis',
+    },
+    {
+        en: 'Participation Range',
+        de: 'Teilnahme-Zeitraum'
     },
     {
         en: 'Date Range',
@@ -1247,33 +1341,9 @@ module.exports = [
         en: 'Contains invalid duplicate data.',
         de: 'Enthält ungültige Duplikat-Daten.'
     },
-    {
-        internal: '_404_not_found',
-        en: 'Not Found',
-        de: 'Nicht Gefunden'
-    },
-    {
-        internal: '_400_bad_request',
-        en: 'Invalid Values',
-        de: 'Fehlerhafte Eingaben'
-    },
-    {
-        internal: '_XXX_system_error',
-        en: 'System Error',
-        de: 'System-Fehler'
-    },
-    {
-        en: 'The given url could not be found.',
-        de: 'Die angegebene URL konnte nicht gefunden werden.'
-    },
-    {
-        en: 'The data sent contains invalid values.',
-        de: 'Die abgesendeten Daten enthalten fehlerhafte Eingaben.'
-    },
 
     //////////////
     
-
 
     {
         en: 'Missing',
@@ -1392,9 +1462,19 @@ module.exports = [
         de: 'Gruppe'
     },
     {
+        internal: '_wkprc_experimentNames',
+        en: 'Experiment Names',
+        de: 'Namen der Experimente'
+    },
+    {
         internal: '_wkprc_experimentName',
         en: 'Experiment Name',
-        de: 'Test-Bezeichnung'
+        de: 'Name des Experiments'
+    },
+    {
+        internal: '_wkprc_conditionName',
+        en: 'Condition',
+        de: 'Condition'
     },
     {
         internal: '_wkprc_roomOrEnclosure',
@@ -1407,16 +1487,21 @@ module.exports = [
         de: 'Rolle'
     },
     {
-        internal: '_wkprc_intradaySeqNumber',
-        en: 'Daily Running No.',
-        de: 'Laufende Nummer (am Tag)'
-    },
-    {
         internal: '_wkprc_totalSubjectCount',
         en: 'Trial Participants',
         de: 'Trial Participants' // FIXME
     },
-    
+    {
+        internal: '_wkprc_totalSubjectCount_short',
+        en: 'Trial-P.',
+        de: 'Trial-P.' // FIXME
+    },
+  
+    {
+        en: 'No record types defined!',
+        de: 'Keine Datensatztypen definiert!'
+    },
+
     // Field sites
 
     {
@@ -1426,6 +1511,7 @@ module.exports = [
 
     // audit
     {
+        internal: '_sidenav_audit',
         en: 'Audit',
         de: 'Audit'
     },
@@ -1434,14 +1520,6 @@ module.exports = [
     {
         en: 'Warning',
         de: 'Warnung'
-    },
-    {
-        en: 'Could not send email!',
-        de: 'E-Mail konnte nicht versand werden!'
-    },
-    {
-        en: 'Mail-Server response is:',
-        de: 'Reponse des Mail-Servers ist:'
     },
 
 
@@ -1556,7 +1634,7 @@ module.exports = [
         de: 'Zwei-Factor-Authentifizierung Erforderlich'
     },
     {
-        en: 'You should have receved an e-mail containing a code, please enter it here.',
+        en: 'You should have received an e-mail containing a code, please enter it here.',
         de: 'Sie sollten eine E-Mail mit einem Code erhalten haben, bitte geben Sie diesen hier ein.'
     },
     {
@@ -1611,6 +1689,7 @@ module.exports = [
     },
 
     {
+        internal: '_sidenav_api-keys',
         en: 'API Keys',
         de: 'API-Keys'
     },

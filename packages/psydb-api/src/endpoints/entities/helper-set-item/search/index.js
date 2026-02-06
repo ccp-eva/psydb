@@ -3,10 +3,7 @@ var debug = require('debug')('psydb:api:endpoints:helperSetItem:search');
 
 var { entries } = require('@mpieva/psydb-core-utils');
 var { translationExists } = require('@mpieva/psydb-i18n');
-var {
-    SmartArray,
-    fieldTypeMetadata
-} = require('@mpieva/psydb-common-lib');
+var { SmartArray } = require('@mpieva/psydb-common-lib');
 
 var {
     SearchBaseStages,
@@ -18,14 +15,10 @@ var {
     ResponseBody,
     withRetracedErrors,
 
-    convertFiltersToQueryFields, 
+    convertFiltersToQueryPairs, 
     aggregateToArray,
     getMongoCollation,
 } = require('@mpieva/psydb-api-lib');
-
-var fieldTypeConversions = (
-    require('@mpieva/psydb-api-lib/src/mongodb-field-type-conversions')
-);
 
 var validate = require('./validate');
 var verifyAllowedAndPlausible = require('./verify');
@@ -61,10 +54,9 @@ var search = async (context, next) => {
         limit,
     } = request.body;
 
-    var queryFields = convertFiltersToQueryFields({
+    var definedQuickSearch = convertFiltersToQueryPairs({
         filters,
         displayFields,
-        fieldTypeMetadata,
     });
 
     var mongoSettings = {
@@ -73,8 +65,7 @@ var search = async (context, next) => {
     }
 
     var baseStages = SearchBaseStages({
-        queryFields,
-        fieldTypeConversions,
+        definedQuickSearch,
 
         constraints,
         //onlyIds,

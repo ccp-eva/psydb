@@ -1,6 +1,7 @@
 'use strict';
 module.exports = [
     {
+        internal: '_sidenav_subject-groups',
         en: 'Subject Groups',
         de: 'Proband:innen-Gruppen'
     },

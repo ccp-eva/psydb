@@ -23,6 +23,12 @@ module.exports = async (context) => {
         transform: (it) => (it._id)
     });
 
+    var researchGroupsByName = keyBy({
+        items: await fetchAll('researchGroup'),
+        byPointer: '/state/name',
+        transform: (it) => (it._id)
+    });
+
     var helperSetsByLabel = keyBy({
         items: await fetchAll('helperSet'),
         byPointer: '/state/label',
@@ -32,6 +38,7 @@ module.exports = async (context) => {
     cache.merge({
         customRecordType: crtsByType,
         systemRole: systemRolesByName,
+        researchGroup: researchGroupsByName,
         helperSet: helperSetsByLabel,
     });
 

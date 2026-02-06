@@ -62,9 +62,14 @@ const sanitizeSpecialFilters = (values) => {
         ],
         values
     })
-    var { studyId, sequenceNumber, isHidden, name, shorthand } = values;
+    var {
+        studyId, sequenceNumber, isHidden,
+        name, shorthand, experimentNames
+    } = values;
     return {
-        studyId, name, shorthand,
+        studyId, name,
+        shorthand, experimentNames,
+
         ...(sequenceNumber && { sequenceNumber }),
         ...(isHidden !== '' && { isHidden }),
         ...sanitized,

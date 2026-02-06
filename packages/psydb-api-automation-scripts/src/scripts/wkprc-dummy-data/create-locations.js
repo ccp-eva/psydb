@@ -14,7 +14,7 @@ module.exports = async (bag) => {
     for (var [ix, it] of entries(baseData)) {
         var { name, shorthand } = it;
         await driver.sendMessage({
-            type: 'location/wkprc_ape_location/create',
+            type: 'location/wkprc_apeLocation/create',
             payload: { props: {
                 custom: {
                     name,
@@ -42,7 +42,7 @@ module.exports = async (bag) => {
 
         cache.addId({
             collection: 'location',
-            recordType: 'wkprc_ape_location',
+            recordType: 'wkprc_apeLocation',
             as: name
         });
     }

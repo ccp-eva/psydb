@@ -6,7 +6,7 @@ module.exports = async (context) => {
     await driver.sendMessage({
         type: 'systemRole/create',
         payload: { props: {
-            name: 'ChildLab Reception',
+            name: 'Reception',
             
             canReadLocations: false,
             canWriteLocations: false,
@@ -49,6 +49,10 @@ module.exports = async (context) => {
             canUseExtendedSearch: false,
             canUseCSVExport: false,
             canViewReceptionCalendar: true,
+
+            canAllowLogin: false,
+            canViewStudyLabOpsSettings: false,
+            canAccessSensitiveFields: false,
 
             labOperation: {
                 'inhouse': {

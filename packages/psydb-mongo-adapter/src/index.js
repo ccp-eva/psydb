@@ -6,6 +6,8 @@ module.exports = {
     Collection: require('./collection'),
     createMiddleware: require('./koa-middleware'),
 
+    ...require('./aggregate-helpers'),
+
     MongoClient,
     ObjectId,
 }

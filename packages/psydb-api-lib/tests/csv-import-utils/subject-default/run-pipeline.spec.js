@@ -10,7 +10,7 @@ var { runPipeline } = require('../../../src/csv-import-utils/subject-default');
 describe('csv-import-utils/subject-default/runPipeline()', function () {
     var db;
     beforeEach(async function () {
-        await this.restore('2024-03-29__1914_fieldsites');
+        await this.restore('2025-08-01__0134');
         db = this.getDbHandle();
     });
 

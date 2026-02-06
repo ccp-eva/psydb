@@ -7,7 +7,7 @@ var { Message, requireify } = require('@mpieva/psydb-schema-helpers');
 var BaseSchema = (handlerType) => {
     var { properties, required } = requireify({
         labMethod: StringEnum([
-            'apestudies-wkprc-default',
+            //'apestudies-wkprc-default', // XXX currently disabled
             'manual-only-participation',
             'online-survey'
         ]),

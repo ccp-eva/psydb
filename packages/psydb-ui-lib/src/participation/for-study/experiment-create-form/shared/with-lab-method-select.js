@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import enums from '@mpieva/psydb-schema-enums';
 import { unique, only } from '@mpieva/psydb-core-utils';
-import { fixRelated } from '@mpieva/psydb-ui-utils';
+import { __fixRelated } from '@mpieva/psydb-common-compat';
 import { useUIConfig, useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, FormHelpers } from '@mpieva/psydb-ui-layout';
@@ -31,7 +31,7 @@ const withLabMethodSelect = (Component) => {
             return <LoadingIndicator size='lg' />
         }
 
-        var { records, related } = fixRelated(fetched.data);
+        var { records, related } = __fixRelated(fetched.data);
 
         var [ autoSelected, enabledLabMethods ] = maybeAutoSelect({
             selectables: unique(

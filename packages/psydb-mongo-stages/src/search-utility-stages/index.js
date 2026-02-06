@@ -3,12 +3,14 @@ var QuickSearchStages = require('./quick-search-stages');
 var MatchConstraintsStage = require('./match-constraints-stage');
 var PaginationStages = require('./pagination-stages');
 
+// FIXME: dup, see ../match/is-not-dummy
 var isNotDummyStage = () => (
     { $match: {
         isDummy: { $ne: true }
     }}
 )
 
+// FIXME: dup, see ../match/is-not-removed
 var isNotRemovedStage = (bag = {}) => {
     var { hasSubChannels = false } = bag;
     var path = (

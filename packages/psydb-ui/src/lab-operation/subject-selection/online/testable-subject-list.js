@@ -1,4 +1,6 @@
-import React, { useEffect, useReducer, useMemo, useCallback, useState } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
+import { __fixRelated, __fixDefinitions } from '@mpieva/psydb-common-compat';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     Redirect,
@@ -7,10 +9,6 @@ import {
 } from 'react-router-dom';
 
 import { Base64 } from 'js-base64';
-
-import {
-    Button
-} from 'react-bootstrap';
 
 import intervalfns from '@mpieva/psydb-date-interval-fns';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
@@ -25,11 +23,13 @@ import {
 } from '@mpieva/psydb-ui-hooks';
 
 import {
+    Button,
     Table,
-    TableHeadCustomCols,
     LoadingIndicator,
     Pagination
 } from '@mpieva/psydb-ui-layout';
+
+import { TableHeadCustomCols } from '@mpieva/psydb-custom-fields-ui';
 
 import { datefns, QuickSearch } from '@mpieva/psydb-ui-lib';
 import { SubjectRecordViewModal } from '@mpieva/psydb-ui-compositions';
@@ -43,9 +43,10 @@ import ExtraFunctionBar from './extra-function-bar';
 
 const OnlineTestableSubjectList = (ps) => {
     var { studyLabelItems } = ps;
-    var translate = useUITranslation();
     
     var { path, url } = useRouteMatch();
+    var [{ translate }] = useI18N();
+
     var {
         studyType,
         studyIds: joinedStudyIds,
@@ -153,8 +154,15 @@ const OnlineTestableSubjectList = (ps) => {
         subjectRecordLabelDefinition,
     } = fetched.data;
 
+    // FIXME
+    subjectData = __fixRelated(subjectData);
+    subjectData.definitions = __fixDefinitions(subjectData.displayFieldData);
+
     var {
         records,
+        related,
+        definitions,
+        
         displayFieldData,
         relatedRecordLabels,
         relatedHelperSetItems,
@@ -165,7 +173,7 @@ const OnlineTestableSubjectList = (ps) => {
         <>
             <SubjectModal
                 { ...subjectModal.passthrough }
-                
+
                 studyNavItems={ studyData.records.map(it => ({
                     key: it._id,
                     label: it.state.shorthand
@@ -220,9 +228,7 @@ const OnlineTestableSubjectList = (ps) => {
                     </tr>
                     <tr className='bg-white'>
                         <th>{ translate('Subject') }</th>
-                        <TableHeadCustomCols { ...({
-                            definitions: subjectData.displayFieldData
-                        })} />
+                        <TableHeadCustomCols definitions={ definitions } />
                         <th>{ translate('Age Today') }</th>
                         <th>{ translate('Part. Studies') }</th>
                         <th>{ translate('Appointments') }</th>

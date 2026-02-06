@@ -1,5 +1,5 @@
 'use strict';
-
+// FIXME: use hasIntersectionLength({ sets, $gt: 0 })
 var hasIntersection = (options) => {
     var { sets } = options;
     return (

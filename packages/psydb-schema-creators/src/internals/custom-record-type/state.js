@@ -163,7 +163,7 @@ var ChannelState = ({
             de: SaneString(),
         }),
         ...( collection === 'subject' && {
-            requiresTestingPermissions: DefaultBool(),
+            requiresTestingPermissions: DefaultBool({ default: true }),
             commentFieldIsSensitive: DefaultBool(),
             showSequenceNumber: DefaultBool({ default: true }),
             showOnlineId: DefaultBool({ default: true }),
@@ -180,6 +180,10 @@ var ChannelState = ({
             enableLabTeams: DefaultBool(),
         }),
         recordLabelDefinition: RecordLabelDefinition(),
+        formOrder: {
+            type: 'array',
+            default: []
+        },
         tableDisplayFields: {
             type: 'array',
             default: []

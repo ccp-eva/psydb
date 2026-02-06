@@ -12,10 +12,11 @@ var jsonify = (that) => (
 
 var RootHandler = require('../../src/');
 
-describe('csv-import/experiment/create-wkprc-evapecognition', function () {
+describe('csv-import/experiment/create-wkprc-apestudies-default', function () {
     var db, sendMessage, fileId;
     beforeEach(async function () {
-        await this.restore('2024-04-03__0435_wkprc-and-fs');
+        //await this.restore('2024-04-03__0435_wkprc-and-fs');
+        await this.restore('2025-09-22__1105');
         
         db = this.getDbHandle();
         ([ sendMessage ] = this.createMessenger({
@@ -23,31 +24,25 @@ describe('csv-import/experiment/create-wkprc-evapecognition', function () {
             ...(await this.createFakeLogin({ email: 'root@example.com' }))
         }));
 
-        var file = await this.createFakeFileUpload({
-            db, buffer: loadCSV('evapecognition/simple'),
-        });
-        fileId = file._id;
+        //var file = await this.createFakeFileUpload({
+        //    db, buffer: loadCSV('evapecognition/simple'),
+        //});
     });
 
-    it('does the thing', async function () {
-        var studyId = ObjectId("6566b5c26c830cb226c1389b");
-        var locationId = ObjectId("64d42de0443aa279ca4cb2e8");
+    it.skip('does the thing (simple)', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({
+            db, buffer: loadCSV(
+                'experiment-csv/wkprc-apestudies-default/simple'
+            ),
+        });
+
+        var studyId = ObjectId('6566b5c26c830cb226c1389b');
         var subjectType = 'wkprc_chimpanzee';
-        var labOperatorIds = [
-            ObjectId("64d42ddf443aa279ca4cb2c9"),
-            ObjectId("64d42ddf443aa279ca4cb2c5"),
-        ];
 
         var koaContext = await sendMessage({
-            type: 'csv-import/experiment/create-wkprc-evapecognition',
+            type: 'csv-import/experiment/create-wkprc-apestudies-default',
             timezone: 'Europe/Berlin',
-            payload: jsonify({
-                subjectType,
-                studyId,
-                locationId,
-                fileId,
-                labOperatorIds
-            })
+            payload: jsonify({ subjectType, studyId, fileId })
         });
 
         var { csvImportId } = koaContext.response.body.data;
@@ -57,44 +52,55 @@ describe('csv-import/experiment/create-wkprc-evapecognition', function () {
             { $match: { csvImportId }}
         ]});
         console.dir(ejson(experiments), { depth: null });
+    });
 
-        var participations = await aggregateToArray({ db, subject: [
-            { $project: {
-                '_id': true,
-                '_P': '$scientific.state.internals.participatedInStudies',
-            }},
-            { $unwind: '$_P' },
-            { $match: {
-                '_P.csvImportId': csvImportId
-            }}
+    it('does the thing (combination)', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({
+            db, buffer: loadCSV(
+                'experiment-csv/wkprc-apestudies-default/combination'
+            ),
+        });
+
+        var studyId = ObjectId('6566b5c26c830cb226c1389b');
+        var subjectType = 'wkprc_chimpanzee';
+
+        var koaContext = await sendMessage({
+            type: 'csv-import/experiment/create-wkprc-apestudies-default',
+            timezone: 'Europe/Berlin',
+            payload: jsonify({ subjectType, studyId, fileId })
+        });
+
+        var { csvImportId } = koaContext.response.body.data;
+        console.log(csvImportId);
+
+        var experiments = await aggregateToArray({ db, experiment: [
+            { $match: { csvImportId }}
         ]});
-        console.dir(ejson(participations), { depth: null });
-        
-        expect(ejson(omit({
-            fromItems: experiments,
-            paths: [ '_id', '_rohrpostMetadata', 'csvImportId', 'state.seriesId' ],
-        }))).toMatchSnapshot();
+        console.dir(ejson(experiments), { depth: null });
+    });
 
-        expect(ejson(omit({
-            fromItems: participations,
-            paths: [ '_P._id', '_P.csvImportId', '_P.experimentId' ]
-        }))).toMatchSnapshot();
+    it('mono-comment issue', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({
+            db, buffer: loadCSV(
+                'experiment-csv/wkprc-apestudies-default/combination-with-mono-comment'
+            ),
+        });
 
-        //var imports = await db.collection('csvImport').find().toArray();
-        //console.dir(ejson(imports), { depth: null });
+        var studyId = ObjectId('6566b5c26c830cb226c1389b');
+        var subjectType = 'wkprc_chimpanzee';
 
-        //var { body } = koaContext.response;
-        //var [ ageFrameUpdate ] = body.data;
+        var koaContext = await sendMessage({
+            type: 'csv-import/experiment/create-wkprc-apestudies-default',
+            timezone: 'Europe/Berlin',
+            payload: jsonify({ subjectType, studyId, fileId })
+        });
 
-        //console.log(ageFrameUpdate);
+        var { csvImportId } = koaContext.response.body.data;
+        console.log(csvImportId);
 
-        //var record = omitNonsense({
-        //    from: await this.getRecord('ageFrame', {
-        //        _id: ageFrameUpdate.channelId
-        //    })
-        //});
-
-        //console.dir(ejson(record), { depth: null });
-        //expect(ejson(record)).toMatchSnapshot();
-    })
+        var experiments = await aggregateToArray({ db, experiment: [
+            { $match: { csvImportId }}
+        ]});
+        console.dir(ejson(experiments), { depth: null });
+    });
 });

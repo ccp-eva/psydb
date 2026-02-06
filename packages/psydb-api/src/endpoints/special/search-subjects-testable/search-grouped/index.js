@@ -8,7 +8,7 @@ var omit = require('@cdxoo/omit');
 var datefns = require('date-fns');
 
 var {
-    keyBy, merge, convertPointerToPath
+    ejson, keyBy, merge, convertPointerToPath
 } = require('@mpieva/psydb-core-utils');
 
 var {
@@ -55,9 +55,9 @@ var {
 var searchGrouped = async (context, next) => {
     var { 
         db,
-        timezone,
         permissions,
         request,
+        i18n,
 
         experimentVariant,
     } = context;
@@ -201,7 +201,7 @@ var searchGrouped = async (context, next) => {
         }}
     ]
 
-    console.log(stages);
+    console.dir(ejson(stages), { depth: null });
 
     debug('start aggregate sbjects');
     var result = await withRetracedErrors(
@@ -249,7 +249,7 @@ var searchGrouped = async (context, next) => {
 
     debug('postprocessing subjects');
     postprocessSubjectRecords({
-        timezone,
+        i18n,
         subjectRecords: flatSubjects,
         subjectRecordType: subjectTypeKey,
         studyRecords,

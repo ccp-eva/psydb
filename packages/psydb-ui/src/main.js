@@ -1,27 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 
-import {
-    Route,
-    Switch,
-    Redirect,
-    useHistory
-} from 'react-router-dom';
+import { useRequestAgent }
+    from '@mpieva/psydb-ui-contexts';
+import { usePermissions }
+    from '@mpieva/psydb-ui-hooks';
+import { Container, Row, Col, Icons, CopyNotice, LoadingIndicator }
+    from '@mpieva/psydb-ui-layout';
+import { ErrorBoundary }
+    from '@mpieva/psydb-ui-lib';
 
-import {
-    Container,
-    Row,
-    Col,
-    Icons
-} from '@mpieva/psydb-ui-layout';
-
-import { useRequestAgent } from '@mpieva/psydb-ui-contexts';
-import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
-
-import ErrorBoundary from './error-boundary';
-import ServerTimezoneContext from '@mpieva/psydb-ui-lib/src/server-timezone-context';
-
-import CopyNotice from './copy-notice';
 import SideNav from './side-nav';
 import TopFunctions from './top-functions';
 
@@ -39,6 +27,7 @@ import ExternalOrganizations from './external-organizations';
 import HelperSets from './helper-sets';
 
 import CSVImports from './csv-imports';
+import Statistics from './statistics';
 
 import Calendars from './calendars';
 import LabOperation from './lab-operation';
@@ -50,20 +39,10 @@ import AwayTeamCalendar from './calendars/away-team-experiments/calendar';
 
 import FixesChecker from './temp_fixesChecker';
 
-const Main = ({ onSignedOut, onSignedIn }) => {
+const Main = (ps) => {
+    var { onSignedIn, onSignedOut } = ps;
     var history = useHistory();
     var agent = useRequestAgent();
-
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.fetchServerTimezone()
-    ), [])
-
-    if (!didFetch) {
-        return <LoadingIndicator size='lg' />
-    }
-
-    var serverTimezone = fetched.data.timezone;
-    //console.log({ serverTimezone });
 
     var onSignOut = () => (
         agent.signOut()
@@ -80,17 +59,15 @@ const Main = ({ onSignedOut, onSignedIn }) => {
     );
 
     return (
-        <ServerTimezoneContext.Provider value={ serverTimezone }>
-            <Switch>
-                { /*<Route
-                    path='/calendars/away-team/:locationType/:researchGroupId'
-                    component={ withEB(AwayTeamCalendar) }
-                />*/}
-                <Route>
-                    <LayoutedRoutes { ...({ onSignOut }) }/>
-                </Route>
-            </Switch>
-        </ServerTimezoneContext.Provider>
+        <Switch>
+            { /*<Route
+                path='/calendars/away-team/:locationType/:researchGroupId'
+                component={ withEB(AwayTeamCalendar) }
+            />*/}
+            <Route>
+                <LayoutedRoutes { ...({ onSignOut }) }/>
+            </Route>
+        </Switch>
     )
 }
 
@@ -153,6 +130,9 @@ var Home = () => {
 
     // TODO: create simple home view
 
+    // XXX
+    return null;
+
     return (
         canViewAnyCalendar
         ? <Redirect to='/calendars' />
@@ -177,6 +157,7 @@ var Routing = () => (
     <Route path='/helper-sets' component={ withEB(HelperSets) } />
     
     <Route path='/csv-imports' component={ withEB(CSVImports) } />
+    <Route path='/statistics' component={ withEB(Statistics) } />
 
     <Route path='/calendars' component={ withEB(Calendars) } />
     <Route path='/lab-operation' component={ withEB(LabOperation) } />

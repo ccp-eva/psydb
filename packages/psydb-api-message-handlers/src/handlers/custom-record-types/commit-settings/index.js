@@ -176,7 +176,7 @@ var createFormOrderOps = ({ hasSubChannels, record }) => {
         customRecordTypeData: {
             ...record,
             state: { ...record.state, settings: record.state.nextSettings }
-        }
+        }, applyGeneralFlags: true,
     });
     var fieldDataByPointer = keyBy({
         items: availableDisplayFieldData,

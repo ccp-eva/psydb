@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
+    "build": "",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -30,10 +31,10 @@
     "react-router-dom": "~5.2.0",
     "react-router-bootstrap": "~0.25.0",
     "classnames": "~2.3.1",
-    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-schema-enums": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-ui-utils": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-ui-contexts": "workspace:~0.1.0-alpha"
+    "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-schema-enums": "workspace:*",
+    "@mpieva/psydb-ui-utils": "workspace:*",
+    "@mpieva/psydb-ui-contexts": "workspace:*"
   },
   "config": {
     "mongodbMemoryServer": {

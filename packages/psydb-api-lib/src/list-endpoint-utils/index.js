@@ -33,6 +33,7 @@ SimpleRecordList.fetchData = (context) => async (options) => {
         collection,
         filter,
         sort,
+        collation,
         fetchRelated = true
     } = options;
 
@@ -49,7 +50,7 @@ SimpleRecordList.fetchData = (context) => async (options) => {
         stages,
         {
             allowDiskUse: true,
-            collation: { locale: 'de@collation=phonebook' }
+            collation: collation || { locale: 'de@collation=phonebook' }
         }
     ).toArray();
 

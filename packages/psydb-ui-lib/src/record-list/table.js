@@ -1,12 +1,10 @@
 import React from 'react';
-import { createDefaultFieldDataTransformer } from '@mpieva/psydb-common-lib';
-import { fixRelated, __fixDefinitions } from '@mpieva/psydb-ui-utils';
-import { useUILocale } from '@mpieva/psydb-ui-contexts';
+import { __fixRelated, __fixDefinitions } from '@mpieva/psydb-common-compat';
+import { TableHeadCustomCols } from '@mpieva/psydb-custom-fields-ui';
 
 import {
     Table,
     TableHead,
-    TableHeadCustomCols,
     TableEmptyFallback
 } from '@mpieva/psydb-ui-layout';
 
@@ -21,7 +19,6 @@ var RecordListTable = (ps) => {
         relatedRecordLabels,
         relatedHelperSetItems,
         relatedCustomRecordTypes,
-        timezone,
         
         enableView,
         enableEdit_old,
@@ -43,20 +40,12 @@ var RecordListTable = (ps) => {
         canSort,
     } = ps;
 
-    var locale = useUILocale();
-
     var definitions = __fixDefinitions(displayFieldData);
-    var related = fixRelated({
+    var related = __fixRelated({
         relatedRecordLabels,
         relatedHelperSetItems,
         relatedCustomRecordTypes,
     }, { isResponse: false });
-
-    var transformer = createDefaultFieldDataTransformer({
-        related,
-        timezone,
-        locale,
-    });
 
     if (!records.length) {
         return (
@@ -113,7 +102,7 @@ var RecordListTable = (ps) => {
             <TableBody { ...({
                 records,
                 definitions,
-                transformer,
+                related,
 
                 enableView,
                 enableEdit_old,

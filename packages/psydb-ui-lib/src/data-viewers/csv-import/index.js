@@ -6,6 +6,7 @@ import {
     DateTime,
     CustomRecordTypeKey,
     SaneString,
+    FileRef,
 } from '../utility-components';
 
 
@@ -15,6 +16,7 @@ const labels = {
     '/studyId': 'Study',
     '/type': 'Type',
     '/subjectType': 'Subject Type',
+    '/fileId': 'Source File',
 }
 
 const [ CSVImport, Context ] = createBase();
@@ -60,11 +62,17 @@ addComponents(CSVImport, Context, labels, [
                 props={{ collection: 'subject' }}
             />
         ))
-    }
+    },
+    {
+        cname: 'FileId',
+        path: '/fileId',
+        Component: withPair(FileRef)
+    },
 ]);
 
 const asFriendlyType = (type) => ({
-    'experiment/wkprc-evapecognition': 'WKPRC EVApeCognition',
+    //'experiment/wkprc-evapecognition': 'WKPRC EVApeCognition',
+    'experiment/wkprc-evapecognition': 'WKPRC',
     'experiment/wkprc-apestudies-default': 'WKPRC',
 }[type] || type)
 

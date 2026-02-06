@@ -14,7 +14,8 @@ import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { RoutedTabNav, LinkButton } from '@mpieva/psydb-ui-layout';
 import { withRecordEditor } from '@mpieva/psydb-ui-lib';
 
-import DirtyAlert from './dirty-alert';
+import IsDirtyAlert from './is-dirty-alert';
+import IsNewAlert from './is-new-alert';
 import LiveDataEditor from './live-data-editor';
 import FieldEditor from './field-editor';
 
@@ -28,11 +29,9 @@ const Inner = (ps) => {
         removeUrl,
     } = ps;
 
-    var {
-        record,
-        schema,
-        related
-    } = fetched;
+    var { record, schema, related } = fetched;
+    var { collection, type, state } = record;
+    var { isNew, isDirty } = state;
 
     var { path, url } = useRouteMatch();
     var translate = useUITranslation();
@@ -45,7 +44,7 @@ const Inner = (ps) => {
                         { translate('Collection') }
                     </div>
                     <div>
-                        <b>{ record.collection }</b>
+                        <b>{ collection }</b>
                     </div>
                 </div>
                 <div className='d-flex'>
@@ -53,16 +52,16 @@ const Inner = (ps) => {
                         { translate('Internal Type Key') }
                     </div>
                     <div>
-                        <b>{ record.type }</b>
+                        <b>{ type }</b>
                     </div>
                 </div>
             </div>
 
-            { record.state.isNew && (
-                <div>NEW RECORD TYPE</div>
+            { isNew && (
+                <IsNewAlert />
             )}
-            { record.state.isDirty && (
-                <DirtyAlert />
+            { !isNew && isDirty && (
+                <IsDirtyAlert />
             )}
             
             <hr />

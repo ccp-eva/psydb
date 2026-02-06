@@ -15,6 +15,12 @@ var CSVSchema = (bag) => {
         byProp: 'subChannel'
     });
 
+    var required = groupBy({
+        items: subjectCRT.findRequiredCustomFields(),
+        byProp: 'subChannel',
+        transform: (it) => it.key
+    });
+
     for (var [ subChannel, defs ] of entries(custom)) {
         custom[subChannel] = keyBy({
             items: defs, byProp: 'key', transform: createSchemaFromDef
@@ -26,28 +32,31 @@ var CSVSchema = (bag) => {
             'state': Fields.ClosedObject({
                 'custom': Fields.ExactObject({
                     properties: custom.gdpr,
-                    required: [], // TODO
+                    required: required.gdpr,
                 })
             })
         }),
         'scientific': Fields.ClosedObject({
-            'state': Fields.ClosedObject({
-                'custom': Fields.ExactObject({
-                    properties: custom.scientific,
-                    required: [] // TODO
-                }),
-                'comment': Fields.FullText(),
+            'state': Fields.ExactObject({
+                properties: {
+                    'custom': Fields.ExactObject({
+                        properties: custom.scientific,
+                        required: required.scientific
+                    }),
+                    'comment': Fields.FullText(),
                 
-                // TODO: enable based on crt settings
-                //'testingPermissions': Fields.ExactObject({
-                //    properties: {
-                //        'inhouse': Fields.ExtBool(),
-                //        'awayTeam': Fields.ExtBool(),
-                //        'onlineVideoCall': Fields.ExtBool(),
-                //        'onlineSurvey': Fields.ExtBool(),
-                //    },
-                //    required: []
-                //})
+                    // TODO: enable based on crt settings
+                    //'testingPermissions': Fields.ExactObject({
+                    //    properties: {
+                    //        'inhouse': Fields.ExtBool(),
+                    //        'awayTeam': Fields.ExtBool(),
+                    //        'onlineVideoCall': Fields.ExtBool(),
+                    //        'onlineSurvey': Fields.ExtBool(),
+                    //    },
+                    //    required: []
+                    //})
+                },
+                required: [ 'custom' ]
             })
         }),
     })

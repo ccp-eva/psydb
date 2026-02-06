@@ -209,7 +209,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         displayName: 'Rearing History',
         displayNameI18N: { de: 'Aufzucht' },
         props: {
-            setId: cache.get('/helperSet/rearingHistory'),
+            setId: cache.get('/helperSet/wkprc_rearingHistory'),
             isNullable: true,
             displayEmptyAsUnknown: true,
         },
@@ -221,7 +221,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         displayName: 'Origin',
         displayNameI18N: { de: 'Herkunft' },
         props: {
-            setId: cache.get('/helperSet/origin'),
+            setId: cache.get('/helperSet/wkprc_origin'),
             isNullable: true,
             displayEmptyAsUnknown: true,
         },
@@ -246,9 +246,9 @@ var FieldDefinitions = ({ cache, type }) => ({
 });
 
 var FieldDefinitionsExtra = ({ cache, type }) => ({
-    'sensitiveComment': {
+    'sensitive_comment': {
         type: 'FullText',
-        key: 'sensitiveComment', // sensitive_comment
+        key: 'sensitive_comment', // sensitive_comment
         displayName: 'Sensitive Comment',
         displayNameI18N: { de: 'Geschützter Kommentar' },
         props: {

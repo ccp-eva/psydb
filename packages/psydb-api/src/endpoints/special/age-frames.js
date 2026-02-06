@@ -5,7 +5,7 @@ var debug = require('debug')(
 
 var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 var { ejson, only, keyBy } = require('@mpieva/psydb-core-utils');
-var { fixRelated } = require('@mpieva/psydb-common-lib');
+var { __fixRelated } = require('@mpieva/psydb-common-compat');
 
 var {
     ResponseBody,
@@ -147,7 +147,7 @@ var ageFrames = async (context, next) => {
     context.body = ResponseBody({
         data: {
             records: ageFrameRecords,
-            related: fixRelated(__related, { isResponse: false }),
+            related: __fixRelated(__related, { isResponse: false }),
             ...(__related),
         },
     });

@@ -1,13 +1,5 @@
 'use strict';
-var PointerGen = (definitions, subChannelKey = 'scientific') => (keys) => {
-    var out = [];
-    for (var k of keys) {
-        var def = definitions[key];
-        var { __subChannelKey } = def;
-        put.push(`/${__subChannelKey || subChannelKey}/state/custom/${key}`)
-    }
-    return out;
-};
+var PointerGen = require('./pointer-gen');
 
 module.exports = async (context) => {
     var { driver, cache, as } = context;
@@ -84,7 +76,8 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'gdpr',
         type: 'SaneString',
         key: 'firstname',
-        displayName: 'Vorname',
+        displayName: 'Firstname',
+        displayNameI18N: { 'de': 'Vorname' },
         props: { minLength: 1 }
     },
 
@@ -92,7 +85,8 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'gdpr',
         type: 'SaneString',
         key: 'lastname',
-        displayName: 'Nachname',
+        displayName: 'Lastname',
+        displayNameI18N: { 'de': 'Nachname' },
         props: { minLength: 1 }
     },
     
@@ -100,7 +94,8 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'gdpr',
         type: 'SaneString',
         key: 'mothersName',
-        displayName: 'Mutter',
+        displayName: 'Mother',
+        displayNameI18N: { 'de': 'Mutter' },
         props: { minLength: 0 }
     },
 
@@ -108,7 +103,8 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'gdpr',
         type: 'SaneString',
         key: 'fathersName',
-        displayName: 'Vater',
+        displayName: 'Father',
+        displayNameI18N: { 'de': 'Vater' },
         props: { minLength: 0 }
     },
 
@@ -116,7 +112,8 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'gdpr',
         type: 'Address',
         key: 'address',
-        displayName: 'Adresse',
+        displayName: 'Address',
+        displayNameI18N: { 'de': 'Adresse' },
         props: {
             isStreetRequired: false,
             isHousenumberRequired: false,
@@ -131,7 +128,8 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'gdpr',
         type: 'EmailList',
         key: 'emails',
-        displayName: 'Email-Adressen',
+        displayName: 'Emails',
+        displayNameI18N: { 'de': 'Email-Adressen' },
         props: { minItems: 0 }
     },
 
@@ -140,7 +138,8 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'gdpr',
         type: 'PhoneWithTypeList',
         key: 'phones',
-        displayName: 'Telefon',
+        displayName: 'Phones',
+        displayNameI18N: { 'de': 'Telefon' },
         props: { minItems: 0 }
     },
 
@@ -150,7 +149,8 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'scientific',
         type: 'DateOnlyServerSide',
         key: 'dateOfBirth',
-        displayName: 'Geburtsdatum',
+        displayName: 'Date of Birth',
+        displayNameI18N: { 'de': 'Geburtsdatum' },
         props: { isNullable: false, isSpecialAgeFrameField: true }
     },
 
@@ -158,8 +158,12 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'scientific',
         type: 'BiologicalGender',
         key: 'biologicalGender',
-        displayName: 'Geschlecht',
-        props: {}
+        displayName: 'Gender',
+        displayNameI18N: { 'de': 'Geschlecht' },
+        props: {
+            enableUnknownValue: true,
+            enableOtherValue: false,
+        }
     },
    
     'consentcard': {
@@ -167,6 +171,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'ExtBool',
         key: 'consentcard',
         displayName: 'Consent-Card',
+        displayNameI18N: { 'de': 'Consent-Card' },
         props: {}
     },
 
@@ -174,7 +179,8 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'scientific',
         type: 'ExtBool',
         key: 'allowedToEat',
-        displayName: 'Ess-Erlaubnis',
+        displayName: 'Allowed to Eat',
+        displayNameI18N: { 'de': 'Ess-Erlaubnis' },
         props: {}
     },
    
@@ -182,7 +188,8 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'scientific',
         type: 'ExtBool',
         key: 'isMultiBirth',
-        displayName: 'Mehrlinge',
+        displayName: 'Multiples',
+        displayNameI18N: { 'de': 'Mehrlinge' },
         props: {}
     },
    
@@ -190,7 +197,8 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'scientific',
         type: 'HelperSetItemIdList',
         key: 'languages',
-        displayName: 'Sprachen',
+        displayName: 'Languages',
+        displayNameI18N: { 'de': 'Sprachen' },
         props: {
             setId: cache.get('/helperSet/language'),
             minItems: 0,
@@ -201,12 +209,15 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'scientific',
         type: 'ForeignId',
         key: 'kigaId',
-        displayName: 'Kindergarten',
+        displayName: 'Kindergarden',
+        displayNameI18N: { 'de': 'Kindergarten' },
         props: {
             collection: 'location',
             recordType: 'kiga',
             isNullable: true,
             constraints: {},
+            displayEmptyAsUnknown: false,
+            addReferenceToTarget: false,
         },
     },
 
@@ -214,7 +225,8 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'scientific',
         type: 'Integer',
         key: 'weightAtBirth',
-        displayName: 'Geburtsgewicht',
+        displayName: 'Weight at Birth',
+        displayNameI18N: { 'de': 'Geburtsgewicht' },
         props: { minimum: 1, isNullable: true },
     },
    
@@ -222,7 +234,8 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'scientific',
         type: 'Integer',
         key: 'weekOfPregnancy',
-        displayName: 'Schwangerschaftswoche',
+        displayName: 'Gestation Week',
+        displayNameI18N: { 'de': 'Schwangerschaftswoche' },
         props: { minimum: 1, isNullable: true },
     },
 
@@ -230,7 +243,8 @@ var FieldDefinitions = ({ cache, type }) => ({
         __subChannelKey: 'scientific',
         type: 'HelperSetItemIdList',
         key: 'acquisitions',
-        displayName: 'Akquise/Funktion',
+        displayName: 'Acquisition/Function',
+        displayNameI18N: { 'de': 'Akquise/Funktion' },
         props: {
             setId: cache.get('/helperSet/acquisition'),
             minItems: 1,

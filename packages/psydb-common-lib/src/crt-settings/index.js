@@ -8,7 +8,7 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var convertCRTRecordToSettings = require('../convert-crt-record-to-settings');
-var stringifiers = require('../field-stringifiers');
+var createRecordLabel = require('../create-record-label');
 
 var CRTSettings = ({ data }) => {
     var crt = {};
@@ -123,37 +123,22 @@ var CRTSettings = ({ data }) => {
             }
         }, {})
     }
+
     crt.getLabelForRecord = (bag) => {
-        var { record, timezone, language, locale } = bag;
-        var { format, tokens } = data.recordLabelDefinition;
+        var {
+            record, i18n,
+            timezone, language, locale,
+            // FIXME: corresponds to 'as' in projection, but name is dumb
+            from = undefined,
+        } = bag;
 
-        var label = format;
-        var tokensRedacted = 0;
-
-        for (var [index, token] of tokens.entries()) {
-            var { systemType, dataPointer } = token;
-
-            var value = jsonpointer.get(record, dataPointer);
-            if (value === undefined) {
-                value = '[REDACTED]';
-                tokensRedacted += 1;
-            }
-            else {
-                var stringify = stringifiers[systemType];
-                if (stringify) {
-                    value = stringify(value, {
-                        short: true,
-                        timezone, language, locale,
-                    });
-                }
-            }
-
-            label = label.replace('${#}', value);
+        if (!i18n) {
+            i18n = { timezone, language, locale }
         }
 
-        if (tokensRedacted === tokens.length) {
-            label = `${record._id} [REDACTED]`;
-        }
+        var definition = data.recordLabelDefinition;
+        var label = createRecordLabel({ definition, record, from, i18n });
+
         return label;
     }
 
@@ -174,10 +159,43 @@ var CRTSettings = ({ data }) => {
     crt.allFieldDefinitions = () => (
         Object.values(__availableDisplayFieldsByPointer)
     );
-    crt.availableDisplayFields = () => (
-        Object.values(__availableDisplayFieldsByPointer)
-    );
+    crt.availableDisplayFields = (bag = {}) => {
+        var { applyGeneralFlags = false } = bag;
+        var clone = { ...__availableDisplayFieldsByPointer };
+        // XXX thats a hack
+        if (crt.getCollection() === 'subject' && applyGeneralFlags) {
+            var {
+                showSequenceNumber, showOnlineId,
+                requiresTestingPermissions
+            } = data;
+
+            if (!showSequenceNumber) {
+                delete clone['/sequenceNumber'];
+            }
+            if (!showOnlineId) {
+                delete clone['/onlineId'];
+            }
+            if (!requiresTestingPermissions) {
+                delete clone['/scientific/state/testingPermissions'];
+            }
+        }
+        return Object.values(clone);
+    };
+
+    crt.findAvailableDisplayFields = (filter, options = {}) => {
+        var fields = crt.availableDisplayFields(options);
+        return (
+            filter
+            ? fields.filter(sift(filter))
+            : fields
+        );
+    }
+
     crt.augmentedDisplayFields = (target) => {
+        // FIXME: record lists target is lower case
+        if (target === 'optionlist') {
+            target = 'optionList';
+        }
         // FIXME:gather-display-fields-for-record-type.js
         // uses full target name others dont
         var displayFields = data[
@@ -201,5 +219,12 @@ var __compatDef = (def) => ({
 CRTSettings.fromRecord = (record) => (
     CRTSettings({ data: convertCRTRecordToSettings(record) })
 )
+
+CRTSettings.wrapResponsePromise = (promise, options = {}) => {
+    promise.then(response => {
+        response.data.data = CRTSettings({ data: response.data.data });
+        return response;
+    })
+}
 
 module.exports = CRTSettings;

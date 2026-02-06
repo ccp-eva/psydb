@@ -28,10 +28,10 @@ var Permissions = (options) => {
 
     var {
         hasRootAccess,
-        userResearchGroupIds,
+        userResearchGroupIds = [],
         forcedResearchGroupId,
-        researchGroupIdsByFlag,
-        researchGroupIdsByCollection,
+        researchGroupIdsByFlag = {},
+        researchGroupIdsByCollection = {},
 
         availableSubjectTypes = [],
         availableLocationTypes = [],

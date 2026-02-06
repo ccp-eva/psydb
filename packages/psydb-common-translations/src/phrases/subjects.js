@@ -1,10 +1,12 @@
 'use strict';
 module.exports = [
     {
+        internal: '_sidenav_subjects',
         en: 'Subjects',
         de: 'Proband:innen'
     },
     {
+        internal: '_sidenav_lab-operation_subject-selection',
         en: 'Subject Selection',
         de: 'Proband:innenauswahl'
     },

@@ -4,18 +4,18 @@ var { flatten } = require('@cdxoo/flat');
 var pathify = (that, options = {}) => {
     var {
         delimiter = '.',
-        //traverseArrays = false,
+        traverseArrays = false,
         prefix,
         maxDepth,
     } = options;
 
     var flat = flatten(that, {
-        delimiter,
-        maxDepth,
-        //traverseArrays // FIXME: flatten doesnt pass that down i think
+        delimiter, maxDepth, traverseArrays
     });
 
-    if (prefix) {
+    // NOTE: this is a breaking change but i dont we have case
+    // were it makes a difference
+    if (prefix !== undefined) {
         var out = {};
         for (var key of Object.keys(flat)) {
             out[`${prefix}${delimiter}${key}`] = flat[key];

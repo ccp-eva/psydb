@@ -1,0 +1,23 @@
+{
+  "name": "@mpieva/psydb-custom-fields-faker",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "",
+    "test": "npx mocha --config ./mocha.config.json tests"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "npm:@cdxoo/debug-js-fork@~0.0.1",
+    "@faker-js/faker": "~8.4.1",
+    "@cdxoo/pick-random-item": "~0.0.3",
+    "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-schema-fields": "workspace:*"
+  },
+  "devDependencies": {
+    "mocha": "~10.2.0",
+    "chai": "~4.3.7"
+  }
+}
