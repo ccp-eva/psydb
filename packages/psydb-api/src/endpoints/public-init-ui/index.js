@@ -51,6 +51,8 @@ var publicInitUI = async (context, next) => {
 
         '/dev_enableCSVSubjectImport',
         '/dev_enableCSVParticipationImport',
+        '/dev_enableCSVSubjectContactHistoryImport',
+
         '/dev_enableStatistics',
         '/dev_enableWKPRCPatches',
         

@@ -27,7 +27,7 @@ const List = (ps) => {
     });
 
     var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.searchCSVExperimentImports()
+        agent.searchCSVSubjectContactHistoryImports()
     ), [ revision.value ]);
 
     if (!didFetch) {
@@ -59,9 +59,8 @@ const RecordTable = (ps) => {
             hover={ true }
         >
             <TableHead showActionColumn>
-                <th>{ translate('Study') }</th>
+                <th>{ translate('Subject Type') }</th>
                 <th>{ translate('Imported At') }</th>
-                <th>{ translate('Type') }</th>
                 <th>{ translate('Imported By') }</th>
             </TableHead>
             <tbody>
@@ -79,16 +78,15 @@ const RecordTable = (ps) => {
 
 const RecordRow = (ps) => {
     var { record, related } = ps;
-    var { _id, type, studyId, createdAt, createdBy } = record;
+    var { _id, subjectType, createdAt, createdBy } = record;
     
     var { url } = useRouteMatch();
     var [{ fdatetime }] = useI18N();
     
     return (
         <LinkRow href={ `#${url}/${_id}` } values={[
-            related.records.study[studyId],
+            related.crts.subject[subjectType],
             fdatetime(createdAt),
-            asFriendlyType(type),
             related.records.personnel[createdBy],
         ]} />
     )
@@ -106,14 +104,5 @@ var LinkRow = (ps) => {
         </tr>
     )
 }
-
-// XXX
-const asFriendlyType = (type) => ({
-    'experiment/manual-only-participation': 'Field Sites',
-    'experiment/online-survey': 'Online Survey',
-    //'experiment/wkprc-evapecognition': 'WKPRC EVApeCognition',
-    'experiment/wkprc-evapecognition': 'WKPRC',
-    'experiment/wkprc-apestudies-default': 'WKPRC'
-}[type] || type);
 
 export default List;

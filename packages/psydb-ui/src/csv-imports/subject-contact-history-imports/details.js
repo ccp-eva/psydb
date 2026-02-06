@@ -12,7 +12,7 @@ import {
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 import { CSVImport } from '@mpieva/psydb-ui-lib/data-viewers';
 
-import RelatedExperiments from './related-experiments';
+//import RelatedExperiments from './related-experiments';
 
 const Details = (ps) => {
     var { id: csvImportId } = useParams();
@@ -40,7 +40,7 @@ const Details = (ps) => {
                 <DetailsBox title={ title }>
                     <Grid cols={[ '1fr', '1fr' ]} gap='1rem'>
                         <div>
-                            <CSVImport.StudyId __useNewRelated />
+                            {/*<CSVImport.StudyId __useNewRelated />*/}
                             <CSVImport.Type />
                             <CSVImport.FileId />
                         </div>
@@ -53,9 +53,9 @@ const Details = (ps) => {
             </CSVImport>
 
             <div className='mt-4'>
-                <RelatedExperiments
+                {/*<RelatedExperiments
                     csvImportId={ csvImportId }
-                />
+                />*/}
             </div>
         </>
     )

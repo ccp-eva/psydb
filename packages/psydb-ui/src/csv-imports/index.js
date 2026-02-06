@@ -7,6 +7,7 @@ import PageWrapper from './page-wrapper';
 import IndexNavOrRedirect from './index-nav-or-redirect';
 import ExperimentImportRouting from './experiment-imports';
 import SubjectImportRouting from './subject-imports';
+import SubjectContactHistoryImportRouting from './subject-contact-history-imports';
 
 const CSVImportRouting = () => {
     var { url, path } = useRouteMatch();
@@ -14,11 +15,13 @@ const CSVImportRouting = () => {
     var {
         dev_enableCSVSubjectImport = false,
         dev_enableCSVParticipationImport = false,
+        dev_enableCSVSubjectContactHistoryImport = false,
     } = useUIConfig();
 
     var pflags = {
         canViewSubjectImports: dev_enableCSVSubjectImport,
         canViewExperimentImports: dev_enableCSVParticipationImport,
+        canViewSubjectContactHistoryImports: dev_enableCSVSubjectContactHistoryImport,
     }
 
     return (
@@ -32,6 +35,9 @@ const CSVImportRouting = () => {
                 </Route>
                 <Route path={ `${path}/subject` }>
                     <SubjectImportRouting />
+                </Route>
+                <Route path={ `${path}/subject-contact-history` }>
+                    <SubjectContactHistoryImportRouting />
                 </Route>
             </Switch>
         </PageWrapper>

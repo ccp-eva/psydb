@@ -6,7 +6,7 @@ import { PageWrappers } from '@mpieva/psydb-ui-layout';
 import List from './list';
 import Details from './details';
 
-const ExperimentImportRouting = (ps) => {
+const SubjectContactHistoryRouting = (ps) => {
     var { url, path } = useRouteMatch();
     var [{ translate }] = useI18N();
 
@@ -27,4 +27,4 @@ const ExperimentImportRouting = (ps) => {
     )
 }
 
-export default ExperimentImportRouting;
+export default SubjectContactHistoryRouting;

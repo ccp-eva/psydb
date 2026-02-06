@@ -53,6 +53,7 @@ module.exports = {
     
     dev_enableCSVSubjectImport: true,
     dev_enableCSVParticipationImport: true,
+    dev_enableCSVSubjectContactHistoryImport: true,
     
     dev_enableStatistics: true,
     dev_showDummyRecordsAsTopOptions: false,
