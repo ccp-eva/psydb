@@ -14,12 +14,11 @@ const SubjectContactHistoryImportCreateForm = (ps) => {
 
     var [{ translate }] = useI18N();
     var [ stage, setStage ] = useState(
-        //'prepare'
-        'preview'
+        'prepare'
     );
 
     var [ subjectType, setSubjectType ] = useState(
-        'child'
+        //'child'
     );
     
     var helperBag = { subjectType, setSubjectType }
