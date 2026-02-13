@@ -23,6 +23,7 @@ const ExperimentDetails = (ps) => {
         locationData,
         studyData,
         subjectDataByType,
+        studyConsentDocsBySubject,
 
         related,
 
@@ -98,6 +99,7 @@ const ExperimentDetails = (ps) => {
                     studyData,
                     opsTeamData,
                     subjectDataByType,
+                    studyConsentDocsBySubject,
                     
                     related,
                     onSuccessfulUpdate,

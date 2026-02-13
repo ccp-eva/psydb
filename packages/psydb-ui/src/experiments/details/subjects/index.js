@@ -8,7 +8,8 @@ import {
 
 import {
     SubjectIconButton,
-    StudyConsentDocIconButton,
+    StudyConsentDocIconButton_TODO,
+    StudyConsentDocIconButton_DONE,
     RemoveIconButtonInline,
 } from '@mpieva/psydb-ui-layout';
 
@@ -26,6 +27,7 @@ const Subjects = (ps) => {
         studyData,
         opsTeamData,
         subjectDataByType,
+        studyConsentDocsBySubject,
 
         related,
         onSuccessfulUpdate,
@@ -99,6 +101,7 @@ const Subjects = (ps) => {
                     labProcedureSettingData,
                     studyData,
                     subjectDataByType,
+                    studyConsentDocsBySubject,
                     related,
                     
                     ActionsComponent,
@@ -112,13 +115,16 @@ const ActionsComponent = (ps) => {
     var {
         experimentSubjectData,
         subjectRecord,
+        studyConsentDocsBySubject,
 
         hasContactIssue,
         isUnparticipated,
     } = ps;
-    
+
     var context = useContext(ActionsContext);
     var permissions = usePermissions();
+
+    var studyConsentDoc = studyConsentDocsBySubject[subjectRecord._id];
 
     var {
         experimentType,
@@ -141,8 +147,12 @@ const ActionsComponent = (ps) => {
     
     return (
         <div className='d-flex justify-content-end media-print-hidden'>
-            { true /* FIXME */ && (
-                <StudyConsentDocIconButton onClick={
+            { studyConsentDoc ? (
+                <StudyConsentDocIconButton_DONE onClick={
+                    () => onClickConsent({ subjectRecord })
+                } />
+            ) : (
+                <StudyConsentDocIconButton_TODO onClick={
                     () => onClickConsent({ subjectRecord })
                 } />
             )}

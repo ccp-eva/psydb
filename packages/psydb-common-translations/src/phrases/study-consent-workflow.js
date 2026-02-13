@@ -41,8 +41,8 @@ module.exports = [
         de: 'Interner Name'
     },
     {
-        en: 'Title',
-        de: 'Titel'
+        en: 'Title for Subjects',
+        de: 'Titel für Proband:innen'
     },
     {
         en: 'Elements',
@@ -73,8 +73,8 @@ module.exports = [
         de: 'Horizontale Linie'
     },
     {
-        en: 'Markdown',
-        de: 'Markdown'
+        en: 'Markdown (EN)',
+        de: 'Markdown (EN)'
     },
     {
         en: 'Markdown (DE)',
@@ -152,5 +152,9 @@ module.exports = [
     {
         en: 'Study Investigator',
         de: 'Studiendurchführende:r'
+    },
+    {
+        en: 'Display Name (EN)',
+        de: 'Anzeigename (EN)'
     },
 ]

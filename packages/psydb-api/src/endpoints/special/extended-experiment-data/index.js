@@ -41,6 +41,7 @@ var fetchOneExperimentData = require('./fetch-one-experiment-data');
 var fetchOneStudyData = require('./fetch-one-study-data');
 var fetchOneOpsTeamData = require('./fetch-one-ops-team-data');
 var fetchLabProcedureSettingData = require('./fetch-lab-procedure-setting-data');
+var fetchStudyConsentDocsBySubject = require('./fetch-study-consent-docs-by-subject');
 
 var {
     ExactObject,
@@ -94,6 +95,10 @@ var extendedExperimentData = async (context, next) => {
         experimentOperatorTeamId,
         selectedSubjectIds,
     } = experimentData.record.state;
+
+    var studyConsentDocsBySubject = await fetchStudyConsentDocsBySubject({
+        db, experimentData
+    });
 
     ////////////////////////////////////////
     var studyRecord = await (
@@ -310,6 +315,7 @@ var extendedExperimentData = async (context, next) => {
             
             locationData,
             subjectDataByType,
+            studyConsentDocsBySubject,
 
             related: __related,
         },

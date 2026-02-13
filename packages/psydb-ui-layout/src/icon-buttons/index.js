@@ -14,8 +14,12 @@ export const StudyIconButton = withIconButton({
     defaultTitle: 'Study'
 });
 
-export const StudyConsentDocIconButton = withIconButton({
+export const StudyConsentDocIconButton_TODO = withIconButton({
     Icon: Icons.FileEarmarkCheck,
+    defaultTitle: 'Study Consent Doc'
+});
+export const StudyConsentDocIconButton_DONE = withIconButton({
+    Icon: Icons.FileEarmarkCheckFill,
     defaultTitle: 'Study Consent Doc'
 });
 

@@ -8,7 +8,7 @@ export const InfoTextMarkdown = (ps) => {
     return (
         <>
             <Fields.FullText
-                label={ translate('Markdown') }
+                label={ translate('Markdown (EN)') }
                 dataXPath={ `${dataXPath}.markdown` }
                 required={ true }
             />
@@ -65,7 +65,7 @@ export const ExtraField = (ps) => {
                 ]}
             />
             <Fields.SaneString
-                label={ translate('Display Name') }
+                label={ translate('Display Name (EN)') }
                 dataXPath={ `${dataXPath}.displayName` }
                 required={ true }
             />

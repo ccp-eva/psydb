@@ -34,12 +34,12 @@ const FormFields = (ps) => {
     return (
         <>
             <Fields.SaneString
-                label={ translate('Internal Name') }
+                label={ translate('Shorthand') }
                 dataXPath='$.internalName'
                 required
             />
             <Fields.SaneString
-                label={ translate('Title') }
+                label={ translate('Title for Subjects') }
                 dataXPath='$.title'
                 required
             />
