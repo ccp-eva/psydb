@@ -20,6 +20,9 @@ const inviteLabOpsLabels = (type) => ({
     [labOpsPath(type, 'canWriteReservations')]: (
         'Can Reserve Rooms'
     ),
+    [labOpsPath(type, 'canSearchSelectableSubjects')]: (
+        'Can Search Selectable Subjects'
+    ),
     [labOpsPath(type, 'canSelectSubjectsForExperiments')]: (
         'Can Select Subjects for Appointments'
     ),
@@ -43,6 +46,9 @@ const inviteLabOpsLabels = (type) => ({
 const awayTeamLabOpsLabels = (type) => ({
     [labOpsPath(type, 'canWriteReservations')]: (
         'Can Schedule Experimenter Teams'
+    ),
+    [labOpsPath(type, 'canSearchSelectableSubjects')]: (
+        'Can Search Selectable Subjects'
     ),
     [labOpsPath(type, 'canSelectSubjectsForExperiments')]: (
         'Can Select Subjects for Appointments'

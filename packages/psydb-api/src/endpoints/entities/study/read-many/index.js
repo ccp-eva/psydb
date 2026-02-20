@@ -33,6 +33,7 @@ var readMany = async (context, next) => {
         permissions,
         labOperationTypes: 'any',
         flags: [
+            'canSearchSelectableSubjects',
             'canSelectSubjectsForExperiments',
         ],
         matchTypes: 'some',

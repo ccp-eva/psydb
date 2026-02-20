@@ -584,11 +584,13 @@ const createAgent = (options = {}) => {
     agent.fetchAgeFrames = ({
         studyId,
         studyIds,
+        subjectTypes,
     }) => {
         return axios.post(
             '/api/age-frames',
             {
                 studyIds: studyIds || [ studyId ],
+                subjectTypes,
             }
         );
     }

@@ -26,6 +26,7 @@ var LabOperationPermissions = (options) => {
                     'team-only': 'kann Experimenter:innen-Teams planen',
                 }[reservationType],
             }),
+            canSearchSelectableSubjects: WideBool(),
             canSelectSubjectsForExperiments: WideBool({
                 title: 'kann Proband:innen für Termine auswählen',
             }),

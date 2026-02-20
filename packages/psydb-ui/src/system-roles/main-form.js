@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -18,7 +18,7 @@ export const MainForm = (ps) => {
         permissions,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <FormBox title={ title }>
@@ -45,7 +45,8 @@ export const MainForm = (ps) => {
 
 const FormFields = (ps) => {
     var { related, permissions } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
+    
     return (
         <>
             <Fields.SaneString
@@ -271,7 +272,7 @@ const LabOperationFields = (ps) => {
     var { type, title, hasInvitation } = ps;
     var dataXPath = `$.labOperation.${type}`;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <PermBox title={ title }>
@@ -282,6 +283,10 @@ const LabOperationFields = (ps) => {
                         : 'Can Schedule Experimenter Teams'
                 }
                 dataXPath={ `${dataXPath}.canWriteReservations` }
+            />
+            <Bool
+                label='Can Search Selectable Subjects'
+                dataXPath={ `${dataXPath}.canSearchSelectableSubjects` }
             />
             <Bool
                 label='Can Select Subjects for Appointments'
@@ -329,7 +334,7 @@ const SurveyFields = (ps) => {
     var { type, title } = ps;
     var dataXPath = `$.labOperation.${type}`;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <PermBox title={ title }>
@@ -354,7 +359,8 @@ const MainHeader = (ps) => {
 
 const Bool = (ps) => {
     var { label, ...pass } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
+    
     return (
         <Fields.DefaultBool
             uiSplit={[ 8, 4 ]}
