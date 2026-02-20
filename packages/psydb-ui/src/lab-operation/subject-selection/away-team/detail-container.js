@@ -1,5 +1,6 @@
 import React from 'react';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
     Table,
@@ -39,6 +40,12 @@ const DetailContainer = (ps) => {
 
         onCreateExperiment
     } = ps;
+
+    var permissions = usePermissions();
+    var canCreateAppointment = permissions.hasSomeLabOperationFlags({
+        types: [ 'away-team' ],
+        flags: [ 'canSelectSubjectsForExperiments' ]
+    })
 
     var [{ translate }] = useI18N();
     var { definitions } = subjectMetadata;
@@ -102,13 +109,15 @@ const DetailContainer = (ps) => {
                 }) } />
             </Table>
             <div className='mt-3 mb-3'>
-                <Button
-                    size='sm'
-                    disabled={ selectedSubjectIds.length < 1 }
-                    onClick={ () => onCreateExperiment({ locationRecord }) }
-                >
-                    { translate('Create Appointment') }
-                </Button>
+                { canCreateAppointment && (
+                    <Button
+                        size='sm'
+                        disabled={ selectedSubjectIds.length < 1 }
+                        onClick={ () => onCreateExperiment({ locationRecord }) }
+                    >
+                        { translate('Create Appointment') }
+                    </Button>
+                )}
             </div>
         </div>
     );
@@ -226,7 +235,7 @@ const SubjectTableBody = (ps) => {
                 </td>
                 <td
                     className='user-select-none'
-                    colSpan={ subjectMetadata.displayFieldData.length + 4 }
+                    colSpan={ subjectMetadata.displayFieldData.length + 5 }
                     style={{ color: 'var(--primary)' }}
                     role='button'
                     onClick={ () => {
