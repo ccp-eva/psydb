@@ -128,6 +128,12 @@ var extendedExperimentData = async (context, next) => {
         }
     }
     if (!hasAnyAccess) {
+        hasAnyAccess = permissions.hasSomeFlags([
+            'canReadParticipation',
+            'canWriteParticipation'
+        ]);
+    }
+    if (!hasAnyAccess) {
         throw new ApiError(403, {
             apiStatus: 'LabOperationAccessDenied',
             data: {
