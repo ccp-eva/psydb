@@ -61,6 +61,7 @@ const StudyRecordContainer = (ps) => {
     var permissions = usePermissions();
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
     var canViewStudyLabOpsSettings = permissions.hasFlag('canViewStudyLabOpsSettings');
+    var canViewStudyLabTeams = permissions.hasFlag('canViewStudyLabTeams');
 
     var revision = useRevision();
     var [ didFetchStudy, fetchedStudy ] = useReadRecord({
@@ -94,7 +95,7 @@ const StudyRecordContainer = (ps) => {
             key: 'experiment-settings',
             label: translate('Lab Workflow Settings')
         }),
-        crtSettings.enableLabTeams && ({
+        (canViewStudyLabTeams && crtSettings.enableLabTeams) && ({
             key: 'teams',
             label: translate('Teams')
         }),

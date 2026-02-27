@@ -170,6 +170,10 @@ const FormFields = (ps) => {
                     label='Can View Lab Workflow Settings of Studies'
                     dataXPath='$.canViewStudyLabOpsSettings'
                 />
+                <Bool
+                    label='Can View Lab Teams of Studies'
+                    dataXPath='$.canViewStudyLabTeams'
+                />
             </PermBox>
 
             <PermBox title={ translate('Subjects') }>

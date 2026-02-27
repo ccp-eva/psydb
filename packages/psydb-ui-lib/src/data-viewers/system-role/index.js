@@ -185,6 +185,9 @@ const labels = {
     '/state/canViewStudyLabOpsSettings': (
         'Can View Lab Workflow Settings of Studies'
     ),
+    '/state/canViewStudyLabTeams': (
+        'Can View Lab Teams of Studies'
+    ),
     '/state/canAccessSensitiveFields': (
         'Can Access Sensitive Fields (e.g. WKPRC-Comment)'
     ),

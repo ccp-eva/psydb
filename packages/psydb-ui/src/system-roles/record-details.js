@@ -141,6 +141,9 @@ export const DetailsBody = (ps) => {
                     <Bool
                         dataXPath='canViewStudyLabOpsSettings'
                     />
+                    <Bool
+                        dataXPath='canViewStudyLabTeams'
+                    />
                 </PermBox>
 
                 <PermBox title={ translate('Subjects') }>

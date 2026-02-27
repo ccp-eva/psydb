@@ -31,9 +31,10 @@ var createFakeRootFlags = () => ({
     canWriteParticipation: true,
 
 
+    canAccessSensitiveFields: true,
     canViewReceptionCalendar: true,
     canViewStudyLabOpsSettings: true,
-    canAccessSensitiveFields: true,
+    canViewStudyLabTeams: true,
 
     labOperation: {
         'inhouse': {
