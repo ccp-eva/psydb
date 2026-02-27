@@ -38,6 +38,7 @@ var createFakeRootFlags = () => ({
     labOperation: {
         'inhouse': {
             canWriteReservations: true,
+            canSearchSelectableSubjects: true,
             canSelectSubjectsForExperiments: true,
             canConfirmSubjectInvitation: true,
             canViewExperimentCalendar: true,
@@ -47,6 +48,7 @@ var createFakeRootFlags = () => ({
         },
         'away-team': {
             canWriteReservations: true,
+            canSearchSelectableSubjects: true,
             canSelectSubjectsForExperiments: true,
             canViewExperimentCalendar: true,
             canMoveAndCancelExperiments: true,
@@ -57,6 +59,7 @@ var createFakeRootFlags = () => ({
         },
         'online-video-call': {
             canWriteReservations: true,
+            canSearchSelectableSubjects: true,
             canSelectSubjectsForExperiments: true,
             canConfirmSubjectInvitation: true,
             canViewExperimentCalendar: true,
