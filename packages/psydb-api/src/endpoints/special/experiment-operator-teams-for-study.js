@@ -38,9 +38,6 @@ var experimentOperatorTeamsForStudy = async (context, next) => {
     // we need to check if the studies
     // research groups match with the users
     if (!canChangeOpsTeam) {
-        if (permissions.hasSomeFlags([ 'canViewStudyLabTeams' ])) {
-
-        }
         await verifyPermissionFlags({
             db, permissions, flags: [ 'canViewStudyLabTeams' ], match: 'some'
         });
