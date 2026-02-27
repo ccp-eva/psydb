@@ -98,6 +98,11 @@ var Permissions = (options) => {
     var hasSomeFlags = (flags) => (
         flags.some(it => hasFlag(it))
     );
+    // NOTE i wont rememeber to skip the 's' for hasEveryFlag()
+    // so i name it hasAllFlags
+    var hasAllFlags = (flags) => (
+        flags.every(it => hasFlag(it))
+    );
 
     var hasLabOperationFlag = (type, flag, researchGroupId) => {
         if (isRoot()) {
