@@ -185,6 +185,16 @@ var CRTSettings = ({ data }) => {
         }
         return Object.values(clone);
     };
+
+    crt.findAvailableDisplayFields = (filter, options = {}) => {
+        var fields = crt.availableDisplayFields(options);
+        return (
+            filter
+            ? fields.filter(sift(filter))
+            : fields
+        );
+    }
+
     crt.augmentedDisplayFields = (target) => {
         // FIXME: record lists target is lower case
         if (target === 'optionlist') {

@@ -442,7 +442,7 @@ const createAgent = (options = {}) => {
         showPast,
     }) => {
         return axios.post(
-            '/api/experiment-calendar',
+            '/api/experiment/invite-calendar',
             {
                 interval,
 
@@ -584,11 +584,13 @@ const createAgent = (options = {}) => {
     agent.fetchAgeFrames = ({
         studyId,
         studyIds,
+        subjectTypes,
     }) => {
         return axios.post(
             '/api/age-frames',
             {
                 studyIds: studyIds || [ studyId ],
+                subjectTypes,
             }
         );
     }
@@ -960,6 +962,9 @@ const createAgent = (options = {}) => {
         relatedStudyConsentForms: dumpPOST({ url: '/api/study/related-study-consent-forms' }),
         
         extendedSearch: dumpPOST({ url: '/api/extended-search/studies' }),
+    };
+    agent.location = {
+        extendedSearch: dumpPOST({ url: '/api/location/extended-search' }),
     };
     agent.helperSet = {
         list: dumpPOST({ url: '/api/helperSet/list' }),

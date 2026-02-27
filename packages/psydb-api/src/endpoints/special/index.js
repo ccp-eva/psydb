@@ -57,12 +57,12 @@ module.exports = {
         require('./invite-confirmation-list')
     ),
 
-    experimentCalendar: (
-        require('./calendars/experiment-calendar')
-    ),
-    locationExperimentCalendar: (
-        require('./calendars/location-experiment-calendar')
-    ),
+    //experimentCalendar: (
+    //    require('./calendars/experiment-calendar')
+    //),
+    //locationExperimentCalendar: (
+    //    require('./calendars/location-experiment-calendar')
+    //),
     
     reservableLocationTimeTable: (
         require('./calendars/reservable-location-time-table')

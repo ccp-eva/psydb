@@ -155,6 +155,7 @@ var checkNavItemAllowed = (bag) => {
             ]});
         case '/lab-operation/subject-selection':
             return hasSomeLabOperationFlags({ types: 'any', flags: [
+                'canSearchSelectableSubjects',
                 'canSelectSubjectsForExperiments'
             ]});
         case '/lab-operation/invite-confirmation':

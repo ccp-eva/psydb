@@ -25,6 +25,7 @@ module.exports = {
     verifyStudyAccess: require('./verify-study-access'),
     verifySubjectAccess: require('./verify-subject-access'),
     verifyLabOperationAccess: require('./verify-lab-operation-access'),
+    verifyPermissionFlags: require('./verify-permission-flags'),
    
     checkForeignIdsExist: require('./check-foreign-ids-exist'),
     checkIntervalHasReservation: require('./check-interval-has-reservation'),

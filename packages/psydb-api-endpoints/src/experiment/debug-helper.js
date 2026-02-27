@@ -1,5 +1,5 @@
 'use strict';
-var Debug = require('debug');
-module.exports = (str) => (
-    Debug('psydb:api:endpoints:experiment:' + str)
+var Debug = require('../debug-helper')
+module.exports = (path) => (
+    Debug(`experiment:${path}`)
 )

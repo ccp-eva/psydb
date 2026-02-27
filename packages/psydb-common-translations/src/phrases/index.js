@@ -1750,5 +1750,10 @@ module.exports = [
     {
         en: 'Go to Record',
         de: 'Zum Datensatz',
-    }
+    },
+
+    {
+        en: 'Admin Fallback System Role',
+        de: 'Fallback System-Rolle für Admins'
+    },
 ]

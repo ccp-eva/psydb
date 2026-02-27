@@ -25,6 +25,7 @@
     "@mpieva/psydb-common-compat": "workspace:*",
     "@mpieva/psydb-common-lib": "workspace:*",
     "@mpieva/psydb-i18n": "workspace:*",
+    "@mpieva/psydb-schema-enums": "workspace:*",
     "@mpieva/psydb-schema-fields": "workspace:*",
     "@mpieva/psydb-schema-fields-special": "workspace:*",
     "@mpieva/psydb-mongo-adapter": "workspace:*",

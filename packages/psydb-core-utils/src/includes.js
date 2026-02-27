@@ -15,4 +15,6 @@ var includes = (bag) => {
     return false;
 }
 
+includes.lambda = (bagB) => (bagA) => includes({ ...bagB, ...bagA });
+
 module.exports = includes;

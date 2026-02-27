@@ -21,6 +21,7 @@ var addStudyConsentFormRoutes = require('./add-study-consent-form-routes');
 var addStudyConsentDocRoutes = require('./add-study-consent-doc-routes');
 var addSubjectRoutes = require('./add-subject-routes');
 var addExperimentRoutes = require('./add-experiment-routes');
+var addLocationRoutes = require('./add-location-routes');
 var addCSVImportRoutes = require('./add-csv-import-routes');
 var addAuditRoutes = require('./add-audit-routes');
 
@@ -259,18 +260,18 @@ var createRouting = (bag = {}) => {
         endpoints.special.receptionCalendar
     );
 
-    router.post('/experiment-calendar',
+    router.post('/experiment/invite-calendar',
         withSelfAuth(),
         withPermissions(),
         withKoaBody(),
-        endpoints.special.experimentCalendar
+        endpoints_SPLIT.experiment.inviteCalendar
     );
 
     router.post('/location-experiment-calendar',
         withSelfAuth(),
         withPermissions(),
         withKoaBody(),
-        endpoints.special.locationExperimentCalendar
+        endpoints_SPLIT.experiment.awayCalendar
     );
 
     router.post('/selectable-studies',
@@ -359,12 +360,6 @@ var createRouting = (bag = {}) => {
         withPermissions(),
         withKoaBody(),
         endpoints.extendedSearch.studies
-    );
-    router.post('/extended-search/locations',
-        withSelfAuth(),
-        withPermissions(),
-        withKoaBody(),
-        endpoints.extendedSearch.locations
     );
 
     router.post('/extended-search-export/subject',
@@ -527,6 +522,7 @@ var createRouting = (bag = {}) => {
     addStudyConsentDocRoutes({ router });
     addSubjectRoutes({ router });
     addExperimentRoutes({ router });
+    addLocationRoutes({ router });
     addCSVImportRoutes({ router });
     addAuditRoutes({ router });
     
