@@ -6767,27 +6767,29 @@ packages:
     engines: {node: 18 || 20 || >=22}
     dev: true
 
-  /bare-addon-resolve@1.10.0:
-    resolution: {integrity: sha512-sSd0jieRJlDaODOzj0oe0RjFVC1QI0ZIjGIdPkbrTXsdVVtENg14c+lHHAhHwmWCZ2nQlMhy8jA3Y5LYPc/isA==}
+  /bare-addon-resolve@1.9.3(bare-url@2.1.3):
+    resolution: {integrity: sha512-0W343p8kVy9KimDMrxJtJct/ILWL8gzC0Wwg/Fn/GgQplHvrllyz4fPobUVG5+gx9BokWttzg8FYypQP7V5nrA==}
     peerDependencies:
       bare-url: '*'
     peerDependenciesMeta:
       bare-url:
         optional: true
     dependencies:
-      bare-module-resolve: 1.12.1
-      bare-semver: 1.0.2
+      bare-module-resolve: 1.10.2(bare-url@2.1.3)
+      bare-semver: 1.0.1
+      bare-url: 2.1.3
     dev: false
 
-  /bare-module-resolve@1.12.1:
-    resolution: {integrity: sha512-hbmAPyFpEq8FoZMd5sFO3u6MC5feluWoGE8YKlA8fCrl6mNtx68Wjg4DTiDJcqRJaovTvOYKfYngoBUnbaT7eg==}
+  /bare-module-resolve@1.10.2(bare-url@2.1.3):
+    resolution: {integrity: sha512-C9COe/GhWfVXKytW3DElTkiBU+Gb2OXeaVkdGdRB/lp26TVLESHkTGS876iceAGdvtPgohfp9nX8vXHGvN3++Q==}
     peerDependencies:
       bare-url: '*'
     peerDependenciesMeta:
       bare-url:
         optional: true
     dependencies:
-      bare-semver: 1.0.2
+      bare-semver: 1.0.1
+      bare-url: 2.1.3
     dev: false
 
   /bare-semver@1.0.2:
@@ -13022,13 +13024,12 @@ packages:
       uuid: 3.4.0
     dev: true
 
-  /require-addon@1.2.0:
-    resolution: {integrity: sha512-VNPDZlYgIYQwWp9jMTzljx+k0ZtatKlcvOhktZ/anNPI3dQ9NXk7cq2U4iJ1wd9IrytRnYhyEocFWbkdPb+MYA==}
+  /require-addon@1.1.0:
+    resolution: {integrity: sha512-KbXAD5q2+v1GJnkzd8zzbOxchTkStSyJZ9QwoCq3QwEXAaIlG3wDYRZGzVD357jmwaGY7hr5VaoEAL0BkF0Kvg==}
     engines: {bare: '>=1.10.0'}
     dependencies:
-      bare-addon-resolve: 1.10.0
-    transitivePeerDependencies:
-      - bare-url
+      bare-addon-resolve: 1.9.3(bare-url@2.1.3)
+      bare-url: 2.1.3
     dev: false
 
   /require-at@1.0.6:
@@ -13567,7 +13568,7 @@ packages:
   /sodium-native@4.3.3:
     resolution: {integrity: sha512-OnxSlN3uyY8D0EsLHpmm2HOFmKddQVvEMmsakCrXUzSd8kjjbzL413t4ZNF3n0UxSwNgwTyUvkmZHTfuCeiYSw==}
     dependencies:
-      require-addon: 1.2.0
+      require-addon: 1.1.0
     transitivePeerDependencies:
       - bare-url
     dev: false
