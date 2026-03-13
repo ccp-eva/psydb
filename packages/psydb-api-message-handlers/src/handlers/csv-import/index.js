@@ -8,6 +8,9 @@ var CSVImportGroup = MessageHandlerGroup([
     require('./experiment/create-wkprc-evapecognition'),
     require('./experiment/create-manual-only-participation'),
     require('./experiment/create-online-survey'),
+    require('./experiment/create-inhouse'),
+    require('./experiment/create-away-team'),
+
     require('./subject/create-default'),
 ]);
 

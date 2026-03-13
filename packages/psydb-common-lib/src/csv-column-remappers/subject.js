@@ -16,6 +16,8 @@ var CSVSubjectColumnRemapper = (bag) => {
         obj2csv: preGenerate.obj2csv({ subjectCRT }),
     }
 
+    remapper.mappings = mappings;
+
     remapper.csv2obj = (bag) => {
         var { colkey } = bag;
         

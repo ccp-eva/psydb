@@ -46,6 +46,14 @@ var addExperimentImportRoutes = (bag) => {
         '/csv-import/experiment/preview/online-survey',
         ...withPostStages({ endpoint: preview['online-survey'] })
     );
+    router.post(
+        '/csv-import/experiment/preview/inhouse',
+        ...withPostStages({ endpoint: preview['inhouse'] })
+    );
+    router.post(
+        '/csv-import/experiment/preview/away-team',
+        ...withPostStages({ endpoint: preview['away-team'] })
+    );
 }
 
 var addSubjectImportRoutes = (bag) => {
