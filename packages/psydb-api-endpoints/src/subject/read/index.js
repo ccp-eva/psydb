@@ -64,7 +64,7 @@ var read = async (context, next) => {
     });
 
     context.body = ResponseBody({
-        data: { records, related, crtSettings: crt.getRaw() }
+        data: { record, related, crtSettings: crt.getRaw() }
     });
 
     await next();
