@@ -53,6 +53,7 @@ const withRecordTypeView = (options) => {
         RecordCreator = DefaultRecordCreator,
         RecordEditor = DefaultRecordEditor,
         RecordRemover,
+        RecordAnonymizer,
 
         CustomRouting,
         shouldFetchCollectionTypes = false,
@@ -135,6 +136,7 @@ const withRecordTypeView = (options) => {
                     RecordCreator,
                     RecordEditor,
                     RecordRemover,
+                    RecordAnonymizer,
                 }) } />
             </PageWrappers.Level2>
         );

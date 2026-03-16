@@ -15,6 +15,7 @@ module.exports = [
     ...require('./csv-imports'),
     ...require('./duplicates'),
 
+    ...require('./_record-anonymizer'),
     ...require('./_error-response-modal'),
     ...require('./_fieldtype'),
     ...require('./_participationStatus'),
