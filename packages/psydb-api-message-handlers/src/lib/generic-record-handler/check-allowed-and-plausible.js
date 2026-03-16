@@ -24,7 +24,7 @@ var checkAllowedAndPlausible = async ({
             db.collection(collection).findOne({ _id: payload.id })
         );
         if (!record) {
-            throw new ApiError(400);
+            throw new ApiError(409);
         }
         if (!permissions.hasRootAccess) {
             //throw new ApiError(403);

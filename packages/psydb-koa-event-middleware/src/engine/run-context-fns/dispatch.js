@@ -3,7 +3,7 @@ var { withRetracedErrors, mongoEscapeDeep }
     = require('@mpieva/psydb-api-lib');
 
 var dispatch = async (context, args) => {
-    var { db, rohrpost, self } = context;
+    var { db, rohrpost, self, now } = context;
     var { personnelId, apiKey } = self;
 
     var [{
@@ -28,7 +28,7 @@ var dispatch = async (context, args) => {
             personnelId,
             ...(apiKey && { apiKey }),
             payload: mongoEscapeDeep(payload) 
-        }, mongoArrayFilters })
+        }, mongoArrayFilters, now })
     );
 
     meta.collectionName = meta.collection; // FIXME
@@ -63,6 +63,8 @@ var dispatch = async (context, args) => {
         _id: channelId,
     });
     console.log(a);*/
+    
+    return meta;
 }
 
 module.exports = dispatch;

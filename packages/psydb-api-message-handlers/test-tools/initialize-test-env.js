@@ -2,6 +2,8 @@
 var mongoHelpers = require('@cdxoo/mongo-test-helpers');
 var restore = require('@cdxoo/mongodb-restore');
 
+require('@mpieva/psydb-api-mocha-test-tools/mocha-async-step');
+
 var {
     merge, entries, pathify, flatten, ejson,
     hasNone, hasOnlyOne, jsonify,
@@ -69,7 +71,8 @@ var beforeAll = async function () {
             self: { personnelId: 1234 },
             request: { body: message },
             response: {},
-            ip: '127.0.0.1'
+            ip: '127.0.0.1',
+            now: new Date(),
         }
         return { ...koaContext, ...extraContext };
     }
@@ -211,7 +214,7 @@ var beforeAll = async function () {
 var beforeEach = async function () {}
 
 var afterEach = async function () {
-    await mongoHelpers.clean(this.context.mongo)();
+    //await mongoHelpers.clean(this.context.mongo)();
 }
 
 var afterAll = async function () {

@@ -3,7 +3,6 @@ var { withRetracedErrors } = require('@mpieva/psydb-api-lib');
 
 var makeClean = async (context, args) => {
     var { db, dispatch } = context;
-
     var [{ collection, channelId, subChannelKey }] = args;
     
     var metapath = '_rohrpostMetadata';
@@ -13,7 +12,7 @@ var makeClean = async (context, args) => {
         statepath = subChannelKey + '.' + statepath;
     }
     
-    var [ meta ] = dispatch({
+    var meta = await dispatch({
         collection, channelId, subChannelKey,
         type: 'MAKE_CLEAN',
         payload: {

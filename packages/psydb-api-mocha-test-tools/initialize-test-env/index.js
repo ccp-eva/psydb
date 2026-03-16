@@ -1,4 +1,10 @@
 'use strict';
+// NOTE: using this and step() instead of it() will prevent
+// later steps from being executed after an error; it() would execute 
+// all the steps after an error regardless which is undesireable
+// due to bloated error output
+require('../mocha-async-step');
+
 var locale = require('date-fns/locale/de');
 
 var mongoHelpers = require('@cdxoo/mongo-test-helpers');
