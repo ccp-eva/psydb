@@ -13,6 +13,8 @@ var {
     compose, createId, Self, withRetracedErrors
 } = require('@mpieva/psydb-api-lib');
 
+var DefaultRootHandler = require('../src');
+
 console.ejson = (that) => console.dir(ejson(that), { depth: null });
 
 var {
@@ -47,7 +49,7 @@ var beforeAll = async function () {
     };
 
     this.createEngine = (options) => {
-        var { RootHandler } = options;
+        var { RootHandler = DefaultRootHandler } = options;
 
         var engine = withEventEngine({
             availableMessageHandlers: RootHandler,

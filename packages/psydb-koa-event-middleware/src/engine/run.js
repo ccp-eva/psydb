@@ -1,25 +1,21 @@
 'use strict';
-var { dispatch, dispatchProps } = require('./run-context-fns');
-
-var addFN = (bag) => {
-    var { context, ...rest } = bag;
-    var [ key, fn ] = Object.entries(rest)[0];
-
-    context[key] = (...args) => (
-        fn(context, args)
-    );
-}
+var fns = require('./run-context-fns');
 
 // triggerMussageEffects ??
 // runHandlers ??
 // performUpdates ??
 var run = () => async (context, next) => {
     var { rohrpost, messageHandler } = context;
-
     context.modifiedChannels = [];
 
-    addFN({ context, dispatch: dispatch });
-    addFN({ context, dispatchProps: dispatchProps });
+    var withContext = (fn) => (
+        (...args) => fn(context, args)
+    );
+
+    context.dispatch = withContext(fns.dispatch);
+    context.dispatchProps = withContext(fns.dispatchProps);
+    context.dispatch.makeClean = withContext(fns.makeClean);
+    //context.dispatch.makeDistClean = withContext(fns.makeDistClean);
 
     try {
         await messageHandler.triggerSystemEvents(context);

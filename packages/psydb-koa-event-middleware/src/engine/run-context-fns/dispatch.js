@@ -11,7 +11,7 @@ var dispatch = async (context, args) => {
         additionalChannelProps,
 
         channel, subChannelKey, mongoArrayFilters,
-        payload,
+        type = undefined, payload,
     }] = args;
 
     var channel = channel || (
@@ -22,6 +22,9 @@ var dispatch = async (context, args) => {
     
     var meta = await withRetracedErrors(
         channel.dispatch({ subChannelKey, message: {
+            // TODO: add type: 'CREATE/PATCH'
+            // or maybe 'CREATE_CHANNEL' bc subchannels?
+            ...( type && { type }),
             personnelId,
             ...(apiKey && { apiKey }),
             payload: mongoEscapeDeep(payload) 
