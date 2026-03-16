@@ -1,6 +1,10 @@
 'use strict';
 module.exports = [
     {
+        en: 'Anonymized',
+        de: 'Anonymisiert'
+    },
+    {
         en: 'Anonymize Staff-Member',
         de: 'Mitarbeiter:in Anonymisieren'
     },

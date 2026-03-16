@@ -27,7 +27,7 @@ export const addComponents = (target, context, labels, items) => {
                     label={ translate(propLabel) }
                     value={(
                         <span className='text-danger'>
-                            [[REDACTED]]
+                            { translate('Anonymized') }
                         </span>
                     )}
                 />

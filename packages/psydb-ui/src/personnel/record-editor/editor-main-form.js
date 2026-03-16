@@ -15,24 +15,17 @@ import MainForm from '../main-form';
 
 export const EditorMainForm = (ps) => {
     var {
-        collection,
-        id,
-        fetched,
-        onSuccessfulUpdate
+        collection, id, fetched, isAnonymized,
+        onSuccessfulUpdate,
     } = ps;
 
-    var {
-        record,
-        schema,
-        related
-    } = fetched;
-
+    var { record, schema, related } = fetched;
     var permissions = usePermissions();
 
     var send = useSendPatch({
         collection,
         record,
-        subChannels: ['gdpr', 'scientific'],
+        subChannels: [ 'gdpr', 'scientific' ],
         onSuccessfulUpdate
     });
 
@@ -62,9 +55,10 @@ export const EditorMainForm = (ps) => {
         <MainForm.Component
             title='Mitarbeiter:in bearbeiten'
             initialValues={ initialValues }
-            onSubmit={ send.exec }
             related={ related }
             permissions={ permissions }
+            isAnonymized={ isAnonymized }
+            { ...send.passthrough }
         />
     );
 }
