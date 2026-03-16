@@ -15,15 +15,23 @@ var makeClean = async (context, args) => {
     var meta = await dispatch({
         collection, channelId, subChannelKey,
         type: 'MAKE_CLEAN',
-        payload: {
-            $set: { [`${metapath}.EXECUTED_MAKE_CLEAN`] : true },
-            $unset: { [statepath]: true }
-        }
+        payload: { $set: {
+            [`${metapath}.EXECUTED_MAKE_CLEAN`] : true,
+            [statepath]: '[[REDACTED]]'
+        }}
     });
     
     var { lastKnownEventId } = meta;
-
-    // TODO: clean events
+    await withRetracedErrors(
+        db.collection('rohrpostEvents').updateMany(
+            {
+                collectionName: collection, channelId: channelId,
+                ...(subChannelKey && { subChannelKey }),
+                _id: { $ne: lastKnownEventId },
+            },
+            { $set: { 'message.payload': '[[REDACTED]]' }}
+        )
+    )
 }
 
 module.exports = makeClean;

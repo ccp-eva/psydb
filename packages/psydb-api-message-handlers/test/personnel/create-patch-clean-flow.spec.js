@@ -123,6 +123,7 @@ describe('personnel/[create|patch|clean-gdpr] flow', function () {
         deltas.push({
             'staff': await this.fetchAllRecords('personnel'),
             'shadow': await this.fetchAllRecords('personnelShadow'),
+            'events': await this.fetchAllRecords('rohrpostEvents'),
         });
 
         var payload = { _id: bobsId }
@@ -135,16 +136,35 @@ describe('personnel/[create|patch|clean-gdpr] flow', function () {
         deltas.push({
             'staff': await this.fetchAllRecords('personnel'),
             'shadow': await this.fetchAllRecords('personnelShadow'),
+            'events': await this.fetchAllRecords('rohrpostEvents'),
         });
         deltas.test({ expected: {
             '/staff/1/gdpr/_rohrpostMetadata':
                 BaselineDeltas.AnyRohrpostMeta(),
             '/staff/1/gdpr/_rohrpostMetadata/EXECUTED_MAKE_CLEAN': true,
-            '/staff/1/gdpr/state': BaselineDeltas.DeletedValue(),
+            '/staff/1/gdpr/state': '[[REDACTED]]',
 
             '/shadow/1/setAt': BaselineDeltas.AnyDate(),
             //'/shadow/1/setBy': rootsId, // FIXME root also set it initially
             '/shadow/1/passwordHash': '[[REDACTED]]',
+
+            '/events/4/message/payload': '[[REDACTED]]',
+            '/events/6/message/payload': '[[REDACTED]]',
+            '/events/8': {
+                '_id': BaselineDeltas.AnyObjectId(),
+                'correlationId': BaselineDeltas.AnyObjectId(),
+                'sessionId': BaselineDeltas.AnyObjectId(),
+                'timestamp': BaselineDeltas.AnyDate(),
+                'collectionName': 'personnel',
+                'channelId': bobsId,
+                'subChannelKey': 'gdpr',
+                'message/personnelId': rootsId,
+                'message/type': 'MAKE_CLEAN',
+                'message/payload/~1$set': {
+                    '~1gdpr~1_rohrpostMetadata~1EXECUTED_MAKE_CLEAN': true,
+                    '~1gdpr~1state': '[[REDACTED]]',
+                }
+            }
         }, asFlatEJSON: true });
     });
 });
