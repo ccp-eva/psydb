@@ -10,7 +10,7 @@ const CSVFieldInfo = (ps) => {
     var { importerType, subjectType } = ps;
     
     var [{ translate }] = useI18N();
-    var [ isOpen, toggleOpen ] = useToggleReducer(true);
+    var [ isOpen, toggleOpen ] = useToggleReducer(false);
     
     var infoBag = { importerType, subjectType };
     var toggleBag = { isOpen, toggleOpen };
@@ -20,7 +20,7 @@ const CSVFieldInfo = (ps) => {
             <Toggler { ...toggleBag }/>
             { isOpen && (
                 <div className='px-3 py-2 bg-white border mb-3'>
-                    <Grid cols={[ '250px', '400px', '1fr' ]}>
+                    <Grid cols={[ '15px', '270px', '360px', '1fr' ]}>
                         <AllColInfos { ...infoBag } />
                     </Grid>
                 </div>
@@ -51,26 +51,40 @@ const AllColInfos = (ps) => {
         items: subjectCRT.allFieldDefinitions(),
         byProp: 'pointer'
     });
+    var requiredByPointer = keyBy({
+        items: subjectCRT.findRequiredCustomFields(),
+        byProp: 'pointer'
+    })
 
     return Object.entries(remapper.mappings.csv2obj).map(
         ([ csvkey, path ], ix) => {
             var pointer = convertPathToPointer(path);
             var definition = defintionsByPointer[pointer];
+
+            if (definition.props?.readOnly) {
+                return null
+            }
+
             return (
-                <ColInfo key={ ix }
-                    csvkey={ csvkey } definition={ definition } />
+                <ColInfo
+                    key={ ix }
+                    csvkey={ csvkey }
+                    definition={ definition }
+                    isRequired={ !!requiredByPointer[pointer] }
+                />
             )
         }
     )
 }
 
 const ColInfo = (ps) => {
-    var { csvkey, definition } = ps;
+    var { csvkey, definition, isRequired } = ps;
     var { systemType } = definition;
     var [{ translate }] = useI18N();
 
     return (
         <>
+            <b>{ isRequired ? ' *' : ''}</b>
             <b>{ csvkey }</b>
             <span>{ translate(`_fieldtype_${systemType}`) }</span>
             <span>{ ft_examples[systemType] }</span>
