@@ -19,6 +19,7 @@ import {
 
 import GenericRecordListContainer from '../record-list-container';
 import RecordTypeRouting from './record-type-routing';
+import RecordTypeRouting_INTRA from './record-type-routing_INTRA';
 
 const DefaultRecordDetails = (ps) => (
     <Alert variant='danger'>
@@ -55,13 +56,16 @@ const withRecordTypeView = (options) => {
         RecordRemover,
 
         CustomRouting,
+        IntraRecordRouting,
         shouldFetchCollectionTypes = false,
     } = options;
 
     // NOTE: allow omission of record details if only editor present
     RecordDetails = RecordDetails || RecordEditor;
 
-    const Routing = CustomRouting || RecordTypeRouting;
+    const Routing = CustomRouting || (
+        IntraRecordRouting ? RecordTypeRouting_INTRA : RecordTypeRouting
+    );
 
     const RecordTypeView = (ps) => {
         var {
@@ -135,6 +139,8 @@ const withRecordTypeView = (options) => {
                     RecordCreator,
                     RecordEditor,
                     RecordRemover,
+                    
+                    IntraRecordRouting,
                 }) } />
             </PageWrappers.Level2>
         );
