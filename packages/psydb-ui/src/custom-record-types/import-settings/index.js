@@ -6,7 +6,7 @@ import { convertCRTRecordToSettings, CRTSettings }
 
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
-import { Button } from '@mpieva/psydb-ui-layout';
+import { FormBox, Button } from '@mpieva/psydb-ui-layout';
 
 // XXX
 import FieldPointerList from '../live-data-editor/field-pointer-list';
@@ -25,7 +25,8 @@ const ImportSettings = (ps) => {
     var { extraIdFields = [] } = importSettings;
 
     return (
-        <div>
+        <FormBox title={ translate('Import Settings') }>
+            <header><b>{ translate('Extra ID Fields') }</b></header>
             <EditExtraIdFieldsModal
                 _id={ _id } crt={ crt }
                 onSuccessfulUpdate={ onSuccessfulUpdate }
@@ -41,7 +42,7 @@ const ImportSettings = (ps) => {
             <Button onClick={ modal.handleShow }>
                 { translate('Edit') }
             </Button>
-        </div>
+        </FormBox>
     )
 }
 

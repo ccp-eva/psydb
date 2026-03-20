@@ -1,4 +1,5 @@
 import React from 'react';
+import { demuxed } from '@mpieva/psydb-ui-utils';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import EditExtraIdFieldsForm from './edit-extra-id-fields-form';
@@ -9,12 +10,11 @@ const EditExtraIdFieldsModalBody = (ps) => {
     var { extraIdFields = [] } = importSettings;
     
     var send = useSend((formData) => ({
-        type: 'custom-record-types/import-settings/set-extra-id-fields',
-        payload: {
-            _id,
-            values: formData.extraIdFields.map(it => ({ pointer }))
-        }
-    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
+        type: 'custom-record-types/import-settings-ops/set-extra-id-fields',
+        payload: { _id, values: (
+            formData.extraIdFields.map(it => ({ pointer: it }))
+        )}
+    }), { onSuccessfulUpdate: demuxed([ onHide, onSuccessfulUpdate ]) });
     
     var initialValues = {
         extraIdFields: extraIdFields.map(it => it.pointer)
