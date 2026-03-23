@@ -8,14 +8,14 @@ require('../mocha-async-step');
 var locale = require('date-fns/locale/de');
 
 var mongoHelpers = require('@cdxoo/mongo-test-helpers');
-var restore = require('@cdxoo/mongodb-restore');
-
 var { ejson } = require('@mpieva/psydb-core-utils');
 
 var doConnectLocal = require('./do-connect-local');
 var doRestore = require('./do-restore');
+var doGatherLabeledIds = require('./do-gather-labeled-ids');
 var createKoaContext = require('./create-koa-context');
 
+// FIXME: not sure if good here
 console.ejson = (that, options = {}) => {
     console.dir(ejson(that), { depth: null, ...options })
 }
@@ -43,6 +43,7 @@ var beforeAll = async function () {
 
     this.connectLocal = (...a) => doConnectLocal.call(this, ...a);
     this.restore = (...a) => doRestore.call(this, ...a);
+    this.gatherLabeledIds = (...a) => doGatherLabeledIds.call(this, ...a);
     this.createKoaContext = (...a) => createKoaContext.call(this, ...a);
 
     

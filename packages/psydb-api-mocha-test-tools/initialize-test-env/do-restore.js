@@ -12,9 +12,13 @@ var doRestore = async function (fixtureName) {
         clean: true,
         from: fixtures.get(fixtureName, { db: true })
     })
-    this.context.bsonIds = fixtures.bsonIds;
 
-    return dbHandle;
+    if (gatherIds) {
+        return await this.gatherLabeledIds();
+    }
+    else {
+        return dbHandle;
+    }
 };
 
 module.exports = doRestore;

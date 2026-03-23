@@ -1446,6 +1446,24 @@ importers:
         specifier: ~10.2.0
         version: 10.2.0
 
+  ../../packages/psydb-db-utils:
+    dependencies:
+      '@mpieva/psydb-api-lib-errors':
+        specifier: workspace:*
+        version: link:../psydb-api-lib-errors
+      '@mpieva/psydb-common-lib':
+        specifier: workspace:*
+        version: link:../psydb-common-lib
+      '@mpieva/psydb-core-utils':
+        specifier: workspace:*
+        version: link:../psydb-core-utils
+      '@mpieva/psydb-mongo-adapter':
+        specifier: workspace:*
+        version: link:../psydb-mongo-adapter
+      '@mpieva/psydb-schema-creators':
+        specifier: workspace:*
+        version: link:../psydb-schema-creators
+
   ../../packages/psydb-driver-nodejs:
     dependencies:
       '@mpieva/psydb-axios-wrapper-nodejs':

@@ -87,6 +87,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-db-utils",
+       "projectFolder": "packages/psydb-db-utils",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-custom-fields-common",
        "projectFolder": "packages/psydb-custom-fields-common",
        "reviewCategory": "production"
