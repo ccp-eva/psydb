@@ -54,6 +54,7 @@ const withRecordTypeView = (options) => {
         RecordCreator = DefaultRecordCreator,
         RecordEditor = DefaultRecordEditor,
         RecordRemover,
+        RecordAnonymizer,
 
         CustomRouting,
         IntraRecordRouting,
@@ -139,6 +140,7 @@ const withRecordTypeView = (options) => {
                     RecordCreator,
                     RecordEditor,
                     RecordRemover,
+                    RecordAnonymizer,
                     
                     IntraRecordRouting,
                 }) } />

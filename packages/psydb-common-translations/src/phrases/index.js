@@ -16,6 +16,7 @@ module.exports = [
     ...require('./duplicates'),
     ...require('./study-consent-workflow'),
 
+    ...require('./_record-anonymizer'),
     ...require('./_error-response-modal'),
     ...require('./_fieldtype'),
     ...require('./_participationStatus'),

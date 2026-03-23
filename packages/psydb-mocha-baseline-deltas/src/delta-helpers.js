@@ -81,9 +81,25 @@ var DeletedValue = (options = {}) => (bag) => {
     }
 }
 
+var AnyString = (options = {}) => (bag) => {
+    var { baseline, current, pointer } = bag;
+    try {
+        expect(JSON.stringify(current))
+            .to.not.eql(JSON.stringify(baseline));
+
+        expect(current).to.be.a('string');
+    }
+    catch (error) {
+        // FIXME: this should trigger handleDeltaError
+        error.message += ` at pointer ${pointer}`;
+        throw error;
+    }
+}
+
 module.exports = {
     AnyRohrpostMeta,
     AnyDate,
+    AnyString,
     AnyObjectId,
     AnyFileId,
     DeletedValue

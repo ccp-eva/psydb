@@ -5,6 +5,8 @@ var { mochaHooks, ...other }
 var mongoHelpers = require('@cdxoo/mongo-test-helpers');
 var restore = require('@cdxoo/mongodb-restore');
 
+require('@mpieva/psydb-api-mocha-test-tools/mocha-async-step');
+
 var {
     merge, entries, pathify, flatten, ejson,
     hasNone, hasOnlyOne, jsonify,
@@ -15,6 +17,8 @@ var { Permissions } = require('@mpieva/psydb-common-lib');
 var {
     compose, createId, Self, withRetracedErrors
 } = require('@mpieva/psydb-api-lib');
+
+var DefaultRootHandler = require('../src');
 
 console.ejson = (that) => console.dir(ejson(that), { depth: null });
 
@@ -30,7 +34,7 @@ var augmentedBeforeAll = async function () {
     await mochaHooks.beforeAll[0].call(this);
 
     this.createEngine = (options) => {
-        var { RootHandler } = options;
+        var { RootHandler = DefaultRootHandler } = options;
 
         var engine = withEventEngine({
             availableMessageHandlers: RootHandler,
@@ -50,7 +54,8 @@ var augmentedBeforeAll = async function () {
             self: { personnelId: 1234 },
             request: { body: message },
             response: {},
-            ip: '127.0.0.1'
+            ip: '127.0.0.1',
+            now: new Date(),
         }
         return { ...koaContext, ...extraContext };
     }
