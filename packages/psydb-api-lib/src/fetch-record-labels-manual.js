@@ -1,10 +1,10 @@
 'use strict';
 var { groupBy } = require('@mpieva/psydb-core-utils');
+var { createRecordLabel } = require('@mpieva/psydb-common-lib');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var aggregateToArray = require('./aggregate-to-array');
 var fetchAllCRTSettings = require('./fetch-all-crt-settings');
-var createRecordLabel = require('./create-record-label');
 var mergeRecordLabelProjections = require('./merge-record-label-projections');
 
 var fetchRecordLabelsManual = async (db, idsForCollection, options = {}) => {
