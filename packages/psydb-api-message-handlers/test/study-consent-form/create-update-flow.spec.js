@@ -26,7 +26,7 @@ describe('study-consent-form/[create|update] flow', function () {
         deltas.push(await this.fetchAllRecords('studyConsentForm'));
 
         var payload = {
-            'studyId': ids('IH-Study'),
+            'studyId': ids(/IH-Study/),
             'subjectType': 'child',
             'props': {
                 'internalName': 'Default Consent Form',

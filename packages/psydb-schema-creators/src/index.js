@@ -149,8 +149,22 @@ module.exports = {
     
     //////////////////////////////////////////////
 
-    StudyConsentForm: {
-        //...metadata.StudyConsentForm,
+    // XXX: using collection name bites with UC first for imports
+    studyConsentForm: {
+        ...metadata.studyConsentForm,
         ...internals.StudyConsentForm
+    },
+    studyConsentDoc: {
+        ...metadata.studyConsentDoc,
+        ...internals.StudyConsentDoc
+    },
+
+    StudyConsentForm: {
+        ...metadata.studyConsentForm,
+        ...internals.StudyConsentForm
+    },
+    StudyConsentDoc: {
+        ...metadata.studyConsentDoc,
+        ...internals.StudyConsentDoc
     },
 }

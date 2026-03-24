@@ -1066,6 +1066,9 @@ importers:
 
   ../../packages/psydb-api-mocha-test-tools:
     dependencies:
+      '@cdxoo/block-quote':
+        specifier: ~1.0.1
+        version: 1.0.1
       '@cdxoo/mongo-test-helpers':
         specifier: ~0.7.1
         version: 0.7.1
@@ -1096,6 +1099,9 @@ importers:
       date-fns:
         specifier: ~2.30.0
         version: 2.30.0
+      debug:
+        specifier: ~4.3.4
+        version: 4.3.7(supports-color@6.1.0)
       iconv-lite:
         specifier: ~0.6.3
         version: 0.6.3
@@ -1801,6 +1807,9 @@ importers:
       '@cdxoo/omit':
         specifier: ~1.0.1
         version: 1.0.1
+      '@mpieva/psydb-core-utils':
+        specifier: workspace:*
+        version: link:../psydb-core-utils
       '@mpieva/psydb-schema-fields':
         specifier: workspace:*
         version: link:../psydb-schema-fields

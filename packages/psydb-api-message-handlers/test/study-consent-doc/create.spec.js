@@ -26,9 +26,9 @@ describe('study-consent-doc/create', function () {
         deltas.push(await this.fetchAllRecords('studyConsentDoc'));
 
         var payload = {
-            'studyConsentFormId': ids('Tiny-Test'),
-            'subjectId': ids('Test Kind, Alice'),
-            'labOperatorIds': [ ids('root@example.com') ],
+            'studyConsentFormId': ids(/Tiny-Test/),
+            'subjectId': ids(/Test Kind, Alice/),
+            'labOperatorIds': [ ids(/ROOT/) ],
             'props': {
                 'elementValues': {
                     '2': 'Test Parent, Elenor',
@@ -47,16 +47,16 @@ describe('study-consent-doc/create', function () {
 
         deltas.push(await this.fetchAllRecords('studyConsentDoc'));
         var studyConsentFormSnapshot = await (
-            aggregateOne({ db, studyConsentForm: { '_id': ids('Tiny-Test') }})
+            aggregateOne({ db, studyConsentForm: { '_id': ids(/Tiny-Test/) }})
         );
         deltas.test({ expected: {
             '/0/_id': channelId,
             '/0/_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
-            '/0/studyId': ids('IH-Study'),
-            '/0/studyConsentFormId': ids('Tiny-Test'),
-            '/0/subjectId': ids('Test Kind, Alice'),
-            '/0/personnelId': ids('root@example.com'),
-            '/0/labOperatorIds': [ ids('root@example.com') ],
+            '/0/studyId': ids(/IH-Study/),
+            '/0/studyConsentFormId': ids(/Tiny-Test/),
+            '/0/subjectId': ids(/Test Kind, Alice/),
+            '/0/personnelId': ids(/ROOT/),
+            '/0/labOperatorIds': [ ids(/ROOT/) ],
             '/0/subjectType': 'child',
             '/0/state': {
                 ...PROPS_AS_STATE(payload).state,

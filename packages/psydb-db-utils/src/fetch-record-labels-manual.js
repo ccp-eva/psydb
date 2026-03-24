@@ -128,6 +128,15 @@ var handleNoCRT = async (bag) => {
                     },
                 ]}
             ],
+            'studyConsentForm': [
+                { 'state.internalName': true },
+                { format: '${#}', tokens: [
+                    {
+                        systemType: 'SaneString',
+                        dataPointer: '/state/internalName'
+                    },
+                ]}
+            ],
 
             //////////////////////////////////////////////
 

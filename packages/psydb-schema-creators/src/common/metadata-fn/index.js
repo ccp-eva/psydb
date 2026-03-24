@@ -28,6 +28,9 @@ module.exports = (bag) => {
         'experimentOperatorTeam',
         'reservation',
         'experiment',
+
+        'studyConsentForm',
+        'studyConsentDoc',
     ];
 
     var out = {};

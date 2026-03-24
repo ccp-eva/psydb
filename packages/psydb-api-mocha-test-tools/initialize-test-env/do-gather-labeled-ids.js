@@ -62,7 +62,6 @@ var doGatherLabeledIds = async function (options = {}) {
                 'mqMessageQueue', 'mqMessageHistory', 'rohrpostEvents',
                 
                 'file', 'subjectContactHistory',
-                'studyConsentForm', 'studyConsentDoc',
             ].includes(cname)) {
                 continue;
             }
@@ -77,6 +76,7 @@ var doGatherLabeledIds = async function (options = {}) {
                     ...acc, [id]: `${label} ${id}`
                 }), {}
             );
+            //ids[cname] = related[cname];
         }
     }
 
