@@ -28,6 +28,7 @@ const SubjectEditorContainer = ({
                                 { ...context }
                                 enableHide={ false }
                                 enableRemove={ true }
+                                enableCleanGdpr={ true }
                                 onSuccessfulUpdate={ revision.up }
                             />
                         </>
