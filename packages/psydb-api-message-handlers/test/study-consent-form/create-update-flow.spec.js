@@ -20,8 +20,6 @@ describe('study-consent-form/[create|update] flow', function () {
     });
 
     step('create', async function () {
-        console.ejson(ids.all());
-
         var deltas = BaselineDeltas();
         deltas.push(await this.fetchAllRecords('studyConsentForm'));
 
