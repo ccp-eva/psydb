@@ -1,4 +1,6 @@
 'use strict';
+require('@mpieva/psydb-api-mocha-test-tools/mocha-async-step');
+
 var { mochaHooks, ...other }
     = require('@mpieva/psydb-api-mocha-test-tools/initialize-test-env');
 
@@ -14,10 +16,6 @@ var { Permissions } = require('@mpieva/psydb-common-lib');
 var {
     compose, createId, Self, withRetracedErrors
 } = require('@mpieva/psydb-api-lib');
-
-require('@mpieva/psydb-api-mocha-test-tools/mocha-async-step');
-
-console.ejson = (that) => console.dir(ejson(that), { depth: null });
 
 var {
     withEventEngine,
@@ -46,6 +44,7 @@ var augmentedBeforeAll = async function () {
             mongoClient: this.context.mongo.client,
             mongoDbName: this.context.mongo.dbName,
             db: this.context.mongo.dbHandle,
+            now: new Date(),
 
             session: { personnelId: 1234 },
             self: { personnelId: 1234 },
@@ -168,9 +167,9 @@ var augmentedBeforeAll = async function () {
         return record._id;
     }
     
-    this.fetchAllRecords = (collection) => {
+    this.fetchAllRecords = (collection, filter) => {
         var db = this.getDbHandle();
-        return db.collection(collection).find().toArray();
+        return db.collection(collection).find(filter).toArray();
     }
     
     this.createFakeFileUpload = async (bag) => {

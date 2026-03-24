@@ -55,15 +55,15 @@ var beforeAll = async function () {
 
 var beforeEach = async function () {}
 
-var afterEach = async function () {
-    var { local } = this.context.mongo;
-    if (local) {
-        var { client, dbHandle, dbName } = local;
-        client.close();
-        delete this.context.mongo.local;
-    }
-    await mongoHelpers.clean(this.context.mongo)();
-}
+//var afterEach = async function () {
+//    var { local } = this.context.mongo;
+//    if (local) {
+//        var { client, dbHandle, dbName } = local;
+//        client.close();
+//        delete this.context.mongo.local;
+//    }
+//    await mongoHelpers.clean(this.context.mongo)();
+//}
 
 var afterAll = async function () {
     await mongoHelpers.teardown(this.context.mongo)();
@@ -73,7 +73,7 @@ module.exports = {
     mochaHooks: {
         beforeAll: [ beforeAll ],
         beforeEach: [ beforeEach ],
-        afterEach: [ afterEach ],
+        afterEach: [ /*afterEach*/ ],
         afterAll: [ afterAll ]
     }
 }

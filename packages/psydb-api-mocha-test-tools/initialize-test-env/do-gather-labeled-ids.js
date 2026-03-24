@@ -1,5 +1,5 @@
 'use strict';
-var { aggregateToIds } = require('@mpieva/psydb-mongo-adapter');
+var { ObjectId, aggregateToIds } = require('@mpieva/psydb-mongo-adapter');
 var { fetchRecordLabelsManual } = require('@mpieva/psydb-db-utils');
 var { entries } = Object;
 
@@ -24,7 +24,7 @@ var doGatherLabeledIds = async function (options = {}) {
         if (!id) {
             throw new Error(`could not find id for "${needle}"`)
         }
-        return id;
+        return new ObjectId(id); // XXX
     }
     getter.all = (maybeCollection, maybeNeedle) => {
         if (maybeCollection) {
@@ -61,7 +61,8 @@ var doGatherLabeledIds = async function (options = {}) {
                 'sequenceNumbers', 'csvImport', 'personnelShadow',
                 'mqMessageQueue', 'mqMessageHistory', 'rohrpostEvents',
                 
-                'file',
+                'file', 'subjectContactHistory',
+                'studyConsentForm', 'studyConsentDoc',
             ].includes(cname)) {
                 continue;
             }
@@ -71,7 +72,11 @@ var doGatherLabeledIds = async function (options = {}) {
                 [cname]: recordIds
             });
 
-            ids[cname] = related[cname];
+            ids[cname] = Object.entries(related[cname]).reduce(
+                (acc, [ id, label ]) => ({
+                    ...acc, [id]: `${label} ${id}`
+                }), {}
+            );
         }
     }
 
@@ -109,7 +114,9 @@ var find = (collectionIds, needle, options = {}) => {
 
     var out = undefined;
     var outLabel = undefined;
-    for (var [label, recordId] of entries(collectionIds)) {
+    // XXX: label => _id ????
+    //for (var [label, recordId] of entries(collectionIds)) {
+    for (var [recordId, label] of entries(collectionIds)) {
         if (needle === label || needle.test?.(label)) {
             if (out && checkDups) {
                 throw new Error(`found multiple ${outLabel} ${label}`);
