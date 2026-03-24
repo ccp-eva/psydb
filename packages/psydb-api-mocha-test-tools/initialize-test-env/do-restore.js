@@ -33,15 +33,12 @@ var doRestore = async function (fixtureNames, options = {}) {
         ix += 1;
     }
 
-    this.context.bsonIds = fixtures.bsonIds;
-
     if (gatherIds) {
         return await this.gatherLabeledIds();
     }
     else {
         return dbHandle;
     }
-
 };
 
 module.exports = doRestore;

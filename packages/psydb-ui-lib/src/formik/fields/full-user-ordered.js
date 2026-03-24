@@ -12,7 +12,10 @@ import { ListOfObjectsField } from './list-of-objects-field';
 
 
 export const FullUserOrdered = (ps) => {
-    var { related, crtSettings, extraTypeProps, exclude = [] } = ps; 
+    var {
+        related, crtSettings, extraTypeProps,
+        exclude = [], isAnonymized = false, disabled = false
+    } = ps; 
 
     var permissions = usePermissions();
 
@@ -54,38 +57,43 @@ export const FullUserOrdered = (ps) => {
         ...keyedStaticFieldDefinitions
     };
 
-    return (
-        <>
-            { without(formOrder, exclude).map((pointer, ix) => {
-                var def = allDefinitions[pointer];
-                if (!def) {
-                    return null;
-                }
-                // FIXME: we maybe can get rid this replace
-                var fixedPointer = pointer.replace('/state', '');
-                var dataXPath = (
-                    '$.' + convertPointerToPath(fixedPointer)
-                );
+    var out = [];
+    for (var [ ix, pointer] of without(formOrder, exclude).entries()) {
+        var def = allDefinitions[pointer];
+        
+        if (!def) {
+            continue;
+        }
+        if (isAnonymized && pointer.startsWith('/gdpr/state')) {
+            continue;
+        }
 
-                if (def.type === 'Lambda') {
-                    return null;
-                }
+        // FIXME: we maybe can get rid this replace
+        var fixedPointer = pointer.replace('/state', '');
+        var dataXPath = (
+            '$.' + convertPointerToPath(fixedPointer)
+        );
 
-                var Component = (
-                    def.type === 'ListOfObjects'
-                    ? ListOfObjectsField
-                    : CustomField
-                )
-                return (
-                    <Component
-                        key={ dataXPath }
-                        dataXPath={ dataXPath }
-                        definition={ def }
-                        related={ related }
-                        extraTypeProps={ extraTypeProps }
-                    />
-                )
-            })}
-        </>
-    );
+        if (def.type === 'Lambda') {
+            return null;
+        }
+
+        var Component = (
+            def.type === 'ListOfObjects'
+            ? ListOfObjectsField
+            : CustomField
+        )
+        out.push(
+            <Component
+                key={ dataXPath }
+                dataXPath={ dataXPath }
+                definition={ def }
+                related={ related }
+                extraTypeProps={ extraTypeProps }
+                disabled={ disabled }
+            />
+        )
+    }
+
+    return out;
 }

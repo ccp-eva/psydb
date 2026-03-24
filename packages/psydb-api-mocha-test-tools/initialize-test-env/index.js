@@ -8,16 +8,14 @@ require('../mocha-async-step');
 var locale = require('date-fns/locale/de');
 
 var mongoHelpers = require('@cdxoo/mongo-test-helpers');
-var restore = require('@cdxoo/mongodb-restore');
-
 var { ejson } = require('@mpieva/psydb-core-utils');
 
 var doConnectLocal = require('./do-connect-local');
 var doRestore = require('./do-restore');
 var doGatherLabeledIds = require('./do-gather-labeled-ids');
-
 var createKoaContext = require('./create-koa-context');
 
+// FIXME: not sure if good here
 console.ejson = (that, options = {}) => {
     console.dir(ejson(that), { depth: null, ...options })
 }
@@ -59,14 +57,15 @@ var beforeAll = async function () {
 
 var beforeEach = async function () {}
 
-var afterEach = async function () {
-    var { local } = this.context.mongo;
-    if (local) {
-        var { client, dbHandle, dbName } = local;
-        client.close();
-        delete this.context.mongo.local;
-    }
-}
+//var afterEach = async function () {
+//    var { local } = this.context.mongo;
+//    if (local) {
+//        var { client, dbHandle, dbName } = local;
+//        client.close();
+//        delete this.context.mongo.local;
+//    }
+//    await mongoHelpers.clean(this.context.mongo)();
+//}
 
 var afterAll = async function () {
     await mongoHelpers.teardown(this.context.mongo)();
@@ -76,7 +75,7 @@ module.exports = {
     mochaHooks: {
         beforeAll: [ beforeAll ],
         beforeEach: [ beforeEach ],
-        afterEach: [ afterEach ],
+        afterEach: [ /*afterEach*/ ],
         afterAll: [ afterAll ]
     }
 }

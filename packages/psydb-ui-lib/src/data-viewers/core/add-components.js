@@ -17,7 +17,7 @@ export const addComponents = (target, context, labels, items) => {
             var propLabel = labels[path];
 
             var isRedacted = (
-                path.startsWith('/gdpr/state')
+                path?.startsWith('/gdpr/state')
                 && jsonpointer.get(value, '/gdpr/state') === '[[REDACTED]]'
             );
             

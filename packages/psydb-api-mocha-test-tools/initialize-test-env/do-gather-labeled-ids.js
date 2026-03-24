@@ -1,4 +1,6 @@
 'use strict';
+var { ObjectId, aggregateToIds } = require('@mpieva/psydb-mongo-adapter');
+var { fetchRecordLabelsManual } = require('@mpieva/psydb-db-utils');
 var { entries } = Object;
 
 var doGatherLabeledIds = async function (options = {}) {
@@ -22,7 +24,7 @@ var doGatherLabeledIds = async function (options = {}) {
         if (!id) {
             throw new Error(`could not find id for "${needle}"`)
         }
-        return id;
+        return new ObjectId(id); // XXX
     }
     getter.all = (maybeCollection, maybeNeedle) => {
         if (maybeCollection) {
@@ -55,15 +57,26 @@ var doGatherLabeledIds = async function (options = {}) {
         var db = this.getDbHandle();
         var collections = await db.listCollections().map(it => it.name);
         for await (var cname of collections) {
-            var records = await this.fetchAllRecords(cname);
-
-            ids[cname] = {};
-            for (var record of records) {
-                var label = createOneRecordLabel(cname, record);
-                if (label) {
-                    ids[cname][label] = record._id;
-                }
+            if ([
+                'sequenceNumbers', 'csvImport', 'personnelShadow',
+                'mqMessageQueue', 'mqMessageHistory', 'rohrpostEvents',
+                
+                'file', 'subjectContactHistory',
+                'studyConsentForm', 'studyConsentDoc',
+            ].includes(cname)) {
+                continue;
             }
+            
+            var recordIds = await aggregateToIds({ db, [cname]: [] });
+            var related = await fetchRecordLabelsManual(db, {
+                [cname]: recordIds
+            });
+
+            ids[cname] = Object.entries(related[cname]).reduce(
+                (acc, [ id, label ]) => ({
+                    ...acc, [id]: `${label} ${id}`
+                }), {}
+            );
         }
     }
 
@@ -101,7 +114,9 @@ var find = (collectionIds, needle, options = {}) => {
 
     var out = undefined;
     var outLabel = undefined;
-    for (var [label, recordId] of entries(collectionIds)) {
+    // XXX: label => _id ????
+    //for (var [label, recordId] of entries(collectionIds)) {
+    for (var [recordId, label] of entries(collectionIds)) {
         if (needle === label || needle.test?.(label)) {
             if (out && checkDups) {
                 throw new Error(`found multiple ${outLabel} ${label}`);
@@ -118,31 +133,4 @@ var find = (collectionIds, needle, options = {}) => {
     return [ out, outLabel ];
 }
 
-var createOneRecordLabel = (collection, record, options = {}) => {
-    switch (collection) {
-        case 'study':
-            return (
-                record.state.shorthand
-            );
-        case 'subject':
-            var { custom } = record.gdpr.state;
-            return (
-                custom.name
-                || custom.lastname + ', ' + custom.firstname
-            );
-        case 'customRecordType':
-            return `${record.collection} ${record.type}`;
-        case 'personnel':
-            var { _id, gdpr } = record;
-            var email = gdpr?.state?.emails?.[0]?.email;
-            return email || _id;
-        case 'studyConsentForm':
-            return record.state.internalName;
-        default:
-            //return undefined;
-            return String(record._id)
-    }
-}
-
-module.exports = createOneRecordLabel;
 module.exports = doGatherLabeledIds;
