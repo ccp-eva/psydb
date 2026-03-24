@@ -1,4 +1,6 @@
 'use strict';
+var { aggregateToIds } = require('@mpieva/psydb-mongo-adapter');
+var { fetchRecordLabelsManual } = require('@mpieva/psydb-db-utils');
 var { entries } = Object;
 
 var doGatherLabeledIds = async function (options = {}) {
@@ -55,15 +57,21 @@ var doGatherLabeledIds = async function (options = {}) {
         var db = this.getDbHandle();
         var collections = await db.listCollections().map(it => it.name);
         for await (var cname of collections) {
-            var records = await this.fetchAllRecords(cname);
-
-            ids[cname] = {};
-            for (var record of records) {
-                var label = createOneRecordLabel(cname, record);
-                if (label) {
-                    ids[cname][label] = record._id;
-                }
+            if ([
+                'sequenceNumbers', 'csvImport', 'personnelShadow',
+                'mqMessageQueue', 'mqMessageHistory', 'rohrpostEvents',
+                
+                'file',
+            ].includes(cname)) {
+                continue;
             }
+            
+            var recordIds = await aggregateToIds({ db, [cname]: [] });
+            var related = await fetchRecordLabelsManual(db, {
+                [cname]: recordIds
+            });
+
+            ids[cname] = related[cname];
         }
     }
 
@@ -118,84 +126,4 @@ var find = (collectionIds, needle, options = {}) => {
     return [ out, outLabel ];
 }
 
-var createOneRecordLabel = (collection, record, options = {}) => {
-    switch (collection) {
-        case 'bc_NEW':
-            return (
-                record.state.shorthand
-                //.replace(' Inc.')
-                //.replace(/[^a-z]*/gi, '')
-            );
-        case 'project_NEW':
-            return record.state.shorthand;
-        case 'site_NEW':
-            return record.state.name;
-
-        case 'bc':
-            return record.name;
-        case 'project':
-            return record.name;
-
-        case 'jobOffer':
-            return `JO ${record.workingTitle} ${record._id}`;
-        case 'user':
-            return (
-                `U ${record.email} ${record._id}`
-                //(record.firstname + record.lastname)
-                //.replace(/[^a-z]*/gi, '')
-            )
-        case 'externalDevices':
-            return record.name;
-        case 'workgroup':
-            return record.name;
-        case 'schedule':
-            return record.displayName;
-        case 'cardpool':
-            return record.name;
-        case 'extOrgUniversity':
-            return record.state.name;
-        case 'files':
-            return `${record.name} ${record._id}`;
-        case 'region':
-            return record.name;
-        case 'document':
-            return record.data.cache.name;
-        case 'bcMasterAgreement':
-            var { _id, state: { contractDate }} = record;
-
-            contractDate = contractDate.toISOString().replace(/T.*$/, '');
-            return `${contractDate} ${_id}`;
-
-        case 'jobApplication':
-            var { _id, createdAt, currentState, userData = {}} = record;
-            var { firstname, lastname } = userData;
-            createdAt = createdAt.toISOString().replace(/T.*$/, '');
-            return `JA ${lastname} ${createdAt} ${currentState} ${_id}`;
-
-        case 'userDocument':
-            var { _id, type, state } = record;
-            var { start, userSnapshot } = state;
-            var { lastname } = userSnapshot;
-
-            start = start.toISOString().replace(/T.*$/, '');
-            return `${type} ${lastname} ${start} ${_id}`;
-
-        case 'externalUserDoc':
-            var { _id, type, state } = record;
-            var { start, userSnapshot } = state;
-            var { lastname } = userSnapshot;
-
-            start = start.toISOString().replace(/T.*$/, '');
-            return `${type} ${lastname} ${start} ${_id}`
-        
-        case 'instructionAssessmentSheet':
-            return record.state.internalName;
-
-        default:
-            //return undefined;
-            return String(record._id)
-    }
-}
-
-module.exports = createOneRecordLabel;
 module.exports = doGatherLabeledIds;

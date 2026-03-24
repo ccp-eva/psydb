@@ -54,7 +54,9 @@ var handleNoCRT = async (bag) => {
         
         var fallback = [
             undefined,
-            { format: '${#}', tokens: [ '/_id' ] }
+            { format: '${#}', tokens: [{
+                systemType: 'Id', dataPointer: '/_id'
+            }]}
         ];
         
         var [ projection, definition ] = {
@@ -89,7 +91,10 @@ var handleNoCRT = async (bag) => {
                     'state.interval.start': true,
                 },
                 { format: '${#} ${#}', tokens: [
-                    { dataPointer: '/__type' },
+                    { 
+                        systemType: 'SaneString',
+                        dataPointer: '/__type'
+                    },
                     {
                         systemType: 'DateTime',
                         dataPointer: '/state/interval/start',
@@ -102,6 +107,58 @@ var handleNoCRT = async (bag) => {
                     {
                         systemType: 'SaneString',
                         dataPointer: '/state/name'
+                    },
+                ]}
+            ],
+            'systemRole': [
+                { 'state.name': true },
+                { format: '${#}', tokens: [
+                    {
+                        systemType: 'SaneString',
+                        dataPointer: '/state/name'
+                    },
+                ]}
+            ],
+            'studyTopic': [
+                { 'state.name': true },
+                { format: '${#}', tokens: [
+                    {
+                        systemType: 'SaneString',
+                        dataPointer: '/state/name'
+                    },
+                ]}
+            ],
+
+            //////////////////////////////////////////////
+
+            'helperSet': [
+                { 'state.label': true },
+                { format: '${#}', tokens: [
+                    {
+                        systemType: 'SaneString',
+                        dataPointer: '/state/label'
+                    },
+                ]}
+            ],
+            'customRecordType': [
+                { 'state.label': true },
+                { format: '${#}', tokens: [
+                    {
+                        systemType: 'SaneString',
+                        dataPointer: '/state/label'
+                    },
+                ]}
+            ],
+
+            // XXX: not sure of ok here also language also format is wrong
+            // because we need I18N i think ... or at least we do currently
+            // use that in ui
+            'helperSetItem': [
+                { 'state.label': true },
+                { format: '${#}', tokens: [
+                    {
+                        systemType: 'SaneString',
+                        dataPointer: '/state/label'
                     },
                 ]}
             ],

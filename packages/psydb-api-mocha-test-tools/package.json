@@ -18,6 +18,7 @@
     "@mpieva/psydb-fixtures": "workspace:*",
     "@mpieva/psydb-core-utils": "workspace:*",
     "@mpieva/psydb-mongo-adapter": "workspace:*",
+    "@mpieva/psydb-db-utils": "workspace:*",
     "@mpieva/psydb-api-config": "workspace:*"
   },
   "devDependencies": {}
