@@ -21,7 +21,6 @@ var StudyState = (bag = {}) => {
         apiConfig,
 
         customFieldDefinitions,
-        subjectRecordTypeRecords,
         enableInternalProps,
     } = bag;
 
@@ -120,9 +119,6 @@ var _COMPAT_PROPS = ({ enableInternalProps }) => ({
     // FIXME: should probably be in internals
     // TODO: obsolete
     selectionSettingsBySubjectType: { type: 'array' },
-    /*selectionSettingsBySubjectType: SubjectSelectionSettingsList({
-        subjectRecordTypeRecords,
-    }),*/
     
     ...(enableInternalProps && {
         interals: { // XXX: sic

@@ -4,7 +4,7 @@ import { useRouteMatch, useParams } from 'react-router-dom';
 import { only } from '@mpieva/psydb-core-utils';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
-import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
+import { usePermissions, useSend } from '@mpieva/psydb-ui-hooks';
 import { Pair } from '@mpieva/psydb-ui-layout';
 import {
     withRecordEditor,
@@ -31,13 +31,14 @@ const EditForm = (ps) => {
     var permissions = usePermissions();
     var [{ translate }] = useI18N();
 
-    var send = useSendPatch({
-        collection,
-        recordType,
-        record,
-        onSuccessfulUpdate
-    });
-    
+    var send = useSend((formData) => {
+        var { timetable, ...props } = formData;
+        return {
+            type: 'study/patch',
+            payload: { _id: record._id, props, timetable }
+        }
+    }, { onSuccessfulUpdate });
+ 
     var defaults = MainForm.createDefaults({
         fieldDefinitions,
         permissions
