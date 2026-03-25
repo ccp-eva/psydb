@@ -21,6 +21,7 @@ const IntraRecordRoutingBody = (ps) => {
         fetched, permissions, revision,
 
         RecordDetails, RecordEditor, RecordRemover,
+        RecordRawView, RecordRawHistory,
     } = ps;
     
     var { record, crtSettings } = fetched;
@@ -35,7 +36,7 @@ const IntraRecordRoutingBody = (ps) => {
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
     var canViewStudyLabOpsSettings = permissions.hasFlag('canViewStudyLabOpsSettings');
 
-    var { hashurl, core } = Nav.useLinks({ record });
+    var { hashurl, core, raw } = Nav.useLinks({ record });
    
     core[`${hashurl}/details`].label = translate('Details');
     core[`${hashurl}/edit`].label = translate('Edit Details');
@@ -101,6 +102,12 @@ const IntraRecordRoutingBody = (ps) => {
                     <Nav.LinkList links={ consentLinks } />
                 </>
             )}
+            { permissions.isRoot() && (
+                <>
+                    <Nav.HR />
+                    <Nav.LinkList links={ raw } />
+                </>
+            )}
         </Nav.Container>
     );
 
@@ -124,6 +131,13 @@ const IntraRecordRoutingBody = (ps) => {
                         }}
                     />
                 </FormBox>
+            </Route>
+            
+            <Route path={`${path}/raw`}>
+                <RecordRawView { ...sharedBag } prefetched={ fetched }/>
+            </Route>
+            <Route path={`${path}/raw-history`}>
+                <RecordRawHistory { ...sharedBag } prefetched={ fetched } />
             </Route>
 
             <Route path={`${path}/selection-settings`}>

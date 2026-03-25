@@ -13,6 +13,7 @@ const RecordTypeRouting = (ps) => {
 
         RecordList, RecordCreator,
         RecordDetails, RecordEditor, RecordRemover,
+        RecordRawView, RecordRawHistory,
     } = ps;
     
     var permissions = usePermissions();
@@ -21,6 +22,7 @@ const RecordTypeRouting = (ps) => {
     var sharedBag = { collection, recordType };
     var IntraRecordComponents = {
         RecordDetails, RecordEditor, RecordRemover,
+        RecordRawView, RecordRawHistory,
     }
 
     return (
