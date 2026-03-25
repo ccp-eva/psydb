@@ -48,7 +48,7 @@ var findAndUpdateSequenceNumber = async (bag) => {
             db.collection('sequenceNumbers').findOneAndUpdate(
                 { _id: 1 },
                 { $inc: { [seqpath]: 1 }},
-                { returnDocument: 'after' }
+                { returnDocument: 'after' } // FIXME: probably upsert: true
             )
         );
 

@@ -71,12 +71,12 @@ var doGatherLabeledIds = async function (options = {}) {
                 [cname]: recordIds
             });
 
-            ids[cname] = Object.entries(related[cname]).reduce(
-                (acc, [ id, label ]) => ({
-                    ...acc, [id]: `${label} ${id}`
-                }), {}
-            );
-            //ids[cname] = related[cname];
+            //ids[cname] = Object.entries(related[cname]).reduce(
+            //    (acc, [ id, label ]) => ({
+            //        ...acc, [id]: `${label} ${id}`
+            //    }), {}
+            //);
+            ids[cname] = related[cname];
         }
     }
 

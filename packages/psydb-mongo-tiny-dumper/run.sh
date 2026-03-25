@@ -1,4 +1,4 @@
-CONF="consent-doc-starter"
+CONF="study-crud"
 
 node src/run.js \
     -c ./configs/$CONF.js \
