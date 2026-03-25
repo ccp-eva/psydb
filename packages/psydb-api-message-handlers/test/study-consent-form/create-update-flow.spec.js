@@ -78,7 +78,6 @@ describe('study-consent-form/[create|update] flow', function () {
         });
         
         deltas.push(await this.fetchAllRecords('studyConsentForm'));
-        console.log(deltas.getCurrent());
         deltas.test({ expected: { '0': {
             '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
             'state': {

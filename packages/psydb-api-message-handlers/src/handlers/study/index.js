@@ -13,10 +13,11 @@ var StudyGroup = MessageHandlerGroup([
     // patch core attributes of the study
     //require('./patch-core'),
 
-    GenericRecordHandler({
-        collection: 'study',
-        op: 'create',
-    }),
+    require('./create'),
+    //GenericRecordHandler({
+    //    collection: 'study',
+    //    op: 'create',
+    //}),
 
     require('./patch'),
     //GenericRecordHandler({

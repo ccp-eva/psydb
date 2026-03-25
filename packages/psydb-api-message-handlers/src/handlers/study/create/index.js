@@ -5,7 +5,7 @@ var {
 } = require('@mpieva/psydb-api-message-handler-compat');
 
 var handler = MessageHandler({
-    type: 'study/patch',
+    type: 'study/create',
     stages: {
         ...presets.empty(),
         ...require('./validate'),
