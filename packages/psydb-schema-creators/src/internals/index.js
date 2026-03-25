@@ -94,6 +94,10 @@ module.exports.StudyConsentForm = {
     MongoDoc: require('./study-consent-form/mongo-doc'),
     State: require('./study-consent-form/state'),
 }
+module.exports.StudyRoadmap = {
+    MongoDoc: require('./study-roadmap/mongo-doc'),
+    State: require('./study-roadmap/state'),
+}
 module.exports.Study = {
     State: require('./study/state'),
 }

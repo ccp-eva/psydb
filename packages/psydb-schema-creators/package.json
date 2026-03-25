@@ -19,6 +19,7 @@
     "@cdxoo/omit": "~1.0.1",
     "@cdxoo/inline-text": "~1.0.2",
     "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-common-compat": "workspace:*",
     "@mpieva/psydb-schema-fields": "workspace:*",
     "@mpieva/psydb-schema-helpers": "workspace:*",
     "@mpieva/psydb-schema-fields-special": "workspace:*"

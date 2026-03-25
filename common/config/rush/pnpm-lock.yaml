@@ -1807,6 +1807,9 @@ importers:
       '@cdxoo/omit':
         specifier: ~1.0.1
         version: 1.0.1
+      '@mpieva/psydb-common-compat':
+        specifier: workspace:*
+        version: link:../psydb-common-compat
       '@mpieva/psydb-core-utils':
         specifier: workspace:*
         version: link:../psydb-core-utils

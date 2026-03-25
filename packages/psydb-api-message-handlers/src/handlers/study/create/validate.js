@@ -19,39 +19,8 @@ var validateMessage = async (context) => {
         db, collectionName: 'study', recordType: studyType, wrap: true
     });
     // NOTE: we dont have to do this and its not clear where this is going
+    // NOTE: also we want to configure tasts which is a list of objects
     //var studyRoadmapCRTSettings = CRTSettings({ data: {
-    //    fieldDefinitions: [
-    //        {
-    //            key: 'start',
-    //            systemType: 'DateOnlyServerSide',
-    //            pointer: '/state/start',
-    //            props: { isNullable: false }
-    //        },
-    //        {
-    //            key: 'end',
-    //            systemType: 'DateOnlyServerSide',
-    //            pointer: '/state/end',
-    //            props: { isNullable: false }
-    //        },
-    //        {
-    //            key: 'description',
-    //            systemType: 'SaneString',
-    //            pointer: '/state/description',
-    //            props: { minLength: 1 }
-    //        },
-    //        {
-    //            key: 'status',
-    //            systemType: 'SaneString',
-    //            pointer: '/state/status',
-    //            props: { minLength: 1 }
-    //        },
-    //        {
-    //            key: 'assignedTo',
-    //            systemType: 'ForeignId',
-    //            pointer: '/state/assignedTo',
-    //            props: { collection: 'personnel', isNullable: false }
-    //        },
-    //    ]
     //}});
 
     validateMessageOrThrow({
@@ -60,7 +29,7 @@ var validateMessage = async (context) => {
         }),
     });
 
-    cache.merge({ studyCRTSettings, /*studyRoadmapCRTSettings*/ }),
+    cache.merge({ studyCRTSettings, /*studyRoadmapCRTSettings*/ });
 }
 
 module.exports = { validateMessage };

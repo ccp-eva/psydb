@@ -10,7 +10,7 @@ var handler = MessageHandler({
         ...presets.empty(),
         ...require('./validate'),
         ...require('./verify'),
-        ...require('./execute-system'),
+        //...require('./execute-system'),
         //...require('./response'),
     }
 })

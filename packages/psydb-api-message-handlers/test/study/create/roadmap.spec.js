@@ -52,21 +52,21 @@ describe('study/create with study roadmap', function () {
                         'end': new Date('2020-03-31T12:00:00Z'),
                         'description': 'project prep, study design',
                         'status': 'finished',
-                        'assignedTo': ids('Test RA Childlab')
+                        'assignedTo': ids('Test RA ChildLab')
                     },
                     {
                         'start': new Date('2020-03-01T12:00:00Z'),
                         'end': new Date('2020-05-31T12:00:00Z'),
                         'description': 'data acquisition & analysis',
                         'status': 'ongoing',
-                        'assignedTo': ids('Test RA Childlab')
+                        'assignedTo': ids('Test RA ChildLab')
                     },
                     {
                         'start': new Date('2020-06-01T12:00:00Z'),
                         'end': new Date('2020-07-31T12:00:00Z'),
                         'description': 'publication',
                         'status': 'planned',
-                        'assignedTo': ids('Test RA Childlab')
+                        'assignedTo': ids('Test RA ChildLab')
                     },
                 ]}
             }

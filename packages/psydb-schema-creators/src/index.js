@@ -158,6 +158,10 @@ module.exports = {
         ...metadata.studyConsentDoc,
         ...internals.StudyConsentDoc
     },
+    studyRoadmap: {
+        ...metadata.studyRoadmap,
+        ...internals.StudyRoadmap
+    },
 
     StudyConsentForm: {
         ...metadata.studyConsentForm,
@@ -166,5 +170,9 @@ module.exports = {
     StudyConsentDoc: {
         ...metadata.studyConsentDoc,
         ...internals.StudyConsentDoc
+    },
+    StudyRoadmap: {
+        ...metadata.studyRoadmap,
+        ...internals.StudyRoadmap
     },
 }

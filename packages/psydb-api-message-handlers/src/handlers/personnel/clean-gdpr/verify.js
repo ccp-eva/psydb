@@ -8,7 +8,7 @@ var { ApiError, compose, switchComposition }
 var compose_verifyAllowedAndPlausible = () => compose([
     verifyGeneralPermissions,
     verifyRecord,
-    verifyRecordPermissions,
+    verifyRecordAccess,
 ]);
 
 var verifyGeneralPermissions = async (context, next) => {
@@ -28,28 +28,19 @@ var verifyRecord = verifyOneRecord({
     cache: true
 });
 
-var verifyRecordPermissions = async (context, next) => {
+var verifyRecordAccess = async (context, next) => {
     var { db, cache, permissions } = context;
     var { personnel: record } = cache.get();
 
-    var { systemPermissions } = record.scientific.state;
-    var { accessRightsByResearchGroup } = systemPermissions;;
-
-    var grantedForSelf = (
-        permissions.getCollectionFlagIds('personnel', 'write') // XXX
-    )
-    var allowedByRecord = (
-        accessRightsByResearchGroup
-        .filter(it => it.permission = 'write')
-        .map(it => it.researchGroupId)
-    );
-
-    var matching = intersect(allowedByRecord, grantedForSelf, {
-        compare: compareIds
+    var ok = permissions.hasRecordAccess({
+        record, collection: 'personnel', level: 'write' // XXX
     });
-    if (!permissions.isRoot() && matching.length < 1) {
+
+    if (!ok) {
         throw new ApiError(403)
     }
+    
+    await next();
 }
 
 module.exports = {

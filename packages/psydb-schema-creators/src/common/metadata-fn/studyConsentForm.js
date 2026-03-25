@@ -1,9 +1,9 @@
 'use strict';
 var { keyBy } = require('@mpieva/psydb-core-utils');
-var { __compatDefinitions } = require('./__utils');
+var { __fixDefinitions } = require('@mpieva/psydb-common-compat');
 
 module.exports = (bag) => {
-    var staticFieldDefinitions = keyBy({ items: __compatDefinitions([
+    var staticFieldDefinitions = keyBy({ items: __fixDefinitions([
         {
             key: '_studyId',
             systemType: 'ForeignId',

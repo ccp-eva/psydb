@@ -3,7 +3,7 @@ var { BaselineDeltas } = require('@mpieva/psydb-mocha-baseline-deltas');
 var { KOA_CHANNELS, PROPS_AS_STATE }
     = require('@mpieva/psydb-api-mocha-test-tools/utils');
 
-describe('study/create', function () {
+describe('study/patch', function () {
     var db, ids, send;
     beforeEach(async function () {
         ids = await this.restore([
