@@ -860,75 +860,33 @@ importers:
       '@cdxoo/inline-text':
         specifier: ~1.0.2
         version: 1.0.2
+      '@cdxoo/jsonschema-to-datapointer':
+        specifier: ~0.0.1
+        version: 0.0.1
       '@cdxoo/omit':
         specifier: ~1.0.1
         version: 1.0.1
-      '@mpieva/psydb-api-config':
-        specifier: workspace:~0.1.0-alpha
-        version: link:../psydb-api-config
       '@mpieva/psydb-api-lib':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-api-lib
       '@mpieva/psydb-common-lib':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-common-lib
-      '@mpieva/psydb-common-verify-helpers':
-        specifier: workspace:~0.1.0-alpha
-        version: link:../psydb-common-verify-helpers
       '@mpieva/psydb-core-utils':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-core-utils
-      '@mpieva/psydb-koa-event-middleware':
-        specifier: workspace:~0.1.0-alpha
-        version: link:../psydb-koa-event-middleware
-      '@mpieva/psydb-schema-creators':
-        specifier: workspace:~0.1.0-alpha
-        version: link:../psydb-schema-creators
-      '@mpieva/psydb-schema-enums':
-        specifier: workspace:~0.1.0-alpha
-        version: link:../psydb-schema-enums
-      '@mpieva/psydb-schema-fields':
-        specifier: workspace:~0.1.0-alpha
-        version: link:../psydb-schema-fields
-      '@mpieva/psydb-schema-fields-special':
-        specifier: workspace:~0.1.0-alpha
-        version: link:../psydb-schema-fields-special
-      '@mpieva/psydb-schema-helpers':
-        specifier: workspace:~0.1.0-alpha
-        version: link:../psydb-schema-helpers
-      bcrypt:
-        specifier: ~5.1.1
-        version: 5.1.1
-      copy-anything:
-        specifier: ~2.0.6
-        version: 2.0.6
-      date-fns:
-        specifier: ~2.30.0
-        version: 2.30.0
+      '@mpieva/psydb-schema':
+        specifier: workspace:*
+        version: link:../psydb-schema
       debug:
         specifier: ~4.3.4
         version: 4.3.7(supports-color@6.1.0)
-      deep-diff:
-        specifier: ~1.0.2
-        version: 1.0.2
-      deepmerge:
-        specifier: ~4.2.2
-        version: 4.2.2
-      is-subset:
-        specifier: ~0.1.1
-        version: 0.1.1
-      jsonpointer:
-        specifier: ~5.0.1
-        version: 5.0.1
-      nanoid:
-        specifier: ~3.3.6
-        version: 3.3.11
-      nodemailer:
-        specifier: ~6.9.14
-        version: 6.9.16
+      json-schema-traverse:
+        specifier: ~1.0.0
+        version: 1.0.0
     devDependencies:
       '@mpieva/psydb-fixtures':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-fixtures
       chai:
         specifier: ~4.3.7
@@ -4663,6 +4621,10 @@ packages:
 
   /@cdxoo/jsonpointer-to-objectpath@1.0.0:
     resolution: {integrity: sha512-irVseGCgtDKd+bUnHvRe/J8/nm50saOxW1mw5xfo13d2ni82q/e/sEwd1x7lYlweVYRkE+pQImJhScaOftFxoQ==}
+    dev: false
+
+  /@cdxoo/jsonschema-to-datapointer@0.0.1:
+    resolution: {integrity: sha512-ru7KIpd0nJ0O0SNmUp/3TuNquaJpeQcoARUpPoPlr9dRbdijBui9KJ+OaesDqg2EdQRqyvMP4Ew4XF6cwuHc+g==}
     dev: false
 
   /@cdxoo/koa-mongo-mq@1.4.0:

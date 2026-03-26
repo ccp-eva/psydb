@@ -1,5 +1,7 @@
 'use strict';
-var { ClosedObject, ForeignId } = require('@mpieva/psydb-schema-fields');
+var { ClosedObject, CustomRecordTypeKey }
+    = require('@mpieva/psydb-schema-fields');
+
 var { Study, StudyRoadmap } = require('@mpieva/psydb-schema-creators');
 
 var SchemaFull = (bag) => {

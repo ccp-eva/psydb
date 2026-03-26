@@ -175,4 +175,9 @@ module.exports = {
         ...metadata.studyRoadmap,
         ...internals.StudyRoadmap
     },
+    
+    Study: {
+        ...metadata.study,
+        ...internals.Study
+    },
 }

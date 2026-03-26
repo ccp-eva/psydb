@@ -27,7 +27,7 @@ var StudyState = (bag = {}) => {
 
     // FIXME: make obsolete
     if (crtSettings) {
-        customFieldDefinitions = studyCRTSettings.allCustomFields();
+        customFieldDefinitions = crtSettings.allCustomFields();
     }
 
     var { dev_enableWKPRCPatches: IS_WKPRC } = apiConfig;
@@ -88,7 +88,7 @@ var _COMPAT_PROPS = ({ enableInternalProps }) => ({
         // TODO: remove this property
         // we currently just keep it around to
         // not need to update the database
-        'isCreateFinalized': DefaultBool({ default: true}),
+        'isCreateFinalized': DefaultBool({ default: true }),
     }),
 
     // TODO: obsolete

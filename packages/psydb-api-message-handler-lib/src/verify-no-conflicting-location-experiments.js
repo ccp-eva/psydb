@@ -1,6 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handler-lib');
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
+var { ApiError } = require('@mpieva/psydb-api-lib');
 
 var verifyNoConflictingLocationExperiments = async ({
     db,
