@@ -20,6 +20,7 @@ var StudyGroup = MessageHandlerGroup([
     //}),
 
     require('./patch'),
+    //require('./patch/index_OLD'),
     //GenericRecordHandler({
     //    collection: 'study',
     //    op: 'patch',

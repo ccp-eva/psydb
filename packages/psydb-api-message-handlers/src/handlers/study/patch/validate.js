@@ -1,18 +1,19 @@
 'use strict';
+var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
 var { ApiError, validateMessageOrThrow, fetchCRTSettings }
     = require('@mpieva/psydb-api-lib');
 
 var CoreSchema = require('./schema-core');
-var FullSchem = require('./schema-full');
+var FullSchema = require('./schema-full');
 
 var validateMessage = async (context) => {
     var { db, message, handler, cache, apiConfig } = context;
 
-    validateMessageOrThrow({
+    var { _id } = validateMessageOrThrow({
         handler, message, schema: CoreSchema(),
+        performClone: true, // FIXME: createPayloadClone ??
     });
 
-    var { _id } = message.payload;
     // NOTE: aggregateOneOrThrow ??
     var study = await aggregateOne({ db, study: { _id }});
     if (!study) {
@@ -22,15 +23,17 @@ var validateMessage = async (context) => {
         });
     }
 
-    var crtSettings = await fetchCRTSettings({
+    var studyCRTSettings = await fetchCRTSettings({
         db, collectionName: 'study', recordType: study.type, wrap: true
-    })
-
-    validateMessageOrThrow({
-        handler, message, schema: FullSchema({ apiConfig, crtSettings }),
     });
 
-    cache.merge({ study })
+    validateMessageOrThrow({
+        handler, message, schema: FullSchema({
+            apiConfig, studyCRTSettings
+        })
+    });
+
+    cache.merge({ study, studyCRTSettings });
 }
 
 module.exports = { validateMessage };

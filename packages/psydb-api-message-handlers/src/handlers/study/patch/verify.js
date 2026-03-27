@@ -1,11 +1,11 @@
 'use strict';
-var { compose, ApiError } = require('@mpieva/psydb-api-lib');
+var { ApiError, compose } = require('@mpieva/psydb-api-lib');
 var { verifyOneRecord } = require('@mpieva/psydb-api-message-handler-lib');
 
 var compose_verifyAllowedAndPlausible = () => compose([
     verifyGeneralPermissions,
     verifyStudy,
-    verifyRecordPermissions,
+    verifyRecordAccess,
 ]);
 
 var verifyStudy = verifyOneRecord({
@@ -15,38 +15,28 @@ var verifyStudy = verifyOneRecord({
 });
 
 var verifyGeneralPermissions = async (context, next) => {
-    var { db, permissions, cache } = context;
-    var { study } = cache.get();
+    var { db, permissions } = context;
     
-    if (!permissions.hasFlag('canWriteStudies')) {
+    if (!permissions.hasCollectionFlag('study', 'write')) {
         throw new ApiError(403)
     }
     
     await next();
 }
 
-var verifyRecordPermissions = async (context, next) => {
+var verifyRecordAccess = async (context, next) => {
     var { db, cache, permissions } = context;
     var { study: record } = cache.get();
 
-    var { systemPermissions } = record.scientific.state;
-    var { accessRightsByResearchGroup } = systemPermissions;;
-
-    var grantedForSelf = (
-        permissions.getFlagIds('canWriteStudies')
-    )
-    var allowedByRecord = (
-        accessRightsByResearchGroup
-        .filter(it => it.permission = 'write')
-        .map(it => it.researchGroupId)
-    );
-
-    var matching = intersect(allowedByRecord, grantedForSelf, {
-        compare: compareIds
+    var ok = permissions.hasRecordAccess({
+        record, collection: 'study', level: 'write'
     });
-    if (!permissions.isRoot() && matching.length < 1) {
+
+    if (!ok) {
         throw new ApiError(403)
     }
+    
+    await next();
 }
 
 module.exports = {

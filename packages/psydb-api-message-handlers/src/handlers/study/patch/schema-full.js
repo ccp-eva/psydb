@@ -1,19 +1,25 @@
 'use strict';
 var { ClosedObject, ForeignId } = require('@mpieva/psydb-schema-fields');
-var { Study } = require('@mpieva/psydb-schema-creators');
+var { Study, StudyRoadmap } = require('@mpieva/psydb-schema-creators');
 
-var Schema = (bag) => {
-    var { apiConfig, crtSettings } = bag;
+var SchemaFull = (bag) => {
+    var { apiConfig, studyCRTSettings } = bag;
+    var { dev_enableStudyRoadmap = false } = apiConfig;
 
     var schema = ClosedObject({
         '_id': ForeignId({ collection: 'study' }),
         'props': Study.State({
             apiConfig,
-            customFieldDefinitions: crtSettings.allCustomFields()
+            crtSettings: studyCRTSettings,
         }),
+        ...(dev_enableStudyRoadmap && {
+            'studyRoadmap': ClosedObject({
+                'props': StudyRoadmap.State({ apiConfig })
+            })
+        })
     });
     
     return schema;
 }
 
-module.exports = Schema;
+module.exports = SchemaFull;

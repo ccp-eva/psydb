@@ -1,44 +1,28 @@
 'use strict';
-var { jsonpointer, pathify, merge, seperateNulls }
-    = require('@mpieva/psydb-core-utils');
-var { aggregateOne} = require('@mpieva/psydb-mongo-adapter');
+var { jsonpointer } = require('@mpieva/psydb-core-utils');
+var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
 
-var executeSystemEvents = async (context) => {
-    var { message, dispatch } = context;
-    var { _id: studyId, props } = message.payload;
+var maybeOverrideNullEnd = async (context) => {
+    var { db, message, cache } = context;
+    var { props } = message.payload;
+    var { study } = cache.get();
 
-    if (await checkIsHiddenChange({ db, studyId, props })) {
-        await toggleRunningPeriodEnd({ db, studyId, props });
+    // FIXME: naming is bad, and i dont like the shape of it
+    if (await checkIsHiddenChange({ db, study, props })) {
+        await toggleRunningPeriodEnd({ db, study, props });
     }
-
-    var pathified = merge(
-        //createDefaults(Study.State()), // TODO
-        pathify(props, { prefix: 'state' }),
-    );
-    // NOTE: mongodb does not allow nested $set path on values that are null
-    // i.e. 'state.foo' = null and { $set: 'state.foo.a': 42 }
-    var { values: SET } = seperateNulls({ from: pathified });
-
-    await dispatch({
-        collection: 'study',
-        channelId: studyId,
-        payload: { $set: SET }
-    });
 }
 
 var checkIsHiddenChange = async (bag) => {
-    var { db, studyId, props } = bag;
+    var { db, study, props } = bag;
         
     var { systemPermissions: { isHidden }} = props;
-    var currentRecord = await withRetracedErrors(
-        db.collection('study').findOne({ _id: studyId })
-    );
-    
-    return isHidden !== currentRecord.state.systemPermissions.isHidden;
+    return isHidden !== study.state.systemPermissions.isHidden;
 }
 
 var toggleRunningPeriodEnd = async (bag) => {
-    var { db, studyId, props } = bag;
+    var { db, study, props } = bag;
+    var { _id: studyId } = study;
     var { systemPermissions: { isHidden }} = props;
 
     if (isHidden === true) {
@@ -79,4 +63,4 @@ var toggleRunningPeriodEnd = async (bag) => {
     }
 }
 
-module.exports = { executeSystemEvents }
+module.exports = maybeOverrideNullEnd;

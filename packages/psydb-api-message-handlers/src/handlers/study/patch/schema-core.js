@@ -1,8 +1,8 @@
 'use strict';
-var { OpenObject, ForeignId } = require('@mpieva/psydb-schema-fields');
+var { MinObject, ForeignId } = require('@mpieva/psydb-schema-fields');
 
 var SchemaCore = () => {
-    var schema = OpenObject({
+    var schema = MinObject({
         '_id': ForeignId({ collection: 'study' }),
     });
     

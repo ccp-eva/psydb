@@ -1,8 +1,6 @@
 'use strict';
-var { intersect, compareIds } = require('@mpieva/psydb-core-utils');
+var { ApiError, compose } = require('@mpieva/psydb-api-lib');
 var { verifyOneRecord } = require('@mpieva/psydb-api-message-handler-lib');
-var { ApiError, compose, switchComposition }
-    = require('@mpieva/psydb-api-lib');
 
 
 var compose_verifyAllowedAndPlausible = () => compose([
