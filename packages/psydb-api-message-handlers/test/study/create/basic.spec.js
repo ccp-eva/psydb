@@ -51,7 +51,6 @@ describe('study/create basic', function () {
         }));
         
         deltas.push(await this.fetchAllRecords('study'));
-        console.ejson(deltas.getCurrent()[1]);
         deltas.test({ expected: { '/1': {
             '_id': channelId,
             '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),

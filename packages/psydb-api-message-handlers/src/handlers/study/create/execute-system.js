@@ -41,7 +41,7 @@ var createStudy = async (context) => {
     return channelId;
 }
 
-var createStudyRoadmap = async (ps) => {
+var createStudyRoadmap = async (context) => {
     var { db, dispatch, message, cache, apiConfig } = context;
     var { props } = message.payload.studyRoadmap;
     var { studyId } = cache.get();
