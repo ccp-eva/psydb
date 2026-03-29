@@ -1,11 +1,13 @@
 'use strict';
 var { prepareStateUpdate } = require('@mpieva/psydb-api-message-handler-lib');
-var { Study, StudyRoadmap } = require('@mpieva/psydb-schema-creators');
 
 var maybeOverrideNullEnd = require('./maybe-override-null-end');
+var handleStudyRoadmap = require('./handle-study-roadmap');
 
 var executeSystemEvents = async (context) => {
-    var { db, message, dispatch, cache } = context;
+    var { db, message, dispatch, cache, apiConfig } = context;
+    
+    var { dev_enableStudyRoadmap } = apiConfig;
     var { _id: studyId, props } = message.payload;
     var { study } = cache.get();
 
@@ -20,6 +22,10 @@ var executeSystemEvents = async (context) => {
         channelId: studyId,
         payload: { $set: SET }
     });
+
+    if (dev_enableStudyRoadmap) {
+        await handleStudyRoadmap(context);
+    }
 }
 
 module.exports = { executeSystemEvents }

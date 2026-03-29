@@ -3,7 +3,7 @@ var { BaselineDeltas } = require('@mpieva/psydb-mocha-baseline-deltas');
 var { KOA_CHANNELS, PROPS_AS_STATE }
     = require('@mpieva/psydb-api-mocha-test-tools/utils');
 
-describe('study/create with study roadmap', function () {
+describe('study/patch roadmap-new', function () {
     var db, ids, send, now;
     beforeEach(async function () {
         ids = await this.restore([
@@ -16,7 +16,7 @@ describe('study/create with study roadmap', function () {
         ([ send ] = this.createMessenger({
             login: { email: 'root@example.com' },
             apiConfig: { dev_enableStudyRoadmap: true },
-            now
+            now,
         }));
     });
 
@@ -28,22 +28,20 @@ describe('study/create with study roadmap', function () {
         });
 
         var payload = {
-            'type': 'default',
+            '_id': ids('IH-Study'),
             'props': {
-                'name': 'Foo-Study',
-                'shorthand': 'Foo',
+                'name': 'Foo-Study2',
+                'shorthand': 'Foo2',
                 'runningPeriod': {
-                    'start': new Date('2020-01-01T00:00:00Z'),
+                    'start': new Date('2001-01-01T00:00:00Z'),
                     'end': null
                 },
                 'researchGroupIds': [ ids('ChildLab') ],
                 'systemPermissions': {
-                    'accessRightsByResearchGroup': [
-                        {
-                            'researchGroupId': ids('ChildLab'),
-                            'permission': 'write'
-                        }
-                    ],
+                    'accessRightsByResearchGroup': [{
+                        'researchGroupId': ids('ChildLab'),
+                        'permission': 'write'
+                    }],
                     'isHidden': false,
                 },
                 
@@ -76,13 +74,13 @@ describe('study/create with study roadmap', function () {
                     'assignedTo': ids('Test RA ChildLab')
                 },
             }}}
-        }
+        };
 
         var [
             { channelId: studyId },
             { channelId: roadmapId }
         ] = await KOA_CHANNELS(send({
-            type: 'study/create', timezone: 'Europe/Berlin',
+            type: 'study/patch', timezone: 'Europe/Berlin',
             payload: payload
         }));
         
@@ -91,22 +89,14 @@ describe('study/create with study roadmap', function () {
             'roadmap': await this.fetchAllRecords('studyRoadmap'),
         });
         deltas.test({ expected: {
-            '/study/1': {
-                '_id': studyId,
+            '/study/0': {
                 '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
-                'isDummy': false,
-                'sequenceNumber': '11',
-                'type': 'default',
-                'state': {
-                    ...PROPS_AS_STATE(payload).state,
-                    'enableFollowUpExperiments': false,
-                    'excludedOtherStudyIds': [],
-                    'scientistIds': [],
-                    'studyTopicIds': [],
-
-                    'inhouseTestLocationSettings': [], // XXX obsolete
-                    'isCreateFinalized': true, // XXX: obsolete
-                }
+                'state/name': 'Foo-Study2',
+                'state/shorthand': 'Foo2',
+                'state/researchGroupIds/1': BaselineDeltas.DeletedValue(),
+                'state/systemPermissions/accessRightsByResearchGroup/1': (
+                    BaselineDeltas.DeletedValue()
+                )
             },
             '/roadmap/0': {
                 '_id': roadmapId,
@@ -115,14 +105,6 @@ describe('study/create with study roadmap', function () {
                 'state': {
                     ...PROPS_AS_STATE(payload.studyRoadmap).state,
                 },
-                // NOTE: if we need snapshotted versions we can created
-                // them from rohrpost events in this format
-                //'versions': [{
-                //    '_id': BaselineDeltas.AnyObjectId(),
-                //    'createdAt': now,
-                //    'createdBy': ids(/ROOT/),
-                //    'record': {},
-                //}],
             }
         }, asFlatEJSON: true });
     })
