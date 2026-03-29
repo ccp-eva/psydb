@@ -1,6 +1,6 @@
 'use strict';
 var {
-    ClosedObject, PatternObject,
+    ClosedObject, DefaultArray,
     Id, ForeignId, StringEnum, SaneString, DateOnlyServerSide
 } = require('@mpieva/psydb-schema-fields');
 
@@ -8,9 +8,10 @@ var State = (bag) => {
     var { apiConfig } = bag;
 
     var schema = ClosedObject({
-        'tasks': PatternObject({
-            '^[a-zA-Z0-9\_\-]{4}$': ClosedObject({
-                //'_id': Id(), // FIXME: psydb-schema project() required
+        'tasks': DefaultArray({
+            items: ClosedObject({
+                // NOTE: ui must send id or null for new element
+                '_id': Id({ isNullable: true }),
                 'start': DateOnlyServerSide(),
                 'end': DateOnlyServerSide(),
                 'description': SaneString({ minLength: 1 }),

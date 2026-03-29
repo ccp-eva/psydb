@@ -1,4 +1,5 @@
 'use strict';
+var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 var { findAndUpdateSequenceNumber } = require('@mpieva/psydb-api-lib');
 var { prepareStateUpdate } = require('@mpieva/psydb-api-message-handler-lib');
 var { Study, StudyRoadmap } = require('@mpieva/psydb-schema-creators');
@@ -45,7 +46,13 @@ var createStudyRoadmap = async (context) => {
     var { db, dispatch, message, cache, apiConfig } = context;
     var { props } = message.payload.studyRoadmap;
     var { studyId } = cache.get();
-    
+   
+    for (var it of props.tasks) {
+        if (!it._id) {
+            it._id = new ObjectId();
+        }
+    }
+
     var { SET } = prepareStateUpdate({
         schema: StudyRoadmap.State({ apiConfig }),
         values: props

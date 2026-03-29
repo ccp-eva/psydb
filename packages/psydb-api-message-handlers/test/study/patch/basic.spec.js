@@ -3,6 +3,8 @@ var { BaselineDeltas } = require('@mpieva/psydb-mocha-baseline-deltas');
 var { KOA_CHANNELS, PROPS_AS_STATE }
     = require('@mpieva/psydb-api-mocha-test-tools/utils');
 
+var { createStudyProps } = require('./__helpers');
+
 describe('study/patch basic', function () {
     var db, ids, send, now;
     beforeEach(async function () {
@@ -23,28 +25,10 @@ describe('study/patch basic', function () {
         var deltas = BaselineDeltas();
         deltas.push(await this.fetchAllRecords('study'));
 
-        var payload = { '_id': ids('IH-Study'), 'props': {
-            'name': 'Foo-Study2',
-            'shorthand': 'Foo2',
-            'runningPeriod': {
-                'start': new Date('2001-01-01T00:00:00Z'),
-                'end': null
-            },
-            'researchGroupIds': [ ids('ChildLab') ],
-            'systemPermissions': {
-                'accessRightsByResearchGroup': [{
-                    'researchGroupId': ids('ChildLab'),
-                    'permission': 'write'
-                }],
-                'isHidden': false,
-            },
-            
-            'custom': {
-                'assistents': [ ids('Test RA ChildLab') ],
-                'novels': [],
-                'description': '',
-            },
-        }};
+        var payload = {
+            '_id': ids('IH-Study'),
+            'props': createStudyProps({ ids })
+        };
 
         var [{ channelId }] = await KOA_CHANNELS(send({
             type: 'study/patch', timezone: 'Europe/Berlin',

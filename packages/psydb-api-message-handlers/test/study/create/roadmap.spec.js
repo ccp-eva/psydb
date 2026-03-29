@@ -53,29 +53,32 @@ describe('study/create with study roadmap', function () {
                     'description': '',
                 },
             },
-            'studyRoadmap': { 'props': { 'tasks': {
-                'u3GD': {
+            'studyRoadmap': { 'props': { 'tasks': [
+                {
+                    '_id': null,
                     'start': new Date('2020-01-01T00:00:00Z'),
                     'end': new Date('2020-03-31T00:00:00Z'),
                     'description': 'project prep, study design',
                     'status': 'finished',
                     'assignedTo': ids('Test RA ChildLab')
                 },
-                'Ry-a': {
+                {
+                    '_id': null,
                     'start': new Date('2020-03-01T00:00:00Z'),
                     'end': new Date('2020-05-31T00:00:00Z'),
                     'description': 'data acquisition & analysis',
                     'status': 'ongoing',
                     'assignedTo': ids('Test RA ChildLab')
                 },
-                'gsV_': {
+                {
+                    '_id': null,
                     'start': new Date('2020-06-01T00:00:00Z'),
                     'end': new Date('2020-07-31T00:00:00Z'),
                     'description': 'publication',
                     'status': 'planned',
                     'assignedTo': ids('Test RA ChildLab')
                 },
-            }}}
+            ]}}
         }
 
         var [
@@ -113,7 +116,11 @@ describe('study/create with study roadmap', function () {
                 '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
                 'studyId': studyId,
                 'state': {
-                    ...PROPS_AS_STATE(payload.studyRoadmap).state,
+                    ...PROPS_AS_STATE(payload.studyRoadmap, { overrides: {
+                        '/tasks/0/_id': BaselineDeltas.AnyObjectId(),
+                        '/tasks/1/_id': BaselineDeltas.AnyObjectId(),
+                        '/tasks/2/_id': BaselineDeltas.AnyObjectId(),
+                    }}).state,
                 },
                 // NOTE: if we need snapshotted versions we can created
                 // them from rohrpost events in this format

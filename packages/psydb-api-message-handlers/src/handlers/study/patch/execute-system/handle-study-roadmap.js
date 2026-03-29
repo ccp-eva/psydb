@@ -1,5 +1,5 @@
 'use strict';
-var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
+var { ObjectId, aggregateOne } = require('@mpieva/psydb-mongo-adapter');
 var { prepareStateUpdate } = require('@mpieva/psydb-api-message-handler-lib');
 var { StudyRoadmap } = require('@mpieva/psydb-schema-creators');
 
@@ -45,11 +45,17 @@ var createStudyRoadmap = async (context) => {
     var { study } = cache.get();
     var { _id: studyId } = study;
     
+    for (var it of props.tasks) {
+        if (!it._id) {
+            it._id = new ObjectId();
+        }
+    }
+
     var { SET } = prepareStateUpdate({
         schema: StudyRoadmap.State({ apiConfig }),
         values: props
     });
-    
+
     var { channelId } = await dispatch({
         collection: 'studyRoadmap',
         isNew: true,
