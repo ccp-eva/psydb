@@ -15,6 +15,7 @@ module.exports = [
     ...require('./csv-imports'),
     ...require('./duplicates'),
     ...require('./study-consent-workflow'),
+    ...require('./study-roadmap'),
 
     ...require('./_record-anonymizer'),
     ...require('./_error-response-modal'),

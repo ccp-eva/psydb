@@ -57,6 +57,10 @@ var publicInitUI = async (context, next) => {
         '/dev_enableSubjectDuplicatesSearch',
         '/dev_subjectDuplicatesSearchFields',
         '/dev_enableSubjectCopyForUnprocessedExperiments',
+        
+        '/dev_enableImprovedContactTracking',
+        '/dev_enableStudyConsentWorkflow',
+        '/dev_enableStudyRoadmap',
     ]});
 
     config.serverZimezone = getSystemTimezone();

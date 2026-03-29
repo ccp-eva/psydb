@@ -32,10 +32,10 @@ const EditForm = (ps) => {
     var [{ translate }] = useI18N();
 
     var send = useSend((formData) => {
-        var { timetable, ...props } = formData;
+        var { studyRoadmap, ...props } = formData;
         return {
             type: 'study/patch',
-            payload: { _id: record._id, props, timetable }
+            payload: { _id: record._id, props, studyRoadmap }
         }
     }, { onSuccessfulUpdate });
  
