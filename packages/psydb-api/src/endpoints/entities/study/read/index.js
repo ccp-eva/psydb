@@ -1,5 +1,9 @@
 'use strict';
-var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
+var { copy } = require('@mpieva/psydb-core-utils');
+var { spoolEvents } = require('@mpieva/psydb-rohrpost-utils');
+
+var { aggregateOne, aggregateToArray }
+    = require('@mpieva/psydb-mongo-adapter');
 var { match, projections, SystemPermissionStages }
     = require('@mpieva/psydb-mongo-stages');
 
@@ -13,7 +17,6 @@ var Schema = require('./schema');
 
 var read = async (context, next) => {
     var { db, request, permissions, i18n, apiConfig } = context;
-    var { dev_enableStudyRoadmap } = apiConfig;
 
     validateOrThrow({ schema: Schema(), payload: request.body });
     var { id } = request.body;
@@ -52,22 +55,52 @@ var read = async (context, next) => {
         db, ...i18n, collectionName: 'study', records: [ record ]
     });
 
-    var studyRoadmap = undefined;
-    var studyRoadmapHistory = undefined;
-    if (dev_enableStudyRoadmap) {
-        studyRoadmap = await aggregateOne({ db, studyRoadmap: {
-            studyId: id,
-        }});
-    }
+    var { studyRoadmap, studyRoadmapVersions }
+        = await maybeHandleStudyRoadmap(context);
 
     context.body = ResponseBody({
         data: {
-            record, related, studyRoadmap,
+            record, related, studyRoadmap, studyRoadmapVersions,
             crtSettings: crtSettings.getRaw()
         }
     });
 
     await next();
+}
+
+var maybeHandleStudyRoadmap = async (context) => {
+    var { db, request, apiConfig } = context;
+    var { dev_enableStudyRoadmap } = apiConfig;
+    var { id: studyId } = request.body;
+
+    var fallback = {
+        studyRoadmap: undefined,
+        studyRoadmapHistory: undefined
+    };
+    
+    if (!dev_enableStudyRoadmap) {
+        return fallback;
+    }
+
+    var studyRoadmap = await aggregateOne({ db, studyRoadmap: { studyId }});
+
+    if (!studyRoadmap) {
+        return fallback;
+    }
+    
+    var events = await aggregateToArray({ db, rohrpostEvents: {
+        _id: { $in: studyRoadmap._rohrpostMetadata.eventIds  }
+    }});
+
+    var studyRoadmapVersions = [];
+    var current = undefined
+    for (var it of events.reverse()) {
+        var next = spoolEvents({ onto: copy(current), events: [ it ] });
+        studyRoadmapVersions.push(next);
+    }
+
+    studyRoadmapVersions.reverse();
+    return { studyRoadmap, studyRoadmapVersions }
 }
 
 var ReadStages = (bag) => {

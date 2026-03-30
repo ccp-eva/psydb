@@ -25,6 +25,12 @@ var maybePatchStudyRoadmap = async (context) => {
     var { props } = message.payload.studyRoadmap;
     var { existingRoadmap } = cache.get();
    
+    for (var it of props.tasks) {
+        if (!it._id) {
+            it._id = new ObjectId();
+        }
+    }
+
     var { _id, state } = existingRoadmap;
     var hasDelta = JSON.stringify(state) !== JSON.stringify(props);
     if (hasDelta) {

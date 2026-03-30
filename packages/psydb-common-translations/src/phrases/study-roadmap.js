@@ -23,4 +23,8 @@ module.exports = [
         en: 'finished',
         de: 'fertig',
     },
+    {
+        en: 'Current Data',
+        de: 'Aktuelle Daten'
+    },
 ]
