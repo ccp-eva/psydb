@@ -2,12 +2,12 @@ import React from 'react';
 import { useRouteMatch, useHistory } from 'react-router';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
-import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { withRecordDetails } from '@mpieva/psydb-ui-lib';
-import { FormBox, DefaultRecordSideNav as Nav }
-    from '@mpieva/psydb-ui-layout';
+import { withFetchOne } from '@mpieva/psydb-ui-lib';
+import { FormBox } from '@mpieva/psydb-ui-layout';
 
+import IntraRecordNav from './intra-record-nav';
 import SelectionSettings from './selection-settings';
 import LabWorkflowSettings from './experiment-settings';
 import LabTeams from './teams';
@@ -17,16 +17,16 @@ import * as StudyConsentDoc from '../study-consent-doc';
 
 const IntraRecordRoutingBody = (ps) => {
     var {
-        collection, recordType,
-        fetched, permissions, revision,
-
+        fetched, revision, permissions,
         RecordDetails, RecordEditor, RecordRemover,
         RecordRawView, RecordRawHistory,
     } = ps;
     
-    var { record, crtSettings } = fetched;
-    var { _id: recordId } = record;
-    var hasWorkflows = true; // FIXME
+    var { record, crtSettings } = fetched.data;
+    var { _id: recordId, type: recordType } = record;
+    var hasLabWorkflows = true; // FIXME
+
+    var { dev_enableStudyConsentWorkflow } = useUIConfig();
 
     var history = useHistory();
     var { path, url } = useRouteMatch();
@@ -36,44 +36,6 @@ const IntraRecordRoutingBody = (ps) => {
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
     var canViewStudyLabOpsSettings = permissions.hasFlag('canViewStudyLabOpsSettings');
 
-    var { hashurl, core, raw } = Nav.useLinks({ record });
-   
-    core[`${hashurl}/details`].label = translate('Details');
-    core[`${hashurl}/edit`].label = translate('Edit Details');
-
-    var settingsLinks = {
-        [`${hashurl}/selection-settings`]: {
-            label: translate('Selection Settings'),
-            show: crtSettings.enableSubjectSelectionSettings, enabled: true
-        },
-        [`${hashurl}/experiment-settings`]: {
-            label: translate('Lab Workflow Settings'),
-            show: canViewStudyLabOpsSettings, enabled: true
-        },
-        [`${hashurl}/teams`]: {
-            label: translate('Teams'),
-            show: crtSettings.enableLabTeams, enabled: true
-        },
-        [`${hashurl}/participation`]: {
-            label: translate('Study Participations'),
-            show: canReadParticipation, enabled: hasWorkflows
-        },
-        [`#/lab-operation/reservation/${recordType}/${recordId}`]: {
-            label: translate('Reservation'),
-            show: true, enabled: hasWorkflows // FIXME
-        },
-    }
-
-    var consentLinks = {
-        [`${hashurl}/consent-forms`]: {
-            label: translate('Consent Forms'),
-            show: true, enabled: true
-        },
-        [`${hashurl}/consent-docs`]: {
-            label: translate('Consent Docs'),
-            show: true, enabled: true
-        },
-    }
 
     //var titleparts = [
     //    translate('Study Details'),
@@ -85,32 +47,9 @@ const IntraRecordRoutingBody = (ps) => {
     //    titleparts.push(' ', `(${fetchedStudy.record.state.shorthand})`)
     //}
 
-    var sharedBag = { collection, recordType };
+    var nav = <IntraRecordNav fetched={ fetched } />
 
-    var nav = (
-        <Nav.Container className='bg-light border'>
-            <Nav.LinkList links={ core } />
-            { Object.keys(settingsLinks).length > 0 && (
-                <>
-                    <Nav.HR />
-                    <Nav.LinkList links={ settingsLinks } />
-                </>
-            )}
-            { Object.keys(consentLinks).length > 0 && (
-                <>
-                    <Nav.HR />
-                    <Nav.LinkList links={ consentLinks } />
-                </>
-            )}
-            { permissions.isRoot() && (
-                <>
-                    <Nav.HR />
-                    <Nav.LinkList links={ raw } />
-                </>
-            )}
-        </Nav.Container>
-    );
-
+    var sharedBag = { collection: 'study', recordType };
     var content = (
         <Switch>
             <Route exact path={`${path}`} render={ (ps) => (
@@ -118,7 +57,7 @@ const IntraRecordRoutingBody = (ps) => {
             )} />
 
             <Route path={`${path}/details`}>
-                <RecordDetails { ...sharedBag } />
+                <RecordDetails { ...sharedBag } fetched={ fetched } />
             </Route>
             
             <Route path={`${path}/edit`}>
@@ -126,55 +65,76 @@ const IntraRecordRoutingBody = (ps) => {
                     <RecordEditor
                         { ...sharedBag }
                         type='edit'
+                        fetched={ fetched }
                         onSuccessfulUpdate={ ({ id }) => {
-                            history.push(`${url}`)
+                            revision.up();
+                            history.push(`${url}`);
                         }}
                     />
                 </FormBox>
             </Route>
+           
+            { crtSettings.enableSubjectSelectionSettings && (
+                <Route path={`${path}/selection-settings`}>
+                    <FormBox title={ translate('Selection Settings') }>
+                        <SelectionSettings recordType={ recordType } />
+                    </FormBox>
+                </Route>
+            )}
             
-            <Route path={`${path}/raw`}>
-                <RecordRawView { ...sharedBag } prefetched={ fetched }/>
-            </Route>
-            <Route path={`${path}/raw-history`}>
-                <RecordRawHistory { ...sharedBag } prefetched={ fetched } />
-            </Route>
+            { canViewStudyLabOpsSettings && (
+                <Route path={`${path}/experiment-settings`}>
+                    <FormBox title={ translate('Lab Workflow Settings') }>
+                        <LabWorkflowSettings
+                            studyType={ recordType }
+                            onSuccessfulUpdate={ revision.up }
+                        />
+                    </FormBox>
+                </Route>
+            )}
+            
+            { crtSettings.enableLabTeams && (
+                <Route path={`${path}/teams`}>
+                    <FormBox title={ translate('Teams') }>
+                        <LabTeams recordType={ recordType } />
+                    </FormBox>
+                </Route>
+            )}
+           
+            { (canReadParticipation && hasLabWorkflows) && (
+                <Route path={`${path}/participation`}>
+                    <div className='border p-3'>
+                        <h5>{ translate('Study Participations') }</h5>
+                        <hr />
+                        <Participation recordType={ recordType } />
+                    </div>
+                </Route>
+            )}
+            
+            { dev_enableStudyConsentWorkflow && (
+                <Route path={`${path}/consent-forms`}>
+                    <ConsentFormsRouting studyId={ recordId } />
+                </Route>
+            )}
+            { dev_enableStudyConsentWorkflow && (
+                <Route path={`${path}/consent-docs`}>
+                    <StudyConsentDoc.Routing studyId={ recordId } />
+                </Route>
+            )}
+            
+            { permissions.isRoot() && (
+                <Route path={`${path}/raw`}>
+                    <RecordRawView
+                        { ...sharedBag } prefetched={ fetched } />
+                </Route>
+            )}
+            { permissions.isRoot() && (
+                <Route path={`${path}/raw-history`}>
+                    <RecordRawHistory
+                        { ...sharedBag } prefetched={ fetched } />
+                </Route>
+            )}
 
-            <Route path={`${path}/selection-settings`}>
-                <FormBox title={ translate('Selection Settings') }>
-                    <SelectionSettings recordType={ recordType } />
-                </FormBox>
-            </Route>
-            
-            <Route path={`${path}/experiment-settings`}>
-                <FormBox title={ translate('Lab Workflow Settings') }>
-                    <LabWorkflowSettings
-                        studyType={ recordType }
-                        onSuccessfulUpdate={ revision.up }
-                    />
-                </FormBox>
-            </Route>
-            
-            <Route path={`${path}/teams`}>
-                <FormBox title={ translate('Teams') }>
-                    <LabTeams recordType={ recordType } />
-                </FormBox>
-            </Route>
-            
-            <Route path={`${path}/participation`}>
-                <div className='border p-3'>
-                    <h5>{ translate('Study Participations') }</h5>
-                    <hr />
-                    <Participation recordType={ recordType } />
-                </div>
-            </Route>
-            
-            <Route path={`${path}/consent-forms`}>
-                <ConsentFormsRouting studyId={ recordId } />
-            </Route>
-            <Route path={`${path}/consent-docs`}>
-                <StudyConsentDoc.Routing studyId={ recordId } />
-            </Route>
         </Switch>
     );
 
@@ -206,9 +166,10 @@ var Wrapper = (ps) => {
     )
 }
 
-const IntraRecordRouting = withRecordDetails({
-    DetailsBody: IntraRecordRoutingBody,
-    shouldFetchSchema: false,
+const IntraRecordRouting = withFetchOne({
+    Body: IntraRecordRoutingBody,
+    access: [{ collection: 'study', level: 'read' }],
+    agentFN: '/study/read', paramKeys: [ 'id' ]
 })
 
 export default IntraRecordRouting;

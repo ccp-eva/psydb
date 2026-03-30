@@ -10,15 +10,11 @@ import { Study } from '@mpieva/psydb-ui-lib/data-viewers';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
 export const DetailsBody = (ps) => {
-    var {
-        fetched,
-        permissions
-    } = ps;
-    
-    var { record, crtSettings, related } = fetched;
+    var { fetched, permissions } = ps;
+    var { record, crtSettings, related } = fetched.data;
     
     var { url } = useRouteMatch();
-    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
+    var { dev_enableWKPRCPatches } = useUIConfig();
     var [{ translate }] = useI18N();
     
     var canEdit = permissions.hasCollectionFlag('study', 'write');
@@ -44,19 +40,19 @@ export const DetailsBody = (ps) => {
             <Study { ...studyBag }>
                 <Study.SequenceNumber />
                 <Study.Name />
-                { !IS_WKPRC && (
+                { !dev_enableWKPRCPatches && (
                     <Study.Shorthand />
                 )}
                 <hr />
                 <Study.Start />
                 <Study.End />
-                { !IS_WKPRC && (
+                { !dev_enableWKPRCPatches && (
                     <Study.EnableFollowUpExperiments />
                 )}
                 <Study.ResearchGroupIds />
                 <Study.ScientistIds />
                 <Study.StudyTopicIds />
-                { IS_WKPRC && (
+                { dev_enableWKPRCPatches && (
                     <Study.ExperimentNames />
                 )}
                 <Study.Custom />

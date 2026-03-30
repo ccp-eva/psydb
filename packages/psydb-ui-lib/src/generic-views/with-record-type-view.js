@@ -48,7 +48,7 @@ const DefaultRecordCreator = (ps) => (
 
 const DefaultRecordRawView = (ps) => {
     var { prefetched } = ps;
-    var { record } = prefetched;
+    var { record } = (prefetched.data || prefetched);
     
     return (
         <JsonRaw data={ record } />
@@ -57,7 +57,7 @@ const DefaultRecordRawView = (ps) => {
 
 const DefaultRecordRawHistory = (ps) => {
     var { prefetched } = ps;
-    var { record } = prefetched;
+    var { record } = (prefetched.data || prefetched);
 
     // TODO: useFetch etc
     return (

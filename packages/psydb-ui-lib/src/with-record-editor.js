@@ -25,19 +25,38 @@ export const withRecordEditor = (options) => {
     } = options;
 
     var RecordEditor = (ps) => {
-        var { collection, recordType, id: manualId, revision, children } = ps;
+        var {
+            collection, recordType, id: manualId,
+            
+            fetched: props_fetched,
+            revision: props_revision,
+
+            children
+        } = ps;
+
         var { id: paramId } = useParams();
         var id = manualId || paramId;
 
-        var internalRevision = useRevision();
-        revision = revision || internalRevision;
-
+        var revision = props_revision || useRevision();
         var permissions = usePermissions();
         var canWrite = permissions.hasCollectionFlag(
             collection, 'write'
         );
         if (!canWrite) {
             return <PermissionDenied />
+        }
+
+        // XXX
+        if (props_fetched) {
+            var fetched = props_fetched;
+            return (
+                <EditForm
+                    { ...ps }
+                    id={ id }
+                    fetched={ fetched }
+                    revision={ revision }
+                />
+            )
         }
 
         var dependencies = (
@@ -68,7 +87,8 @@ export const withRecordEditor = (options) => {
         };
         return (
             <>
-                <EditForm { ...ps }
+                <EditForm
+                    { ...ps }
                     id={ id }
                     fetched={ fetched }
                     revision={ revision }

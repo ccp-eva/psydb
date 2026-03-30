@@ -22,9 +22,11 @@ const EditForm = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var { record, crtSettings, related } = fetched;
-    var { fieldDefinitions } = crtSettings;
-    
+    var {
+        record, crtSettings, related,
+        studyRoadmap, /*studyRoadmapHistory*/
+    } = fetched.data;
+
     var { path, url } = useRouteMatch();
     
     var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
@@ -40,7 +42,7 @@ const EditForm = (ps) => {
     }, { onSuccessfulUpdate });
  
     var defaults = MainForm.createDefaults({
-        fieldDefinitions,
+        fieldDefinitions: crtSettings.fieldDefinitions,
         permissions
     });
    
@@ -74,7 +76,8 @@ const EditForm = (ps) => {
         custom: {
             ...defaults.custom,
             ...initialValues.custom
-        }
+        },
+        studyRoadmap: { props: studyRoadmap?.state || {}}
     }
 
     var { sequenceNumber } = record;
@@ -97,16 +100,17 @@ const EditForm = (ps) => {
                 crtSettings={ crtSettings }
                 initialValues={ initialValues }
                 onSubmit={ send.exec }
-                related={ related }
                 permissions={ permissions }
                 renderFormBox={ false }
+                related={ related }
+                studyRoadmap={ studyRoadmap }
             />
             <hr />
             <GenericRecordEditorFooter.RAW
                 id={ id }
                 collection={ collection }
                 recordType={ recordType }
-                fetched={ fetched }
+                fetched={ fetched.data }
                 permissions={ permissions } 
 
                 enableHide={ false }
