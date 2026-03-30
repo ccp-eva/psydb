@@ -7,7 +7,7 @@ var State = require('./state');
 var MongoDoc = (context) => {
     var schema = ClosedObject({
         'studyId': ForeignId({ collection: 'study' }),
-        'props': State(),
+        'props': State(context),
     });
     
     return schema;

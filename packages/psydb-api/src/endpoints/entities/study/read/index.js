@@ -1,5 +1,7 @@
 'use strict';
-var { copy } = require('@mpieva/psydb-core-utils');
+var { __fixRelated } = require('@mpieva/psydb-common-compat');
+
+var { ejson, copy, merge } = require('@mpieva/psydb-core-utils');
 var { spoolEvents } = require('@mpieva/psydb-rohrpost-utils');
 
 var { aggregateOne, aggregateToArray }
@@ -9,7 +11,7 @@ var { match, projections, SystemPermissionStages }
 
 var {
     ApiError, ResponseBody, validateOrThrow,
-    fetchCRTSettings, fetchRelatedLabelsForMany,
+    fetchCRTSettings, fetchRelatedLabelsForMany, fetchRecordLabelsManual,
 } = require('@mpieva/psydb-api-lib');
 
 var Schema = require('./schema');
@@ -52,11 +54,19 @@ var read = async (context, next) => {
     record._recordLabel = crtSettings.getLabelForRecord({ record, i18n });
     
     var related = await fetchRelatedLabelsForMany({
-        db, ...i18n, collectionName: 'study', records: [ record ]
+        db, i18n, apiConfig,
+        collectionName: 'study', records: [ record ]
     });
 
-    var { studyRoadmap, studyRoadmapVersions }
+    // FIXME
+    //related = __fixRelated(related, { isResponse: false });
+
+    var { studyRoadmap, studyRoadmapVersions, studyRoadmapRelated }
         = await maybeHandleStudyRoadmap(context);
+
+    if (studyRoadmapRelated) {
+        related = merge(related, studyRoadmapRelated)
+    }
 
     context.body = ResponseBody({
         data: {
@@ -69,7 +79,7 @@ var read = async (context, next) => {
 }
 
 var maybeHandleStudyRoadmap = async (context) => {
-    var { db, request, apiConfig } = context;
+    var { db, request, apiConfig, i18n } = context;
     var { dev_enableStudyRoadmap } = apiConfig;
     var { id: studyId } = request.body;
 
@@ -99,8 +109,23 @@ var maybeHandleStudyRoadmap = async (context) => {
         studyRoadmapVersions.push(next);
     }
 
+    // XXX
+    var personnelIds = [];
+    for (var ver of studyRoadmapVersions) {
+        for (var task of ver.state.tasks) {
+            personnelIds.push(task.assignedTo)
+        }
+    }
+
+    // FIXME
+    var studyRoadmapRelated = {
+        relatedRecordLabels: await fetchRecordLabelsManual(db, {
+            personnel: personnelIds
+        }, { oldWrappedLabels: true, i18n })
+    }
+
     studyRoadmapVersions.reverse();
-    return { studyRoadmap, studyRoadmapVersions }
+    return { studyRoadmap, studyRoadmapVersions, studyRoadmapRelated }
 }
 
 var ReadStages = (bag) => {

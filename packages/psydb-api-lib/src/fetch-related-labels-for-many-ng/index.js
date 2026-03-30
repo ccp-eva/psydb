@@ -27,10 +27,18 @@ var fetchRelatedLabelsForMany = async (bag) => {
         db,
         collectionName: collection,
         records,
+        
+        apiConfig,
+        i18n,
+
         timezone,
         language,
         locale,
     } = bag;
+
+    if (i18n) {
+        ({ timezone, language, locale } = i18n);
+    }
 
     // FIXME: thats a hack
     if (collection === 'customRecordType') {
@@ -44,11 +52,13 @@ var fetchRelatedLabelsForMany = async (bag) => {
     }
 
     debug('AAAAAAAAAAAAAAAAAAAa');
-    var { hasCustomTypes, FullSchema } = allSchemaCreators[collection];
+    var { hasCustomTypes, FullSchema, MongoDoc }
+        = allSchemaCreators[collection];
+    MongoDoc = MongoDoc || FullSchema;
     var schema;
     if (!hasCustomTypes) {
-        console.log(collection);
-        schema = FullSchema({ enableInternalProps: true });
+        //console.log(collection);
+        schema = MongoDoc({ apiConfig, enableInternalProps: true });
     }
     else {
         var typeKeys = unique(records.map(it => it.type))

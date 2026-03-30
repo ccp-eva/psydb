@@ -1,6 +1,7 @@
 import React from 'react';
 import { StringDiff, DiffMethod } from 'react-string-diff';
 
+import { __fixRelated } from '@mpieva/psydb-common-compat';
 import { unique } from '@mpieva/psydb-core-utils';
 import { keyRecords } from '@mpieva/psydb-common-lib';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
@@ -8,6 +9,8 @@ import { Grid } from '@mpieva/psydb-ui-layout';
 
 const VersionDiffView = (ps) => {
     var { oldRecord, newRecord, related } = ps;
+    
+    related = __fixRelated(related, { isResponse: false, labelize: true });
 
     var { tasks: oldTasks = [] } = oldRecord?.state || {};
     var { tasks: newTasks = [] } = newRecord.state;
@@ -48,11 +51,14 @@ const VersionDiffView = (ps) => {
 
 const _identity = (x) => (x);
 const Diff = (ps) => {
-    var { oldValue = '', newValue = '', transform = _identity } = ps;
+    var {
+        method = DiffMethod.WordsWithSpace,
+        oldValue = '', newValue = '', transform = _identity
+    } = ps;
     
     return (
         <StringDiff
-            method={ DiffMethod.WordsWithSpace }
+            method={ method }
             oldValue={ oldValue ? transform(oldValue) : oldValue }
             newValue={ newValue ? transform(newValue) : newValue }
         />
@@ -85,8 +91,10 @@ const Task = (ps) => {
                 )}
             />
             <Diff
+                method={ DiffMethod.Sentences }
                 oldValue={ oldData.assignedTo }
                 newValue={ newData.assignedTo }
+                transform={ (_id) => related.records.personnel[_id] }
             />
         </>
     )

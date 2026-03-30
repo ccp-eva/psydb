@@ -1,13 +1,15 @@
 import React from 'react';
+import { __fixRelated } from '@mpieva/psydb-common-compat';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Grid } from '@mpieva/psydb-ui-layout';
 
 const CurrentView = (ps) => {
     var { record, related } = ps;
     var { tasks } = record.state;
-    
-    var [{ translate }] = useI18N();
 
+    var [{ translate }] = useI18N();
+    related = __fixRelated(related, { isResponse: false, labelize: true });
+    
     return (
         <Grid
             cols={[ '110px', '110px', '1fr', '130px', '250px']}
@@ -38,7 +40,7 @@ const Task = (ps) => {
             <span>{ fdate(end) }</span>
             <span>{ description }</span>
             <span>{ translate('_studyRoadmapStatus_' + status) }</span>
-            <span>{ assignedTo }</span>
+            <span>{ related.records.personnel[assignedTo] }</span>
         </>
     )
 }
