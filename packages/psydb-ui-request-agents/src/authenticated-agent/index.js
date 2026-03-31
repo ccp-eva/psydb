@@ -968,13 +968,16 @@ const createAgent = (options = {}) => {
     
     for (var it of [
         'subject',
-        'personnel',
+        'subjectContactHistory',
+        
         'study',
+        'studyConsentForm',
+        'studyConsentDoc',
+        
+        'personnel',
         'location',
         'helperSet',
         'helperSetItem',
-        'studyConsentForm',
-        'studyConsentDoc',
         'experiment',
     ]) {
         agent[it] = SubRequests[it]({ axios, dumpPOST });

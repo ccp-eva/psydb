@@ -7,6 +7,8 @@ module.exports = {
     studyConsentDoc: require('./study-consent-doc'),
 
     subject: require('./subject'),
+    subjectContactHistory: require('./subject-contact-history'),
+
     experiment: require('./experiment'),
     location: require('./location'),
 

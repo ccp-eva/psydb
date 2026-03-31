@@ -1,6 +1,10 @@
 'use strict';
 module.exports = [
     {
+        en: 'Contact History',
+        de: 'Kontakt-Historie',
+    },
+    {
         en: 'Last Contact',
         de: 'Letzter Kontakt',
     },
