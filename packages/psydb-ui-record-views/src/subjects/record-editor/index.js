@@ -69,8 +69,10 @@ const EditForm = (ps) => {
         onlineId
     } = record;
     
+    var isAnonymized = record.gdpr?.state === '[[REDACTED]]';
     var { isHidden } = record.scientific.state.systemPermissions;
     var { mergedDuplicates = [] } = record.scientific.state.internals;
+    
 
     var renderedContent = (
         <div>
@@ -101,11 +103,19 @@ const EditForm = (ps) => {
                 showSequenceNumber={ showSequenceNumber }
             />
 
-            { (
+            {(
                 (showSequenceNumber && sequenceNumber)
                 || (showOnlineId && onlineId)
             ) && (
                 <hr />
+            )}
+            { isAnonymized && (
+                <>
+                    <b className='text-danger fs-3'>
+                        { translate('Anonymized') }
+                    </b>
+                    <hr />
+                </>
             )}
             <MainForm.Component
                 title={ translate('Edit Subject') }
@@ -116,6 +126,7 @@ const EditForm = (ps) => {
                 record={ record }
                 related={ related }
                 permissions={ permissions }
+                isAnonymized={ isAnonymized }
 
                 renderFormBox={ false }
                 renderVisibilityButton={ renderVisibilityButton }

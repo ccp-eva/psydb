@@ -28,11 +28,7 @@ var fieldTypeMetadata = require('@mpieva/psydb-common-lib/src/field-type-metadat
 var RequestBodySchema = require('./body-schema');
 
 var selectableStudies = async (context, next) => {
-    var { 
-        db,
-        permissions,
-        request,
-    } = context;
+    var { db, permissions, request } = context;
 
     validateOrThrow({
         schema: RequestBodySchema(),
@@ -62,6 +58,7 @@ var selectableStudies = async (context, next) => {
         types: labProcedureTypes,
         flags: [
             'canWriteReservations',
+            'canSearchSelectableSubjects',
             'canSelectSubjectsForExperiments',
             'canPerformOnlineSurveys'
         ]
@@ -70,6 +67,7 @@ var selectableStudies = async (context, next) => {
         types: labProcedureTypes,
         flags: [
             'canWriteReservations',
+            'canSearchSelectableSubjects',
             'canSelectSubjectsForExperiments',
             'canPerformOnlineSurveys'
         ]
@@ -81,6 +79,7 @@ var selectableStudies = async (context, next) => {
                 labProcedureTypes,
                 flags: [
                     'canWriteReservations',
+                    'canSearchSelectableSubjects',
                     'canSelectSubjectsForExperiments',
                     'canPerformOnlineSurveys'
                 ],

@@ -6,6 +6,7 @@ module.exports = {
     // FIXME: duplicate
     CustomRecordTypeName: require('./custom-record-type-key'),
     CustomRecordTypeKey: require('./custom-record-type-key'),
+    CustomRecordTypeKeyList: require('./custom-record-type-key-list'),
     CustomRecordTypeFieldKey: require('./custom-record-type-field-key'),
     
     EventId: require('./event-id'),

@@ -20,6 +20,7 @@ const RecordTypeRouting = (ps) => {
         RecordCreator,
         RecordEditor,
         RecordRemover,
+        RecordAnonymizer,
     } = ps;
 
     return <Switch>
@@ -88,6 +89,18 @@ const RecordTypeRouting = (ps) => {
                     successInfoBackLink={ `#${url}` }
                     onSuccessfulUpdate={ ({ id }) => {
                         history.push(`${url}/${id}/remove/success`)
+                    }}
+                />
+            </Route>
+        )}
+        { RecordAnonymizer && (
+            <Route path={`${path}/:id/clean-gdpr`}>
+                <RecordAnonymizer
+                    collection={ collection }
+                    recordType={ recordType }
+                    successInfoBackLink={ `#${url}` }
+                    onSuccessfulUpdate={ ({ id }) => {
+                        history.push(`${url}/${id}/clean-gdpr/success`)
                     }}
                 />
             </Route>

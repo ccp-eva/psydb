@@ -37,6 +37,7 @@ module.exports = {
     
     merge: require('./deep-merge'),
     pathify: require('./pathify'),
+    seperateNulls: require('./seperate-nulls'),
     queryObject: require('./query-object'),
     forcePush: require('./force-push'),
     uniquePush: require('./unique-push'),

@@ -29,6 +29,12 @@ var addStudyRoutes = (bag) => {
         endpoint: endpoints_SPLIT.study.list,
         enableApiKeyAuth: true,
     }));
+    router.post('/study/read-many-labels', ...withPostStages({
+        endpoint: endpoints_SPLIT.study.readManyLabels,
+    }));
+    router.post('/study/related-study-consent-forms', ...withPostStages({
+        endpoint: endpoints_SPLIT.study.relatedStudyConsentForms,
+    }));
 }
 
 module.exports = addStudyRoutes;

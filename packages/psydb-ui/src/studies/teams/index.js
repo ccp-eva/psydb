@@ -1,22 +1,11 @@
 import React, { useState } from 'react';
+import { useRouteMatch, useParams } from 'react-router';
 
-import {
-    Route,
-    Switch,
-    Redirect,
-    useRouteMatch,
-    useHistory,
-    useParams
-} from 'react-router-dom';
-
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-
-import {
-    LoadingIndicator,
-    Icons,
-    Button,
-    Alert
-} from '@mpieva/psydb-ui-layout';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useFetch, useModalReducer, useRevision, usePermissions }
+    from '@mpieva/psydb-ui-hooks';
+import { LoadingIndicator, Icons, Button, Alert }
+    from '@mpieva/psydb-ui-layout';
 
 import StudyTeamListItem from '@mpieva/psydb-ui-lib/src/experiment-operator-team-list-item';
 
@@ -24,25 +13,17 @@ import CreateModal from './create-modal';
 import EditModal from './edit-modal';
 import HideModal from './hide-modal';
 
-import {
-    useFetch,
-    useModalReducer,
-    useRevision,
-    usePermissions,
-} from '@mpieva/psydb-ui-hooks';
 
 const StudyTeams = (ps) => {
     var { path, url } = useRouteMatch();
     var { id: studyId } = useParams();
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
     var canEdit = permissions.hasFlag('canWriteStudies');
 
     var revision = useRevision();
-    var createModal = useModalReducer();
-    var editModal = useModalReducer();
-    var hideModal = useModalReducer();
+    var [ createModal, editModal, hideModal ] = useModalReducer.many(3);
 
     var [ showHidden, setShowHidden ] = useState();
 
@@ -59,11 +40,11 @@ const StudyTeams = (ps) => {
     var { records, ...related } = fetched.data;
     
     return (
-        <div className='pt-3'>
+        <div className=''>
             <div className='d-flex justify-content-between mb-3'>
                 { canEdit && (
-                    <Button onClick={ createModal.handleShow }>
-                        { translate('New Team') }
+                    <Button size='sm' onClick={ createModal.handleShow }>
+                        { '+ ' + translate('New Team') }
                     </Button>
                 )}
                 <div
@@ -100,37 +81,31 @@ const StudyTeams = (ps) => {
                 studyId={ studyId }
             />
 
-
-
-            {
-                records.length > 0
-                ? (
-                    records
-                    .filter(it => showHidden || it.state.hidden !== true)
-                    .map(record => (
-                        <StudyTeamListItem {...({
-                            key: record._id,
-                            studyId,
-                            record,
-                            ...related,
-                            canEdit,
-                            onEditClick: editModal.handleShow,
-                            enableDelete: canEdit && record.state.hidden !== true,
-                            onDeleteClick: hideModal.handleShow
-                        })} />
-                    ))
-                )
-                : <Fallback />
-            }
+            { records.length > 0 ? (
+                records
+                .filter(it => showHidden || it.state.hidden !== true)
+                .map(record => (
+                    <StudyTeamListItem {...({
+                        key: record._id,
+                        studyId,
+                        record,
+                        ...related,
+                        canEdit,
+                        onEditClick: editModal.handleShow,
+                        enableDelete: canEdit && record.state.hidden !== true,
+                        onDeleteClick: hideModal.handleShow
+                    })} />
+                ))
+            ) : <Fallback /> }
         </div>
     )
 }
 
 var Fallback = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Alert variant='info'>
-            { translate('No teams in this study.') }
+            <i>{ translate('No teams in this study.') }</i>
         </Alert>
     )
 }

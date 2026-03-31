@@ -133,7 +133,7 @@ const FieldList = (ps) => {
 
         rendered.push(
             <Field
-                key={ key }
+                key={ ix }
                 label={ displayNameI18N[language] || displayName }
                 dataXPath={ `$.${pointer}` }
                 autoFocus={ ix === 0 }

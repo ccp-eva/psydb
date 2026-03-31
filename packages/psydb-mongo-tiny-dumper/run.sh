@@ -1,4 +1,4 @@
-CONF="an-away-team-experiment"
+CONF="study-crud"
 
 node src/run.js \
     -c ./configs/$CONF.js \

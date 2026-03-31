@@ -14,18 +14,8 @@ import {
     usePermissions
 } from '@mpieva/psydb-ui-hooks';
 
-import {
-    LoadingIndicator,
-    DetailsIconButton,
-    ExperimentIconButton,
-    Alert,
-    Table,
-} from '@mpieva/psydb-ui-layout';
-
-import {
-    datefns,
-    PostprocessSubjectForm
-} from '@mpieva/psydb-ui-lib';
+import { LoadingIndicator, ExperimentIconButton, Alert, Table }
+    from '@mpieva/psydb-ui-layout';
 
 import InhouseList from './inhouse-list';
 
@@ -33,18 +23,15 @@ const ExperimentPostprocessingListLoader = (ps) => {
     var { path, url } = useRouteMatch();
 
     var {
-        studyType,
-        experimentType,
-        subjectType,
-        researchGroupId,
+        studyType, experimentType, subjectType, researchGroupId,
     } = useParams();
 
     var revision = useRevision();
 
     var [ didFetch, fetched ] = useFetch((agent) => {
-        return agent.fetchExperimentPostprocessing({
-            experimentType,
-            subjectRecordType: subjectType,
+        return agent.experiment.listPostprocessing({
+            labMethod: experimentType,
+            subjectType,
             researchGroupId,
         })
     }, [ researchGroupId, subjectType, revision.value ]);
@@ -53,23 +40,14 @@ const ExperimentPostprocessingListLoader = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var {
-        records,
-        relatedCustomRecordTypeLabels,
-        relatedHelperSetItems,
-        relatedRecordLabels,
-    } = fetched.data;
+    var { subjectCRT, records, related } = fetched.data;
 
     if (experimentType === 'inhouse') {
         return (
             <InhouseList {...({
-                subjectType,
-
-                records,
-                relatedCustomRecordTypeLabels,
-                relatedHelperSetItems,
-                relatedRecordLabels,
-
+                experimentType,
+                subjectType, subjectCRT,
+                records, related,
                 onSuccessfulUpdate: revision.up
             }) } />
         );
@@ -77,13 +55,9 @@ const ExperimentPostprocessingListLoader = (ps) => {
     else if (experimentType === 'online-video-call') {
         return (
             <InhouseList {...({
-                subjectType,
-
-                records,
-                relatedCustomRecordTypeLabels,
-                relatedHelperSetItems,
-                relatedRecordLabels,
-
+                experimentType,
+                subjectType, subjectCRT,
+                records, related,
                 onSuccessfulUpdate: revision.up
             }) } />
         );
@@ -91,11 +65,8 @@ const ExperimentPostprocessingListLoader = (ps) => {
     else if (experimentType === 'away-team') {
         return (
             <ExperimentPostprocessingList {...({
-                records,
-                relatedCustomRecordTypeLabels,
-                relatedHelperSetItems,
-                relatedRecordLabels,
-
+                subjectType, subjectCRT,
+                records, related,
                 onSuccessfulUpdate: revision.up
             }) } />
         );
@@ -104,12 +75,9 @@ const ExperimentPostprocessingListLoader = (ps) => {
 
 
 const ExperimentPostprocessingList = (ps) => {
-    // FIXME
-    var ps = __fixRelated(ps);
     var { records, related, onSuccessfulUpdate } = ps;
 
-    var [ i18n ] = useI18N();
-    var { translate, locale } = i18n;
+    var [{ translate, locale, fdate }] = useI18N();
 
     if (records.length < 1) {
         return <Fallback />

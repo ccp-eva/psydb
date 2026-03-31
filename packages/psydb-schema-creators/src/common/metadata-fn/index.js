@@ -30,6 +30,8 @@ module.exports = (bag) => {
         'experiment',
 
         'subjectContactHistory',
+        'studyConsentForm',
+        'studyConsentDoc',
     ];
 
     var out = {};

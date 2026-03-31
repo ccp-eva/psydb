@@ -40,4 +40,12 @@ module.exports = [
         en: 'Source File',
         de: 'Quell-Datei'
     },
+    {
+        en: 'Show Available Columns',
+        de: 'Verfügbare Spalten Anzeigen',
+    },
+    {
+        en: 'Hide Available Columns',
+        de: 'Verfügbare Spalten Ausblenden',
+    }
 ]

@@ -151,5 +151,37 @@ module.exports = {
         ...metadata.subjectContactHistory,
         FullSchema: internals.SubjectContactHistoryFullSchema,
         State: internals.SubjectContactHistoryState,
+    //////////////////////////////////////////////
+
+    // XXX: using collection name bites with UC first for imports
+    studyConsentForm: {
+        ...metadata.studyConsentForm,
+        ...internals.StudyConsentForm
+    },
+    studyConsentDoc: {
+        ...metadata.studyConsentDoc,
+        ...internals.StudyConsentDoc
+    },
+    studyRoadmap: {
+        ...metadata.studyRoadmap,
+        ...internals.StudyRoadmap
+    },
+
+    StudyConsentForm: {
+        ...metadata.studyConsentForm,
+        ...internals.StudyConsentForm
+    },
+    StudyConsentDoc: {
+        ...metadata.studyConsentDoc,
+        ...internals.StudyConsentDoc
+    },
+    StudyRoadmap: {
+        ...metadata.studyRoadmap,
+        ...internals.StudyRoadmap
+    },
+    
+    Study: {
+        ...metadata.study,
+        ...internals.Study
     },
 }

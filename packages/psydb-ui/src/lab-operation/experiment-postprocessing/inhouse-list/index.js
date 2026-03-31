@@ -1,181 +1,99 @@
 import React from 'react';
-
-import {
-    format as formatDateInterval
-} from '@mpieva/psydb-date-interval-fns';
-
+import { CRTSettings } from '@mpieva/psydb-common-lib';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-import { usePermissions, useModalReducer } from '@mpieva/psydb-ui-hooks';
+import { Alert, Table } from '@mpieva/psydb-ui-layout';
 
-import {
-    EditIconButtonInline,
-    DetailsIconButton,
-    ExperimentIconButton,
-    SubjectIconButton,
-    Alert,
-    Table,
-} from '@mpieva/psydb-ui-layout';
+import SubjectCell from './subject-cell';
+import ExperimentCell from './experiment-cell';
+import PostprocessingCells from './postprocessing-cells';
+import ConsentPostprocessModal from './consent-postprocess-modal';
 
-import { PostprocessSubjectForm } from '@mpieva/psydb-ui-lib';
-import { DetailedPostprocessModal } from '@mpieva/psydb-ui-compositions';
+import { TableFallback, Cell, getStudyLabel } from './utils';
+const enableStudyConsentWorkflow = true;
 
 const InhouseList = (ps) => {
     var {
-        subjectType,
-
-        records,
-        relatedCustomRecordTypeLabels,
-        relatedHelperSetItems,
-        relatedRecordLabels,
-
+        experimentType, subjectType,
+        subjectCRT, records, related,
         onSuccessfulUpdate
     } = ps;
 
-    var subjectModal = useModalReducer();
+    subjectCRT = CRTSettings({ data: subjectCRT }); // FIXME
 
-    var permissions = usePermissions();
-    var canReadSubjects = permissions.hasFlag('canReadSubjects');
-    var canWriteSubjects = permissions.hasFlag('canWriteSubjects');
+    var shouldHaveStudyConsentDoc = (
+        enableStudyConsentWorkflow && experimentType === 'inhouse'
+    );
 
+    var renderedHead = <TableHead hasConsent={ shouldHaveStudyConsentDoc } />
     if (records.length < 1) {
-        return <Fallback />
+        return <TableFallback renderedTableHead={ renderedHead } text={
+            translate('No unprocessed appointments found.')
+        } />
+    }
+
+    var sharedBag = {
+        experimentType, subjectCRT, related,
+        shouldHaveStudyConsentDoc, onSuccessfulUpdate
     }
 
     return (
-        <>
-            <DetailedPostprocessModal
-                { ...subjectModal.passthrough }
-                onSuccessfulUpdate={ onSuccessfulUpdate }
-            />
-            <Table>
-                <TableHead />
-                <tbody>
-                    { records.map((experimentRecord, index) => (
-                        <ExperimentSubjectItems { ...({
-                            key: index,
-                            
-                            subjectType,
-                            experimentRecord,
-                            relatedRecordLabels,
-                            
-                            canReadSubjects,
-                            canWriteSubjects,
-                            subjectModal,
-                            onSuccessfulUpdate
-                        })} />
-                    )) }
-                </tbody>
-            </Table>
-        </>
+        <Table>
+            { renderedHead }
+            <tbody>
+                { records.map((it, ix) => (
+                    <ExperimentSubjectItems
+                        key={ ix } experimentRecord={ it } { ...sharedBag }
+                    />
+                )) }
+            </tbody>
+        </Table>
     )
 }
 
 const ExperimentSubjectItems = (ps) => {
     var {
-        subjectType,
-        experimentRecord,
-        relatedRecordLabels,
-        
-        canReadSubjects,
-        canWriteSubjects,
-        subjectModal,
+        experimentType, experimentRecord, 
+        subjectCRT, related,
+
+        shouldHaveStudyConsentDoc,
         onSuccessfulUpdate
     } = ps;
 
-    var [{ translate, locale }] = useI18N();
-
-    var { _enableFollowUpExperiments, state } = experimentRecord;
-    var { subjectData } = state;
+    var { _id: experimentId } = experimentRecord;
+    var { studyId, subjectData } = experimentRecord.state;
+    
+    var studyLabel = getStudyLabel({ related, studyId });
+    
+    var subjectType = subjectCRT.getType();
     subjectData = subjectData.filter(it => (
         it.subjectType === subjectType && it.participationStatus === 'unknown'
-    ))
-    var studyLabel = (
-        relatedRecordLabels
-        .study[experimentRecord.state.studyId]._recordLabel
-    );
+    ));
 
-    var {
-        startDate,
-        startTime,
-        endTime
-    } = formatDateInterval(experimentRecord.state.interval, { locale });
+    var sharedBag = { experimentRecord, onSuccessfulUpdate };
+    return subjectData.map((it, ix) => {
+        var { subjectId } = it;
+        return (
+            <tr key={ `${experimentId}_${subjectId}` }>
+                <SubjectCell
+                    { ...sharedBag }
+                    subjectCRT={ subjectCRT } related={ related }
+                    subjectData={ it }
+                />
+                <ExperimentCell experimentRecord={ experimentRecord } />
+                <Cell>{ studyLabel }</Cell>
 
-    return (
-        <>
-            { subjectData.map((it, index) => {
-                var subjectLabel = (
-                    relatedRecordLabels
-                    .subject[it.subjectId]._recordLabel
-                );
-
-                var onClickEdit = () => subjectModal.handleShow({
-                    title: translate(
-                        'Postprocessing (${subject} - ${study})',
-                        {
-                            subject: subjectLabel,
-                            study: studyLabel
-                        }
-                    ),
-                    subjectType,
-                    subjectId: it.subjectId,
-                    experimentRecord,
-                    relatedRecordLabels,
-                });
-
-                return (
-                    <tr key={ `${experimentRecord._id}_${it.subjectId}` }>
-                        <Cell>
-                            { subjectLabel }
-                            { canWriteSubjects && (
-                                <EditIconButtonInline
-                                    onClick={ onClickEdit }
-                                />
-                            )}
-                            { !canWriteSubjects && canReadSubjects && (
-                                <SubjectIconButton
-                                    to={`/subjects/${subjectType}/${it.subjectId}`}
-                                    target='_blank'
-                                />
-                            )}
-                        </Cell>
-                        <Cell>
-                            { startDate }
-                            {' '}
-                            { startTime }
-                            {' - '}
-                            { endTime }
-                            {' '}
-                            <ExperimentIconButton
-                                to={`/experiments/${experimentRecord.type}/${experimentRecord._id}`}
-                                target='_blank'
-                            />
-                        </Cell>
-                        <Cell>{ studyLabel }</Cell>
-                        <Cell>
-                            <PostprocessSubjectForm { ...({
-                                subjectLabel,
-                                experimentId: experimentRecord._id,
-                                subjectId: it.subjectId,
-                                onSuccessfulUpdate,
-                                enableFollowUpExperiments: (
-                                    _enableFollowUpExperiments
-                                )
-                            }) } />
-                        </Cell>
-                    </tr>
-                );
-            })}
-        </>
-    );
+                <PostprocessingCells
+                    { ...sharedBag }
+                    shouldHaveStudyConsentDoc={ shouldHaveStudyConsentDoc }
+                    subjectData={ it }
+                />
+            </tr>
+        );
+    });
 }
 
-const Cell = ({ children }) => (
-    <td style={{ verticalAlign: 'middle' }}>
-        { children }
-    </td>
-);
-
 const TableHead = (ps) => {
+    var { hasConsent } = ps;
     var [{ translate }] = useI18N();
     return (
         <thead>
@@ -183,24 +101,13 @@ const TableHead = (ps) => {
                 <th>{ translate('Subject') }</th>
                 <th>{ translate('Date') }</th>
                 <th>{ translate('Study') }</th>
+                { hasConsent && (
+                    <th>{ translate('Consent Doc') }</th>
+                )}
                 <th>{ translate('Status') }</th>
             </tr>
         </thead>
     );
-}
-
-const Fallback = (ps) => {
-    var [{ translate }] = useI18N();
-    return (
-        <>
-            <Table className='mb-1'>
-                <TableHead />
-            </Table>
-            <Alert variant='info'>
-                <i>{ translate('No unprocessed appointments found.') }</i>
-            </Alert>
-        </>
-    )
 }
 
 export default InhouseList;

@@ -7,6 +7,8 @@ module.exports = {
     makeRX: require('./make-rx'),
     makeDiaRX: require('./make-dia-rx'),
 
+    SRTSettings: require('./srt-settings'),
+
     CRTSettings: require('./crt-settings'),
     CRTSettingsList: require('./crt-settings-list'),
     FieldDefinition: require('./field-definition'),
@@ -64,4 +66,5 @@ module.exports = {
   
     SimpleCache: require('./simple-cache'),
     SmartArray: require('./smart-array'),
+    URL: require('./url-helper'),
 }

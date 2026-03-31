@@ -8,7 +8,7 @@ const toEnum = (options) => {
         var _enum = { keys: [], labels: [] };
         for (var it of options) {
             _enum.keys.push(it.key);
-            _enum.labels.push(it.labels);
+            _enum.labels.push(it.labels); // XXX: typo?
         }
         return _enum;
     }

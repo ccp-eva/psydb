@@ -24,6 +24,7 @@ const PersonnelEditorContainer = ({
                     <GenericRecordEditorFooter
                         enableHide={ true }
                         enableRemove={ true }
+                        enableCleanGdpr={ true }
                         onSuccessfulUpdate={ revision.up }
                     />
                 )}

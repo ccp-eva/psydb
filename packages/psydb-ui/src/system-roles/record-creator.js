@@ -69,6 +69,7 @@ const Defaults = () => {
         canReadParticipation: false,
         canWriteParticipation: false,
         canViewStudyLabOpsSettings: false,
+        canViewStudyLabTeams: false,
         canAccessSensitiveFields: false,
         
         canCreateReservationsWithinTheNext3Days: false,

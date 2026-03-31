@@ -33,7 +33,10 @@ export {
     DoorClosedFill,
     XCircle,
     XLg,
-    X
+    X,
+
+    Check,
+    CheckAll,
 
 } from 'react-bootstrap-icons';
 

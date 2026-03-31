@@ -28,3 +28,4 @@ export * from './location-type-key';
 
 export * from './helper-set-id';
 export * from './crt-field-pointer';
+export * from './custom-field-type';

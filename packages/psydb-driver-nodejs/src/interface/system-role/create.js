@@ -36,6 +36,7 @@ var create = async (bag) => {
         '/canWriteStudies',
         '/canRemoveStudies',
         '/canViewStudyLabOpsSettings',
+        '/canViewStudyLabTeams',
 
         '/canReadSubjects',
         '/canWriteSubjects',

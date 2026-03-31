@@ -5,7 +5,11 @@ import { ButtonGroup, Button } from '@mpieva/psydb-ui-layout';
 import { GenericEnum } from './generic-enum';
 
 export const ExtBool = withField({ Control: (ps) => {
-    var { dataXPath, formikField, formikForm, disabled } = ps;
+    var {
+        dataXPath, formikField, formikForm,
+        disabled = false, inverted = false,
+    } = ps;
+
     var { setFieldValue } = formikForm;
     var { value } = formikField;
 
@@ -17,13 +21,24 @@ export const ExtBool = withField({ Control: (ps) => {
         onChange: (next) => setFieldValue(dataXPath, next)
     };
 
-    return (
-        <ButtonGroup className='mt-1'>
-            <Yes { ...bag }>{ translate('Yes') }</Yes>
-            <No { ...bag }>{ translate('No') }</No>
-            <Unknown { ...bag }>{ translate('Unknown') }</Unknown>
-        </ButtonGroup>
-    )
+    if (inverted) {
+        return (
+            <ButtonGroup className='mt-1'>
+                <YesInverted { ...bag }>{ translate('Yes') }</YesInverted>
+                <NoInverted { ...bag }>{ translate('No') }</NoInverted>
+                <Unknown { ...bag }>{ translate('Unknown') }</Unknown>
+            </ButtonGroup>
+        )
+    }
+    else {
+        return (
+            <ButtonGroup className='mt-1'>
+                <Yes { ...bag }>{ translate('Yes') }</Yes>
+                <No { ...bag }>{ translate('No') }</No>
+                <Unknown { ...bag }>{ translate('Unknown') }</Unknown>
+            </ButtonGroup>
+        )
+    }
 
 }});
 
@@ -51,6 +66,23 @@ var Yes = (ps) => {
     )
 }
 
+var YesInverted = (ps) => {
+    var { value, onChange, disabled } = ps;
+    var variant = (
+        disabled
+        ? 'secondary'
+        : 'danger'
+    );
+    return (
+        <YNButton
+            active={ value === 'yes' }
+            variant={ variant }
+            onClick={ () => onChange('yes') }
+            { ...ps }
+        />
+    )
+}
+
 var No = (ps) => {
     var { value, onChange, disabled } = ps;
     var variant = (
@@ -58,6 +90,30 @@ var No = (ps) => {
         ? 'secondary'
         : 'danger'
     );
+    return (
+        <YNButton
+            active={ value === 'no' }
+            variant={ variant }
+            onClick={ () => onChange('no') }
+            { ...ps }
+        />
+    )
+}
+
+var NoInverted = (ps) => {
+    var { value, onChange, disabled } = ps;
+    var { branding } = useUIConfig();
+    
+    var variant = (
+        branding?.options?.useSuccessColorForYesValues
+        ? 'success'
+        : 'primary'
+    );
+
+    if (disabled) {
+        variant = 'secondary';
+    }
+
     return (
         <YNButton
             active={ value === 'no' }

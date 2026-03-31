@@ -11,46 +11,30 @@ import {
     useSortReducer,
 } from '@mpieva/psydb-ui-hooks';
 
-import {
-    Button,
-    LoadingIndicator,
-    TabNav,
-} from '@mpieva/psydb-ui-layout';
+import { Button, TabNav, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import { CreateModal } from '@mpieva/psydb-ui-lib/src/participation/for-study';
 import ParticipationList from './participation-list';
 import WKPRCCSVExportButton from './wkprc-csv-export-button';
-import CSVImportModal from './csv-import-modal';
-
 
 const StudyParticipation = (ps) => {
-    var {
-        // inModal = true
-    } = ps;
-
     var { path, url } = useRouteMatch();
     var { id } = useParams();
 
     var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
     var [{ translate, locale, language }] = useI18N();
-    var revision = useRevision();
 
     var permissions = usePermissions();
     var canAddSubjects = permissions.hasFlag('canWriteParticipation');
-    var canImportCSV = permissions.isRoot();
 
+    var revision = useRevision();
     var createModal = useModalReducer();
-    var csvImportModal = useModalReducer();
     
     var initialSort = {
         sortPath: 'scientific.state.internals.participatedInStudies.timestamp',
         sortDirection: 'asc',
     }
-    //var sorter = (
-    //    inModal
-    //    ? useSortReducer(initialSort)
-    //    : useSortURLSearchParams(initialSort)
-    //);
+    
     var sorter = useSortReducer(initialSort);
 
     var [ selectedSubjectType, setSelectedSubjectType ] = useState();
@@ -103,7 +87,7 @@ const StudyParticipation = (ps) => {
     var modalBag = { studyId: id, onSuccessfulUpdate };
     
     return (
-        <div className='mt-3'>
+        <div className=''>
 
             <CreateModal
                 { ...modalBag }
@@ -111,51 +95,31 @@ const StudyParticipation = (ps) => {
                 subjectRecordType={ selectedSubjectType }
             />
 
-            <CSVImportModal
-                { ...modalBag }
-                { ...csvImportModal.passthrough }
-            />
-            
-            <div className='mt-3'>
+            <div className=''>
                 <div className='d-flex justify-content-between align-items-center'>
-                    { subjectTypeInfos.length > 1 ? (
-                        <TabNav
-                            activeKey={ selectedSubjectType }
-                            items={ subjectTypeInfos.map(it => ({
-                                key: it.type,
-                                label: (
-                                    (it.displayNameI18N || {})[language]
-                                    || it.displayName
-                                )
-                            }))}
-                            onItemClick={ (key) => setSelectedSubjectType(key) }
-                        />
-                    ) : (
-                        <div />
-                    )}
+                    <TabNav
+                        activeKey={ selectedSubjectType }
+                        items={ subjectTypeInfos.map(it => ({
+                            key: it.type,
+                            label: translate.crt(it),
+                        }))}
+                        onItemClick={ (key) => setSelectedSubjectType(key) }
+                    />
                     <div className='d-flex gapx-3'>
                         { canAddSubjects && (
-                            <Button onClick={ createModal.handleShow }>
-                                { translate('Add Participation') }
+                            <Button size='sm' onClick={ createModal.handleShow }>
+                                {'+ '}{ translate('Add Participation') }
                             </Button>
                         )}
                         { IS_WKPRC && (
                             <WKPRCCSVExportButton
+                                size='sm'
                                 endpoint='wkprc-csv-export/participation'
                                 outputName='participation-export.csv'
                                 studyId={ id }
                                 subjectType={ selectedSubjectType }
                             />
                         )}
-                        
-                        {/* canImportCSV && (
-                            <Button
-                                className='ml-2'
-                                onClick={ csvImportModal.handleShow }
-                            >
-                                { translate('CSV Import') }
-                            </Button>
-                        )*/}
                     </div>
                 </div>
 

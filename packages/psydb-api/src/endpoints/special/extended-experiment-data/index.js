@@ -7,11 +7,13 @@ var {
     ejson,
     keyBy,
     groupBy,
+    merge,
     compareIds,
     convertPointerToPath,
 } = require('@mpieva/psydb-core-utils');
 
 var {
+    SmartArray,
     checkLabOperationAccess,
     convertCRTRecordToSettings,
     findCRTAgeFrameField,
@@ -32,10 +34,14 @@ var {
     fetchRecordDisplayDataById,
 } = require('@mpieva/psydb-api-lib');
 
+var { __fixRelated, __fixDefinitions }
+    = require('@mpieva/psydb-common-compat');
+
 var fetchOneExperimentData = require('./fetch-one-experiment-data');
 var fetchOneStudyData = require('./fetch-one-study-data');
 var fetchOneOpsTeamData = require('./fetch-one-ops-team-data');
 var fetchLabProcedureSettingData = require('./fetch-lab-procedure-setting-data');
+var fetchStudyConsentDocsBySubject = require('./fetch-study-consent-docs-by-subject');
 
 var {
     ExactObject,
@@ -90,6 +96,10 @@ var extendedExperimentData = async (context, next) => {
         selectedSubjectIds,
     } = experimentData.record.state;
 
+    var studyConsentDocsBySubject = await fetchStudyConsentDocsBySubject({
+        db, experimentData
+    });
+
     ////////////////////////////////////////
     var studyRecord = await (
         db.collection('study').findOne({
@@ -126,6 +136,12 @@ var extendedExperimentData = async (context, next) => {
         if (permissions.availableLabMethods.includes(experimentType)) {
             hasAnyAccess = true;
         }
+    }
+    if (!hasAnyAccess) {
+        hasAnyAccess = permissions.hasSomeFlags([
+            'canReadParticipation',
+            'canWriteParticipation'
+        ]);
     }
     if (!hasAnyAccess) {
         throw new ApiError(403, {
@@ -272,6 +288,16 @@ var extendedExperimentData = async (context, next) => {
     debug('...done iterating contained subject types');
 
 
+    var __related = merge(...SmartArray([
+        __fixRelated(experimentData.related, { isResponse: false }),
+        __fixRelated(studyData.related, { isResponse: false }),
+        //__fixRelated(locationData.related, { isResponse: false }),
+        __fixRelated(labProcedureSettingData.related, { isResponse: false }),
+        ( opsTeamData && (
+            __fixRelated(opsTeamData?.related, { isResponse: false })
+        )),
+    ]));
+
     context.body = ResponseBody({
         data: {
             experimentData: {
@@ -295,6 +321,9 @@ var extendedExperimentData = async (context, next) => {
             
             locationData,
             subjectDataByType,
+            studyConsentDocsBySubject,
+
+            related: __related,
         },
     });
 

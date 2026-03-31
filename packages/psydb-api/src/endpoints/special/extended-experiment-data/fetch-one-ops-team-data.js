@@ -34,7 +34,7 @@ var fetchOneOpsTeamData = async (options) => {
         schema: opsTeamRecordSchema,
         timezone,
     });
-    
+   
     return {
         record: opsTeamRecord,
         related: opsTeamRelated,

@@ -15,8 +15,12 @@ var inline = require('@cdxoo/inline-string');
 var { withPostStages, withGetStages } = require('./stage-helpers');
 
 var addCRTSettingsRoutes = require('./add-crt-settings-routes');
+var addPersonnelRoutes = require('./add-personnel-routes');
 var addStudyRoutes = require('./add-study-routes');
+var addStudyConsentFormRoutes = require('./add-study-consent-form-routes');
+var addStudyConsentDocRoutes = require('./add-study-consent-doc-routes');
 var addSubjectRoutes = require('./add-subject-routes');
+var addExperimentRoutes = require('./add-experiment-routes');
 var addLocationRoutes = require('./add-location-routes');
 var addCSVImportRoutes = require('./add-csv-import-routes');
 var addAuditRoutes = require('./add-audit-routes');
@@ -296,12 +300,12 @@ var createRouting = (bag = {}) => {
         endpoints.special.extendedExperimentData
     );
 
-    router.post('/experiment-postprocessing',
-        withSelfAuth(),
-        withPermissions(),
-        withKoaBody(),
-        endpoints.special.experimentPostprocessing
-    );
+    //router.post('/experiment-postprocessing',
+    //    withSelfAuth(),
+    //    withPermissions(),
+    //    withKoaBody(),
+    //    endpoints.special.experimentPostprocessing
+    //);
 
     router.post('/experiment-variants',
         withSelfAuth(),
@@ -429,13 +433,6 @@ var createRouting = (bag = {}) => {
     );
 
 
-    router.post('/personnel/related-participation',
-        withSelfAuth(),
-        withPermissions(),
-        withKoaBody(),
-        endpoints.personnel.relatedParticipation
-    );
-
     router.post('/ops-team/related-experiments',
         withSelfAuth(),
         withPermissions(),
@@ -519,8 +516,12 @@ var createRouting = (bag = {}) => {
     //}));
 
     addCRTSettingsRoutes({ router });
+    addPersonnelRoutes({ router });
     addStudyRoutes({ router });
+    addStudyConsentFormRoutes({ router });
+    addStudyConsentDocRoutes({ router });
     addSubjectRoutes({ router });
+    addExperimentRoutes({ router });
     addLocationRoutes({ router });
     addCSVImportRoutes({ router });
     addAuditRoutes({ router });

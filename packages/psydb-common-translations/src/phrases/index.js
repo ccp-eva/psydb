@@ -15,7 +15,10 @@ module.exports = [
     ...require('./crt-editor'),
     ...require('./csv-imports'),
     ...require('./duplicates'),
+    ...require('./study-consent-workflow'),
+    ...require('./study-roadmap'),
 
+    ...require('./_record-anonymizer'),
     ...require('./_error-response-modal'),
     ...require('./_fieldtype'),
     ...require('./_participationStatus'),
@@ -296,6 +299,10 @@ module.exports = [
     {
         en: 'Details',
         de: 'Details'
+    },
+    {
+        en: 'Edit Details',
+        de: 'Details Bearbeiten'
     },
     {
         en: 'Date',
@@ -919,6 +926,14 @@ module.exports = [
     {
         en: 'Record Details',
         de: 'Datensatz-Details'
+    },
+    {
+        en: 'Raw Data',
+        de: 'Roh-Daten'
+    },
+    {
+        en: 'Raw History',
+        de: 'Roh-Historie'
     },
     {
         en: 'History',
@@ -1738,5 +1753,10 @@ module.exports = [
     {
         en: 'Go to Record',
         de: 'Zum Datensatz',
-    }
+    },
+
+    {
+        en: 'Admin Fallback System Role',
+        de: 'Fallback System-Rolle für Admins'
+    },
 ]

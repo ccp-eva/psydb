@@ -14,6 +14,7 @@ var localesByCode = [
 
 var withClientI18N = () => async (context, next) => {
     var { request, timezone } = context;
+    // TODO: check headers with ajv
     var { language = 'en', locale = 'en-US' } = request.header;
    
     context.language = language;

@@ -56,8 +56,7 @@ const CreateForm = (ps) => {
     );
 }
 
-const RecordCreator = withRecordCreator({
+export const RecordCreator = withRecordCreator({
     CreateForm,
 });
 
-export default RecordCreator;

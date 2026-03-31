@@ -18,6 +18,7 @@ var PersonnelGroup = MessageHandlerGroup([
     GenericUnhideRecordHandler({ collection: 'personnel' }),
     
     require('./remove'),
+    require('./clean-gdpr'),
 ]);
 
 module.exports = PersonnelGroup;

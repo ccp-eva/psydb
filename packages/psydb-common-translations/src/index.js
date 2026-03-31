@@ -24,6 +24,8 @@ var translate = (lang = 'en', template, props) => {
         return render(translatedTemplate, props);
     }
     else {
+        console.error({ template, translatedTemplate });
+        //throw new Error('')
         return render('[!! ' + template + ' !!]', props);
         // FIXME: temp compat
         //return render(template, props);
@@ -47,7 +49,7 @@ translate.crt = (lang = 'en', crt) => {
     );
 
     return (
-        base.displayNameI18N?.[lang] || base.label
+        base.displayNameI18N?.[lang] || base.label || base.displayName
     );
 }
 

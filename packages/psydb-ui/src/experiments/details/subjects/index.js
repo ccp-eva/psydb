@@ -8,6 +8,8 @@ import {
 
 import {
     SubjectIconButton,
+    StudyConsentDocIconButton_TODO,
+    StudyConsentDocIconButton_DONE,
     RemoveIconButtonInline,
 } from '@mpieva/psydb-ui-layout';
 
@@ -23,16 +25,20 @@ const Subjects = (ps) => {
         experimentData,
         labProcedureSettingData,
         studyData,
+        opsTeamData,
         subjectDataByType,
+        studyConsentDocsBySubject,
+
+        related,
         onSuccessfulUpdate,
     } = ps;
     var { type: experimentType } = experimentData.record;
 
-    var commentModal = useModalReducer({ show: false });
-    var moveModal = useModalReducer({ show: false });
-    var followupModal = useModalReducer({ show: false });
-    var removeModal = useModalReducer({ show: false });
-    var removeManualModal = useModalReducer({ show: false });
+    var [
+        consentFormSelectModal,
+        commentModal, moveModal, followupModal,
+        removeModal, removeManualModal
+    ] = useModalReducer.many(6);
 
     var send = useSend(({ subjectId, status }) => ({
         type: 'experiment/change-invitation-status',
@@ -56,8 +62,12 @@ const Subjects = (ps) => {
             <Modals { ...({
                 experimentData,
                 studyData,
+                opsTeamData,
                 subjectDataByType,
+                
+                related,
 
+                consentFormSelectModal,
                 commentModal,
                 moveModal,
                 followupModal,
@@ -70,6 +80,7 @@ const Subjects = (ps) => {
             <ActionsContext.Provider value={{
                 experimentType,
 
+                onClickConsent: consentFormSelectModal.handleShow,
                 onClickComment: commentModal.handleShow,
                 onClickMove: moveModal.handleShow,
                 onClickFollowUp: (
@@ -90,6 +101,8 @@ const Subjects = (ps) => {
                     labProcedureSettingData,
                     studyData,
                     subjectDataByType,
+                    studyConsentDocsBySubject,
+                    related,
                     
                     ActionsComponent,
                 }) } />
@@ -98,19 +111,25 @@ const Subjects = (ps) => {
     )
 }
 
-const ActionsComponent = ({
-    experimentSubjectData,
-    subjectRecord,
+const ActionsComponent = (ps) => {
+    var {
+        experimentSubjectData,
+        subjectRecord,
+        studyConsentDocsBySubject,
 
-    hasContactIssue,
-    isUnparticipated,
-}) => {
+        hasContactIssue,
+        isUnparticipated,
+    } = ps;
+
     var context = useContext(ActionsContext);
     var permissions = usePermissions();
 
+    var studyConsentDoc = studyConsentDocsBySubject[subjectRecord._id];
+
     var {
         experimentType,
-
+        
+        onClickConsent,
         onClickComment,
         onClickMove,
         onClickFollowUp,
@@ -125,9 +144,19 @@ const ActionsComponent = ({
     var canRemoveSubject = permissions.hasLabOperationFlag(
         experimentType, 'canRemoveExperimentSubject'
     );
-
+    
     return (
         <div className='d-flex justify-content-end media-print-hidden'>
+            { studyConsentDoc ? (
+                <StudyConsentDocIconButton_DONE onClick={
+                    () => onClickConsent({ subjectRecord })
+                } />
+            ) : (
+                <StudyConsentDocIconButton_TODO onClick={
+                    () => onClickConsent({ subjectRecord })
+                } />
+            )}
+
             { permissions.hasFlag('canReadSubjects') && (
                 <SubjectIconButton
                     to={`/subjects/${subjectRecord.type}/${subjectRecord._id}`}
