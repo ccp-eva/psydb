@@ -151,6 +151,7 @@ module.exports = {
         ...metadata.subjectContactHistory,
         FullSchema: internals.SubjectContactHistoryFullSchema,
         State: internals.SubjectContactHistoryState,
+    },
     //////////////////////////////////////////////
 
     // XXX: using collection name bites with UC first for imports
