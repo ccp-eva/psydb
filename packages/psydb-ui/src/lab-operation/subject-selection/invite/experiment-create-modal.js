@@ -1,41 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import intervalfns from '@mpieva/psydb-date-interval-fns';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
-import { WithDefaultModal, Button, Alert } from '@mpieva/psydb-ui-layout';
+import { WithDefaultModal, Alert } from '@mpieva/psydb-ui-layout';
 
-import { datefns } from '@mpieva/psydb-ui-lib';
-import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
+//import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
 
+import ExperimentCreateForm from './experiment-create-form';
 
 const CreateModalBody = (ps) => {
     var {
-        onHide,
-        modalPayloadData,
-
-        inviteType,
-        desiredTestInterval,
-        testableIntervals,
+        onHide, modalPayloadData,
 
         studyData,
-        subjectId,
-        subjectLabel,
-
+        inviteType, desiredTestInterval, testableIntervals,
+        subjectId, subjectLabel,
         onSuccessfulUpdate,
     } = ps;
 
     var {
-        studyId,
-        locationRecord,
-        reservationRecord,
+        studyId, locationRecord, reservationRecord,
         teamRecords,
-        start,
-        slotDuration,
-        maxEnd,
+        start, maxEnd, slotDuration,
     } = modalPayloadData;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var studyRecord = studyData.records.find(it => it._id === studyId);
     var { enableFollowUpExperiments } = studyRecord.state;
@@ -44,12 +34,6 @@ const CreateModalBody = (ps) => {
     var experimentOperatorTeamId = (
         reservationRecord.state.experimentOperatorTeamId
     );
-
-    var [ comment, setComment ] = useState('');
-    var [ autoConfirm, setAutoConfirm ] = useState(false);
-
-    var minEnd = new Date(start.getTime() + slotDuration);
-    var [ end, setEnd ] = useState(new Date(minEnd.getTime() - 1));
 
     var isSubjectTestable = false;
     //console.log({ testableIntervals });
@@ -76,26 +60,32 @@ const CreateModalBody = (ps) => {
         messageType = 'experiment/create-from-online-video-call-reservation';
     }
 
-    var send = useSend(() => ({
-        type: messageType,
-        payload: {
-            props: {
+    var send = useSend((formData) => {
+        var { comment, autoConfirm, end } = formData;
+
+        return {
+            type: messageType,
+            payload: { props: {
                 studyId,
                 experimentOperatorTeamId,
                 locationId,
-                //subjectIds: [ subjectId ],
                 subjectData: [{ subjectId, comment, autoConfirm }],
 
                 interval: {
                     start: start.toISOString(),
-                    end: end.toISOString()
+                    end: new Date(end).toISOString()
                 }
-            }
+            }}
         }
-    }), {
+    }, {
         onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
-        dependencies: [ subjectId, comment, autoConfirm ]
+        dependencies: [ subjectId ]
     });
+
+    var initialValues = {
+        ...ExperimentCreateForm.createDefaults(),
+        end: minEnd.getTime(),
+    }
 
     return (
         <>
@@ -103,30 +93,16 @@ const CreateModalBody = (ps) => {
                 <Alert variant='danger'>
                     <b>{ translate('Not in Age Range') }</b>
                 </Alert>
-            )} 
-            <ExperimentShortControls { ...({
-                subjectLabel,
-
-                start,
-                end,
-                minEnd,
-                maxEnd,
-                slotDuration,
-
-                comment,
-                autoConfirm,
-
-                onChangeComment: setComment,
-                onChangeAutoConfirm: setAutoConfirm,
-                onChangeEnd: setEnd,
-            })} />
-
-            <hr />
-            <div className='d-flex justify-content-end'>
-                <Button onClick={ send.exec }>
-                    { translate('Save') }
-                </Button>
-            </div>
+            )}
+            <ExperimentCreateForm.Component
+                onSubmit={ send.exec }
+                initialValues={ initialValues }
+                subjectLabel={ subjectLabel }
+                start={ start }
+                minEnd={ minEnd }
+                maxEnd={ maxEnd }
+                slotDuration={ slotDuration }
+            />
         </>
     );
 }
