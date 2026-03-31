@@ -27,6 +27,8 @@ const CreateModalBody = (ps) => {
 
     var [{ translate }] = useI18N();
 
+    var minEnd = new Date(start.getTime() + slotDuration);
+
     var studyRecord = studyData.records.find(it => it._id === studyId);
     var { enableFollowUpExperiments } = studyRecord.state;
 
