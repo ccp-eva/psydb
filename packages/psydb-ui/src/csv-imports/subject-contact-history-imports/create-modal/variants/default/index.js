@@ -6,6 +6,7 @@ import { Button, SmallFormFooter } from '@mpieva/psydb-ui-layout';
 import { DefaultForm } from '@mpieva/psydb-ui-lib/src/formik';
 
 import CSVUploadField from '../../../../csv-upload-field';
+import CSVFieldInfo from './csv-field-info';
 import PreviewStage from './preview-stage';
 
 export const DefaultVariant = (ps) => {
@@ -53,6 +54,8 @@ const PrepareStage = (ps) => {
 
     return (
         <>
+            <CSVFieldInfo />
+
             <CSVUploadField
                 label={ translate('Upload File') }
                 dataXPath='$.fileId'
