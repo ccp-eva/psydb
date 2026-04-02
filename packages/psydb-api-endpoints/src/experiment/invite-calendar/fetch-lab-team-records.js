@@ -14,7 +14,7 @@ var fetchLabTeamRecords = async (bag) => {
             'studyId': { $in: studyIds },
             $or: [
                 { 'state.hidden': { $ne: true }},
-                { '_id': labTeamIds }
+                { '_id': { $in: labTeamIds }}
             ]
         }},
         StripEventsStage(),
