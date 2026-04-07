@@ -12,7 +12,7 @@
   "dependencies": {
     "mocha": "~9.2.2",
     "chai": "~4.3.6",
-    "koa": "~2.14.2",
+    "koa": "~2.15.4",
     "@cdxoo/mongo-test-helpers": "~0.7.1",
     "@cdxoo/mongodb-restore": "2.0.0-alpha.2",
     "@mpieva/psydb-core-utils": "workspace:*",

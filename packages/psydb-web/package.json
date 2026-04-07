@@ -22,7 +22,7 @@
   "dependencies": {
     "debug": "~4.3.4",
     "co": "~4.6.0",
-    "koa": "~2.14.2",
+    "koa": "~2.15.4",
     "koa-compose": "~4.1.0",
     "koa-static-cache": "~5.1.4",
     "koa-mount": "~4.0.0",
