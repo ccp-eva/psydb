@@ -37,7 +37,7 @@
     "bcryptjs": "~3.0.3",
     "jsonpointer": "~5.0.1",
     "is-subset": "~0.1.1",
-    "nodemailer": "~6.9.14",
+    "nodemailer": "~7.0.13",
     "deepmerge": "~4.2.2",
     "escape-string-regexp": "~4.0.0"
   },

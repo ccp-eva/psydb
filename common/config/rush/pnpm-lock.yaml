@@ -804,8 +804,8 @@ importers:
         specifier: ~3.3.6
         version: 3.3.8
       nodemailer:
-        specifier: ~6.9.14
-        version: 6.9.16
+        specifier: ~7.0.13
+        version: 7.0.13
       qs:
         specifier: ~6.12.1
         version: 6.12.3
@@ -911,9 +911,6 @@ importers:
       nanoid:
         specifier: ~3.3.6
         version: 3.3.8
-      nodemailer:
-        specifier: ~6.9.14
-        version: 6.9.16
     devDependencies:
       '@mpieva/psydb-fixtures':
         specifier: workspace:~0.1.0-alpha
@@ -1015,8 +1012,8 @@ importers:
         specifier: ~3.3.6
         version: 3.3.8
       nodemailer:
-        specifier: ~6.9.14
-        version: 6.9.16
+        specifier: ~7.0.13
+        version: 7.0.13
       sift:
         specifier: ~16.0.1
         version: 16.0.1
@@ -11352,12 +11349,17 @@ packages:
     dev: true
 
   /nodemailer@6.10.0:
-    resolution: {integrity: sha512-SQ3wZCExjeSatLE/HBaXS5vqUOQk6GtBdIIKxiFdmm01mOQZX/POJkO3SUX1wDiYcwUOJwT23scFSC9fY2H8IA==}
+    resolution: {integrity: sha512-SQ3wZCExjeSatLE/HBaXS5vqUOQk6GtBdIIKxiFdmm01mOQZX/POJkO3SUX1wDiYcwUOJwT23scFSC9fY2H8IA==, tarball: https://registry.npmjs.org/nodemailer/-/nodemailer-6.10.0.tgz}
     engines: {node: '>=6.0.0'}
     dev: false
 
   /nodemailer@6.9.16:
     resolution: {integrity: sha512-psAuZdTIRN08HKVd/E8ObdV6NO7NTBY3KsC30F7M4H1OnmLCUNaS56FpYxyb26zWLSyYF9Ozch9KYHhHegsiOQ==}
+    engines: {node: '>=6.0.0'}
+    dev: false
+
+  /nodemailer@7.0.13:
+    resolution: {integrity: sha512-PNDFSJdP+KFgdsG3ZzMXCgquO7I6McjY2vlqILjtJd0hy8wEvtugS9xKRF2NWlPNGxvLCXlTNIae4serI7dinw==, tarball: https://registry.npmjs.org/nodemailer/-/nodemailer-7.0.13.tgz}
     engines: {node: '>=6.0.0'}
     dev: false
 

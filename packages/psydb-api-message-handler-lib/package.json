@@ -28,7 +28,6 @@
     "deep-diff": "~1.0.2",
     "jsonpointer": "~5.0.1",
     "is-subset": "~0.1.1",
-    "nodemailer": "~6.9.14",
     "@mpieva/psydb-api-config": "workspace:~0.1.0-alpha",
     "deepmerge": "~4.2.2"
   },
