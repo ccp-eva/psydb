@@ -1,7 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:public-sign-in');
 
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var { range } = require('@mpieva/psydb-core-utils');
 var {
     ApiError,

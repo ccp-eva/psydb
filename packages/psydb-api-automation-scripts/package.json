@@ -13,7 +13,7 @@
     "co": "~4.6.0",
     "mongodb": "~3.6.3",
     "mysql": "~2.18.1",
-    "axios": "~0.28.1",
+    "axios": "~0.30.3",
     "commander": "~10.0.1",
     "debug": "~4.3.4",
     "@mpieva/psydb-core-utils": "workspace:*",
@@ -27,7 +27,7 @@
   "devDependencies": {
     "mocha": "~10.2.0",
     "chai": "~4.3.7",
-    "koa": "~2.14.2",
+    "koa": "~2.16.4",
     "@mpieva/psydb-api": "workspace:*",
     "@mpieva/psydb-api-mocha-test-tools": "workspace:*",
     "@mpieva/psydb-api-lib": "workspace:*",

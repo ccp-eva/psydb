@@ -8,7 +8,8 @@
   },
   "author": "Jan Schwalbe",
   "license": "MIT",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "chai": "~4.3.7",
     "chai-subset": "~1.6.0",
     "date-fns": "~2.30.0",
@@ -21,6 +22,5 @@
     "@mpieva/psydb-mongo-adapter": "workspace:*",
     "@mpieva/psydb-db-utils": "workspace:*",
     "@mpieva/psydb-api-config": "workspace:*"
-  },
-  "devDependencies": {}
+  }
 }

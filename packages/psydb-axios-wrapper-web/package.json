@@ -9,7 +9,7 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
-    "axios": "~0.28.1",
+    "axios": "~0.30.3",
     "axios-cookiejar-support": "~4.0.7",
     "tough-cookie": "~4.1.3"
   },
