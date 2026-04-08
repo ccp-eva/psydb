@@ -22,9 +22,7 @@
     "@mpieva/psydb-driver-nodejs": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-fixtures": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-api-config": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-mongo-adapter": "workspace:~0.1.0-alpha",
-    "superagent": "~6.1.0",
-    "superagent-prefix": "~0.0.2"
+    "@mpieva/psydb-mongo-adapter": "workspace:~0.1.0-alpha"
   },
   "devDependencies": {
     "mocha": "~10.2.0",
