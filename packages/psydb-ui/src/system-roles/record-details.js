@@ -3,7 +3,7 @@ import camelcase from 'camelcase';
 
 import { useRouteMatch  } from 'react-router-dom';
 import { ucfirst } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 import { DetailsBox } from '@mpieva/psydb-ui-layout';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
@@ -36,7 +36,7 @@ export const DetailsBody = (ps) => {
         related
     }
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     //var title = `${crtSettings.label} Datensatz-Details`;
     var title = translate('System Role Details');
@@ -145,6 +145,27 @@ export const DetailsBody = (ps) => {
                         dataXPath='canViewStudyLabTeams'
                     />
                 </PermBox>
+                
+                <PermBox title={ translate('Study Consent') }>
+                    <Bool
+                        dataXPath='canReadStudyConsentDocs'
+                    />
+                    <Bool
+                        dataXPath='canWriteStudyConsentDocs'
+                    />
+                    <Bool
+                        dataXPath='canRemoveStudyConsentDocs'
+                    />
+                    <Bool
+                        dataXPath='canReadStudyConsentForms'
+                    />
+                    <Bool
+                        dataXPath='canWriteStudyConsentForms'
+                    />
+                    <Bool
+                        dataXPath='canRemoveStudyConsentForms'
+                    />
+                </PermBox>
 
                 <PermBox title={ translate('Subjects') }>
                     <Bool
@@ -233,7 +254,7 @@ const Bool = (ps) => {
 }
 
 const AllLabOpsFlags = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         [
             [ 'inhouse', translate('Inhouse Appointments') ],

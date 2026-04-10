@@ -155,6 +155,25 @@ const labels = {
     '/state/canRemoveStudies': (
         'Can Delete Studies'
     ),
+    
+    '/state/canReadStudyConsentDocs': (
+        'Can View Study Consent Docs'
+    ),
+    '/state/canWriteStudyConsentDocs': (
+        'Can Edit Study Consent Docs'
+    ),
+    '/state/canRemoveStudyConsentDocs': (
+        'Can Delete Study Consent Docs'
+    ),
+    '/state/canReadStudyConsentForms': (
+        'Can View Study Consent Forms'
+    ),
+    '/state/canWriteStudyConsentForms': (
+        'Can Edit Study Consent Forms'
+    ),
+    '/state/canRemoveStudyConsentForms': (
+        'Can Delete Study Consent Forms'
+    ),
 
     '/state/canReadSubjects': (
         'Can View Subjects'

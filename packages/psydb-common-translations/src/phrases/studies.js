@@ -89,4 +89,8 @@ module.exports = [
         en: 'Assigned Studies',
         de: 'Studienzuordnung'
     },
+    {
+        en: 'Can View Lab Teams of Studies',
+        de: 'Kann Lab-Teams von Studien Einsehen'
+    }
 ]
