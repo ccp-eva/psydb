@@ -619,6 +619,9 @@ importers:
       '@mpieva/psydb-custom-fields-mongo':
         specifier: workspace:*
         version: link:../psydb-custom-fields-mongo
+      '@mpieva/psydb-db-utils':
+        specifier: workspace:*
+        version: link:../psydb-db-utils
       '@mpieva/psydb-i18n':
         specifier: workspace:*
         version: link:../psydb-i18n

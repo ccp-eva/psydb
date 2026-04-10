@@ -15,6 +15,8 @@ import Locations from './locations';
 import Subjects from './subjects';
 import SubjectGroups from './subject-groups';
 import Personnel from './personnel';
+
+import StudyConsentTemplates from './study-consent-templates';
 import ResearchGroups from './research-groups';
 import SystemRoles from './system-roles';
 import ExternalPersons from './external-persons';
@@ -105,28 +107,31 @@ var Home = () => {
 var Routing = () => (
     <>
     <Route exact path='/' component={ Home } />
-    <Route path='/custom-record-types' component={ withEB(CustomRecordTypes) } />
-    <Route path='/studies' component={ withEB(Studies) } />
-    <Route path='/study-topics' component={ withEB(StudyTopics) } />
-    <Route path='/locations' component={ withEB(Locations) } />
-    <Route path='/subjects' component={ withEB(Subjects) } />
-    <Route path='/subject-groups' component={ withEB(SubjectGroups) } />
-    <Route path='/personnel' component={ withEB(Personnel) } />
-    <Route path='/research-groups' component={ withEB(ResearchGroups) } />
-    <Route path='/system-roles' component={ withEB(SystemRoles) } />
-    <Route path='/external-persons' component={ withEB(ExternalPersons) } />
-    <Route path='/external-organizations' component={ withEB(ExternalOrganizations) } />
-    <Route path='/helper-sets' component={ withEB(HelperSets) } />
     
     <Route path='/csv-imports' component={ withEB(CSVImports) } />
     <Route path='/statistics' component={ withEB(Statistics) } />
 
+    <Route path='/subjects' component={ withEB(Subjects) } />
+    <Route path='/studies' component={ withEB(Studies) } />
+    
     <Route path='/calendars' component={ withEB(Calendars) } />
     <Route path='/lab-operation' component={ withEB(LabOperation) } />
-    <Route path='/experiments' component={ withEB(Experiments) } />
+
+    <Route path='/external-persons' component={ withEB(ExternalPersons) } />
+    <Route path='/external-organizations' component={ withEB(ExternalOrganizations) } />
+    <Route path='/locations' component={ withEB(Locations) } /> 
+    <Route path='/subject-groups' component={ withEB(SubjectGroups) } />
+    <Route path='/study-topics' component={ withEB(StudyTopics) } />
+    <Route path='/helper-sets' component={ withEB(HelperSets) } />
+    <Route path='/personnel' component={ withEB(Personnel) } />
+    
+    <Route path='/study-consent-templates' component={ withEB(StudyConsentTemplates) } />
+    <Route path='/research-groups' component={ withEB(ResearchGroups) } />
+    <Route path='/system-roles' component={ withEB(SystemRoles) } />
     <Route path='/api-keys' component={ withEB(ApiKeys) } />
     <Route path='/audit' component={ withEB(Audit) } />
 
+    <Route path='/experiments' component={ withEB(Experiments) } />
     <Route path='/fixes-checker' component={ withEB(FixesChecker) } />
     </>
 )

@@ -157,4 +157,9 @@ module.exports = [
         en: 'Display Name (EN)',
         de: 'Anzeigename (EN)'
     },
+    {
+        internal: '_sidenav_study-consent-templates',
+        en: 'Consent Templates',
+        de: 'Einwilligungs-Templates'
+    },
 ]
