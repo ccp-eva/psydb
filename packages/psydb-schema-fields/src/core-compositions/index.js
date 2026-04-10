@@ -13,4 +13,5 @@ module.exports = {
 
     OneOf: require('./one-of'),
     PartialObject: require('./exact-object'), // TODO: compat
+    PatternObject: require('./pattern-object'),
 }

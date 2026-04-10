@@ -195,6 +195,41 @@ var Permissions = (options) => {
         ))
     );
 
+    var intersectRecordAccess = (bag) => {
+        var { record, collection, level, subChannel = undefined } = bag;
+    
+        var state = (
+            subChannel
+            ? record[subChannel].state
+            : ( record.state || record.scientific.state ) // naive auto detect
+        );
+        var { systemPermissions } = state;
+        var { accessRightsByResearchGroup } = systemPermissions;
+        
+        var grantedForSelf = (
+            getCollectionFlagIds(collection, level)
+        )
+        var allowedByRecord = (
+            accessRightsByResearchGroup
+            .filter(it => it.permission === (
+                // NOTE: there is no explicit 'remove' level per record
+                level === 'remove' ? 'write' : level
+            ))
+            .map(it => it.researchGroupId)
+        );
+
+        var intersected = intersect(allowedByRecord, grantedForSelf, {
+            compare: compareIds
+        });
+
+        return intersected;
+    }
+
+    var hasRecordAccess = (...args) => {
+        var allowedRGs = intersectRecordAccess(...args);
+        return ( isRoot() || allowedRGs.length > 0 );
+    }
+
     var intermediate = {
         ...wrapper,
 
@@ -227,6 +262,9 @@ var Permissions = (options) => {
 
         getAllowedLabOpsForFlags,
         hasLabOpsFlags,
+
+        intersectRecordAccess,
+        hasRecordAccess,
     }
 
     var gatherFlags = (lambda) => {

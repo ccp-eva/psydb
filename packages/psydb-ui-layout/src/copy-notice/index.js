@@ -6,6 +6,7 @@ import ccporb from './ccp-orb.svg';
 
 const CopyNotice = (ps) => {
     var { dev_copyNoticeGreyscale = false } = useUIConfig();
+    var now = new Date();
     return (
         <a
             href='https://www.eva.mpg.de/comparative-cultural-psychology'
@@ -22,7 +23,7 @@ const CopyNotice = (ps) => {
                     lineHeight: '110%',
                     color: '#b5b5b5',
                 }}>
-                    &copy;2025 MPI EVA<br />
+                    &copy;{ now.getFullYear() } MPI EVA<br />
                     Department of Comparative Cultural Psychology
                 </div>
             </div>

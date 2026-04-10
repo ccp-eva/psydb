@@ -3,6 +3,8 @@ import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 import { jsonpointer } from '@mpieva/psydb-core-utils';
 import { CRTSettings, CRTSettingsList } from '@mpieva/psydb-common-lib';
 
+import * as SubRequests from './__sub-requests';
+
 const createAgent = (options = {}) => {
     var { language, localeCode } = options;
 
@@ -846,6 +848,21 @@ const createAgent = (options = {}) => {
             url: '/api/csv-import/subject/related-subjects',
         })({ out, ...pass })
     );
+    
+    agent.searchCSVSubjectContactHistoryImports = dumpPOST({
+        url: '/api/csv-import/subject-contact-history/search',
+    });
+    agent.readCSVSubjectContactHistoryImport = dumpPOST({
+        url: '/api/csv-import/subject-contact-history/read',
+    });
+    agent.previewCSVSubjectContactHistoryImport = ({ importType, ...pass }) => dumpPOST({
+        url: `/api/csv-import/subject-contact-history/preview/${importType}`,
+    })(pass);
+    agent.fetchCSVSubjectContactHistoryImportItems = (
+        ({ out = 'full', ...pass }) => dumpPOST({
+            url: '/api/csv-import/subject-contact-history/related-subject-contact-history-items',
+        })({ out, ...pass })
+    );
 
     agent.fetchStudySubjectTypeInfos = (bag) => {
         var {
@@ -948,47 +965,65 @@ const createAgent = (options = {}) => {
         var fn = jsonpointer.get(agent, tag);
         return fn(payload);
     }
-    agent.subject = {
-        listDuplicates: dumpPOST({ url: '/api/subject/listDuplicates' }),
-        extendedSearch: dumpPOST({ url: '/api/extended-search/subjects' }),
-    };
-    agent.personnel = {
-        list: dumpPOST({ url: '/api/personnel/list' }),
-        readManyLabels: dumpPOST({ url: '/api/personnel/read-many-labels' }),
-    };
-    agent.study = {
-        list: dumpPOST({ url: '/api/study/list' }),
-        readManyLabels: dumpPOST({ url: '/api/study/read-many-labels' }),
-        relatedStudyConsentForms: dumpPOST({ url: '/api/study/related-study-consent-forms' }),
+    
+    for (var it of [
+        'subject',
+        'subjectContactHistory',
         
-        extendedSearch: dumpPOST({ url: '/api/extended-search/studies' }),
-    };
-    agent.location = {
-        extendedSearch: dumpPOST({ url: '/api/location/extended-search' }),
-    };
-    agent.helperSet = {
-        list: dumpPOST({ url: '/api/helperSet/list' }),
-    };
-    agent.helperSetItem = {
-        list: dumpPOST({ url: '/api/helperSetItem/list' }),
-    };
-    agent.studyConsentForm = {
-        read: dumpPOST({ url: '/api/study-consent-form/read' }),
-        list: dumpPOST({ url: '/api/study-consent-form/list' }),
-    };
-    agent.studyConsentDoc = {
-        read: dumpPOST({ url: '/api/study-consent-doc/read' }),
-        list: dumpPOST({ url: '/api/study-consent-doc/list' }),
+        'study',
+        'studyConsentForm',
+        'studyConsentDoc',
         
-        readByExperimentAndSubject: dumpPOST({
-            url: '/api/study-consent-doc/read-by-experiment-and-subject'
-        }),
-    };
-    agent.experiment = {
-        listPostprocessing: dumpPOST({
-            url: '/api/experiment/list-postprocessing'
-        }),
-    };
+        'personnel',
+        'location',
+        'helperSet',
+        'helperSetItem',
+        'experiment',
+    ]) {
+        agent[it] = SubRequests[it]({ axios, dumpPOST });
+    }
+    
+    //agent.subject = {
+    //    listDuplicates: dumpPOST({ url: '/api/subject/listDuplicates' }),
+    //    extendedSearch: dumpPOST({ url: '/api/extended-search/subjects' }),
+    //};
+    //agent.personnel = {
+    //    list: dumpPOST({ url: '/api/personnel/list' }),
+    //    readManyLabels: dumpPOST({ url: '/api/personnel/read-many-labels' }),
+    //};
+    //agent.study = {
+    //    list: dumpPOST({ url: '/api/study/list' }),
+    //    readManyLabels: dumpPOST({ url: '/api/study/read-many-labels' }),
+    //    relatedStudyConsentForms: dumpPOST({ url: '/api/study/related-study-consent-forms' }),
+    //    
+    //    extendedSearch: dumpPOST({ url: '/api/extended-search/studies' }),
+    //};
+    //agent.location = {
+    //    extendedSearch: dumpPOST({ url: '/api/location/extended-search' }),
+    //};
+    //agent.helperSet = {
+    //    list: dumpPOST({ url: '/api/helperSet/list' }),
+    //};
+    //agent.helperSetItem = {
+    //    list: dumpPOST({ url: '/api/helperSetItem/list' }),
+    //};
+    //agent.studyConsentForm = {
+    //    read: dumpPOST({ url: '/api/study-consent-form/read' }),
+    //    list: dumpPOST({ url: '/api/study-consent-form/list' }),
+    //};
+    //agent.studyConsentDoc = {
+    //    read: dumpPOST({ url: '/api/study-consent-doc/read' }),
+    //    list: dumpPOST({ url: '/api/study-consent-doc/list' }),
+    //    
+    //    readByExperimentAndSubject: dumpPOST({
+    //        url: '/api/study-consent-doc/read-by-experiment-and-subject'
+    //    }),
+    //};
+    //agent.experiment = {
+    //    listPostprocessing: dumpPOST({
+    //        url: '/api/experiment/list-postprocessing'
+    //    }),
+    //};
     
     // XXX
     agent.fetchFixedEventDetails = (bag) => {

@@ -9,16 +9,18 @@ import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 import { Study } from '@mpieva/psydb-ui-lib/data-viewers';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
+import StudyRoadmapAndHistory from './study-roadmap-and-history';
+
 export const DetailsBody = (ps) => {
+    var { fetched, permissions } = ps;
     var {
-        fetched,
-        permissions
-    } = ps;
+        record, crtSettings, related,
+        studyRoadmap, studyRoadmapVersions,
+    } = fetched.data;
     
-    var { record, crtSettings, related } = fetched;
-    
+    var { dev_enableWKPRCPatches, dev_enableStudyRoadmap } = useUIConfig();
+
     var { url } = useRouteMatch();
-    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
     var [{ translate }] = useI18N();
     
     var canEdit = permissions.hasCollectionFlag('study', 'write');
@@ -44,22 +46,29 @@ export const DetailsBody = (ps) => {
             <Study { ...studyBag }>
                 <Study.SequenceNumber />
                 <Study.Name />
-                { !IS_WKPRC && (
+                { !dev_enableWKPRCPatches && (
                     <Study.Shorthand />
                 )}
                 <hr />
                 <Study.Start />
                 <Study.End />
-                { !IS_WKPRC && (
+                { !dev_enableWKPRCPatches && (
                     <Study.EnableFollowUpExperiments />
                 )}
                 <Study.ResearchGroupIds />
                 <Study.ScientistIds />
                 <Study.StudyTopicIds />
-                { IS_WKPRC && (
+                { dev_enableWKPRCPatches && (
                     <Study.ExperimentNames />
                 )}
                 <Study.Custom />
+                { dev_enableStudyRoadmap && (
+                    <StudyRoadmapAndHistory
+                        studyRoadmap={ studyRoadmap }
+                        studyRoadmapVersions={ studyRoadmapVersions }
+                        related={ related }
+                    />
+                )}
                 <hr />
                 <Study.SystemPermissions />
             </Study>

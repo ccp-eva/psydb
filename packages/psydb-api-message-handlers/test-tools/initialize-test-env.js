@@ -50,7 +50,8 @@ var augmentedBeforeAll = async function () {
             self: { personnelId: 1234 },
             request: { body: message },
             response: {},
-            ip: '127.0.0.1'
+            ip: '127.0.0.1',
+            apiConfig: {},
         }
         return { ...koaContext, ...extraContext };
     }

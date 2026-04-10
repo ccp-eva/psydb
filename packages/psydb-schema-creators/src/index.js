@@ -147,10 +147,42 @@ module.exports = {
         State: internals.ApiKeyState,
     },
     
+    subjectContactHistory: {
+        ...metadata.subjectContactHistory,
+        FullSchema: internals.SubjectContactHistoryFullSchema,
+        State: internals.SubjectContactHistoryState,
+    },
     //////////////////////////////////////////////
 
-    StudyConsentForm: {
-        //...metadata.StudyConsentForm,
+    // XXX: using collection name bites with UC first for imports
+    studyConsentForm: {
+        ...metadata.studyConsentForm,
         ...internals.StudyConsentForm
+    },
+    studyConsentDoc: {
+        ...metadata.studyConsentDoc,
+        ...internals.StudyConsentDoc
+    },
+    studyRoadmap: {
+        ...metadata.studyRoadmap,
+        ...internals.StudyRoadmap
+    },
+
+    StudyConsentForm: {
+        ...metadata.studyConsentForm,
+        ...internals.StudyConsentForm
+    },
+    StudyConsentDoc: {
+        ...metadata.studyConsentDoc,
+        ...internals.StudyConsentDoc
+    },
+    StudyRoadmap: {
+        ...metadata.studyRoadmap,
+        ...internals.StudyRoadmap
+    },
+    
+    Study: {
+        ...metadata.study,
+        ...internals.Study
     },
 }

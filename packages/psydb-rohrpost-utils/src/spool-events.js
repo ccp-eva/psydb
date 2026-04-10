@@ -40,7 +40,7 @@ var spoolEvents = (bag) => {
     var { set, maybeSet, unshift } = Injector(onto);
 
     //var updateObject = createUpdater({ cloneMode: "deep" });
-    var updateObject = createUpdater();
+    var updateObject = createUpdater({});
     for (var it of events) {
         var {
             _id: eventId,

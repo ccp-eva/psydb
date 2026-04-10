@@ -6,6 +6,7 @@ module.exports = [
     ...require('./subject-groups'),
     ...require('./locations'),
     ...require('./external-organizations'),
+    ...require('./subject-contact-history'),
 
     ...require('./lab-workflows'),
 
@@ -15,6 +16,7 @@ module.exports = [
     ...require('./csv-imports'),
     ...require('./duplicates'),
     ...require('./study-consent-workflow'),
+    ...require('./study-roadmap'),
 
     ...require('./_record-anonymizer'),
     ...require('./_error-response-modal'),

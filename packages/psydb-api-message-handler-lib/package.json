@@ -9,33 +9,21 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
-    "@mpieva/psydb-koa-event-middleware": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-schema-creators": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-schema-enums": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-schema-fields": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-schema-fields-special": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-schema-helpers": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-common-verify-helpers": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-api-lib": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-common-lib": "workspace:*",
+    "@mpieva/psydb-schema": "workspace:*",
+    "@mpieva/psydb-api-lib": "workspace:*",
     "@cdxoo/omit": "~1.0.1",
     "@cdxoo/inline-text": "~1.0.2",
-    "date-fns": "~2.30.0",
-    "debug": "~4.3.4",
-    "nanoid": "~3.3.6",
-    "copy-anything": "~2.0.6",
-    "deep-diff": "~1.0.2",
-    "jsonpointer": "~5.0.1",
-    "is-subset": "~0.1.1",
-    "@mpieva/psydb-api-config": "workspace:~0.1.0-alpha",
-    "deepmerge": "~4.2.2"
+    "@cdxoo/jsonschema-to-datapointer": "~0.0.1",
+    "json-schema-traverse": "~1.0.0",
+    "debug": "~4.3.4"
   },
   "devDependencies": {
     "mocha": "~10.2.0",
     "chai": "~4.3.7",
     "mongodb-memory-server": "~6.9.2",
-    "@mpieva/psydb-fixtures": "workspace:~0.1.0-alpha"
+    "@mpieva/psydb-fixtures": "workspace:*"
   },
   "config": {
     "mongodbMemoryServer": {

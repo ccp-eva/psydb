@@ -20,13 +20,11 @@ describe('study-consent-form/[create|update] flow', function () {
     });
 
     step('create', async function () {
-        console.ejson(ids.all());
-
         var deltas = BaselineDeltas();
         deltas.push(await this.fetchAllRecords('studyConsentForm'));
 
         var payload = {
-            'studyId': ids('IH-Study'),
+            'studyId': ids(/IH-Study/),
             'subjectType': 'child',
             'props': {
                 'internalName': 'Default Consent Form',
@@ -80,7 +78,6 @@ describe('study-consent-form/[create|update] flow', function () {
         });
         
         deltas.push(await this.fetchAllRecords('studyConsentForm'));
-        console.log(deltas.getCurrent());
         deltas.test({ expected: { '0': {
             '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
             'state': {

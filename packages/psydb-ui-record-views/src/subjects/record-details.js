@@ -1,12 +1,13 @@
 import React from 'react';
-import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import { Subject } from '@mpieva/psydb-ui-lib/data-viewers';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
 import { withRecordReader } from '../lib';
-import { SequenceNumber, OnlineId, DuplicateInfo } from './shared-static';
+import { SequenceNumber, OnlineId, DuplicateInfo, LastSubjectContact }
+    from './shared-static';
 
 
 const DetailsBody = (ps) => {
@@ -19,10 +20,11 @@ const DetailsBody = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
+    var { dev_enableCSVSubjectContactHistoryImport } = useUIConfig();
     var permissions = usePermissions();
     var [{ translate }] = useI18N();
 
-    var { record, crtSettings, related } = fetched;
+    var { record, crtSettings, related, lookups } = fetched;
     
     var {
         showSequenceNumber,
@@ -74,6 +76,12 @@ const DetailsBody = (ps) => {
                     show={ showOnlineId } value={ onlineId }
                     uiSplit={[ 4, 8 ]} className=''
                 />
+                { dev_enableCSVSubjectContactHistoryImport && (
+                    <LastSubjectContact
+                        show={ true } value={ lookups.lastSubjectContact }
+                        uiSplit={[ 4, 8 ]} className=''
+                    />
+                )}
                 <DuplicateInfo
                     mergedDuplicates={ mergedDuplicates }
                     showOnlineId={ showOnlineId }

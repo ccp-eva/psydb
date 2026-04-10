@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
@@ -16,7 +16,7 @@ import RelatedExperiments from './related-experiments';
 
 const Details = (ps) => {
     var { id: csvImportId } = useParams();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.readCSVExperimentImport({ id: csvImportId })

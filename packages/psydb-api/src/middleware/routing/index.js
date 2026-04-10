@@ -16,10 +16,14 @@ var { withPostStages, withGetStages } = require('./stage-helpers');
 
 var addCRTSettingsRoutes = require('./add-crt-settings-routes');
 var addPersonnelRoutes = require('./add-personnel-routes');
+
 var addStudyRoutes = require('./add-study-routes');
 var addStudyConsentFormRoutes = require('./add-study-consent-form-routes');
 var addStudyConsentDocRoutes = require('./add-study-consent-doc-routes');
+
 var addSubjectRoutes = require('./add-subject-routes');
+var addSubjectContactHistoryRoutes = require('./add-subject-contact-history-routes');
+
 var addExperimentRoutes = require('./add-experiment-routes');
 var addLocationRoutes = require('./add-location-routes');
 var addCSVImportRoutes = require('./add-csv-import-routes');
@@ -517,10 +521,14 @@ var createRouting = (bag = {}) => {
 
     addCRTSettingsRoutes({ router });
     addPersonnelRoutes({ router });
+    
     addStudyRoutes({ router });
     addStudyConsentFormRoutes({ router });
     addStudyConsentDocRoutes({ router });
+
     addSubjectRoutes({ router });
+    addSubjectContactHistoryRoutes({ router });
+
     addExperimentRoutes({ router });
     addLocationRoutes({ router });
     addCSVImportRoutes({ router });

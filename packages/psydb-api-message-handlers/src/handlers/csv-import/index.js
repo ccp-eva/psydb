@@ -12,6 +12,7 @@ var CSVImportGroup = MessageHandlerGroup([
     require('./experiment/create-away-team'),
 
     require('./subject/create-default'),
+    require('./subject-contact-history/create'),
 ]);
 
 module.exports = CSVImportGroup;

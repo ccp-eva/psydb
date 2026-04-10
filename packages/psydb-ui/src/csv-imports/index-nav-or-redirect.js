@@ -1,21 +1,23 @@
 import React from 'react';
 import { useRouteMatch, Redirect } from 'react-router-dom';
 import { entries } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { BigNav } from '@mpieva/psydb-ui-layout';
 
 const IndexNavOrRedirect = (ps) => {
     var {
         canViewSubjectImports,
         canViewExperimentImports,
+        canViewSubjectContactHistoryImports,
     } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { url: baseUrl } = useRouteMatch();
 
     var pflags = {
         canViewSubjectImports,
         canViewExperimentImports,
+        canViewSubjectContactHistoryImports,
     }
 
     var enabledPKeys = [];
@@ -29,6 +31,7 @@ const IndexNavOrRedirect = (ps) => {
             <Redirect to={{
                 'canViewSubjectImports': `${baseUrl}/subject`,
                 'canViewExperimentImports': `${baseUrl}/participation`,
+                'canViewSubjectContactHistoryImports': `${baseUrl}/subject-contact-history`
             }[key]} />
         )
     }
@@ -41,6 +44,10 @@ const IndexNavOrRedirect = (ps) => {
         (canViewExperimentImports && { 
             label: translate('Participation Imports'),
             linkUrl: `${baseUrl}/participation`,
+        }),
+        (canViewSubjectContactHistoryImports && { 
+            label: translate('Subject Contact History Imports'),
+            linkUrl: `${baseUrl}/subject-contact-history`,
         }),
     ].filter(it => !!it)
 

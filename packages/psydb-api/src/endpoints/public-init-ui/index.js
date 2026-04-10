@@ -51,12 +51,18 @@ var publicInitUI = async (context, next) => {
 
         '/dev_enableCSVSubjectImport',
         '/dev_enableCSVParticipationImport',
+        '/dev_enableCSVSubjectContactHistoryImport',
+
         '/dev_enableStatistics',
         '/dev_enableWKPRCPatches',
         
         '/dev_enableSubjectDuplicatesSearch',
         '/dev_subjectDuplicatesSearchFields',
         '/dev_enableSubjectCopyForUnprocessedExperiments',
+        
+        '/dev_enableImprovedContactTracking',
+        '/dev_enableStudyConsentWorkflow',
+        '/dev_enableStudyRoadmap',
     ]});
 
     config.serverZimezone = getSystemTimezone();

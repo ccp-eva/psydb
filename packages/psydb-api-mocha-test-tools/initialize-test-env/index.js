@@ -1,4 +1,12 @@
 'use strict';
+var _debug = require('debug');
+//_debug.enable('psydb:CONSOLE*');
+
+// NOTE: do this first
+var CustomConsole = require('./custom-console');
+global.console = new CustomConsole(process.stdout, process.stderr);
+
+
 // NOTE: using this and step() instead of it() will prevent
 // later steps from being executed after an error; it() would execute 
 // all the steps after an error regardless which is undesireable

@@ -1,20 +1,17 @@
 'use strict';
-var { intersect, compareIds } = require('@mpieva/psydb-core-utils');
 var { verifyOneRecord } = require('@mpieva/psydb-api-message-handler-lib');
-var { ApiError, compose, switchComposition }
-    = require('@mpieva/psydb-api-lib');
-
+var { ApiError, compose } = require('@mpieva/psydb-api-lib');
 
 var compose_verifyAllowedAndPlausible = () => compose([
     verifyGeneralPermissions,
     verifyRecord,
-    verifyRecordPermissions,
+    verifyRecordAccess,
 ]);
 
 var verifyGeneralPermissions = async (context, next) => {
     var { message, permissions } = context;
 
-    if (!permissions.hasFlag('canRemoveSubjects')) {
+    if (!permissions.hasCollectionFlag('subject', 'remove')) {
         throw new ApiError(403);
     }
 
@@ -27,28 +24,19 @@ var verifyRecord = verifyOneRecord({
     cache: true
 });
 
-var verifyRecordPermissions = async (context, next) => {
+var verifyRecordAccess = async (context, next) => {
     var { db, cache, permissions } = context;
     var { subject: record } = cache.get();
 
-    var { systemPermissions } = record.scientific.state;
-    var { accessRightsByResearchGroup } = systemPermissions;
-
-    var grantedForSelf = (
-        permissions.getFlagIds('canRemoveSubjects')
-    )
-    var allowedByRecord = (
-        accessRightsByResearchGroup
-        .filter(it => it.permission = 'write')
-        .map(it => it.researchGroupId)
-    );
-
-    var matching = intersect(allowedByRecord, grantedForSelf, {
-        compare: compareIds
+    var ok = permissions.hasRecordAccess({
+        record, collection: 'subject', level: 'remove'
     });
-    if (!permissions.isRoot() && matching.length < 1) {
+
+    if (!ok) {
         throw new ApiError(403)
     }
+    
+    await next();
 }
 
 module.exports = {

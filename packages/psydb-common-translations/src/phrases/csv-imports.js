@@ -1,4 +1,3 @@
-
 'use strict';
 module.exports = [
     {
@@ -6,8 +5,8 @@ module.exports = [
         de: 'CSV-Importe'
     },
     {
-        en: 'Participation Imports',
-        de: 'Teilnahme-Importe'
+        en: 'Subject Contact History Imports',
+        de: 'Proband:innen-Kontakt-Importe'
     },
     {
         en: 'Participation Imports',

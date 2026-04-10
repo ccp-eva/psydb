@@ -14,7 +14,8 @@ import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
     PageWrappers,
-    Alert
+    Alert,
+    JsonRaw,
 } from '@mpieva/psydb-ui-layout';
 
 import GenericRecordListContainer from '../record-list-container';
@@ -45,6 +46,27 @@ const DefaultRecordCreator = (ps) => (
     </Alert>
 )
 
+const DefaultRecordRawView = (ps) => {
+    var { prefetched } = ps;
+    var { record } = (prefetched.data || prefetched);
+    
+    return (
+        <JsonRaw data={ record } />
+    )
+}
+
+const DefaultRecordRawHistory = (ps) => {
+    var { prefetched } = ps;
+    var { record } = (prefetched.data || prefetched);
+
+    // TODO: useFetch etc
+    return (
+        <div>
+            <b className='text-danger'>TODO</b>
+        </div>
+    )
+}
+
 
 const withRecordTypeView = (options) => {
     var {
@@ -55,6 +77,8 @@ const withRecordTypeView = (options) => {
         RecordEditor = DefaultRecordEditor,
         RecordRemover,
         RecordAnonymizer,
+        RecordRawView = DefaultRecordRawView,
+        RecordRawHistory = DefaultRecordRawHistory,
 
         CustomRouting,
         IntraRecordRouting,
@@ -141,6 +165,9 @@ const withRecordTypeView = (options) => {
                     RecordEditor,
                     RecordRemover,
                     RecordAnonymizer,
+
+                    RecordRawView,
+                    RecordRawHistory,
                     
                     IntraRecordRouting,
                 }) } />

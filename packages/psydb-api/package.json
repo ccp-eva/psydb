@@ -37,7 +37,7 @@
     "@mpieva/psydb-mongo-stages": "workspace:*",
     "@mpieva/psydb-custom-fields-common": "workspace:*",
     "@mpieva/psydb-custom-fields-mongo": "workspace:*",
-    "@mpieva/psydb-rohrpost-utils": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-rohrpost-utils": "workspace:*",
     "koa-router": "~10.1.1",
     "statuses": "~2.0.1",
     "@cdxoo/inline-text": "~1.0.2",

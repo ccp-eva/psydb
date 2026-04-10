@@ -4,7 +4,7 @@ import { useRouteMatch, useParams } from 'react-router-dom';
 import { only } from '@mpieva/psydb-core-utils';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
-import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
+import { usePermissions, useSend } from '@mpieva/psydb-ui-hooks';
 import { Pair } from '@mpieva/psydb-ui-layout';
 import {
     withRecordEditor,
@@ -22,24 +22,27 @@ const EditForm = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var { record, crtSettings, related } = fetched;
-    var { fieldDefinitions } = crtSettings;
-    
+    var {
+        record, crtSettings, related,
+        studyRoadmap, /*studyRoadmapHistory*/
+    } = fetched.data;
+
     var { path, url } = useRouteMatch();
     
     var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
     var permissions = usePermissions();
     var [{ translate }] = useI18N();
 
-    var send = useSendPatch({
-        collection,
-        recordType,
-        record,
-        onSuccessfulUpdate
-    });
-    
+    var send = useSend((formData) => {
+        var { studyRoadmap, ...props } = formData;
+        return {
+            type: 'study/patch',
+            payload: { _id: record._id, props, studyRoadmap }
+        }
+    }, { onSuccessfulUpdate });
+ 
     var defaults = MainForm.createDefaults({
-        fieldDefinitions,
+        fieldDefinitions: crtSettings.fieldDefinitions,
         permissions
     });
    
@@ -73,7 +76,8 @@ const EditForm = (ps) => {
         custom: {
             ...defaults.custom,
             ...initialValues.custom
-        }
+        },
+        studyRoadmap: { props: studyRoadmap?.state || {}}
     }
 
     var { sequenceNumber } = record;
@@ -96,16 +100,17 @@ const EditForm = (ps) => {
                 crtSettings={ crtSettings }
                 initialValues={ initialValues }
                 onSubmit={ send.exec }
-                related={ related }
                 permissions={ permissions }
                 renderFormBox={ false }
+                related={ related }
+                studyRoadmap={ studyRoadmap }
             />
             <hr />
             <GenericRecordEditorFooter.RAW
                 id={ id }
                 collection={ collection }
                 recordType={ recordType }
-                fetched={ fetched }
+                fetched={ fetched.data }
                 permissions={ permissions } 
 
                 enableHide={ false }

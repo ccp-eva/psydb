@@ -92,7 +92,6 @@ var ExtraFieldValue = (bag) => {
         }
     }
 
-    console.log(systemType);
     var schema = Fields[systemType](props);
     return schema;
 }

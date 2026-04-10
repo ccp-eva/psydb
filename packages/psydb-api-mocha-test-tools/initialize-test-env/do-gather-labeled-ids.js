@@ -62,7 +62,6 @@ var doGatherLabeledIds = async function (options = {}) {
                 'mqMessageQueue', 'mqMessageHistory', 'rohrpostEvents',
                 
                 'file', 'subjectContactHistory',
-                'studyConsentForm', 'studyConsentDoc',
             ].includes(cname)) {
                 continue;
             }
@@ -72,11 +71,12 @@ var doGatherLabeledIds = async function (options = {}) {
                 [cname]: recordIds
             });
 
-            ids[cname] = Object.entries(related[cname]).reduce(
-                (acc, [ id, label ]) => ({
-                    ...acc, [id]: `${label} ${id}`
-                }), {}
-            );
+            //ids[cname] = Object.entries(related[cname]).reduce(
+            //    (acc, [ id, label ]) => ({
+            //        ...acc, [id]: `${label} ${id}`
+            //    }), {}
+            //);
+            ids[cname] = related[cname];
         }
     }
 
