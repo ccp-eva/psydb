@@ -34,6 +34,7 @@ var allHandlers = [
     require('./handlers/csv-import'),
     require('./handlers/api-key'),
     
+    require('./handlers/study-consent-template'),
     require('./handlers/study-consent-form'),
     require('./handlers/study-consent-doc'),
 ];

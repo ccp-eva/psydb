@@ -3,7 +3,7 @@ var { BaselineDeltas } = require('@mpieva/psydb-mocha-baseline-deltas');
 var { KOA_CHANNELS, PROPS_AS_STATE }
     = require('@mpieva/psydb-api-mocha-test-tools/utils');
 
-describe('study-consent-form/[create|update] flow', function () {
+describe('study-consent-template/[create|update] flow', function () {
     var db, ids, send;
     before(async function () {
         ids = await this.restore([
@@ -18,13 +18,13 @@ describe('study-consent-form/[create|update] flow', function () {
 
     step('create', async function () {
         var deltas = BaselineDeltas();
-        deltas.push(await this.fetchAllRecords('studyConsentForm'));
+        deltas.push(await this.fetchAllRecords('studyConsentTemplate'));
 
         var payload = {
-            'studyId': ids(/IH-Study/),
+            'studyType': 'default',
             'subjectType': 'child',
             'props': {
-                'internalName': 'Default Consent Form',
+                'templateName': 'Default Consent Template',
                 'title': 'Einwilligung zur Studienteilnahme',
                 'isEnabled': true,
                 'elements': [ ...elements ]
@@ -32,12 +32,12 @@ describe('study-consent-form/[create|update] flow', function () {
         }
 
         var [{ channelId }] = await KOA_CHANNELS(send({
-            type: 'study-consent-form/create',
+            type: 'study-consent-template/create',
             timezone: 'Europe/Berlin',
             payload: payload
         }));
 
-        deltas.push(await this.fetchAllRecords('studyConsentForm'));
+        deltas.push(await this.fetchAllRecords('studyConsentTemplate'));
         deltas.test({ expected: [{
             '_id': channelId,
             '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
@@ -49,13 +49,13 @@ describe('study-consent-form/[create|update] flow', function () {
         await ids.update();
         
         var deltas = BaselineDeltas();
-        deltas.push(await this.fetchAllRecords('studyConsentForm'));
+        deltas.push(await this.fetchAllRecords('studyConsentTemplate'));
 
-        var studyConsentFormId = ids('Default Consent Form');
+        var studyConsentTemplateId = ids('Default Consent Template');
         var payload = {
-            'studyConsentFormId': studyConsentFormId,
+            'studyConsentTemplateId': studyConsentTemplateId,
             'props': {
-                'internalName': 'Default Consent Form UPDATED',
+                'templateName': 'Default Consent Template UPDATED',
                 'title': 'Einwilligung zur Studienteilnahme',
                 'isEnabled': true,
                 'elements': [ ...elements, {
@@ -69,16 +69,16 @@ describe('study-consent-form/[create|update] flow', function () {
         }
         
         await send({
-            type: 'study-consent-form/patch',
+            type: 'study-consent-template/patch',
             timezone: 'Europe/Berlin',
             payload: payload
         });
         
-        deltas.push(await this.fetchAllRecords('studyConsentForm'));
+        deltas.push(await this.fetchAllRecords('studyConsentTemplate'));
         deltas.test({ expected: { '0': {
             '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
             'state': {
-                'internalName': 'Default Consent Form UPDATED',
+                'templateName': 'Default Consent Template UPDATED',
                 'elements': { '20': {
                     type: 'extra-field',
                     systemType: 'DefaultBool',
