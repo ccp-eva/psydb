@@ -1,6 +1,6 @@
 'use strict';
 var nanoid = require('nanoid');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var deepmerge = require('deepmerge');
 
 var {

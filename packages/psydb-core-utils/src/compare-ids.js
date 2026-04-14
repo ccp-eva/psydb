@@ -1,16 +1,16 @@
 'use strict';
-var compareIds = (idA, idB) => {
-    var beLazy = (
-        typeof idA === 'string' || typeof idB === 'string'
+var equalIds = (idA, idB) => {
+    var useEqualsFn = (
+        idA?.equals && idB?.equals
     );
     
     return (
-        beLazy
-        ? String(idA) === String(idB)
-        : !!idA?.equals(idB) // NOTE: idA could be non-object here
+        useEqualsFn
+        ? !!idA.equals(idB)
+        : String(idA) === String(idB)
     )
 };
 
-compareIds.lambda = (idB) => (idA) => compareIds(idA, idB);
+equalIds.lambda = (idB) => (idA) => equalIds(idA, idB);
 
-module.exports = compareIds
+module.exports = equalIds; // TODO: rename compareIds => equalIds
