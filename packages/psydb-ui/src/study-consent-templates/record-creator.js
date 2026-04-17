@@ -13,7 +13,7 @@ const CRTSelectionWrapper = (ps) => {
     var { studyId, onSuccessfulUpdate } = ps;
     var [ studyType, setStudyType ] = useState('default');
     var [ subjectType, setSubjectType ] = useState('child');
-    var [{ translate, language }] = useI18N();
+    var [{ translate }] = useI18N();
 
     return (
         <FormBox title={ translate('New Consent Template') }>
@@ -68,7 +68,11 @@ const FullRecordCreator = (ps) => {
                 props: { elements: sanitizeElements(elements), ...pass }
             }
         }
-    }, { onSuccessfulUpdate });
+    }, { onSuccessfulUpdate: (...args) => {
+        var [ response, formik ] = args;
+        //return onSuccessfulUpdate({ id: response.data.data[0].channelId })
+        return onSuccessfulUpdate();
+    } });
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />

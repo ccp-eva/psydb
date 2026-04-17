@@ -6,12 +6,13 @@ import { CRTSettings } from '@mpieva/psydb-common-lib';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { LoadingIndicator, FormBox } from '@mpieva/psydb-ui-layout';
 import MainForm from './main-form';
 
 const RecordEditor = (ps) => {
     var { onSuccessfulUpdate } = ps;
     var { id: studyConsentTemplateId } = useParams();
+    var [{ translate }] = useI18N();
 
     var send = useSend((formData) => {
         var { elements, ...pass } = formData;
@@ -22,7 +23,11 @@ const RecordEditor = (ps) => {
                 props: { elements: sanitizeElements(elements), ...pass }
             }
         }
-    }, { onSuccessfulUpdate });
+    }, { onSuccessfulUpdate: (...args) => {
+        var [ response, formik ] = args;
+        //return onSuccessfulUpdate({ id: response.data.data[0].channelId })
+        return onSuccessfulUpdate();
+    }});
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.studyConsentTemplate.read({ studyConsentTemplateId })
@@ -42,11 +47,13 @@ const RecordEditor = (ps) => {
     //);
     
     return (
-        <MainForm.Component
-            subjectCRT={ subjectCRT }
-            initialValues={ initialValues }
-            onSubmit={ send.exec }
-        />
+        <FormBox title={ translate('Edit Consent Template') }>
+            <MainForm.Component
+                subjectCRT={ subjectCRT }
+                initialValues={ initialValues }
+                onSubmit={ send.exec }
+            />
+        </FormBox>
     );
 }
 

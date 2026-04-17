@@ -42,9 +42,10 @@ const RecordTypeRouting = (ps) => {
                 type='create'
                 collection={ collection }
                 recordType={ recordType }
-                onSuccessfulUpdate={
-                    ({ id }) => history.push(`${url}/${id}`)
-                }
+                onSuccessfulUpdate={ (bag = {}) => {
+                    var { id } = bag;
+                    return history.push(id ? `${url}/${id}` : url)
+                }}
             />
         </Route>
 
@@ -62,8 +63,9 @@ const RecordTypeRouting = (ps) => {
                 collection={ collection }
                 recordType={ recordType }
                 removeUrl={ `${url}/:id/remove` }
-                onSuccessfulUpdate={ ({ id }) => {
-                    history.push(`${url}/${id}`)
+                onSuccessfulUpdate={ (bag = {}) => {
+                    var { id } = bag;
+                    return history.push(id ? `${url}/${id}` : url)
                 }}
             />
         </Route>
@@ -74,8 +76,9 @@ const RecordTypeRouting = (ps) => {
                 collection={ collection }
                 recordType={ recordType }
                 removeUrl={ `${url}/:id/remove` }
-                onSuccessfulUpdate={ ({ id }) => {
-                    history.push(`${url}/${id}`)
+                onSuccessfulUpdate={ (bag = {}) => {
+                    var { id } = bag;
+                    return history.push(id ? `${url}/${id}` : url)
                 }}
             />
         </Route>

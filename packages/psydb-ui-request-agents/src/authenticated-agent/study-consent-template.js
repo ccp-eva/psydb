@@ -5,7 +5,12 @@ var studyConsentTemplateRequests = (bag) => {
 
     return {
         read: dumpPOST({ url: '/api/study-consent-template/read' }),
-        list: dumpPOST({ url: '/api/study-consent-template/list' }),
+
+        list: ({ filters, ...pass }) => (
+            dumpPOST({ url: '/api/study-consent-template/list' })({
+                quicksearch: filters, ...pass
+            })
+        ),
     }
 }
 
