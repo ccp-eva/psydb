@@ -11,22 +11,22 @@ import MainForm from './main-form';
 
 const RecordEditor = (ps) => {
     var { onSuccessfulUpdate } = ps;
-    var { id: studyConsentFormId } = useParams();
+    var { id: studyConsentTemplateId } = useParams();
 
     var send = useSend((formData) => {
         var { elements, ...pass } = formData;
         return {
-            type: 'study-consent-form/patch',
+            type: 'study-consent-template/patch',
             payload: {
-                studyConsentFormId,
+                studyConsentTemplateId,
                 props: { elements: sanitizeElements(elements), ...pass }
             }
         }
     }, { onSuccessfulUpdate });
 
     var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.studyConsentForm.read({ studyConsentFormId })
-    ), [ studyConsentFormId ]);
+        agent.studyConsentTemplate.read({ studyConsentTemplateId })
+    ), [ studyConsentTemplateId ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />

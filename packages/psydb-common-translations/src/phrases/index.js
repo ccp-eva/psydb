@@ -832,6 +832,10 @@ module.exports = [
         de: 'Hat Admin-Zugriff'
     },
     {
+        en: 'New Staff Member',
+        de: 'Neue Mitarbeiter:in'
+    },
+    {
         en: 'Edit Staff Member',
         de: 'Mitarbeiter:in Bearbeiten'
     },

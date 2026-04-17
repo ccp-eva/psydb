@@ -1,12 +1,12 @@
 'use strict';
 var IdentifierString = require('./identifier-string');
 
-var CustomRecordTypeKey = (keywords) => {
+var CustomRecordTypeKey = (bag = {}) => {
     var {
         collection,
         enableResearchGroupFilter = true,
         ...extraKeywords
-    } = keywords;
+    } = bag;
 
     return ({
         ...IdentifierString(extraKeywords),

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 
+import { CRTSettings } from '@mpieva/psydb-common-lib';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 
-import { LoadingIndicator, Alert } from '@mpieva/psydb-ui-layout';
+import { LoadingIndicator, Alert, FormBox, FormHelpers }
+    from '@mpieva/psydb-ui-layout';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
 import MainForm from './main-form';
 
@@ -14,30 +16,37 @@ const CRTSelectionWrapper = (ps) => {
     var [{ translate, language }] = useI18N();
 
     return (
-        <div>
-            <Controls.GenericTypeKey
-                value={ studyType }
-                onChange={ setStudyType }
-                collection='subject'
-            />
-            <Controls.GenericTypeKey
-                value={ subjectType }
-                onChange={ setSubjectType }
-                collection='subject'
-            />
+        <FormBox title={ translate('New Consent Template') }>
+            <FormHelpers.InlineWrapper label={ translate('Study Type') }>
+                <Controls.GenericTypeKey
+                    value={ studyType }
+                    onChange={ setStudyType }
+                    collection='study'
+                />
+            </FormHelpers.InlineWrapper>
+
+            <FormHelpers.InlineWrapper label={ translate('Subject Type') }>
+                <Controls.GenericTypeKey
+                    value={ subjectType }
+                    onChange={ setSubjectType }
+                    collection='subject'
+                />
+            </FormHelpers.InlineWrapper>
+
             <hr />
+
             { (studyType && subjectType) ? (
                 <FullRecordCreator
-                    studyId={ studyId }
+                    studyType={ studyType }
+                    subjectType={ subjectType }
                     onSuccessfulUpdate={ onSuccessfulUpdate }
-                    subjectCRT={ crts.find({ type: subjectType }) }
                 />
             ) : (
                 <Alert variant='info'><i>
                     { translate('Please select a study and subject type.') }
                 </i></Alert>
             )}
-        </div>
+        </FormBox>
     )
 }
 
@@ -50,22 +59,23 @@ const FullRecordCreator = (ps) => {
         ]})
     ), [ subjectType ]);
 
-    if (!didFetch) {
-        return <LoadingIndicator size='lg' />
-    }
-
-    var { crtSettings } = fetched.data;
-
     var send = useSend((formData) => {
         var { elements, ...pass } = formData;
         return {
             type: 'study-consent-template/create',
             payload: {
-                studyId, subjectType,
+                studyType, subjectType,
                 props: { elements: sanitizeElements(elements), ...pass }
             }
         }
     }, { onSuccessfulUpdate });
+
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
+
+    var { crtSettings } = fetched.data;
+    var subjectCRT = CRTSettings({ data: crtSettings[0] });
 
     var initialValues = MainForm.createDefaults();
     return (

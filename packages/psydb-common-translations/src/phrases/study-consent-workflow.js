@@ -192,4 +192,25 @@ module.exports = [
         en: 'Consent Templates',
         de: 'Einwilligungs-Templates'
     },
+
+    {
+        internal: 'studyConsentTemplate',
+        en: 'Consent Templates',
+        de: 'Einwilligungs-Templates'
+    },
+
+    {
+        en: 'New Consent Template',
+        de: 'Neues Einwilligungs-Template'
+    },
+    
+    {
+        en: 'Edit Consent Template',
+        de: 'Einwilligungs-Template bearbeiten'
+    },
+
+    {
+        en: 'Template-Shorthand',
+        de: 'Template-Kürzel'
+    },
 ]

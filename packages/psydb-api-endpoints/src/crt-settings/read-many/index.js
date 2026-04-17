@@ -10,7 +10,9 @@ var readMany = async (context, next) => {
     validateOrThrow({ schema: BodySchema(), payload: request.body });
     var { items } = request.body;
 
-    var crtSettings = await fetchAllCRTSettings(db, items, { wrap: true });
+    var crtSettings = await fetchAllCRTSettings(
+        db, items, { wrap: true, asTree: false }
+    );
 
     // TODO: filter by research groups
 
