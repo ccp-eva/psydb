@@ -8,7 +8,7 @@ var dispatchMultiplexed = async (context, args) => {
     var { personnelId, apiKey } = self;
     
     var [{
-        collection, channelIds, subChannelKey
+        collection, channelIds, subChannelKey,
         type = undefined, payload, doUnlock = true
     }] = args;
 

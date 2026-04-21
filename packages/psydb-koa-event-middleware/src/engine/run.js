@@ -1,5 +1,5 @@
 'use strict';
-var fns = require('./run-context-fns');
+var fns = require('@mpieva/psydb-koa-event-helpers/run-context-fns');
 
 // triggerMussageEffects ??
 // runHandlers ??

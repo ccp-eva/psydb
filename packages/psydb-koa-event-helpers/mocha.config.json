@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/mocharc.json",
+  "require": [
+    "test-tools/require-chai-addons.js",
+    "test-tools/initialize-test-env.js"
+  ],
+  "extension": [".spec.js"],
+  "recursive": true,
+  "timeout": 60000,
+  "failZero": true,
+  "sort": true,
+  "color": true,
+  "inlineDiffs": true
+}

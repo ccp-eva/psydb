@@ -1578,6 +1578,43 @@ importers:
         specifier: ~10.2.0
         version: 10.2.0
 
+  ../../packages/psydb-koa-event-helpers:
+    dependencies:
+      '@mpieva/psydb-api-lib':
+        specifier: workspace:*
+        version: link:../psydb-api-lib
+      '@mpieva/psydb-core-utils':
+        specifier: workspace:*
+        version: link:../psydb-core-utils
+      debug:
+        specifier: ~4.3.4
+        version: 4.3.7(supports-color@6.1.0)
+    devDependencies:
+      '@cdxoo/koa-mongo-mq':
+        specifier: ~1.4.0
+        version: 1.4.0
+      '@cdxoo/mongo-rohrpost':
+        specifier: ~3.4.0
+        version: 3.4.0
+      '@mpieva/psydb-api-mocha-test-tools':
+        specifier: workspace:*
+        version: link:../psydb-api-mocha-test-tools
+      '@mpieva/psydb-fixtures':
+        specifier: workspace:*
+        version: link:../psydb-fixtures
+      '@mpieva/psydb-mocha-baseline-deltas':
+        specifier: workspace:*
+        version: link:../psydb-mocha-baseline-deltas
+      '@mpieva/psydb-mongo-adapter':
+        specifier: workspace:*
+        version: link:../psydb-mongo-adapter
+      chai:
+        specifier: ~4.3.7
+        version: 4.3.10
+      mocha:
+        specifier: ~10.2.0
+        version: 10.2.0
+
   ../../packages/psydb-koa-event-middleware:
     dependencies:
       '@cdxoo/inline-text':
@@ -1593,11 +1630,14 @@ importers:
         specifier: ~1.0.0
         version: 1.0.0
       '@mpieva/psydb-api-lib':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-api-lib
       '@mpieva/psydb-core-utils':
-        specifier: workspace:~0.1.0-alpha
+        specifier: workspace:*
         version: link:../psydb-core-utils
+      '@mpieva/psydb-koa-event-helpers':
+        specifier: workspace:*
+        version: link:../psydb-koa-event-helpers
       copy-anything:
         specifier: ~2.0.6
         version: 2.0.6
@@ -4674,7 +4714,6 @@ packages:
       - mongodb-client-encryption
       - mongodb-extjson
       - snappy
-    dev: false
 
   /@cdxoo/mongo-mq@1.4.0:
     resolution: {integrity: sha512-7FtVgsRQBCdz0WkMJfiDjrXNNOC4RFtgm5Ld/lTPO6myJraRxb1g8kX1vauE5B8gmNn0Kw1D+byDJi3Pa88U4g==, tarball: https://registry.npmjs.org/@cdxoo/mongo-mq/-/mongo-mq-1.4.0.tgz}
@@ -4687,7 +4726,6 @@ packages:
       - mongodb-client-encryption
       - mongodb-extjson
       - snappy
-    dev: false
 
   /@cdxoo/mongo-rohrpost@3.4.0:
     resolution: {integrity: sha512-p5pvqGdUOzSj8hNs9f5OLYqHL9KECg/4JMs79MVo5CPaLc9RFdgUwfNWL7iUbcCw2OfaY0GP0h0CaQN13j3iHw==, tarball: https://registry.npmjs.org/@cdxoo/mongo-rohrpost/-/mongo-rohrpost-3.4.0.tgz}
@@ -4701,7 +4739,6 @@ packages:
       - mongodb-client-encryption
       - mongodb-extjson
       - snappy
-    dev: false
 
   /@cdxoo/mongo-test-helpers@0.7.1:
     resolution: {integrity: sha512-NmGO82GszR2QPiF0/LxORr2yR4NxOFQ9M4PeumufaWt3lw2Jp1xystn60SMWG0JMqyboXrfZme9gU9XrXfBRyg==, tarball: https://registry.npmjs.org/@cdxoo/mongo-test-helpers/-/mongo-test-helpers-0.7.1.tgz}
