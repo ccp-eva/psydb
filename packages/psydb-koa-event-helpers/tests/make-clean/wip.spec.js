@@ -9,7 +9,6 @@ describe('run-context-fns/make-clean', function () {
         context = this.createEngineContext();
 
         await this.wipeDB();
-        context.dispatch = (...args) => dispatch(context, args);
     });
     
     it('does the thing', async function () {

@@ -1,8 +1,9 @@
 'use strict';
 var { withRetracedErrors } = require('@mpieva/psydb-api-lib');
+var dispatch = require('./dispatch');
 
 var makeClean = async (context, args) => {
-    var { db, dispatch } = context;
+    var { db } = context;
     var [{ collection, channelId, subChannelKey, now }] = args;
     
     var metapath = '_rohrpostMetadata';
@@ -12,14 +13,14 @@ var makeClean = async (context, args) => {
         statepath = subChannelKey + '.' + statepath;
     }
     
-    var meta = await dispatch({
+    var meta = await dispatch(context, [{
         collection, channelId, subChannelKey, now,
         type: 'MAKE_CLEAN',
         payload: { $set: {
             [`${metapath}.EXECUTED_MAKE_CLEAN`] : true,
             [statepath]: '[[REDACTED]]'
         }}
-    });
+    }]);
     
     var { lastKnownEventId } = meta;
     await withRetracedErrors(
