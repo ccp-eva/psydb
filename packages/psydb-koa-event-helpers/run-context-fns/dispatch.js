@@ -3,7 +3,7 @@ var { withRetracedErrors, mongoEscapeDeep }
     = require('@mpieva/psydb-api-lib');
 
 var dispatch = async (context, args) => {
-    var { db, rohrpost, self, now } = context;
+    var { db, rohrpost, self, now: context_now } = context;
     var { personnelId, apiKey } = self;
 
     var [{
@@ -12,7 +12,7 @@ var dispatch = async (context, args) => {
         extraCreateProps,
 
         channel, subChannelKey, mongoArrayFilters,
-        type = undefined, payload,
+        type = undefined, payload, now = context_now,
     }] = args;
 
     if (additionalChannelProps) {

@@ -64,6 +64,16 @@ var augmentedBeforeAll = async function () {
         }
         return out;
     }
+
+    this.wipeDB = async () => {
+        var db = this.getDbHandle();
+        var collections = await db.listCollections().toArray();
+
+        for (var it of collections) {
+            var { name } = it;
+            await db.collection(name).removeMany({});
+        }
+    }
 }
 
 module.exports = {
