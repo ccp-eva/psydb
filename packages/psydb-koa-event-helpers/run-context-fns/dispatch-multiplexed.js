@@ -4,12 +4,12 @@ var { withRetracedErrors, mongoEscapeDeep }
     = require('@mpieva/psydb-api-lib');
 
 var dispatchMultiplexed = async (context, args) => {
-    var { db, rohrpost, self, now } = context;
+    var { db, rohrpost, self, now: context_now } = context;
     var { personnelId, apiKey } = self;
     
     var [{
-        collection, channelIds, subChannelKey,
-        type = undefined, payload, doUnlock = true
+        collection, channelIds, subChannelKey, 
+        type = undefined, payload, now = context_now, doUnlock = true
     }] = args;
 
     var message = {
