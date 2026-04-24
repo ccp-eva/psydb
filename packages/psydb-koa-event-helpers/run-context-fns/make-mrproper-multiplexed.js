@@ -66,7 +66,7 @@ var makeMrproperMultiplexed = async (context, args) => {
             //}},
             { $unset: [
                 'message.payload',
-                'additionalChannelProps',
+                //'additionalChannelProps', // NOTE: well keep that for now
             ]}
         ])
     );

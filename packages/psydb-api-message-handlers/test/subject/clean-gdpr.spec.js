@@ -13,7 +13,7 @@ describe('subject/clean-gdpr', function () {
         ([ sendMessage ] = this.createMessenger({ ...login }));
     });
 
-    step('does clean-gdpr', async function () {
+    it('does clean-gdpr', async function () {
         var _id = ids(/Charlie2/);
 
         var deltas = BaselineDeltas();

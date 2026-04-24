@@ -53,7 +53,7 @@ describe('run-context-fns/make-mrproper-multiplexed', function () {
         expected[`/foo`] = [];
         expected[`/rohrpostEvents/0`] = {
             'message/payload': BaselineDeltas.DeletedValue(),
-            'additionalChannelProps': BaselineDeltas.DeletedValue(),
+            //'additionalChannelProps': BaselineDeltas.DeletedValue(),
         }
         expected[`/rohrpostEvents/1`] = {
             'message/payload': BaselineDeltas.DeletedValue(),

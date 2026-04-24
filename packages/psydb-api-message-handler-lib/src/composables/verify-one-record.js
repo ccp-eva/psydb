@@ -1,4 +1,6 @@
 'use strict';
+var debug = require('./debug-helper')('verifyOneRecord()');
+
 var { jsonpointer } = require('@mpieva/psydb-core-utils');
 var { ApiError } = require('@mpieva/psydb-api-lib');
 var noop = require('../noop');
@@ -36,6 +38,7 @@ var verifyOneRecord = (...args) => {
         var { db, message, cache } = context;
         
         var recordId = resolveId({ message });
+        debug({ recordId });
 
         var record = await (
             db.collection(collection)

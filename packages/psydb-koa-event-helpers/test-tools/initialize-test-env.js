@@ -4,7 +4,7 @@ var { mochaHooks, ...other }
     = require('@mpieva/psydb-api-mocha-test-tools/initialize-test-env');
 
 var MongoRohrpost = require('@cdxoo/mongo-rohrpost');
-var { ObjectId, aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
+var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 
 var augmentedBeforeAll = async function () {
     await mochaHooks.beforeAll[0].call(this);
@@ -53,26 +53,6 @@ var augmentedBeforeAll = async function () {
         }
 
         return context;
-    }
-
-    this.aggregateAll = async (collections) => {
-        var db = this.getDbHandle();
-
-        var out = {}
-        for (var c of collections) {
-            out[c] = await aggregateToArray({ db, [c]: [] })
-        }
-        return out;
-    }
-
-    this.wipeDB = async () => {
-        var db = this.getDbHandle();
-        var collections = await db.listCollections().toArray();
-
-        for (var it of collections) {
-            var { name } = it;
-            await db.collection(name).removeMany({});
-        }
     }
 }
 

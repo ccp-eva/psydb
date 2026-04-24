@@ -1,4 +1,6 @@
 'use strict';
+var debug = require('./debug-helper')('verify');
+
 var { aggregateToArray }
     = require('@mpieva/psydb-mongo-adapter');
 
@@ -11,14 +13,15 @@ var { composables }
 var compose_verifyAllowedAndPlausible = () => compose([
     verifyGeneralPermissions,
     verifyRecord,
-    verifyRecordPermissions,
+    verifyRecordAccess,
 
     verifyNoInvites,
     verifyNoParticipations,
-    verifyNoRefs,
+    verifyNoReverseRefs,
 ]);
 
 var verifyGeneralPermissions = async (context, next) => {
+    debug('verifyGeneralPermissions()');
     var { db, permissions, message } = context;
     
     if (!permissions.hasCollectionFlag('subject', 'remove')) {
@@ -32,13 +35,14 @@ var verifyRecord = composables.verifyOneRecord({
     collection: 'subject', by: '/payload/_id', cache: true
 })
 
-var verifyRecordAccess = composables.verifyRecordAccess({
+var verifyRecordAccess = composables.verifyOneRecordAccess({
     collection: 'subject',
     level: 'remove',
     by: ({ cache }) => cache.get('subject'),
 })
 
-var verifyNoInvites = async () => (context, next) => {
+var verifyNoInvites = async (context, next) => {
+    debug('verifyNoInvites()');
     var { db, cache, now } = context;
     var { subject } = cache.get();
     
@@ -76,6 +80,7 @@ var verifyNoInvites = async () => (context, next) => {
 }
 
 var verifyNoParticipations = async (context, next) => {
+    debug('verifyNoParticipations()');
     var { cache } = context;
     var { subject } = cache.get();
     
@@ -101,3 +106,7 @@ var verifyNoReverseRefs = composables.verifyNoReverseRefs({
     collection: 'subject', by: '/payload/_id',
     excludedRefCollections: [ 'experiment' ], // NOTE: done manually
 })
+
+module.exports = {
+    verifyAllowedAndPlausible: compose_verifyAllowedAndPlausible()
+}

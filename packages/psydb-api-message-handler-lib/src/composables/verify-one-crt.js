@@ -1,4 +1,6 @@
 'use strict';
+var debug = require('./debug-helper')('verifyOneCRT()');
+
 var { jsonpointer } = require('@mpieva/psydb-core-utils');
 var { CRTSettingsList } = require('@mpieva/psydb-common-lib');
 var { ApiError, fetchAvailableCRTSettings }
@@ -38,6 +40,8 @@ var verifyOneCRT = (bag) => {
         
         var recordType = resolveRecordType({ message });
         var studyId = resolveStudyId({ message });
+
+        debug({ recordType, studyId });
 
         var crts = await fetchAvailableCRTSettings({
             db, permissions, collections: [ collection ],

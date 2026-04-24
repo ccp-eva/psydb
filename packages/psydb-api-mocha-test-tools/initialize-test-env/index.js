@@ -61,6 +61,32 @@ var beforeAll = async function () {
         var db = this.getDbHandle();
         return db.collection(collection).find().toArray();
     }
+
+    this.aggregateAll = async (collections) => {
+        var db = this.getDbHandle();
+
+        var out = {}
+        for (var c of collections) {
+            if (Array.isArray(c)) {
+                var [ name, filter ] = c;
+                out[name] = await db.collection(name).find(filter).toArray();
+            }
+            else {
+                out[c] = await db.collection(c).find().toArray();
+            }
+        }
+        return out;
+    }
+
+    this.wipeDB = async () => {
+        var db = this.getDbHandle();
+        var collections = await db.listCollections().toArray();
+
+        for (var it of collections) {
+            var { name } = it;
+            await db.collection(name).removeMany({});
+        }
+    }
 }
 
 var beforeEach = async function () {}
