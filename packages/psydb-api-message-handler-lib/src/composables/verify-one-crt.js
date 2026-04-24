@@ -4,7 +4,7 @@ var { CRTSettingsList } = require('@mpieva/psydb-common-lib');
 var { ApiError, fetchAvailableCRTSettings }
     = require('@mpieva/psydb-api-lib');
 
-var noop = require('./noop');
+var noop = require('../noop');
 
 
 var verifyOneCRT = (bag) => {

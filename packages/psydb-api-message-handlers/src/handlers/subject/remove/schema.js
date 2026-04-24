@@ -1,36 +1,12 @@
 'use strict';
-var {
-    ExactObject,
-    Id,
-    EventId,
-} = require('@mpieva/psydb-schema-fields');
+var { ClosedObject, ForeignId } = require('@mpieva/psydb-schema-fields');
 
-var { Message } = require('@mpieva/psydb-schema-helpers');
-
-var Schema = () => {
-    return Message({
-        type: `subject/remove`,
-        payload: ExactObject({
-            properties: {
-                id: Id(),
-                // FIXME: compat
-                lastKnownSubChannelEventIds: ExactObject({
-                    properties: {
-                        gdpr: EventId(),
-                        scientific: EventId(),
-                    },
-                    required: [
-                        'gdpr',
-                        'scientific'
-                    ]
-                }),
-            },
-            required: [
-                'id',
-                //'lastKnownSubChannelEventIds',
-            ]
-        })
+var Schema = async (context) => {
+    var schema = ClosedObject({
+        '_id': ForeignId({ collection: 'subject' }),
     });
+    
+    return schema;
 }
 
 module.exports = Schema;

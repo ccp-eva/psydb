@@ -16,6 +16,9 @@ var run = () => async (context, next) => {
     context.dispatchProps = withContext(fns.dispatchProps);
     context.dispatch.multiplexed = withContext(fns.dispatchMultiplexed);
     context.dispatch.makeClean = withContext(fns.makeClean);
+    context.dispatch.makeMrproperMultiplexed = withContext(
+        fns.makeMrproperMultiplexed
+    );
     //context.dispatch.makeDistClean = withContext(fns.makeDistClean);
 
     try {
