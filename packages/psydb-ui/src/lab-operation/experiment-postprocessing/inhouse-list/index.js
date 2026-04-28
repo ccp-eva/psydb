@@ -1,6 +1,6 @@
 import React from 'react';
 import { CRTSettings } from '@mpieva/psydb-common-lib';
-import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { Alert, Table } from '@mpieva/psydb-ui-layout';
 
 import SubjectCell from './subject-cell';
@@ -18,10 +18,14 @@ const InhouseList = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
+    var [{ translate }] = useI18N();
+    var { dev_enableStudyConsentWorkflow } = useUIConfig();
+
     subjectCRT = CRTSettings({ data: subjectCRT }); // FIXME
 
     var shouldHaveStudyConsentDoc = (
-        enableStudyConsentWorkflow && experimentType === 'inhouse'
+        dev_enableStudyConsentWorkflow
+        && enableStudyConsentWorkflow && experimentType === 'inhouse'
     );
 
     var renderedHead = <TableHead hasConsent={ shouldHaveStudyConsentDoc } />
@@ -95,6 +99,7 @@ const ExperimentSubjectItems = (ps) => {
 const TableHead = (ps) => {
     var { hasConsent } = ps;
     var [{ translate }] = useI18N();
+
     return (
         <thead>
             <tr>
