@@ -128,6 +128,7 @@ var Routing = () => (
     <Route path='/study-consent-templates' component={ withEB(StudyConsentTemplates) } />
     <Route path='/research-groups' component={ withEB(ResearchGroups) } />
     <Route path='/system-roles' component={ withEB(SystemRoles) } />
+    <Route path='/custom-record-types' component={ withEB(CustomRecordTypes) } />
     <Route path='/api-keys' component={ withEB(ApiKeys) } />
     <Route path='/audit' component={ withEB(Audit) } />
 
