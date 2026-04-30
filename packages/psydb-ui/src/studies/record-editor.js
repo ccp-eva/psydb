@@ -29,16 +29,20 @@ const EditForm = (ps) => {
 
     var { path, url } = useRouteMatch();
     
-    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
+    var { dev_enableWKPRCPatches, dev_enableStudyRoadmap } = useUIConfig();
     var permissions = usePermissions();
     var [{ translate }] = useI18N();
 
     var send = useSend((formData) => {
         var { studyRoadmap, ...props } = formData;
-        return {
-            type: 'study/patch',
-            payload: { _id: record._id, props, studyRoadmap }
-        }
+        return { type: 'study/patch', payload: {
+            _id: record._id,
+            props,
+
+            ...(dev_enableStudyRoadmap && {
+                studyRoadmap
+            })
+        }}
     }, { onSuccessfulUpdate });
  
     var defaults = MainForm.createDefaults({
@@ -59,7 +63,7 @@ const EditForm = (ps) => {
         'systemPermissions',
     ];
 
-    if (IS_WKPRC) {
+    if (dev_enableWKPRCPatches) {
         paths = paths.filter(it => (![ 'shorthand' ].includes(it)));
         paths.push('experimentNames');
     }
