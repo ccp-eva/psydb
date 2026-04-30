@@ -3,6 +3,8 @@ var debug = require('debug')('psydb:api:endpoints:personnel:list');
 var { entries } = require('@mpieva/psydb-core-utils');
 var { __fixRelated } = require('@mpieva/psydb-common-compat');
 
+var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
+
 var {
     ResponseBody,
     validateOrThrow,
@@ -59,11 +61,30 @@ var listEndpoint = async (context, next) => {
     debug('done validating');
 
     // FIXME: thtas a hotfixed for $in in constraint values
-    constraints = entries(constraints).reduce((acc, [key, value]) => ({
-        ...acc,
-        [key]: Array.isArray(value) ? { $in: value } : value
-    }), {});
+    constraints = entries(constraints).reduce((acc, [key, value]) => {
+        if (Array.isArray(value)) {
+            var value = { $in: value.map(it => {
+                if (/^[0-9A-Fa-f]{24}/.test(value)) {
+                    return new ObjectId(value);
+                }
+                else {
+                    return value;
+                }
+            })}
+        }
+        else {
+            if (/^[0-9A-Fa-f]{24}/.test(value)) {
+                value = new ObjectId(value)
+            }
+        }
+        return {
+            ...acc,
+            [key]: 
+            Array.isArray(value) ? { $in: value } : value
+        }
+    }, {});
     ///
+    console.log(constraints);
    
     var definedQuickSearch = convertFiltersToQueryPairs({
         filters, displayFields,
