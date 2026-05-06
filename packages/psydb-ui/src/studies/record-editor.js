@@ -10,6 +10,7 @@ import {
     withRecordEditor,
     GenericRecordEditorFooter
 } from '@mpieva/psydb-ui-lib';
+
 import MainForm from './main-form';
 
 

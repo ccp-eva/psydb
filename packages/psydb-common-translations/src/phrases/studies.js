@@ -6,6 +6,10 @@ module.exports = [
         de: 'Studien',
     },
     {
+        en: 'New Study',
+        de: 'Neue Studie'
+    },
+    {
         en: 'Study',
         de: 'Studie'
     },
