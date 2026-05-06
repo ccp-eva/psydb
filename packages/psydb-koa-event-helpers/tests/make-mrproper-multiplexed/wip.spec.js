@@ -21,7 +21,7 @@ describe('run-context-fns/make-mrproper-multiplexed', function () {
         await dispatch(context, [{
             collection: 'foo', channelId: 10,
             subChannelKey: 'scientific',
-            payload: { '$set': { 'gdpr.state.scifoo': 'sci-content' }},
+            payload: { '$set': { 'scientific.state.scifoo': 'sci-content' }},
         }]);
 
         await dispatch(context, [{
@@ -30,7 +30,7 @@ describe('run-context-fns/make-mrproper-multiplexed', function () {
         }]);
         await dispatch(context, [{
             collection: 'foo', channelId: 10, subChannelKey: 'scientific',
-            payload: { '$set': { 'gdpr.state.scifoo_2': 'sci-content_2' }},
+            payload: { '$set': { 'scientific.state.scifoo_2': 'sci-content_2' }},
         }]);
 
         var deltas = BaselineDeltas();
