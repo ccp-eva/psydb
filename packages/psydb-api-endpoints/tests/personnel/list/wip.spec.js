@@ -19,6 +19,9 @@ describe('personnel/list wip', function () {
             request: {
                 headers: { language: 'en', locale: 'en', timezone: 'UTC' },
                 body: {
+                    constraints: {
+                        '/scientific/state/researchGroupSettings/researchGroupId': "64d42dc8443aa279ca4cae99",
+                    },
                     filters: {},
                     offset: 0,
                     limit: 1000,
