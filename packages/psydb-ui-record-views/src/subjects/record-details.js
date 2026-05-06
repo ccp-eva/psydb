@@ -24,7 +24,7 @@ const DetailsBody = (ps) => {
     var permissions = usePermissions();
     var [{ translate }] = useI18N();
 
-    var { record, crtSettings, related, lookups } = fetched;
+    var { record, crtSettings, related, lookups = {}} = fetched;
     
     var {
         showSequenceNumber,

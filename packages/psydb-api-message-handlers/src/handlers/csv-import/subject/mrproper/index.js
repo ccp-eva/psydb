@@ -3,7 +3,7 @@ var { MessageHandler, presets }
     = require('@mpieva/psydb-api-message-handler-compat');
 
 var handler = MessageHandler({
-    type: 'subject/remove',
+    type: 'csv-import/subject/mrproper',
     stages: {
         ...presets.default({
             createMessagePayloadSchema: require('./schema'),

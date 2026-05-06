@@ -1,0 +1,32 @@
+{
+  "name": "@mpieva/psydb-koa-event-helpers",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "./index.js",
+  "scripts": {
+    "build": "",
+    "test": "npx mocha --config mocha.config.json tests"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "~4.3.4",
+    "@mpieva/psydb-api-lib": "workspace:*",
+    "@mpieva/psydb-core-utils": "workspace:*"
+  },
+  "devDependencies": {
+    "mocha": "~10.2.0",
+    "chai": "~4.3.7",
+    "@cdxoo/koa-mongo-mq": "~1.4.0",
+    "@cdxoo/mongo-rohrpost": "~3.4.0",
+    "@mpieva/psydb-mongo-adapter": "workspace:*",
+    "@mpieva/psydb-fixtures": "workspace:*",
+    "@mpieva/psydb-mocha-baseline-deltas": "workspace:*",
+    "@mpieva/psydb-api-mocha-test-tools": "workspace:*"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "downloadDir": "/tmp/mongodb-memory-server/"
+    }
+  }
+}
