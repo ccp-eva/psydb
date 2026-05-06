@@ -14,8 +14,20 @@ const IntraRecordNav = (ps) => {
     var { dev_enableStudyConsentWorkflow } = useUIConfig();
     
     var permissions = usePermissions();
+    // FIXME: flags will be 'undefined' when no rg has it,
+    //        but we need expelicit false for everything
+    //        or else nav link 'show = true' override breaks this
+    // XXX: doesnt work well with root
+    //var {
+    //    canReadParticipation = false, canViewStudyLabOpsSettings = false,
+    //    canReadStudyConsentDocs = false, canReadStudyConsentForms = false,
+    //} = permissions.getFlags();
+
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
     var canViewStudyLabOpsSettings = permissions.hasFlag('canViewStudyLabOpsSettings');
+    var canReadStudyConsentDocs = permissions.hasFlag('canReadStudyConsentDocs');
+    var canReadStudyConsentForms = permissions.hasFlag('canReadStudyConsentForms');
+
     var { hashurl, core, raw } = Nav.useLinks({ record });
    
     core[`${hashurl}/details`].label = translate('Details');
@@ -47,11 +59,11 @@ const IntraRecordNav = (ps) => {
     var consentLinks = dev_enableStudyConsentWorkflow ? {
         [`${hashurl}/consent-forms`]: {
             label: translate('Consent Forms'),
-            show: true, enabled: true
+            show: canReadStudyConsentForms, enabled: true
         },
         [`${hashurl}/consent-docs`]: {
             label: translate('Consent Docs'),
-            show: true, enabled: true
+            show: canReadStudyConsentDocs, enabled: true
         },
     } : {}; // FIXME dont like it Nav.hasLinks() ??
     

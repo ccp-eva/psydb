@@ -13,11 +13,15 @@ var createFakeRootFlags = () => ({
     ...([
         'Subjects',
         'SubjectGroups',
+        
         'Studies',
+        'StudyTopics',
+        'StudyConsentDocs',
+        'StudyConsentForms',
+
         'Locations',
         'ExternalPersons',
         'ExternalOrganizations',
-        'StudyTopics',
         'HelperSets',
         'Personnel'
     ]).reduce((acc, it) => ({

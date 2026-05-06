@@ -967,10 +967,13 @@ const createAgent = (options = {}) => {
     }
     
     for (var it of [
+        'crtSettings',
+
         'subject',
         'subjectContactHistory',
         
         'study',
+        'studyConsentTemplate',
         'studyConsentForm',
         'studyConsentDoc',
         

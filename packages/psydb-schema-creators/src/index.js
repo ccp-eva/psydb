@@ -155,6 +155,10 @@ module.exports = {
     //////////////////////////////////////////////
 
     // XXX: using collection name bites with UC first for imports
+    studyConsentTemplate: {
+        ...metadata.studyConsentTemplate,
+        ...internals.StudyConsentTemplate
+    },
     studyConsentForm: {
         ...metadata.studyConsentForm,
         ...internals.StudyConsentForm
@@ -168,6 +172,10 @@ module.exports = {
         ...internals.StudyRoadmap
     },
 
+    StudyConsentTemplate: {
+        ...metadata.studyConsentTemplate,
+        ...internals.StudyConsentTemplate
+    },
     StudyConsentForm: {
         ...metadata.studyConsentForm,
         ...internals.StudyConsentForm

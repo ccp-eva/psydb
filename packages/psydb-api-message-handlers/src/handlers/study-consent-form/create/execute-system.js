@@ -6,7 +6,7 @@ var executeSystemEvents = async (context) => {
     var { studyId, subjectType, props, } = message.payload;
 
     var pathified = merge(
-        //createDefaults(StudyConsentTemplate.State()), // TODO
+        //createDefaults(StudyConsentForm.State()), // TODO
         pathify(props, { prefix: 'state' }),
     );
     // NOTE: mongodb does not allow nested $set path on values that are null

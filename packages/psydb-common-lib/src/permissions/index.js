@@ -45,7 +45,7 @@ var Permissions = (options) => {
         hasRootAccess && !forcedResearchGroupId
     )
 
-    var getFlags = (flag) => {
+    var getFlags = () => {
         var out = {};
         for (var [ key, rgids ] of entries(researchGroupIdsByFlag)) {
             out[key] = isRoot() || (rgids.length > 0)

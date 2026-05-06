@@ -12,21 +12,28 @@ var fetchAllCRTSettings = async (db, todo, options = {}) => {
     
     var OR = [];
     for (var it of todo) {
-        var { collection, recordTypes } = it;
-
-        var collectionCreatorData = allSchemaCreators[collection];
-        if (!(collectionCreatorData?.hasCustomTypes)) {
-            throw new InvalidCollection(`
-                collection "${collection}" has no crts`
-            );
+        var { _id, collection, recordType, recordTypes } = it;
+        
+        if (collection) {
+            var collectionCreatorData = allSchemaCreators[collection];
+            if (!(collectionCreatorData?.hasCustomTypes)) {
+                throw new InvalidCollection(`
+                    collection "${collection}" has no crts`
+                );
+            }
         }
 
-        OR.push({
-            collection,
-            ...(recordTypes && {
-                type: { $in: recordTypes }
-            })
-        })
+        if (recordType) {
+            recordTypes = [ recordType ];
+        }
+
+        var condition = (
+            _id ? { _id } : { collection, ...(recordTypes && {
+                type: { $in: recordTypes }}
+            )}
+        );
+
+        OR.push(condition)
     }
 
     var records = await db.collection('customRecordType').find({

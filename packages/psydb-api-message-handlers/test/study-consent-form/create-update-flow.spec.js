@@ -3,9 +3,6 @@ var { BaselineDeltas } = require('@mpieva/psydb-mocha-baseline-deltas');
 var { KOA_CHANNELS, PROPS_AS_STATE }
     = require('@mpieva/psydb-api-mocha-test-tools/utils');
 
-var { jsonify } = require('@mpieva/psydb-core-utils');
-var { ObjectId, aggregateOne } = require('@mpieva/psydb-mongo-adapter');
-
 describe('study-consent-form/[create|update] flow', function () {
     var db, ids, send;
     before(async function () {

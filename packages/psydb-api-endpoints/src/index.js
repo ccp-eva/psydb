@@ -1,8 +1,10 @@
 'use strict';
 module.exports = {
+    crtSettings: require('./crt-settings'),
     personnel: require('./personnel'),
 
     study: require('./study'),
+    studyConsentTemplate: require('./study-consent-template'),
     studyConsentForm: require('./study-consent-form'),
     studyConsentDoc: require('./study-consent-doc'),
 

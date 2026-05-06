@@ -18,6 +18,7 @@ var addCRTSettingsRoutes = require('./add-crt-settings-routes');
 var addPersonnelRoutes = require('./add-personnel-routes');
 
 var addStudyRoutes = require('./add-study-routes');
+var addStudyConsentTemplateRoutes = require('./add-study-consent-template-routes');
 var addStudyConsentFormRoutes = require('./add-study-consent-form-routes');
 var addStudyConsentDocRoutes = require('./add-study-consent-doc-routes');
 
@@ -523,6 +524,7 @@ var createRouting = (bag = {}) => {
     addPersonnelRoutes({ router });
     
     addStudyRoutes({ router });
+    addStudyConsentTemplateRoutes({ router });
     addStudyConsentFormRoutes({ router });
     addStudyConsentDocRoutes({ router });
 

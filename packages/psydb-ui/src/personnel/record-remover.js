@@ -1,19 +1,12 @@
 import React from 'react';
 
-import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
-import {
-    Pair,
-    Button,
-    Icons,
-    LoadingIndicator,
-    Alert,
-} from '@mpieva/psydb-ui-layout';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
+import { Pair, AsyncButton, Icons, LoadingIndicator, Alert }
+    from '@mpieva/psydb-ui-layout';
+import { withRecordRemover, FormBox, ReverseRefList }
+    from '@mpieva/psydb-ui-lib';
 
-import {
-    withRecordRemover,
-    FormBox,
-    ReverseRefList
-} from '@mpieva/psydb-ui-lib';
 
 const SafetyForm = (ps) => {
     var {
@@ -27,19 +20,17 @@ const SafetyForm = (ps) => {
     var { record } = fetched;
     var { sequenceNumber, _recordLabel } = record;
 
-    var send = useSendRemove({
-        collection,
-        recordType,
-        record,
-        subChannels: [ 'gdpr', 'scientific' ],
-        onSuccessfulUpdate
-    });
+    var [{ translate }] = useI18N();
+
+    var send = useSend(() => ({
+        type: 'personnel/remove',
+        payload: { _id: record._id }
+    }), { onSuccessfulUpdate: (response) => {
+        onSuccessfulUpdate?.({ response });
+    }});
 
     var [ didFetchRefs, fetchedReverseRefs ] = useFetch((agent) => (
-        agent.fetchRecordReverseRefs({
-            collection,
-            id
-        })
+        agent.fetchRecordReverseRefs({ collection, id })
     ), [ collection, id ]);
 
     if (!didFetchRefs) {
@@ -48,15 +39,18 @@ const SafetyForm = (ps) => {
     var { reverseRefs } = fetchedReverseRefs.data;
 
     return (
-        <FormBox title='Mitarbeiter:in löschen' titleClassName='text-danger'>
+        <FormBox
+            title={ translate('Delete Staff Member') }
+            titleClassName='text-danger'
+        >
             <Pair 
-                label='Mitarbeiter:in'
+                label={ translate('Staff Member') }
                 wLeft={ 3 } wRight={ 9 } className='px-3'
             >
                 { _recordLabel }
             </Pair>
             <Pair 
-                label='ID Nr.'
+                label={ translate('ID No.') }
                 wLeft={ 3 } wRight={ 9 } className='px-3'
             >
                 { sequenceNumber }
@@ -65,36 +59,41 @@ const SafetyForm = (ps) => {
             { reverseRefs.length > 0 && (
                 <>
                     <Alert variant='danger'><b>
-                        Mitarbeiter:in wird von anderen Datensätzen referenziert
+                        { translate('Staff member is referenced by other records!') }
                     </b></Alert>
 
                     <ReverseRefList reverseRefs={ reverseRefs } />
                     <hr />
                 </>
             )}
-            <Button
+            <AsyncButton
                 variant='danger'
-                onClick={ send.exec }
                 disabled={ reverseRefs.length > 0 }
+                { ...send.passthrough }
             >
-                Löschen
-            </Button>
+                { translate('Remove') }
+            </AsyncButton>
         </FormBox>
     )
 }
 
 const SuccessInfo = (ps) => {
     var { successInfoBackLink } = ps;
+    var [{ translate }] = useI18N();
+
     return (
-        <FormBox titleClassName='text-success' title='Mitarbeiter:in gelöscht'>
-            <i>Mitarbeiter:in wurde erfolgreich gelöscht</i>
+        <FormBox
+            titleClassName='text-success'
+            title={ translate('Staff Member Deleted') }
+        >
+            <i>{ translate('Staff member was deleted successfully!') }</i>
             { successInfoBackLink && (
                 <>
                     <hr />
                     <a href={ successInfoBackLink }>
                         <Icons.ArrowLeftShort />
                         {' '}
-                        <b>zurück zur Liste</b>
+                        <b>{ translate('Back to List') }</b>
                     </a>
                 </>
             )}

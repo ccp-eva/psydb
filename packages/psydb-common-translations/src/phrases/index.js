@@ -7,6 +7,7 @@ module.exports = [
     ...require('./locations'),
     ...require('./external-organizations'),
     ...require('./subject-contact-history'),
+    ...require('./personnel'),
 
     ...require('./lab-workflows'),
 
@@ -830,6 +831,10 @@ module.exports = [
     {
         en: 'Has Admin Access',
         de: 'Hat Admin-Zugriff'
+    },
+    {
+        en: 'New Staff Member',
+        de: 'Neue Mitarbeiter:in'
     },
     {
         en: 'Edit Staff Member',

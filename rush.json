@@ -202,6 +202,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-koa-event-helpers",
+       "projectFolder": "packages/psydb-koa-event-helpers",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-koa-event-middleware",
        "projectFolder": "packages/psydb-koa-event-middleware",
        "reviewCategory": "production"

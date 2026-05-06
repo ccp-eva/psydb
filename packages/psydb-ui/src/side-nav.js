@@ -214,6 +214,7 @@ var checkNavItemAllowed = (bag) => {
             ]);
         case '/statistics':
         case '/csv-imports':
+        case '/study-consent-templates':
         case '/research-groups':
         case '/system-roles':
         case '/custom-record-types':

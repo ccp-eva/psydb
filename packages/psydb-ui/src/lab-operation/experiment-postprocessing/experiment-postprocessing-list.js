@@ -77,7 +77,8 @@ const ExperimentPostprocessingListLoader = (ps) => {
 const ExperimentPostprocessingList = (ps) => {
     var { records, related, onSuccessfulUpdate } = ps;
 
-    var [{ translate, locale, fdate }] = useI18N();
+    var [ i18n ] = useI18N();
+    var { translate, locale, fdate } = i18n;
 
     if (records.length < 1) {
         return <Fallback />

@@ -157,4 +157,60 @@ module.exports = [
         en: 'Display Name (EN)',
         de: 'Anzeigename (EN)'
     },
+
+    {
+        en: 'Study Consent',
+        de: 'Studien-Einwilligungen'
+    },
+    {
+        en: 'Can View Study Consent Docs',
+        de: 'Kann Einwilligungen Einsehen'
+    },
+    {
+        en: 'Can Edit Study Consent Docs',
+        de: 'Kann Einwilligungen Bearbeiten'
+    },
+    {
+        en: 'Can Delete Study Consent Docs',
+        de: 'Kann Einwilligungen Löschen'
+    },
+    {
+        en: 'Can View Study Consent Forms',
+        de: 'Kann Einwilligungs-Formulare Einsehen'
+    },
+    {
+        en: 'Can Edit Study Consent Forms',
+        de: 'Kann Einwilligungs-Formulare Bearbeiten'
+    },
+    {
+        en: 'Can Delete Study Consent Forms',
+        de: 'Kann Einwilligungs-Formulare Löschen'
+    },
+
+    {
+        internal: '_sidenav_study-consent-templates',
+        en: 'Consent Templates',
+        de: 'Einwilligungs-Templates'
+    },
+
+    {
+        internal: 'studyConsentTemplate',
+        en: 'Consent Templates',
+        de: 'Einwilligungs-Templates'
+    },
+
+    {
+        en: 'New Consent Template',
+        de: 'Neues Einwilligungs-Template'
+    },
+    
+    {
+        en: 'Edit Consent Template',
+        de: 'Einwilligungs-Template bearbeiten'
+    },
+
+    {
+        en: 'Template-Shorthand',
+        de: 'Template-Kürzel'
+    },
 ]

@@ -175,6 +175,32 @@ const FormFields = (ps) => {
                     dataXPath='$.canViewStudyLabTeams'
                 />
             </PermBox>
+            <PermBox title={ translate('Study Consent') }>
+                <Bool
+                    label='Can View Study Consent Docs'
+                    dataXPath='$.canReadStudyConsentDocs'
+                />
+                <Bool
+                    label='Can Edit Study Consent Docs'
+                    dataXPath='$.canWriteStudyConsentDocs'
+                />
+                <Bool
+                    label='Can Delete Study Consent Docs'
+                    dataXPath='$.canRemoveStudyConsentDocs'
+                />
+                <Bool
+                    label='Can View Study Consent Forms'
+                    dataXPath='$.canReadStudyConsentForms'
+                />
+                <Bool
+                    label='Can Edit Study Consent Forms'
+                    dataXPath='$.canWriteStudyConsentForms'
+                />
+                <Bool
+                    label='Can Delete Study Consent Forms'
+                    dataXPath='$.canRemoveStudyConsentForms'
+                />
+            </PermBox>
 
             <PermBox title={ translate('Subjects') }>
                 <Bool

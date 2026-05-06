@@ -1,5 +1,5 @@
 'use strict';
-var fns = require('./run-context-fns');
+var fns = require('@mpieva/psydb-koa-event-helpers/run-context-fns');
 
 // triggerMussageEffects ??
 // runHandlers ??
@@ -14,7 +14,11 @@ var run = () => async (context, next) => {
 
     context.dispatch = withContext(fns.dispatch);
     context.dispatchProps = withContext(fns.dispatchProps);
+    context.dispatch.multiplexed = withContext(fns.dispatchMultiplexed);
     context.dispatch.makeClean = withContext(fns.makeClean);
+    context.dispatch.makeMrproperMultiplexed = withContext(
+        fns.makeMrproperMultiplexed
+    );
     //context.dispatch.makeDistClean = withContext(fns.makeDistClean);
 
     try {

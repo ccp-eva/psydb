@@ -24,6 +24,7 @@ var nav = [
     { path: '/helper-sets' },
     { path: '/personnel' },
     '=======',
+    { path: '/study-consent-templates' },
     { path: '/research-groups' },
     { path: '/system-roles' },
     { path: '/custom-record-types' },

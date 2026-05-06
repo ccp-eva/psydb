@@ -95,6 +95,10 @@ module.exports.SubjectContactHistoryState = require('./subject-contact-history/s
 
 /////////////////////////////////////////////////
 
+module.exports.StudyConsentTemplate = {
+    MongoDoc: require('./study-consent-template/mongo-doc'),
+    State: require('./study-consent-template/state'),
+}
 module.exports.StudyConsentForm = {
     MongoDoc: require('./study-consent-form/mongo-doc'),
     State: require('./study-consent-form/state'),

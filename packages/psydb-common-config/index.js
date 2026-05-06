@@ -60,7 +60,7 @@ module.exports = {
     //dev_enableWKPRCPatches: true,
 
     dev_enableImprovedContactTracking: true,
-    dev_enableStudyConsentWorkflow: true,
+    //dev_enableStudyConsentWorkflow: true,
     dev_enableStudyRoadmap: true,
 
     dev_enableSubjectDuplicatesSearch: true,

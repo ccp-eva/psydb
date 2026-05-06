@@ -137,6 +137,15 @@ var handleNoCRT = async (bag) => {
                     },
                 ]}
             ],
+            'studyConsentTemplate': [
+                { 'state.templateName': true },
+                { format: '${#}', tokens: [
+                    {
+                        systemType: 'SaneString',
+                        dataPointer: '/state/templateName'
+                    },
+                ]}
+            ],
 
             //////////////////////////////////////////////
 
