@@ -82,7 +82,10 @@ const EditForm = (ps) => {
             ...defaults.custom,
             ...initialValues.custom
         },
-        studyRoadmap: { props: studyRoadmap?.state || {}}
+
+        ...(dev_enableStudyRoadmap && {
+            studyRoadmap: { props: studyRoadmap?.state || { tasks: [] }}
+        }),
     }
 
     var { sequenceNumber } = record;
