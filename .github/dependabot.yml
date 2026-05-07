@@ -1,0 +1,10 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly" # Options: daily, weekly, monthly
+    
+    # Strictly allow only production dependencies
+    allow:
+      - dependency-type: "production"
