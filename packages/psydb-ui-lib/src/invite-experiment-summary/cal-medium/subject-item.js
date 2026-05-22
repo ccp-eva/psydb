@@ -24,6 +24,11 @@ const SubjectItem = (ps) => {
         onClickContactFailed,
     } = ps;
 
+    var [{ translate }] = useI18N();
+
+    var { subjectId, invitationStatus, comment } = subjectDataItem;
+    var subjectRecord = subjectRecordsById[subjectId];
+
     // FIXME
     subjectRelated = __fixRelated(subjectRelated, { isResponse: false });
     subjectDisplayFieldData = __fixDefinitions(
@@ -31,12 +36,6 @@ const SubjectItem = (ps) => {
         ? subjectDisplayFieldData
         : subjectDisplayFieldData[subjectRecord.type]
     );
-
-    var [ i18n ] = useI18N();
-    var { translate, locale, language } = i18n;
-
-    var { subjectId, invitationStatus, comment } = subjectDataItem;
-    var subjectRecord = subjectRecordsById[subjectId];
 
     return (
         <li>

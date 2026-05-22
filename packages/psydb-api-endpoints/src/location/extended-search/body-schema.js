@@ -18,9 +18,9 @@ var {
 } = require('@mpieva/psydb-schema-fields');
 
 
+var BodySchema = {};
 
-var RequestBodySchema = {};
-RequestBodySchema.Core = () => OpenObject({
+BodySchema.Core = () => OpenObject({
     properties: {
         locationType: CustomRecordTypeKey({ collection: 'location' }),
     },
@@ -38,7 +38,7 @@ var NegatableForeignIdList = (bag) => {
     });
 }
 
-RequestBodySchema.Full = () => ExactObject({
+BodySchema.Full = () => ExactObject({
     properties: {
         locationType: CustomRecordTypeKey({ collection: 'location' }),
         // XXX
@@ -77,4 +77,4 @@ RequestBodySchema.Full = () => ExactObject({
     ]
 });
 
-module.exports = RequestBodySchema;
+module.exports = BodySchema;

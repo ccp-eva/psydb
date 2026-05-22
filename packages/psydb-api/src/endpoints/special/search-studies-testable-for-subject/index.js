@@ -102,6 +102,9 @@ var searchStudiesTestableForSubject = async (context, next) => {
         var now = new Date();
         var studyRecords = await withRetracedErrors(
             db.collection('study').aggregate([
+                { $match: {
+                    'state.internals.isRemoved': { $ne: true },
+                }},
                 MatchIntervalAroundStage({
                     recordIntervalPath: 'state.runningPeriod',
                     recordIntervalEndCanBeNull: true,

@@ -1,7 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var { ApiError } = require('@mpieva/psydb-api-lib');
 var { SimpleHandler, PutMaker } = require('../../../lib/');
 

@@ -20,9 +20,9 @@
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "dependencies": {
     "ajv": "~6.12.6",
-    "bcrypt": "~5.1.1",
+    "bcryptjs": "~3.0.3",
     "debug": "~4.3.4",
-    "koa": "~2.14.2",
+    "koa": "~2.16.4",
     "koa-body": "~4.2.0",
     "koa-compose": "~4.1.0",
     "koa-session": "^5.13.1",

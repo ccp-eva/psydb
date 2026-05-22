@@ -53,8 +53,26 @@ var dispatchRemoveSubjectEvents = async ({
         }
     }
 
+    var postprocessedSubjectCount = 1; // because we will cancel one now
+    for (var it of experimentRecord.state.subjectData) {
+        var isSubjectPostprocessed = (
+            enums.safeParticipationStatus.keys.includes(
+                it.participationStatus
+            )
+        );
+        if (isSubjectPostprocessed) {
+            postprocessedSubjectCount += 1;
+        }
+    }
+
+
+    var { subjectData } = experimentRecord.state;
+    //console.log({ postprocessedSubjectCount, subjectData });
     var shouldCancelExperiment = (
-        experimentRecord.state.subjectData.length === canceledSubjectCount
+        subjectData.length === canceledSubjectCount
+    );
+    var shouldPostprocessExperiment = (
+        !shouldCancelExperiment && subjectData.length === postprocessedSubjectCount
     );
 
     await dispatch({
@@ -67,6 +85,9 @@ var dispatchRemoveSubjectEvents = async ({
             },
             ...(shouldCancelExperiment && {
                 $set: { 'state.isCanceled': true }
+            }),
+            ...(shouldPostprocessExperiment && {
+                $set: { 'state.isPostprocessed': true }
             })
         }
     });

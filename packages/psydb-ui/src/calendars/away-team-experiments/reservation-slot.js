@@ -24,15 +24,22 @@ const ReservationSlot = (ps) => {
     var teamRecord = experimentOperatorTeamRecords.find(it => (
         it._id === experimentOperatorTeamId
     ));
-   
+
+    var { color, name, hidden } = teamRecord.state;
     return (
         <ColoredBox
             className='pl-2 pr-2 pb-1 pt-1 mb-2' 
-            bg={ teamRecord.state.color }
+            bg={ color }
             extraStyle={ style }
         >
             <div className='text-small'>
-                { teamRecord.state.name }
+                { name }
+                { hidden && (
+                    <>
+                        <br />
+                        (Team Ausgeblendet)
+                    </>
+                )}
             </div>
         </ColoredBox>
     );

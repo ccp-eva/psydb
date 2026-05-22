@@ -11,6 +11,6 @@
   "license": "MIT",
   "dependencies": {
     "co": "~4.6.0",
-    "axios": "~0.28.1"
+    "axios": "~1.15.0"
   }
 }

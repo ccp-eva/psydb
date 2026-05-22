@@ -35,7 +35,7 @@ var fetchExcludedStudiesForSubject = async (bag) => {
         for (var exId of it.state.excludedOtherStudyIds) {
             var existing = (
                 exclusion
-                .find(a => compareIds(a.studyId === exId))
+                .find(a => compareIds(a.studyId, exId))
             );
             if (!existing) {
                 exclusion.push({
@@ -55,7 +55,7 @@ var fetchExcludedStudiesForSubject = async (bag) => {
 
         var existing = (
             exclusion
-            .find(a => compareIds(a.studyId === it.studyId))
+            .find(a => compareIds(a.studyId, it.studyId))
         );
         if (existing && existing.type === 'excluded') {
             continue;
@@ -91,7 +91,7 @@ var fetchExcludedStudiesForSubject = async (bag) => {
     for (var it of invitedForExperiments) {
         var existing = (
             exclusion
-            .find(a => compareIds(a.studyId === it.studyId))
+            .find(a => compareIds(a.studyId, it.studyId))
         );
         if (existing && existing.type === 'excluded') {
             continue;

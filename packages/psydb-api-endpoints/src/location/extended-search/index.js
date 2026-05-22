@@ -1,10 +1,7 @@
 'use strict';
-var debug = require('debug')(
-    'psydb:api:endpoints:extended-search:studies'
-);
+var debug = require('../debug-helper')('extendedSearch');
 
-var { ejson, keyBy, groupBy } = require('@mpieva/psydb-core-utils');
-var { copy } = require('copy-anything');
+var { ejson, keyBy, groupBy, copy } = require('@mpieva/psydb-core-utils');
 var {
     ResponseBody,
     validateOrThrow,
@@ -12,8 +9,7 @@ var {
 } = require('@mpieva/psydb-api-lib');
 
 var { extendedSearch } = require('@mpieva/psydb-api-endpoint-lib');
-var RequestBodySchema = require('./request-body-schema');
-
+var BodySchema = require('./body-schema');
 
 var locationExtendedSearch = async (context, next) => {
     var {
@@ -24,7 +20,7 @@ var locationExtendedSearch = async (context, next) => {
 
     var precheckBody = copy(request.body);
     validateOrThrow({
-        schema: RequestBodySchema.Core(),
+        schema: BodySchema.Core(),
         payload: precheckBody
     });
 
@@ -37,7 +33,7 @@ var locationExtendedSearch = async (context, next) => {
     });
 
     validateOrThrow({
-        schema: RequestBodySchema.Full(crtSettings),
+        schema: BodySchema.Full(crtSettings),
         payload: request.body
     });
 

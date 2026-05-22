@@ -1,14 +1,12 @@
 'use strict';
 var fspath = require('path');
 var co = require('co');
-var RJSON = require('relaxed-json');
-var { EJSON } = require('bson');
-var dump = require('@cdxoo/mongodb-dump');
 
 var cli = require('./setup-cli');
 var cwd = process.cwd();
 
-var connectClient = require('./connect-client');
+var handleCollectionConfig = require('./handle-collection-config');
+var handleCustomDumpFN = require('./handle-custom-dump-fn');
 
 co(async () => {
     var now = new Date();
@@ -17,55 +15,20 @@ co(async () => {
     var fullConfigPath = fspath.resolve(fspath.join(cwd, configPath));
     var fullOutPath = fspath.resolve(fspath.join(cwd, outPath));
 
-    var { url, collections: collectionConfig } = require(fullConfigPath);
+    var {
+        url,
+        collections: collectionConfig,
+        customDumpFN
+    } = require(fullConfigPath);
 
-    var collections = [];
-    var parsedFilters = {};
-    for (var it of Object.entries(collectionConfig)) {
-        var [ collection, filterString ] = it;
-
-        var preparsed = JSON.stringify(RJSON.parse(filterString));
-        var sanitized = preparsed.replace(
-            /"\$regex":"\/([^/]*)\/([^"])*"/g,
-            '"$regex": "$1", "$options": "$2"'
-        );
-        
-        //console.log(sanitized);
-        var parsed = EJSON.parse(sanitized);
-        //console.log(parsedFilter);
-       
-        collections.push(collection);
-        parsedFilters[collection] = parsed;
+    if (customDumpFN) {
+        await handleCustomDumpFN({ url, customDumpFN, fullOutPath });
     }
-    
-    var client = await connectClient({ url });
-    try {
-        var db = client.db();
-        console.log(`Connected to "${url}"`);
-        console.log(`Database is "${db.databaseName}"`);
-
-        console.log('Will dump to:', fullOutPath);
-
-        var counts = {};
-        await dump.database({
-            con: client,
-            database: db.databaseName,
-            collections,
-
-            filter: ({ database, collection }) => {
-                return parsedFilters[collection] || undefined;
-            },
-            transform: ({ collection, doc }) => {
-                counts[collection] = (counts[collection] || 0) + 1;
-                return doc;
-            },
-            output: 'fs-dir',
-            to: fullOutPath
-        })
-
-        console.log('number of dumped records:', counts);
+    else if (collectionConfig) {
+        await handleCollectionConfig({ url, collectionConfig, fullOutPath });
     }
-    finally {
-        client.close();
+    else {
+        throw new Error('Set either "collection" or "customDumpFN"!');
     }
+
 }).catch(error => { console.log(error) });

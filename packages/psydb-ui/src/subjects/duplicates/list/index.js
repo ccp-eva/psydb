@@ -59,7 +59,7 @@ const CRTFetchWrapper = (ps) => {
 
 const DuplicatesList = (ps) => {
     var { recordType, crtSettings } = ps;
-    var { duplicateCheckSettings } = crtSettings;
+    var { duplicateCheckSettings } = crtSettings.getRaw();
     var [{ translate }] = useI18N();
 
     var [ query, updateQuery ] = useURLSearchParamsB64();

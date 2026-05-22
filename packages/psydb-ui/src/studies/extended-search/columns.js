@@ -15,7 +15,7 @@ const ColumnSelect = withField({
 })
 
 export const Columns = (ps) => {
-    var { formData, crtSettings, schema } = ps;
+    var { formData, crtSettings } = ps;
     
     var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
     var [{ language, translate }] = useI18N();
@@ -23,15 +23,11 @@ export const Columns = (ps) => {
     
     var crt = CRTSettings({ data: crtSettings });
     var customColumns = (
-        crt.allCustomFields()
-        .filter(it => !it.isRemoved)
-        .map(it => {
-            var { pointer, displayName, displayNameI18N = {} } = it;
-            return {
-                pointer,
-                label: displayNameI18N[language] || displayName
-            }
-        })
+        crt.findCustomFields({ 'isRemoved': { $ne: true }})
+        .map(it => ({
+            pointer: it.pointer,
+            label: translate.fieldDefinition(it)
+        }))
     );
 
     var sortableColumns = SmartArray([

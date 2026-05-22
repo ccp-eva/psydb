@@ -1,7 +1,7 @@
 'use strict';
 var nodemailer = require('nodemailer');
 var nanoid = require('nanoid');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var config = require('@mpieva/psydb-api-config');
 var { ApiError } = require('@mpieva/psydb-api-lib');
 

@@ -43,7 +43,6 @@
     "@mpieva/json-schema-convert-pointer": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ajv-formats": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ajv-keywords": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-api-mocha-test-tools": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-api-lib-errors": "workspace:~0.1.0-alpha",
     "@cdxoo/mongodb-escape-keys": "~0.1.1",
     "@cdxoo/traverse": "~0.0.1",
@@ -51,10 +50,10 @@
     "koa-compose": "~4.1.0",
     "@cdxoo/switch-koa-compose": "~1.0.0",
     "diacritic-regex": "~1.1.0",
-    "nodemailer": "~6.9.14",
+    "nodemailer": "~7.0.13",
     "csv-parse": "~5.5.5",
     "common-tags": "~1.8.2",
-    "qs": "~6.12.1",
+    "qs": "~6.15.0",
     "encodeurl": "~2.0.0",
     "@cdxoo/gather-possible-jss-paths": "~0.0.5",
     "clean-deep": "~3.4.0",
@@ -66,6 +65,7 @@
     "mocha": "~10.2.0",
     "chai": "~4.3.7",
     "snap-shot-it": "~7.9.6",
+    "@mpieva/psydb-api-mocha-test-tools": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-fixtures": "workspace:~0.1.0-alpha"
   },
   "config": {

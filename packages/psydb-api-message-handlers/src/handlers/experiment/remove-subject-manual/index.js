@@ -47,7 +47,6 @@ handler.checkAllowedAndPlausible = async (context) => {
     if (!subject) {
         throw new ApiError(400, 'InvalidSubjectId');
     }
-    console.log(experiment.state);
     if (!experiment.state.selectedSubjectIds.find(it => compareIds(it, subjectId))) {
         throw new ApiError(400, 'InvalidSubjectId');
     }

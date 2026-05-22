@@ -1,10 +1,16 @@
 'use strict';
-// common lib is shared in frond and backend; therefor we dont have
-// the option to use ObjectId; the only options other that that we can only
-// fall back to stringly compare them; which affects the backend as well
-// unfortunately
-var compareIds = (a, b) => (
-    String(a) === String(b)
-);
+var equalIds = (idA, idB) => {
+    var useEqualsFn = (
+        idA?.equals && idB?.equals
+    );
+    
+    return (
+        useEqualsFn
+        ? !!idA.equals(idB)
+        : String(idA) === String(idB)
+    )
+};
 
-module.exports = compareIds;
+equalIds.lambda = (idB) => (idA) => equalIds(idA, idB);
+
+module.exports = equalIds; // TODO: rename compareIds => equalIds

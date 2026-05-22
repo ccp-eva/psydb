@@ -2,7 +2,7 @@ import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
 import { CRTSettings } from '@mpieva/psydb-common-lib';
-import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib';
@@ -16,21 +16,16 @@ const ColumnSelect = withField({
 export const Columns = (ps) => {
     var { formData, crtSettings, schema } = ps;
     
-    var [ language ] = useUILanguage();
-    var translate = useUITranslation();
+    var [{ language, translate }] = useI18N();
     var permissions = usePermissions();
     
     var crt = CRTSettings({ data: crtSettings });
     var customColumns = (
-        crt.allCustomFields()
-        .filter(it => !it.isRemoved)
-        .map(it => {
-            var { pointer, displayName, displayNameI18N = {} } = it;
-            return {
-                pointer,
-                label: displayNameI18N[language] || displayName
-            }
-        })
+        crt.findCustomFields({ 'isRemoved': { $ne: true }})
+        .map(it => ({
+            pointer: it.pointer,
+            label: translate.fieldDefinition(it)
+        }))
     );
 
     var sortableColumns = [
