@@ -65,7 +65,10 @@ var participatedStudiesForSubject = async (context, next) => {
         db,
         permissions,
         request,
+        apiConfig,
     } = context;
+
+    var { dev_enableWKPRCPatches } = apiConfig;
 
     validateOrThrow({
         schema: RequestBodySchema(),
@@ -111,7 +114,12 @@ var participatedStudiesForSubject = async (context, next) => {
             let: { id: '$studyId' },
             pipeline: [
                 { $match: { $expr: { $eq: ['$_id', '$$id'] }}},
-                { $project: { 'shorthand': '$state.shorthand' }}
+
+                dev_enableWKPRCPatches ? (
+                    { $project: { 'name': '$state.name' }}
+                ) : (
+                    { $project: { 'shorthand': '$state.shorthand' }}
+                )
             ],
             as: 'study',
         }},
