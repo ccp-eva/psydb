@@ -42,9 +42,9 @@ services:
     restart: "unless-stopped"
 
   psydb:
-    image: "cdxoo/psydb:0.1.0-alpha.202411060233_mpiccp"
+    image: "cdxoo/psydb:0.100.11.202605220824"
     ports:
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8080-8081:8080"
     volumes:
       - "./psydb-config/psydb:/usr/src/app/config"
     networks:
@@ -53,6 +53,9 @@ services:
       - mongodb
       - mailhog
     restart: "unless-stopped"
+    deploy:
+      mode: "replicated"
+      replicas: 2
 
 networks:
   psydb-net:

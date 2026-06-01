@@ -91,5 +91,8 @@
     "mongodbMemoryServer": {
       "downloadDir": "/tmp/mongodb-memory-server/"
     }
+  },
+  "dependencies": {
+    "webpack-manifest-plugin": "~6.0.1"
   }
 }
