@@ -42,9 +42,9 @@ The `deploy/` directory contains all relevant tools and helpers for setting up P
 | Component         | Recommended Option                   |
 | ----------------- | ------------------------------------ |
 | Operating System  | Ubuntu 22.04 LTS                     |
-| Runtime           | Node.js 18.x LTS                     |
+| Runtime           | Node.js 22.x LTS                     |
 | Database          | MongoDB 6.x / 5.x / 4.x              |
-| Reverse Proxy     | Nginx 1.27.x                         |
+| Reverse Proxy     | Nginx >= 1.31.1                      |
 
 #### Setup Instructions
 

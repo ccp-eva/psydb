@@ -12,7 +12,7 @@ services:
     restart: "unless-stopped"
 
   nginx-reverse:
-    image: "nginx:1.25.2"
+    image: "nginx:1.31.1-alpine"
     ports:
       - "80:80"
       - "443:443"
