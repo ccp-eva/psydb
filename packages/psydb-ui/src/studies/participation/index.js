@@ -42,6 +42,7 @@ const StudyParticipation = (ps) => {
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
         subjectTypeInfos: agent.fetchStudySubjectTypeInfos({
             studyId: id,
+            extraAxiosConfig: { disableErrorModal: [ 400 ] }
         }),
         participation: agent.fetchParticipatedSubjectsForStudy({
             studyId: id,
@@ -49,7 +50,8 @@ const StudyParticipation = (ps) => {
             sort: {
                 path: sorter.sortPath,
                 direction: sorter.sortDirection,
-            }
+            },
+            extraAxiosConfig: { disableErrorModal: [ 400 ] }
         })
     }), [
         id, selectedSubjectType,
@@ -59,6 +61,19 @@ const StudyParticipation = (ps) => {
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
+    }
+
+    if (
+        fetched.errorResponse?.data?.apiStatus
+        === 'StudyHasNoLabProcedureSettings'
+    ) {
+        return (
+            <div className='p-3 text-danger'>
+                <b>{ translate(
+                    'Please add settings for at least one subject type.'
+                ) }</b>
+            </div>
+        )
     }
 
     var { subjectTypeInfos, participation } = fetched._stageDatas;
