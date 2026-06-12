@@ -176,6 +176,7 @@ const ParticipationListRow = (ps) => {
         studyId,
         studyType,
         timestamp,
+        testingAge = undefined, // NOTE: only after anonymization
     } = participationData;
 
     var actualParticipationType = (
@@ -195,6 +196,7 @@ const ParticipationListRow = (ps) => {
             <td>{ studyRecordsById[studyId]?.state.shorthand || studyId  }</td>
             <TimestampAndMaybeAge { ...({
                 timestamp,
+                testingAge,
                 record: subjectRecord,
                 dateOfBirthField: ageFrameField
             })} />
