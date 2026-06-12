@@ -6,7 +6,8 @@ var makeParticipationItems = require('./make-participation-items');
 var transformPrepared = (bag) => {
     var {
         pipelineData,
-        subjectType, study,
+        subjectCRT,
+        study,
         //location, labOperators,
         timezone
     } = bag;
@@ -28,7 +29,7 @@ var transformPrepared = (bag) => {
         var { record, parts } = makeExperiment({
             pipelineItemGroup: it,
             
-            subjectType,
+            subjectType: subjectCRT.getType(),
             study,
             //location,
             //labOperators,

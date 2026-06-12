@@ -9,10 +9,12 @@ var executeSystemEvents = async (context) => {
         dispatch, dispatchProps
     } = context;
 
-    var { timezone, payload } = message;
-    var { subjectType, locationType } = payload;
+    var { timezone } = message;
 
-    var { study, file, pipelineOutput } = cache.get();
+    var {
+        locationCRT, subjectCRT,
+        study, file, pipelineOutput
+    } = cache.get();
 
     var { pipelineData, transformed } = pipelineOutput;
     var { experiments, participations } = transformed;
@@ -26,8 +28,8 @@ var executeSystemEvents = async (context) => {
         createdAt: now,
         fileId: file._id,
         studyId: study._id,
-        locationType,
-        subjectType,
+        locationType: locationCRT.getType(),
+        subjectType: subjectCRT.getType(),
         pipelineData,
     });
 

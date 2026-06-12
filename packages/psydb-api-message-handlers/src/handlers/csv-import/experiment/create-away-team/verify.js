@@ -72,8 +72,8 @@ var tryPrepareImport = async (context, next) => {
                 db,
                 csvLines: file.blob.toString(),
 
-                locationType: locationCRT.getType(),
-                subjectType: subjectCRT.getType(),
+                locationCRT,
+                subjectCRT,
                 study,
                 timezone,
             })

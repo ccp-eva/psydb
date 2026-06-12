@@ -10,21 +10,21 @@ var runPipeline = async (bag) => {
         db,
         csvLines: csvData,
   
-        locationType,
-        subjectType,
+        locationCRT,
+        subjectCRT,
         study,
         timezone: unmarshalClientTimezone
     } = bag;
 
-    var schema = CSVSchema({ subjectType, locationType });
+    var schema = CSVSchema({ subjectCRT, locationCRT });
     var customColumnRemap = (
-        CSVColumnRemappers.Experiment.ManualOnlyParticipation().csv2obj
+        CSVColumnRemappers.Experiment.AwayTeam().csv2obj
     );
 
     var { pipelineData, preparedObjects } = await runDefaultPipeline({
         db, csvData, schema, customColumnRemap, unmarshalClientTimezone,
         extraRecordResolvePointers: {
-            subject: [ '/onlineId'],
+            subject: [ '/onlineId', ...extraIdFields.map(it => it.pointer) ],
             //location: [ '/state/custom/name' ],
         },
     });
@@ -36,7 +36,7 @@ var runPipeline = async (bag) => {
     var transformed = transformPrepared({
         pipelineData: okPipelineData,
 
-        subjectType,
+        subjectCRT,
         study,
         timezone: unmarshalClientTimezone
     });
