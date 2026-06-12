@@ -19,7 +19,7 @@ var runPipeline = async (bag) => {
     var { pipelineData } = await runDefaultPipeline({
         db, csvData, schema, customColumnRemap, unmarshalClientTimezone,
         extraRecordResolvePointers: {
-            subject: [ '/seqquenceNumber', '/onlineId' ],
+            subject: [ '/sequenceNumber', '/onlineId' ],
         },
     });
 

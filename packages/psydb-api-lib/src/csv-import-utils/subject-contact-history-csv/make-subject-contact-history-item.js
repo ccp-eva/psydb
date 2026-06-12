@@ -5,8 +5,8 @@ var { swapTimezone } = require('@mpieva/psydb-timezone-helpers');
 var makeSubjectContactHistoryItem = (bag) => {
     var { pipelineItem, subjectType, timezone } = bag
     var {
-        subjectId, contactType, date, time,
-        status = 'sent', comment = ''
+        subjectId, contactType, date,
+        time = '12:00', status = 'sent', comment = ''
     } = pipelineItem.obj;
     
     var timestamp = convertYMDHMS({
