@@ -66,7 +66,7 @@ const StudyRoadmap = (ps) => {
     return (
         <>
             <hr />
-            <h5>{ translate('Roadmap') }</h5>
+            <h5>{ translate('Timetable') }</h5>
             <Grid
                 style={{ marginLeft: '64px', marginRight: '56px' }}
                 cols={[ '118px', '118px', '1fr', '118px', '200px' ]}

@@ -15,9 +15,9 @@ var CSVSchema = (bag = {}) => {
         }),
         'contactType': StringEnum([ 'email' ]),
         'date': DateYMD(),
-        'time': TimeHM(),
     };
     var optional = {
+        'time': TimeHM(),
         'comment': SaneString(), // NOTE: no fulltext for now
     }
 

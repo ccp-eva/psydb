@@ -24,7 +24,8 @@ describe('csv-import/subject-contact-history/create', function () {
         }));
 
         var file = await this.createFakeFileUpload({ db, buffer: loadCSV(
-            'subject-contact-history-csv/simple'
+            //'subject-contact-history-csv/simple'
+            'subject-contact-history-csv/simple-no-time-col'
         )});
         fileId = file._id;
     });

@@ -924,6 +924,9 @@ importers:
       '@mpieva/psydb-api-message-handler-lib':
         specifier: workspace:*
         version: link:../psydb-api-message-handler-lib
+      '@mpieva/psydb-calculate-age':
+        specifier: workspace:*
+        version: link:../psydb-calculate-age
       '@mpieva/psydb-common-lib':
         specifier: workspace:*
         version: link:../psydb-common-lib

@@ -29,7 +29,7 @@ const StudyRoadmapAndHistory = (ps) => {
         <div>
             <hr />
             <div className='d-flex align-items-center mb-3'>
-                <h5 className='flex-grow m-0'>{ translate('Roadmap') }</h5>
+                <h5 className='flex-grow m-0'>{ translate('Timetable') }</h5>
                 <div style={{ width: '200px' }}>
                     <Controls.GenericEnum
                         value={ version }

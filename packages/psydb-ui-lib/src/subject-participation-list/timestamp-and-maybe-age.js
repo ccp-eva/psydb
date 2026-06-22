@@ -2,15 +2,16 @@ import React from 'react';
 import { jsonpointer } from '@mpieva/psydb-core-utils';
 import { calculateAge } from '@mpieva/psydb-common-lib';
 import { check1970 } from '@mpieva/psydb-ui-utils';
-import { useUIConfig, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 
 import datefns from '../date-fns';
 
+// FIXME: dup
 const TimestampAndMaybeAge = (ps) => {
-    var { record, timestamp, dateOfBirthField } = ps;
+    var { record, timestamp, testingAge, dateOfBirthField } = ps;
     
     var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
-    var locale = useUILocale();
+    var [{ translate, fdate }] = useI18N();
 
     if (check1970(timestamp)) {
         return (
@@ -21,9 +22,7 @@ const TimestampAndMaybeAge = (ps) => {
         )
     }
     else {
-        var formattedTS = datefns.format(
-            new Date(timestamp), (IS_WKPRC ? 'P' : 'P p'), { locale }
-        );
+        var formattedTS = fdate(timestamp, IS_WKPRC ? 'P' : 'P p');
 
         var out = [
             <td key='ts'>{ formattedTS }</td>
@@ -31,7 +30,18 @@ const TimestampAndMaybeAge = (ps) => {
         if (dateOfBirthField) {
             var { pointer } = dateOfBirthField;
             var dob = jsonpointer.get(record, pointer);
-            var age = calculateAge({ base: dob, relativeTo: timestamp });
+
+            var age = undefined;
+            if (dob) {
+                age = calculateAge({ base: dob, relativeTo: timestamp });
+            }
+            else if (testingAge) {
+                var { years, months, days } = testingAge;
+                age = `${years}/${months}/${days}`
+            }
+            else {
+                age = translate('Unknown');
+            }
 
             out.push(
                 <td key='age'>{ age }</td>
