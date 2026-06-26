@@ -21,7 +21,12 @@ var executeSystemEvents = async (context) => {
     await dispatch({
         collection: 'study',
         channelId: studyId,
-        payload: { $set: SET, $unset: UNSET }
+        payload: {
+            $set: SET,
+            ...(UNSET && {
+                $unset: UNSET
+            })
+        }
     });
 
     if (dev_enableStudyRoadmap) {
