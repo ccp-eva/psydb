@@ -11,8 +11,8 @@ import MainForm from './main-form';
 
 const CRTSelectionWrapper = (ps) => {
     var { studyId, onSuccessfulUpdate } = ps;
-    var [ studyType, setStudyType ] = useState('default');
-    var [ subjectType, setSubjectType ] = useState('child');
+    var [ studyType, setStudyType ] = useState();
+    var [ subjectType, setSubjectType ] = useState();
     var [{ translate }] = useI18N();
 
     return (

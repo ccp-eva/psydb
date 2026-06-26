@@ -213,4 +213,13 @@ module.exports = [
         en: 'Template-Shorthand',
         de: 'Template-Kürzel'
     },
+
+    {
+        en: 'Available Templates',
+        de: 'Verfügbare Templates'
+    },
+    {
+        en: 'Load Template',
+        de: 'Template Laden'
+    },
 ]
