@@ -29,7 +29,10 @@ var preview = async (context, next) => {
     }
 
     validateOrThrow({ schema: Schema(), payload: request.body });
-    var { fileId, subjectType, locationType, studyId } = request.body;
+    var {
+        fileId, subjectType, locationType, studyId,
+        treatEachLineAsSeperateExperiment = false
+    } = request.body;
 
     var file = await aggregateOne({ db, file: { _id: fileId }});
     var study = await aggregateOne({ db, study: { _id: studyId }});
@@ -49,7 +52,13 @@ var preview = async (context, next) => {
             subjectCRT,
             locationCRT,
             study,
-            timezone: i18n.timezone
+            timezone: i18n.timezone,
+                
+            ...(treatEachLineAsSeperateExperiment && {
+                groupingFN: ({ pipelineData }) => (
+                    pipelineData.map(it => ([ it ]))
+                )
+            })
         })
     );
 

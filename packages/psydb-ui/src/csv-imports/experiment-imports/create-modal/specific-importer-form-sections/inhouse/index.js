@@ -75,6 +75,12 @@ const PrepareStage = (ps) => {
             />
             { locationType ? (
                 <>
+                <Fields.PlainCheckbox
+                    dataXPath='$.treatEachLineAsSeperateExperiment'
+                    label={ translate(
+                        'Treat each line as seperate participation'
+                    ) }
+                />
                     <CSVFieldInfo />
 
                     <CSVUploadField

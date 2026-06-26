@@ -3,6 +3,7 @@ var {
     ClosedObject,
     ForeignId,
     CustomRecordTypeKey,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var Schema = (context) => {
@@ -11,7 +12,7 @@ var Schema = (context) => {
         'locationType': CustomRecordTypeKey({ collection: 'location' }),
         'subjectType': CustomRecordTypeKey({ collection: 'subject' }),
         'studyId': ForeignId({ collection: 'study' }),
-        'treatEachLineAsSeperateExperiment': DefaultBool()
+        'treatEachLineAsSeperateExperiment': DefaultBool(),
     });
 
     return schema;

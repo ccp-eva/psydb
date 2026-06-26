@@ -47,5 +47,9 @@ module.exports = [
     {
         en: 'Hide Available Columns',
         de: 'Verfügbare Spalten Ausblenden',
+    },
+    {
+        en: 'Treat each line as seperate participation',
+        de: 'Jede Zeile als seperate Teilnahme behandeln',
     }
 ]
