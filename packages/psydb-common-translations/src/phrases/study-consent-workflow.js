@@ -222,4 +222,13 @@ module.exports = [
         en: 'Load Template',
         de: 'Template Laden'
     },
+
+    {
+        en: 'Has Update',
+        de: 'Hat Update'
+    },
+    {
+        en: 'Consent Doc Details',
+        de: 'Einwilligungs-Details'
+    },
 ]

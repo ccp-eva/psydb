@@ -30,11 +30,15 @@ const RecordDetails = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var { record, subjectCRT } = fetched.data;
+    var { record, related, subjectCRT } = fetched.data;
     return (
         <div>
             <ThemeProvider value={ Themes.HorizontalSplit }>
-                <Metadata record={ record } revision={ revision } />
+                <Metadata
+                    record={ record }
+                    related={ related }
+                    revision={ revision }
+                />
             </ThemeProvider>
             <hr />
             <div className='bg-white border'>
@@ -72,7 +76,7 @@ const Inner = (ps) => {
 }
 
 const Metadata = (ps) => {
-    var { record, revision } = ps;
+    var { record, related, revision } = ps;
     var { _rohrpostMetadata, experimentId, personnelId, subjectId, state }
         = record;
 
@@ -95,20 +99,20 @@ const Metadata = (ps) => {
 
     return (
         <>
-            <Field label={ translate('Subject ID') }>
-                { subjectId }
+            <Field label={ translate('Subject') }>
+                { related.subject[subjectId] }
             </Field>
-            <Field label={ translate('Appointment ID') }>
+            <Field label={ translate('Appointment') }>
                 { experimentId || (
                     <span className='text-muted'>
                         { translate('Not Specified') }
                     </span>
                 ) }
             </Field>
-            <Field label={ translate('Personnel ID') }>
-                { personnelId }
+            <Field label={ translate('Staff Member') }>
+                { related.personnel[personnelId] }
             </Field>
-            <Field label={ translate('Timestamp') }>
+            <Field label={ translate('Date/Time') }>
                 { fdatetime(createdAt) }
             </Field>
             <hr />

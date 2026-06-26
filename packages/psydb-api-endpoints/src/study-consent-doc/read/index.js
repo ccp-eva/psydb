@@ -2,6 +2,7 @@
 var debug = require('../debug-helper')('read');
 
 var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
+var { fetchRecordLabelsManual } = require('@mpieva/psydb-db-utils');
 var { ResponseBody, validateOrThrow, fetchCRTSettings }
     = require('@mpieva/psydb-api-lib');
 
@@ -9,11 +10,11 @@ var BodySchema = require('./body-schema');
 
 
 var readEndpoint = async (context, next) => {
-    var { db, request, permissions } = context;
+    var { db, request, permissions, i18n } = context;
     
     // TODO: check headers with ajv
-    var { language = 'en', locale, timezone } = request.headers;
-    var i18n = { language, locale, timezone };
+    //var { language = 'en', locale, timezone } = request.headers;
+    //var i18n = { language, locale, timezone };
 
     validateOrThrow({
         schema: BodySchema(),
@@ -30,9 +31,14 @@ var readEndpoint = async (context, next) => {
         db, collectionName: 'subject', recordType: record.subjectType
     });
 
+    var related = await fetchRecordLabelsManual(db, {
+        'subject': [ record.subjectId ],
+        'personnel': [ ...record.labOperatorIds, record.personnelId ],
+    }, { ...i18n })
+
     context.body = ResponseBody({
         data: {
-            record, related: {},
+            record, related,
             subjectCRT,
         },
     });
