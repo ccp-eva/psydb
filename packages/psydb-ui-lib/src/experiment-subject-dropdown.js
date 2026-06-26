@@ -147,11 +147,19 @@ var ExperimentSubjectDropdown = (ps) => {
                         </span>
                     )
                     : (
-                        <Icons.GearFill style={{
-                            width: '18px',
-                            height: '18px',
-                            marginTop: '-3px',
-                        }} />
+                        variant === 'calendar' ? (
+                            <Icons.PersonFillGear style={{
+                                width: '20px',
+                                height: '20px',
+                                marginTop: '-4px',
+                            }} />
+                        ) : (
+                            <Icons.GearFill style={{
+                                width: '18px',
+                                height: '18px',
+                                marginTop: '-3px',
+                            }} />
+                        )
                     )
                 }
             </Dropdown.Toggle>

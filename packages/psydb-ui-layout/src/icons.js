@@ -28,6 +28,7 @@ export {
     Plus,
     List,
     GearFill,
+    PersonFillGear,
     PencilFill,
     PersonFill,
     DoorClosedFill,
