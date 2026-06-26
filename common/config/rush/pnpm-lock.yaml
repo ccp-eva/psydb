@@ -2380,8 +2380,8 @@ importers:
         specifier: ~1.5.2
         version: 1.5.2(react-dom@17.0.2)(react@17.0.2)
       react-bootstrap-icons:
-        specifier: ~1.8.0
-        version: 1.8.4(react@17.0.2)
+        specifier: ~1.11.6
+        version: 1.11.6(react@17.0.2)
       react-dom:
         specifier: ~17.0.2
         version: 17.0.2(react@17.0.2)
@@ -12675,8 +12675,8 @@ packages:
       iconv-lite: 0.4.24
       unpipe: 1.0.0
 
-  /react-bootstrap-icons@1.8.4(react@17.0.2):
-    resolution: {integrity: sha512-PTCQqTLn0AdCy622reNmV+b4PwCPIOA0PFYT3CSfiqw5nwDPGntOm3Pr+ZsMxXD655QAs1nrMm7u0t3+HVxhtQ==, tarball: https://registry.npmjs.org/react-bootstrap-icons/-/react-bootstrap-icons-1.8.4.tgz}
+  /react-bootstrap-icons@1.11.6(react@17.0.2):
+    resolution: {integrity: sha512-ycXiyeSyzbS1C4+MlPTYe0riB+UlZ7LV7YZQYqlERV2cxDiKtntI0huHmP/3VVvzPt4tGxqK0K+Y6g7We3U6tQ==, tarball: https://registry.npmjs.org/react-bootstrap-icons/-/react-bootstrap-icons-1.11.6.tgz}
     peerDependencies:
       react: '>=16.8.6'
     dependencies:
