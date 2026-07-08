@@ -21,6 +21,9 @@ var runPipeline = async (bag) => {
         CSVColumnRemappers.Experiment.AwayTeam().csv2obj
     );
 
+    var { importSettings = {}} = subjectCRT.getRaw();
+    var { extraIdFields = [] } = importSettings;
+
     var { pipelineData, preparedObjects } = await runDefaultPipeline({
         db, csvData, schema, customColumnRemap, unmarshalClientTimezone,
         extraRecordResolvePointers: {
