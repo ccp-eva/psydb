@@ -1,4 +1,4 @@
-CONF="study-crud"
+CONF="create-followup-awayteam"
 
 node src/run.js \
     -c ./configs/$CONF.js \

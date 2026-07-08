@@ -120,6 +120,10 @@ var selectableStudies = async (context, next) => {
                 {
                     'state.runningPeriod.start': { $lte: now },
                     'state.runningPeriod.end': { $type: 10 }, // null
+                },
+                {
+                    'state.runningPeriod.start': { $lte: now },
+                    'state.runningPeriod.end': { $exists: false },
                 }
             ],
             // FIXME: we need to actally evaluate if research group is forced
