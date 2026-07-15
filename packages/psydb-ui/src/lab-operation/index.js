@@ -3,7 +3,7 @@ import { useRouteMatch, Switch, Route, Redirect } from 'react-router-dom';
 
 import { groupBy } from '@mpieva/psydb-core-utils';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, ErrorFallbacks } from '@mpieva/psydb-ui-layout';
 import { RedirectOrTypeNav } from '@mpieva/psydb-ui-lib';
@@ -16,7 +16,7 @@ import IndexRouting from './index-routing';
 const LabOperation = () => {
     var { path, url } = useRouteMatch();
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
 
     var pflags = permissions.gatherFlags((p) => ({
@@ -25,6 +25,7 @@ const LabOperation = () => {
         }),
         canSelectSubjects: p.hasSomeLabOperationFlags({
             types: 'any', flags: [
+                'canSearchSelectableSubjects',
                 'canSelectSubjectsForExperiments',
                 'canPerformOnlineSurveys'
             ],

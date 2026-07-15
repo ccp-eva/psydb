@@ -1,4 +1,4 @@
-CONF="an-away-team-experiment"
+CONF="create-followup-awayteam"
 
 node src/run.js \
     -c ./configs/$CONF.js \

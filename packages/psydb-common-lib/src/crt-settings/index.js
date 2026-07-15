@@ -1,11 +1,8 @@
 'use strict';
 var sift = require('sift').default;
-var {
-    jsonpointer,
-    arrify,
-    keyBy,
-    convertPointerToPath
-} = require('@mpieva/psydb-core-utils');
+var { jsonpointer, arrify, keyBy, convertPointerToPath }
+    = require('@mpieva/psydb-core-utils');
+var { __fixDefinitions } = require('@mpieva/psydb-common-compat');
 
 var convertCRTRecordToSettings = require('../convert-crt-record-to-settings');
 var createRecordLabel = require('../create-record-label');
@@ -21,7 +18,7 @@ var CRTSettings = ({ data }) => {
             if (subChannels) {
                 for (var sc of subChannels) {
                     for (var field of data.fieldDefinitions[sc]) {
-                        flattened.push(__compatDef({
+                        flattened.push(__fixDefinitions({
                             ...field,
                             subChannel: sc,
                         }))
@@ -29,7 +26,7 @@ var CRTSettings = ({ data }) => {
                 }
             }
             else {
-                flattened = data.fieldDefinitions.map(__compatDef);
+                flattened = data.fieldDefinitions.map(__fixDefinitions);
             }
 
             flattenedFieldDefinitions = flattened;
@@ -69,6 +66,10 @@ var CRTSettings = ({ data }) => {
     }
 
     crt.allCustomFields = crt.getFlattenedFieldDefinitions;
+    crt.findOneCustomField = (filter) => {
+        var [ first ] = crt.findCustomFields(filter);
+        return first;
+    }
     crt.findCustomFields = (filter) => {
         var fields = crt.getFlattenedFieldDefinitions();
         return (
@@ -209,12 +210,6 @@ var CRTSettings = ({ data }) => {
     }
     return crt;
 }
-
-var __compatDef = (def) => ({
-    ...def,
-    systemType: def.type, // FIXME: compat for new
-    dataPointer: def.pointer // FIXME: compat for old
-})
 
 CRTSettings.fromRecord = (record) => (
     CRTSettings({ data: convertCRTRecordToSettings(record) })

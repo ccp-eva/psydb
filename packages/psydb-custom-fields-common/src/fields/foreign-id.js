@@ -1,10 +1,16 @@
 'use strict';
-var { Id } = require('@mpieva/psydb-schema-fields');
+var { Id, IdList, DefaultSearchConstraint }
+    = require('@mpieva/psydb-schema-fields');
 var { createStringifyValue } = require('../stringify-utils');
 
 var createQuickSearchSchema = () => {
     return Id();
-};
+}
+
+var createSearchConstraintsSchema = (bag) => {
+    var { definition } = bag;
+    return DefaultSearchConstraint({ scalar: Id(), array: IdList() });
+}
 
 var stringifyValue = createStringifyValue({ fn: (bag) => {
     var { definition, value, related } = bag;
@@ -29,5 +35,6 @@ module.exports = {
     canSearch: true, // FIXME: rename: canQuickSearch
     
     createQuickSearchSchema,
+    createSearchConstraintsSchema,
     stringifyValue,
 }

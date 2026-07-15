@@ -14,8 +14,12 @@ var WideBool = require('./wide-bool');
 var subjectCollectionFlags = require('./subject-collection-flags');
 var subjectGroupCollectionFlags = require('./subject-group-collection-flags');
 var locationCollectionFlags = require('./location-collection-flags');
+
 var studyCollectionFlags = require('./study-collection-flags');
+var studyConsentDocFlags = require('./study-consent-doc-flags');
+var studyConsentFormFlags = require('./study-consent-form-flags');
 var studyTopicCollectionFlags = require('./study-topic-collection-flags');
+
 var personnelCollectionFlags = require('./personnel-collection-flags');
 var externalPersonCollectionFlags = require('./external-person-collection-flags');
 var externalOrganizationCollectionFlags = require('./external-organization-collection-flags');
@@ -40,8 +44,12 @@ var SystemRoleState = ({
             ...subjectCollectionFlags,
             ...subjectGroupCollectionFlags,
             ...locationCollectionFlags,
+
             ...studyCollectionFlags,
+            ...studyConsentDocFlags,
+            ...studyConsentFormFlags,
             ...studyTopicCollectionFlags,
+
             ...personnelCollectionFlags,
             ...externalPersonCollectionFlags,
             ...externalOrganizationCollectionFlags,

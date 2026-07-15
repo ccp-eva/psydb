@@ -61,7 +61,7 @@ module.exports = (bag) => {
                 key: '_researchGroupSettings',
                 systemType: 'PersonnelResearchGroupSettingsList',
                 dataPointer: '/scientific/state/researchGroupSettings',
-                displayName: 'Sysetm Roles',
+                displayName: 'System Roles',
                 displayNameI18N: { de: 'System-Rollen' },
             },
             {

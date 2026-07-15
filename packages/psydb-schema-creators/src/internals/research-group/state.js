@@ -3,6 +3,7 @@ var inline = require('@cdxoo/inline-text');
 
 var {
     ExactObject,
+    PartialObject,
     SaneString,
     Address,
     FullText,
@@ -13,118 +14,52 @@ var {
     ForeignIdList,
 } = require('@mpieva/psydb-schema-fields');
 
-var ResearchGroupState = ({} = {}) => {
-    var schema = ExactObject({
+var CRTRef = (bag) => {
+    var { collection } = bag;
+    var schema = PartialObject({
         properties: {
-            name: SaneString({
-                title: 'Bezeichnung',
-                minLength: 1
-            }),
-            shorthand: SaneString({
-                title: 'Kürzel',
-                minLength: 1
-            }),
-            address: Address({
-                title: 'Adresse',
-                required: []
-            }),
-            description: FullText({
-                title: 'Beschreibung',
-            }),
-            
-            studyTypes: DefaultArray({
-                items: ExactObject({
-                    properties: {
-                        id: ForeignId({ collection: 'customRecordType' }),
-                        key: CustomRecordTypeKey({ collection: 'study' }),
-                    },
-                    required: [ 'key' ]
-                }),
-                minItems: 0,
-            }),
-            subjectTypes: DefaultArray({
-                items: ExactObject({
-                    properties: {
-                        id: ForeignId({ collection: 'customRecordType' }),
-                        key: CustomRecordTypeKey({ collection: 'subject' }),
-                    },
-                    required: [ 'key' ]
-                }),
-                minItems: 0,
-            }),
-            locationTypes: DefaultArray({
-                items: ExactObject({
-                    properties: {
-                        id: ForeignId({ collection: 'customRecordType' }),
-                        key: CustomRecordTypeKey({ collection: 'location' })
-                    },
-                    required: [ 'key' ]
-                }),
-                minItems: 0,
-            }),
-
-            labMethods: DefaultArray({
-                items: LabMethodKey(),
-                minItems: 0,
-            }),
-
-            helperSetIds: ForeignIdList({
-                collection: 'helperSet',
-            }),
-            
-            systemRoleIds: ForeignIdList({
-                collection: 'systemRole',
-            }),
-            
-            adminFallbackRoleId: ForeignId({
-                collection: 'systemRole',
-            }),
-            
-            // TODO: permissions????
-            // should they be readable to all?
-            // and writable only to root accounts?
-            // or normal read/write by researchgroup?
-            // => readable to all writable to root
-            //recordTypePermissions: ExactObject({
-            //    title: 'Datensatz-Typen',
-            //    properties: {
-            //        subject: DefaultArray({
-            //            title: 'Proband:innen-Typen',
-            //            items: ExactObject({
-            //                properties: {
-            //                    typeKey: CustomRecordTypeKey({
-            //                        title: 'Typ',
-            //                        collection: 'subject',
-            //                        enableResearchGroupFilter: false,
-            //                    })
-            //                },
-            //                required: [ 'typeKey' ]
-            //            })
-            //        }),
-            //        location: DefaultArray({
-            //            title: 'Location-Typen',
-            //            items: ExactObject({
-            //                properties: {
-            //                    typeKey: CustomRecordTypeKey({
-            //                        title: 'Typ',
-            //                        collection: 'location',
-            //                        enableResearchGroupFilter: false,
-            //                    })
-            //                },
-            //                required: [ 'typeKey' ]
-            //            })
-            //        }),
-            //    },
-            //    required: ['subject', 'location']
-            //}),
+            'id': ForeignId({ collection: 'customRecordType' }),
+            'key': CustomRecordTypeKey({ collection }),
         },
-        required: [
-            'name',
-            'shorthand',
-            'address',
-            'description',
-            //'recordTypePermissions',
-        ]
+        required: [ 'key' ]
+    });
+
+    return schema;
+}
+
+var CRTRefList = (bag) => {
+    var { collection, ...pass } = bag;
+
+    var schema = DefaultArray({
+        items: CRTRef({ collection }),
+        minItems: 0,
+        ...pass,
+    });
+
+    return schema;
+}
+
+var ResearchGroupState = (bag = {}) => {
+    var required = {
+        'name': SaneString({ minLength: 1 }),
+        'shorthand': SaneString({ minLength: 1 }),
+        'address': Address({ required: [] }),
+        'description': FullText(),
+    };
+    var optional = {
+        'studyTypes': CRTRefList({ collection: 'study' }),
+        'subjectTypes': CRTRefList({ collection: 'subject' }),
+        'locationTypes': CRTRefList({ collection: 'location' }),
+
+        'labMethods': DefaultArray({ items: LabMethodKey(), minItems: 0 }),
+
+        'helperSetIds': ForeignIdList({ collection: 'helperSet' }),
+        'systemRoleIds': ForeignIdList({ collection: 'systemRole' }),
+        'adminFallbackRoleId': ForeignId({ collection: 'systemRole' }),
+    }
+    var schema = PartialObject({
+        properties: { ...required, ...optional },
+        required: Object.keys(required),
     })
 
     return schema;

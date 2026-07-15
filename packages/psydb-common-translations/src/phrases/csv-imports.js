@@ -1,4 +1,3 @@
-
 'use strict';
 module.exports = [
     {
@@ -6,8 +5,8 @@ module.exports = [
         de: 'CSV-Importe'
     },
     {
-        en: 'Participation Imports',
-        de: 'Teilnahme-Importe'
+        en: 'Subject Contact History Imports',
+        de: 'Proband:innen-Kontakt-Importe'
     },
     {
         en: 'Participation Imports',
@@ -41,4 +40,16 @@ module.exports = [
         en: 'Source File',
         de: 'Quell-Datei'
     },
+    {
+        en: 'Show Available Columns',
+        de: 'Verfügbare Spalten Anzeigen',
+    },
+    {
+        en: 'Hide Available Columns',
+        de: 'Verfügbare Spalten Ausblenden',
+    },
+    {
+        en: 'Treat each line as seperate participation',
+        de: 'Jede Zeile als seperate Teilnahme behandeln',
+    }
 ]

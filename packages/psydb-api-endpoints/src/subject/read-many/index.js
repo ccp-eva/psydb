@@ -86,7 +86,7 @@ var ReadManyStages = (bag) => {
         match.isNotRemoved({ hasSubChannels: true }),
         ...SystemPermissionStages({ collection: 'subject', permissions }),
     ];
-    if (removedFields.length > 0) {
+    if (removedFields?.length > 0) {
         stages.push(projections.OmitFields({ definitions: removedFields }));
     }
 

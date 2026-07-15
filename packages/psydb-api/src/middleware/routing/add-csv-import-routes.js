@@ -13,6 +13,7 @@ var addCSVImportRoutes = (bag) => {
 
     addExperimentImportRoutes({ router });
     addSubjectImportRoutes({ router });
+    addSubjectContactHistoryImportRoutes({ router });
 }
 
 var addExperimentImportRoutes = (bag) => {
@@ -46,6 +47,14 @@ var addExperimentImportRoutes = (bag) => {
         '/csv-import/experiment/preview/online-survey',
         ...withPostStages({ endpoint: preview['online-survey'] })
     );
+    router.post(
+        '/csv-import/experiment/preview/inhouse',
+        ...withPostStages({ endpoint: preview['inhouse'] })
+    );
+    router.post(
+        '/csv-import/experiment/preview/away-team',
+        ...withPostStages({ endpoint: preview['away-team'] })
+    );
 }
 
 var addSubjectImportRoutes = (bag) => {
@@ -70,6 +79,31 @@ var addSubjectImportRoutes = (bag) => {
     router.post(
         '/csv-import/subject/preview',
         ...withPostStages({ endpoint: preview })
+    );
+}
+
+var addSubjectContactHistoryImportRoutes = (bag) => {
+    var { router } = bag;
+    
+    var {
+        search, read, relatedSubjectContactHistoryItems, preview
+    } = endpoints_SPLIT.csvImport.subjectContactHistory;
+    
+    router.post(
+        '/csv-import/subject-contact-history/search',
+        ...withPostStages({ endpoint: search })
+    );
+    router.post(
+        '/csv-import/subject-contact-history/read',
+        ...withPostStages({ endpoint: read })
+    );
+    router.post(
+        '/csv-import/subject-contact-history/related-subject-contact-history-items',
+        ...withPostStages({ endpoint: relatedSubjectContactHistoryItems })
+    );
+    router.post(
+        '/csv-import/subject-contact-history/preview/default',
+        ...withPostStages({ endpoint: preview['default'] })
     );
 }
 

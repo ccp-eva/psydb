@@ -28,16 +28,16 @@ var BaselineDeltas_Extended = (options) => {
 
     that.setBaseline = (...args) => {
         var [ obj, ...pass ] = args;
+        baseline_raw = obj;
         obj = obj === undefined ? obj : ejson(obj);
         base.setBaseline(obj, ...pass);
-        baseline_raw = obj;
     };
     
     that.setCurrent = (...args) => {
         var [ obj, ...pass ] = args;
+        current_raw = obj;
         obj = obj === undefined ? obj : ejson(obj);
         base.setCurrent(obj, ...pass);
-        current_raw = obj;
     };
 
     that.getBaseline_RAW = () => baseline_raw;

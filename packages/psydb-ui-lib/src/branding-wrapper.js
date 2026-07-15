@@ -38,7 +38,8 @@ const BrandingWrapper = (ps) => {
             { config.dev_enableDevPanel && (
                 <DevPanel />
             )}
-            <div className={ config.branding || 'mpiccp' }>
+            <div>
+            {/*<div className={ config.branding || 'mpiccp' }>*/}
                 { children }
             </div>
         </>

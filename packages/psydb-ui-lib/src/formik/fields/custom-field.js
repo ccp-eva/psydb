@@ -21,7 +21,7 @@ const fixSystemType = (systemType) => {
 };
 
 export const CustomField = (ps) => {
-    var { dataXPath, definition, related, extraTypeProps } = ps;
+    var { dataXPath, definition, related, extraTypeProps, disabled } = ps;
     var {
         displayName,
         displayNameI18N = {}, // FIXME: in apedb this does not fall back
@@ -75,6 +75,7 @@ export const CustomField = (ps) => {
             label={ displayNameI18N?.[language] || displayName }
             related={ related }
             required={ isRequired }
+            disabled={ disabled }
             extraContentWrapperProps={{ ...props, ...extraTypeProps[type] }}
             extraItemWrapperProps={{ ...props, ...extraTypeProps[type] }}
             { ...props }

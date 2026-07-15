@@ -21,6 +21,7 @@ var SubjectGroup = MessageHandlerGroup([
     require('./patch-manual-participation'),
     require('./remove-participation'),
     require('./remove'),
+    require('./clean-gdpr'),
     
     require('./merge-duplicate'),
     require('./mark-non-duplicates'),

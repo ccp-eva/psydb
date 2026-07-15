@@ -1,4 +1,4 @@
-export { LinkContainer } from 'react-router-bootstrap';
+export * from './externals';
 
 export { default as CopyNotice } from './copy-notice';
 export { default as LinkButton } from './link-button';
@@ -22,6 +22,8 @@ export { default as TabNav } from './tab-nav';
 export { default as RoutedTabNav } from './routed-tab-nav';
 export { default as SideNav } from './side-nav';
 export { default as RoutedSideNav } from './routed-side-nav';
+
+export * from './default-record-side-nav';
 
 export * from './grid';
 export * from './split-partitioned';
@@ -68,20 +70,7 @@ export * from './narrow-hr';
 export * from './small-form-footer';
 
 export * from './json-raw';
-
-export {
-    Nav,
-    Modal,
-    Button,
-    Table,
-    Container,
-    Row,
-    Col,
-    Alert,
-    Dropdown,
-    Form,
-    InputGroup,
-    ButtonGroup,
-} from 'react-bootstrap';
+export * from './link-q64';
+export * from './a4-wrapper';
 
 export * as ErrorFallbacks from './error-fallbacks';

@@ -1,11 +1,15 @@
 import React from 'react';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSendCreate, usePermissions } from '@mpieva/psydb-ui-hooks';
+
 import { FormBox } from '@mpieva/psydb-ui-layout';
 import { withRecordCreator } from '@mpieva/psydb-ui-lib';
 import MainForm from '../main-form';
 
 const CreateForm = (ps) => {
     var { collection, onSuccessfulUpdate } = ps;
+    
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
 
     var send = useSendCreate({
@@ -14,7 +18,7 @@ const CreateForm = (ps) => {
     })
 
     return (
-        <FormBox title='Neue Mitarbeiter:in'>
+        <FormBox title={ translate('New Staff Member') }>
             <MainForm.Component
                 initialValues={ MainForm.createDefaults({ permissions }) }
                 onSubmit={ send.exec }

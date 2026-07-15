@@ -6,6 +6,10 @@ module.exports = [
         de: 'Studien',
     },
     {
+        en: 'New Study',
+        de: 'Neue Studie'
+    },
+    {
         en: 'Study',
         de: 'Studie'
     },
@@ -89,4 +93,8 @@ module.exports = [
         en: 'Assigned Studies',
         de: 'Studienzuordnung'
     },
+    {
+        en: 'Can View Lab Teams of Studies',
+        de: 'Kann Lab-Teams von Studien Einsehen'
+    }
 ]

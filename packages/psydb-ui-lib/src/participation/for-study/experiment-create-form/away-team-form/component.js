@@ -1,7 +1,7 @@
 import React from 'react';
 import { only } from '@mpieva/psydb-core-utils';
-import { useUILanguage, useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { useFetchAll } from '@mpieva/psydb-ui-hooks';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { usePermissions, useFetchAll } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, Alert } from '@mpieva/psydb-ui-layout';
 
 import { DefaultForm } from '../../../../formik';
@@ -80,7 +80,16 @@ const FormBody = (ps) => {
     var { values } = formik;
     var { locationId } = values['$'];
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
+    var permissions = usePermissions();
+    
+    var showTeamSelect = ( enableTeamSelect && (
+        permissions.hasSomeFlags([ 'canViewStudyLabTeams' ])
+        || permissions.hasSomeLabOperationFlags({
+            types: 'any', flags: [ 'canChangeOpsTeam' ]
+        })
+    ));
+    
     var locationFieldLabel = translate.fieldDefinition(locationFieldDef);
 
     if (preselectedSubject && !locationId) {
@@ -120,7 +129,7 @@ const FormBody = (ps) => {
                     <PerSubjectFields { ...subjectFieldsBag } />
                     <Fields.Timestamp />
                     { 
-                        enableTeamSelect
+                        showTeamSelect
                         ? <Fields.Team studyId={ studyId } />
                         : <Fields.ExperimentOperators />
                     }

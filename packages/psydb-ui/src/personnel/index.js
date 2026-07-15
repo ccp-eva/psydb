@@ -8,6 +8,7 @@ import {
 import { RecordDetails } from './record-details';
 import { RecordCreator } from './record-creator';
 import { RecordRemover } from './record-remover';
+import { RecordAnonymizer } from './record-anonymizer';
 
 import EditorContainer from './editor-container';
 
@@ -16,6 +17,8 @@ const PersonnelTypeView = withRecordTypeView({
     RecordCreator,
     RecordEditor: EditorContainer,
     RecordRemover,
+
+    RecordAnonymizer,
 })
 
 const PersonnelCollectionView = withCollectionView({

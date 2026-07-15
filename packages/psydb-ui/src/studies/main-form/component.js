@@ -3,6 +3,8 @@ import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields, FormBox } from '@mpieva/psydb-ui-lib';
 
+import StudyRoadmap from './study-roadmap';
+
 export const Component = (ps) => {
     var {
         title,
@@ -54,8 +56,8 @@ const FormFields = (ps) => {
     var { crtSettings, related, permissions } = ps;
     var { fieldDefinitions } = crtSettings;
     
-    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
     var [{ translate }] = useI18N();
+    var { dev_enableWKPRCPatches, dev_enableStudyRoadmap } = useUIConfig();
 
     return (
         <>
@@ -64,7 +66,7 @@ const FormFields = (ps) => {
                 dataXPath='$.name'
                 required
             />
-            { !IS_WKPRC && (
+            { !dev_enableWKPRCPatches && (
                 <Fields.SaneString
                     label={ translate('Shorthand') }
                     dataXPath='$.shorthand'
@@ -80,7 +82,7 @@ const FormFields = (ps) => {
                 label={ translate('End') }
                 dataXPath='$.runningPeriod.end'
             />
-            { !IS_WKPRC && (
+            { !dev_enableWKPRCPatches && (
                 <Fields.DefaultBool
                     label={ translate('Subjects can be tested multiple times') }
                     dataXPath='$.enableFollowUpExperiments'
@@ -104,7 +106,7 @@ const FormFields = (ps) => {
                 collection='studyTopic'
             />
             
-            { IS_WKPRC && (
+            { dev_enableWKPRCPatches && (
                 <Fields.SaneStringList
                     label={ translate('_wkprc_experimentNames') }
                     dataXPath='$.experimentNames'
@@ -115,6 +117,10 @@ const FormFields = (ps) => {
                 fieldDefinitions={ fieldDefinitions }
                 related={ related }
             />
+
+            { dev_enableStudyRoadmap && (
+                <StudyRoadmap dataXPath='$.studyRoadmap.props' />
+            )}
 
             <Fields.AccessRightByResearchGroupList
                 label={ translate('Record Access for') }

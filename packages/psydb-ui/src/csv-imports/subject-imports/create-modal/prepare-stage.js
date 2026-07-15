@@ -4,6 +4,7 @@ import { Alert, Button, SmallFormFooter } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib/src/formik';
 
 import CSVUploadField from '../../csv-upload-field';
+import CSVFieldInfo from './csv-field-info';
 
 const PrepareStage = (ps) => {
     var { formValues, gotoPreview } = ps;
@@ -32,10 +33,17 @@ const PrepareStage = (ps) => {
             />
             <hr />
             { (researchGroupId && subjectType) ? (
-                <CSVUploadField
-                    label={ translate('Upload File') }
-                    dataXPath='$.fileId'
-                />
+                <>
+                    <CSVFieldInfo
+                        importerType='subject/default'
+                        subjectType={ subjectType }
+                    />
+
+                    <CSVUploadField
+                        label={ translate('Upload File') }
+                        dataXPath='$.fileId'
+                    />
+                </>
             ) : (
                 <Alert variant='info'>
                     <i>

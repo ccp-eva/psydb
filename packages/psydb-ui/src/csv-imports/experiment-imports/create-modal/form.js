@@ -27,9 +27,11 @@ const ExperimentImportCreateForm = (ps) => {
         //{ _id: '6566b5c26c830cb226c1389b' } // wkprc
         //{ _id: '64d42dcc443aa279ca4caf00', } // childlab ov
         //{ _id: '64d42dd5443aa279ca4cb0b6', } // fs con
+        //{ _id: '64d42dcb443aa279ca4caeee', } // childlab ih
+        //{ _id: '64d42dcc443aa279ca4caf12', } // childlab away
     );
     var [ subjectType, setSubjectType ] = useState(
-        //'fs_congo_subject'
+        //'fs_uganda_subject'
     );
     var [ csvImporter, setCSVImporter ] = useState();
 

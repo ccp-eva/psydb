@@ -27,6 +27,7 @@ var createKoaContext = function (extraContext) {
         mongoDbName: dbName,
         db: dbHandle,
         i18n,
+        now: new Date(),
 
         session: { personnelId: 1234 },
         self: { personnelId: 1234 },

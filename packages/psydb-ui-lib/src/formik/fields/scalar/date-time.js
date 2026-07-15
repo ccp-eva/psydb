@@ -7,7 +7,10 @@ import { translate } from '@mpieva/psydb-common-translations';
 import { useUILocale } from '@mpieva/psydb-ui-contexts';
 
 const Control = (ps) => {
-    var { dataXPath, formikField, formikMeta, disabled } = ps;
+    var {
+        dataXPath, formikField, formikMeta, disabled,
+        initializeAsNoon = false, initialViewDate,
+    } = ps;
     var { error } = formikMeta;
     var { value, onChange } = formikField;
 
@@ -17,6 +20,14 @@ const Control = (ps) => {
         /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(value)
         && !isNaN(new Date(value).getTime())
     );
+
+    if (!initialViewDate && initializeAsNoon) {
+        initialViewDate = new Date();
+        initialViewDate.setHours(12);
+        initialViewDate.setMinutes(0);
+        initialViewDate.setSeconds(0);
+        initialViewDate.setMilliseconds(0);
+    }
 
     var inputClassName = classnames([
         'form-control',
@@ -41,6 +52,7 @@ const Control = (ps) => {
                 disabled,
                 placeholder: translate(locale.code, '_date_time_placeholder')
             }}
+            initialViewDate={ initialViewDate }
         />
     )
 }

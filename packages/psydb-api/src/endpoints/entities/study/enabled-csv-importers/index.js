@@ -45,6 +45,15 @@ var enabledCSVImporters = async (context, next) => {
             if (type === 'online-survey') {
                 enabledImporters.push('online-survey')
             }
+            if (type === 'inhouse') {
+                enabledImporters.push('inhouse')
+            }
+            //if (type === 'online-video-call') {
+            //    enabledImporters.push('online-video-call')
+            //}
+            if (type === 'away-team') {
+                enabledImporters.push('away-team')
+            }
         }
     }
 

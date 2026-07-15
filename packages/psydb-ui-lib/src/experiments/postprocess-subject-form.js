@@ -1,9 +1,9 @@
 import React from 'react';
-import { Form, Button, InputGroup } from 'react-bootstrap';
 import enums from '@mpieva/psydb-schema-enums';
 
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
+import { Form, InputGroup, AsyncButton } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields, withField } from '../formik';
 
 const Select = withField({
@@ -17,6 +17,7 @@ const PostprocessSubjectForm = (ps) => {
         experimentId,
         subjectId,
         enableFollowUpExperiments,
+        enableForm = true,
         onSuccessfulUpdate
     } = ps;
 
@@ -51,14 +52,15 @@ const PostprocessSubjectForm = (ps) => {
     };
     return (
         <DefaultForm
-            onSubmit={ send.exec }
+            onSubmit={ enableForm ? send.exec : () => {}}
             initialValues={ initialValues }
         >
-            {(formikProps) => (
+            {({ isSubmitting }) => (
                 <InputGroup>
                     <Select
                         dataXPath='$.participationStatus'
                         options={ options }
+                        disabled={ !enableForm }
                     />
                     { enableFollowUpExperiments && (
                         <InputGroup.Append>
@@ -66,14 +68,19 @@ const PostprocessSubjectForm = (ps) => {
                                 <Fields.PlainCheckbox
                                     dataXPath='$.excludeFromMoreExperimentsInStudy'
                                     label={ translate('Last Appointment?') }
+                                    disabled={ !enableForm }
                                 />
                             </InputGroup.Text>
                         </InputGroup.Append>
                     )}
                     <InputGroup.Append>
-                        <Button type='submit'>
+                        <AsyncButton
+                            type='submit'
+                            isTransmitting={ isSubmitting }
+                            disabled={ !enableForm }
+                        >
                             { translate('Save') }
-                        </Button>
+                        </AsyncButton>
                     </InputGroup.Append>
                 </InputGroup>
             )}

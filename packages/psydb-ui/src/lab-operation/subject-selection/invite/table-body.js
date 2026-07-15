@@ -1,11 +1,7 @@
 import React from 'react';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import {
-    Button,
-    EditIconButtonInline
-} from '@mpieva/psydb-ui-layout';
-
+import { Button, EditIconButtonInline } from '@mpieva/psydb-ui-layout';
 import { TableBodyCustomCols } from '@mpieva/psydb-custom-fields-ui';
 
 import {
@@ -33,6 +29,11 @@ const TableBody = (ps) => {
     var { definitions, related } = subjectMetadata;
 
     var permissions = usePermissions();
+    console.log(inviteType);
+    var canInviteSubjects = permissions.hasLabOperationFlag(
+        inviteType, 'canSelectSubjectsForExperiments'
+    );
+    console.log({ canInviteSubjects });
     var canWriteSubjects = permissions.hasFlag('canWriteSubjects');
 
     return (
@@ -52,6 +53,7 @@ const TableBody = (ps) => {
                         related,
                         definitions,
 
+                        canInviteSubjects,
                         canWriteSubjects,
 
                         onInviteSubject,
@@ -79,6 +81,7 @@ const TableRow = (ps) => {
         subjectMetadata,
         subjectExperimentMetadata,
 
+        canInviteSubjects,
         canWriteSubjects,
 
         onInviteSubject,
@@ -138,6 +141,7 @@ const TableRow = (ps) => {
                         subjectType,
                         desiredTestInterval,
 
+                        canInviteSubjects,
                         canWriteSubjects,
 
                         onInviteSubject,
@@ -365,6 +369,7 @@ const ActionButtons = (ps) => {
         subjectType,
         desiredTestInterval,
 
+        canInviteSubjects,
         canWriteSubjects,
 
         onInviteSubject,
@@ -373,38 +378,37 @@ const ActionButtons = (ps) => {
    
     var [{ translate }] = useI18N();
 
+    var showInviteButton = (!isRed && canInviteSubjects);
+    var showEditButton = (!showInviteButton && canWriteSubjects);
+
     return (
-        <>
-            { !isRed && (
-                <div className='d-flex justify-content-end'>
-                    <Button
-                        size='sm'
-                        onClick={ () => onInviteSubject({
-                            inviteType,
-                            record,
-                            desiredTestInterval,
-                            testableInStudies: (
-                                record // FIXME
-                            )
-                        }) }
-                    >
-                        { translate('Appointment') }
-                    </Button>
-                </div>
+        <div className='d-flex justify-content-end'>
+            { showInviteButton && (
+                <Button
+                    size='sm'
+                    onClick={ () => onInviteSubject({
+                        inviteType,
+                        record,
+                        desiredTestInterval,
+                        testableInStudies: (
+                            record // FIXME
+                        )
+                    }) }
+                >
+                    { translate('Appointment') }
+                </Button>
             )}
-            { isRed && canWriteSubjects && (
-                <div className='d-flex justify-content-end'>
-                    <EditIconButtonInline
-                        buttonStyle={{ background: 'transparent' }}
-                        onClick={ () => onViewSubject({
-                            title: `${translate('Subject')} - ${record._recordLabel}`,
-                            subjectId: record._id,
-                            subjectType
-                        })}
-                    />
-                </div>
+            { showEditButton && (
+                <EditIconButtonInline
+                    buttonStyle={{ background: 'transparent' }}
+                    onClick={ () => onViewSubject({
+                        title: `${translate('Subject')} - ${record._recordLabel}`,
+                        subjectId: record._id,
+                        subjectType
+                    })}
+                />
             )}
-        </>
+        </div>
     );
 }
 

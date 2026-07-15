@@ -179,6 +179,7 @@ const ParticipationListRow = (ps) => {
         studyType,
         timestamp,
         study: studyLookup,
+        testingAge = undefined, // NOTE: only after anonymization
     } = participationData;
 
     var actualParticipationType = (
@@ -202,6 +203,7 @@ const ParticipationListRow = (ps) => {
             }</td>
             <TimestampAndMaybeAge { ...({
                 timestamp,
+                testingAge,
                 record: subjectRecord,
                 dateOfBirthField: ageFrameField
             })} />

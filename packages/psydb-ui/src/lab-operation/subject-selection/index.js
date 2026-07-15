@@ -1,13 +1,7 @@
 import React from 'react';
+import { useRouteMatch, Route, Switch, Redirect } from 'react-router-dom';
 
-import {
-    useRouteMatch,
-    Route,
-    Switch,
-    // Redirect, // TODO
-} from 'react-router-dom';
-
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { PageWrappers } from '@mpieva/psydb-ui-layout';
 
@@ -23,21 +17,30 @@ const SubjectSelectionRouting = () => {
     var { path, url } = useRouteMatch();
     
     var permissions = usePermissions();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var pflags = permissions.gatherFlags((p) => ({
-        canSelectInhouse: p.hasLabOperationFlag(
-            'inhouse', 'canSelectSubjectsForExperiments'
-        ),
-        canSelectAwayTeam: p.hasLabOperationFlag(
-            'away-team', 'canSelectSubjectsForExperiments'
-        ),
-        canSelectVideo: p.hasLabOperationFlag(
-            'online-video-call', 'canSelectSubjectsForExperiments'
-        ),
-        canSelectOnlineSurvey: p.hasLabOperationFlag(
-            'online-survey', 'canPerformOnlineSurveys'
-        ),
+        canSelectInhouse: p.hasSomeLabOperationFlags({
+            types: [ 'inhouse' ], flags: [
+                'canSearchSelectableSubjects',
+                'canSelectSubjectsForExperiments'
+            ]
+        }),
+        canSelectAwayTeam: p.hasSomeLabOperationFlags({
+            types: [ 'away-team' ], flags: [
+                'canSearchSelectableSubjects',
+                'canSelectSubjectsForExperiments'
+            ]
+        }),
+        canSelectVideo: p.hasSomeLabOperationFlags({
+            types: [ 'online-video-call' ], flags: [
+                'canSearchSelectableSubjects',
+                'canSelectSubjectsForExperiments'
+            ]
+        }),
+        canSelectOnlineSurvey: p.hasSomeLabOperationFlags({
+            types: [ 'online-survey' ], flags: [ 'canPerformOnlineSurveys' ]
+        }),
     }));
 
     return (

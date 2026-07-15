@@ -1,15 +1,29 @@
 'use strict';
+var _debug = require('debug');
+//_debug.enable('psydb:CONSOLE*');
+
+// NOTE: do this first
+var CustomConsole = require('./custom-console');
+global.console = new CustomConsole(process.stdout, process.stderr);
+
+
+// NOTE: using this and step() instead of it() will prevent
+// later steps from being executed after an error; it() would execute 
+// all the steps after an error regardless which is undesireable
+// due to bloated error output
+require('../mocha-async-step');
+
 var locale = require('date-fns/locale/de');
 
 var mongoHelpers = require('@cdxoo/mongo-test-helpers');
-var restore = require('@cdxoo/mongodb-restore');
-
 var { ejson } = require('@mpieva/psydb-core-utils');
 
 var doConnectLocal = require('./do-connect-local');
 var doRestore = require('./do-restore');
+var doGatherLabeledIds = require('./do-gather-labeled-ids');
 var createKoaContext = require('./create-koa-context');
 
+// FIXME: not sure if good here
 console.ejson = (that, options = {}) => {
     console.dir(ejson(that), { depth: null, ...options })
 }
@@ -35,28 +49,57 @@ var beforeAll = async function () {
         return dbHandle;
     }
 
-    this.connectLocal = (...a) => doConnectLocal.call(this, ...a);
-    this.restore = (...a) => doRestore.call(this, ...a);
     this.createKoaContext = (...a) => createKoaContext.call(this, ...a);
-
+    this.connectLocal = (...a) => doConnectLocal.call(this, ...a);
+    this.gatherLabeledIds = (...a) => doGatherLabeledIds.call(this, ...a);
+    this.restore = async (...a) => {
+        await mongoHelpers.clean(this.context.mongo)();
+        return doRestore.call(this, ...a);
+    }
     
     this.fetchAllRecords = (collection) => {
         var db = this.getDbHandle();
         return db.collection(collection).find().toArray();
     }
+
+    this.aggregateAll = async (collections) => {
+        var db = this.getDbHandle();
+
+        var out = {}
+        for (var c of collections) {
+            if (Array.isArray(c)) {
+                var [ name, filter ] = c;
+                out[name] = await db.collection(name).find(filter).toArray();
+            }
+            else {
+                out[c] = await db.collection(c).find().toArray();
+            }
+        }
+        return out;
+    }
+
+    this.wipeDB = async () => {
+        var db = this.getDbHandle();
+        var collections = await db.listCollections().toArray();
+
+        for (var it of collections) {
+            var { name } = it;
+            await db.collection(name).removeMany({});
+        }
+    }
 }
 
 var beforeEach = async function () {}
 
-var afterEach = async function () {
-    var { local } = this.context.mongo;
-    if (local) {
-        var { client, dbHandle, dbName } = local;
-        client.close();
-        delete this.context.mongo.local;
-    }
-    await mongoHelpers.clean(this.context.mongo)();
-}
+//var afterEach = async function () {
+//    var { local } = this.context.mongo;
+//    if (local) {
+//        var { client, dbHandle, dbName } = local;
+//        client.close();
+//        delete this.context.mongo.local;
+//    }
+//    await mongoHelpers.clean(this.context.mongo)();
+//}
 
 var afterAll = async function () {
     await mongoHelpers.teardown(this.context.mongo)();
@@ -66,7 +109,7 @@ module.exports = {
     mochaHooks: {
         beforeAll: [ beforeAll ],
         beforeEach: [ beforeEach ],
-        afterEach: [ afterEach ],
+        afterEach: [ /*afterEach*/ ],
         afterAll: [ afterAll ]
     }
 }

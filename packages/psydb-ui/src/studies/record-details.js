@@ -1,87 +1,82 @@
 import React from 'react';
+import { useRouteMatch  } from 'react-router-dom';
 
-import { useRouteMatch } from 'react-router-dom';
+import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { LinkButton, Icons } from '@mpieva/psydb-ui-layout';
+import { DetailsBox } from '@mpieva/psydb-ui-layout';
 
+import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 import { Study } from '@mpieva/psydb-ui-lib/data-viewers';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
+import StudyRoadmapAndHistory from './study-roadmap-and-history';
 
-const EditLinkButton = (ps) => {
-    var { to, label } = ps;
-
-    return (
-        <LinkButton
-            className='d-flex align-items-center'
-            to={ to }>
-            <span className='d-inline-block mr-2'>{ label }</span>
-            <Icons.ArrowRightShort style={{ height: '24px', width: '24px' }} />
-        </LinkButton>
-    );
-}
-
-const StudyRecordDetails = (ps) => {
+export const DetailsBody = (ps) => {
+    var { fetched, permissions } = ps;
     var {
-        fetched,
-        recordType,
-        onSuccessfulUpdate,
-    } = ps;
+        record, crtSettings, related,
+        studyRoadmap, studyRoadmapVersions,
+    } = fetched.data;
     
-    var { record, crtSettings, related } = fetched;
-    var { path, url } = useRouteMatch();
-    
-    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
+    var { dev_enableWKPRCPatches, dev_enableStudyRoadmap } = useUIConfig();
+
+    var { url } = useRouteMatch();
     var [{ translate }] = useI18N();
-
-    var permissions = usePermissions();
+    
     var canEdit = permissions.hasCollectionFlag('study', 'write');
-
+    
     var studyBag = {
         theme: Themes.HorizontalSplit,
         value: record,
         crtSettings,
         related
-    }
+    };
 
+    var isHidden = record.state.systemPermissions?.isHidden;
+
+    //var title = `${crtSettings.label} Datensatz-Details`;
+    var title = translate('Study Details');
     return (
-        <div className='m-3 position-relative'>
+        <DetailsBox
+            title={ title }
+            editUrl={ `${up(url, 1)}/edit` }
+            canEdit= { canEdit }
+            isRecordHidden={ isHidden }
+        >
             <Study { ...studyBag }>
                 <Study.SequenceNumber />
                 <Study.Name />
-                { !IS_WKPRC && (
+                { !dev_enableWKPRCPatches && (
                     <Study.Shorthand />
                 )}
                 <hr />
                 <Study.Start />
                 <Study.End />
-                { !IS_WKPRC && (
+                { !dev_enableWKPRCPatches && (
                     <Study.EnableFollowUpExperiments />
                 )}
                 <Study.ResearchGroupIds />
                 <Study.ScientistIds />
                 <Study.StudyTopicIds />
-                { IS_WKPRC && (
+                { dev_enableWKPRCPatches && (
                     <Study.ExperimentNames />
                 )}
                 <Study.Custom />
+                { dev_enableStudyRoadmap && (
+                    <StudyRoadmapAndHistory
+                        studyRoadmap={ studyRoadmap }
+                        studyRoadmapVersions={ studyRoadmapVersions }
+                        related={ related }
+                    />
+                )}
                 <hr />
                 <Study.SystemPermissions />
             </Study>
-
-            { canEdit && (
-                <div style={{
-                    position: 'absolute', right: '0px', top: '0px'
-                }}>
-                    <EditLinkButton
-                        label={ translate('Edit') }
-                        to={ `${url}/edit` }
-                    />
-                </div>
-            )}
-        </div>
-    );
+        </DetailsBox>
+    )
 }
 
-export default StudyRecordDetails;
+export const RecordDetails = withRecordDetails({
+    DetailsBody,
+    shouldFetchSchema: false,
+});
