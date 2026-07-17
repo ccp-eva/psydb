@@ -36,7 +36,10 @@ const PreviewStage = (ps) => {
 
     var send = useSend(() => ({
         type: 'csv-import/experiment/create-wkprc-apestudies-default',
-        payload: { ...commonPayload }
+        payload: {
+            ...commonPayload,
+            skipPossibleDuplicates: true,
+        }
     }), { ...triggerBag })
 
     if (!didFetch) {

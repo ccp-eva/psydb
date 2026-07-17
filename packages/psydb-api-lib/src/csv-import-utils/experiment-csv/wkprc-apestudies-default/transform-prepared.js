@@ -10,8 +10,10 @@ var transformPrepared = (bag) => {
         pipelineData,
         subjectType, study,
         //location, labOperators,
-        timezone
+        i18n
     } = bag;
+    
+    var { timezone } = i18n;
 
     var groupedPipelineData = keyBy({
         items: pipelineData,

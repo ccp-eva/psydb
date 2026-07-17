@@ -39,22 +39,29 @@ var augmentedBeforeAll = async function () {
         return engine;
     }
 
+    var __createKoaContext = this.createKoaContext;
     this.createKoaContext = (message, extraContext = {}) => {
-        var koaContext = {
-            mongoClient: this.context.mongo.client,
-            mongoDbName: this.context.mongo.dbName,
-            db: this.context.mongo.dbHandle,
-            now: new Date(),
-
-            session: { personnelId: 1234 },
-            self: { personnelId: 1234 },
-            request: { body: message },
-            response: {},
-            ip: '127.0.0.1',
-            apiConfig: {},
-        }
-        return { ...koaContext, ...extraContext };
+        return __createKoaContext({
+            request: { body: message }, ...extraContext
+        })
     }
+
+    //this.createKoaContext = (message, extraContext = {}) => {
+    //    var koaContext = {
+    //        mongoClient: this.context.mongo.client,
+    //        mongoDbName: this.context.mongo.dbName,
+    //        db: this.context.mongo.dbHandle,
+    //        now: new Date(),
+
+    //        session: { personnelId: 1234 },
+    //        self: { personnelId: 1234 },
+    //        request: { body: message },
+    //        response: {},
+    //        ip: '127.0.0.1',
+    //        apiConfig: {},
+    //    }
+    //    return { ...koaContext, ...extraContext };
+    //}
 
     this.createFakeLogin = async (bag) => {
         var { email } = bag;

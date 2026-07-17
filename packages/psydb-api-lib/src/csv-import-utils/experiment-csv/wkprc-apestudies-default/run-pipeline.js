@@ -14,16 +14,20 @@ var verifySameSubjectGroup = require('./verify-same-subject-group');
 var verifyExperimentNames = require('./verify-experiment-names');
 var transformPrepared = require('./transform-prepared');
 var preinjectCombinationRefs = require('./preinject-combination-refs');
+var seperatePossibleDuplicates = require('./seperate-possible-duplicates');
 
 var runPipeline = async (bag) => {
     var {
         db,
         csvLines: csvData,
    
-        subjectType,
+        subjectCRT,
         study,
-        timezone: unmarshalClientTimezone
+        i18n,
     } = bag;
+
+    var { timezone: unmarshalClientTimezone } = i18n;
+    var subjectType = subjectCRT.getType();
 
     var schema = CSVSchema();
     var customColumnRemap = (
@@ -32,7 +36,7 @@ var runPipeline = async (bag) => {
 
     var parsed = parseSchemaCSV({
         csvData, schema, customColumnRemap,
-        unmarshalClientTimezone
+        unmarshalClientTimezone,
     });
 
     await preinjectCombinationRefs({ db, parsed, subjectType });
@@ -60,17 +64,24 @@ var runPipeline = async (bag) => {
     await verifySameSubjectType({ db, subjectType, preparedObjects });
     await verifySameSubjectGroup({ db, preparedObjects });
 
-    var transformed = transformPrepared({
+    var allTransformed = transformPrepared({
         pipelineData: okPipelineData,
 
         subjectType,
         study,
-        timezone: unmarshalClientTimezone
+        i18n,
+    });
+
+    var { todo, possibleDuplicates } = await seperatePossibleDuplicates({
+        db, study, subjectCRT, allTransformed
     });
 
     return {
         pipelineData,
-        transformed
+        allTransformed,
+
+        todo,
+        possibleDuplicates,
     }
 }
 
