@@ -11,7 +11,10 @@ const IntraRecordNav = (ps) => {
     var hasLabWorkflows = true; // FIXME
     
     var [{ translate }] = useI18N();
-    var { dev_enableStudyConsentWorkflow } = useUIConfig();
+    var {
+        dev_enableStudyConsentWorkflow,
+        dev_enableWKPRCPatches,
+    } = useUIConfig();
     
     var permissions = usePermissions();
     // FIXME: flags will be 'undefined' when no rg has it,
@@ -52,7 +55,7 @@ const IntraRecordNav = (ps) => {
         },
         [`#/lab-operation/reservation/${recordType}/${recordId}`]: {
             label: translate('Reservation'),
-            show: true, enabled: hasLabWorkflows // FIXME
+            show: !dev_enableWKPRCPatches, enabled: hasLabWorkflows // FIXME
         },
     }
 
@@ -82,7 +85,7 @@ const IntraRecordNav = (ps) => {
                     <Nav.LinkList links={ consentLinks } />
                 </>
             )}
-            { permissions.isRoot() && (
+            { (permissions.isRoot() && !dev_enableWKPRCPatches) && (
                 <>
                     <Nav.HR />
                     <Nav.LinkList links={ raw } />
