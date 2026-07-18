@@ -1,9 +1,10 @@
 'use strict';
+var debug = require('debug')('psydb:mongo-adapter:mongo-connection');
 var { MongoClient } = require('mongodb');
 
 var globalConnector = undefined;
 module.exports = (config) => {
-    if (config) {
+    if (config && !globalConnector) {
         globalConnector = MongoConnector(config);
     }
     return globalConnector;
@@ -15,6 +16,7 @@ var MongoConnector = ({
     ...otherOptions
 }) => {
     var connector = {},
+        conpromise = undefined,
         connection = undefined,
         selectedDbName = undefined,
         selectedDb = undefined;
@@ -38,20 +40,35 @@ var MongoConnector = ({
     };
 
     connector.connect = async () => {
-        connection = await MongoClient.connect(
-            url,
-            otherOptions,
-        );
-        if (dbName) {
-            selectedDbName = dbName;
-            selectedDb = connection.db(dbName);
+        debug('connect()');
+        if (!conpromise) {
+            debug('creating conpromise');
+            conpromise = MongoClient.connect(
+                url,
+                otherOptions,
+            );
+        }
+
+        if (!connection) {
+            debug('awaiting connection');
+            connection = await conpromise;
+            
+            if (dbName) {
+                selectedDbName = dbName;
+                selectedDb = connection.db(dbName);
+            }
+            else {
+                throw new Error('property "dbName" missing');
+            }
         }
         else {
-            throw new Error('no db name provided; specify "dbName" property');
+            debug('already connected');
         }
+        
     }
 
     connector.close = () => {
+        debug('close()');
         // removing global connector on close is requred when
         // using in conjucntion with beforeEach topology creation
         // via mongodb memory server in unit tests
