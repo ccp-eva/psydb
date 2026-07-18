@@ -60,6 +60,7 @@ var tryPrepareImport = async (context, next) => {
             ExperimentCSV.WKPRCApestudiesDefault.runPipeline({
                 db,
                 csvLines: file.blob.toString(),
+                skipPossibleDuplicates,
 
                 subjectCRT,
                 study,

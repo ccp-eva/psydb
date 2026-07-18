@@ -20,6 +20,7 @@ var runPipeline = async (bag) => {
     var {
         db,
         csvLines: csvData,
+        skipPossibleDuplicates = false,
    
         subjectCRT,
         study,
@@ -72,9 +73,16 @@ var runPipeline = async (bag) => {
         i18n,
     });
 
-    var { todo, possibleDuplicates } = await seperatePossibleDuplicates({
-        db, study, subjectCRT, allTransformed
-    });
+    if (skipPossibleDuplicates) {
+        var { todo, possibleDuplicates } = await seperatePossibleDuplicates({
+            db, study, subjectCRT, allTransformed
+        });
+    }
+    else {
+        var todo = allTransformed;
+        var possibleDuplicates = [{ experiments: [], participation: [] }];
+    }
+
 
     return {
         pipelineData,
