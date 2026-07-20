@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouteMatch, useHistory } from 'react-router';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
+import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { withFetchOne } from '@mpieva/psydb-ui-lib';
@@ -134,6 +135,16 @@ const IntraRecordRoutingBody = (ps) => {
                         { ...sharedBag } prefetched={ fetched } />
                 </Route>
             )}
+            
+            <Route path={`${path}/remove`}>
+                <RecordRemover
+                    { ...sharedBag }
+                    successInfoBackLink={ `#${up(url, 1)}` }
+                    onSuccessfulUpdate={ ({ id }) => {
+                        history.push(`${url}/remove/success`)
+                    }}
+                />
+            </Route>
 
         </Switch>
     );

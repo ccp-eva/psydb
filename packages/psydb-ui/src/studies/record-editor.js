@@ -101,7 +101,7 @@ const EditForm = (ps) => {
             />
             <hr />
             <GenericRecordEditorFooter.RAW
-                id={ id }
+                id={ record._id }
                 collection={ collection }
                 recordType={ recordType }
                 fetched={ fetched.data }
@@ -111,7 +111,7 @@ const EditForm = (ps) => {
                 enableRemove={ true }
                 onSuccessfulUpdate={ () => {} }
            
-                removeUrl={`${up(url, 2)}/remove`}
+                removeUrl={`${up(url, 1)}/remove`}
                 className='d-flex justify-content-between mt-3'
             />
         </>

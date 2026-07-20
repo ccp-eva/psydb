@@ -57,7 +57,7 @@ module.exports = {
     
     dev_enableStatistics: true,
     dev_showDummyRecordsAsTopOptions: false,
-    dev_enableWKPRCPatches: true,
+    //dev_enableWKPRCPatches: true,
 
     //dev_enableImprovedContactTracking: true,
     //dev_enableStudyConsentWorkflow: true,

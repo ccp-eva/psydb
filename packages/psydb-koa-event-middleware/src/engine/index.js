@@ -63,7 +63,7 @@ var createMessageHandling = (bag) => {
         withMongoRohrpost(rohrpostSettings),
         
         run(),
-    ])
+    ]);
 }
 
 var withMongoRohrpost = (options) => async (context, next) => {
