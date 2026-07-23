@@ -18,30 +18,30 @@ export const Component = (ps) => {
     var [{ translate }] = useI18N();
 
     return (
-            <DefaultForm
-                initialValues={ initialValues }
-                onSubmit={ onSubmit }
-                useAjvAsync
-                enableReinitialize
-            >
-                {(formikProps) => (
-                    <>
-                        { /*console.log(formikProps.values) || ''*/ }
-                        <FormFields
-                            related={ related }
-                            permissions={ permissions }
-                            isAnonymized={ isAnonymized }
-                        />
-                        <AsyncButton
-                            type='submit'
-                            isTransmitting={ isTransmitting }
-                            disabled={ isAnonymized }
-                        >
-                            { translate('Save') }
-                        </AsyncButton>
-                    </>
-                )}
-            </DefaultForm>
+        <DefaultForm
+            initialValues={ initialValues }
+            onSubmit={ onSubmit }
+            useAjvAsync
+            enableReinitialize
+        >
+            {(formikProps) => (
+                <>
+                    { /*console.log(formikProps.values) || ''*/ }
+                    <FormFields
+                        related={ related }
+                        permissions={ permissions }
+                        isAnonymized={ isAnonymized }
+                    />
+                    <AsyncButton
+                        type='submit'
+                        isTransmitting={ isTransmitting }
+                        disabled={ isAnonymized }
+                    >
+                        { translate('Save') }
+                    </AsyncButton>
+                </>
+            )}
+        </DefaultForm>
     );
 }
 
@@ -60,6 +60,10 @@ const FormFields = (ps) => {
                 </>
             ) : (
                 <>
+                    <Fields.SaneString
+                        label={ translate('Manual ID for Imports') }
+                        dataXPath='$.scientific.manualImportId'
+                    />
                     <Fields.SaneString
                         label={ translate('Firstname') }
                         dataXPath='$.gdpr.firstname'

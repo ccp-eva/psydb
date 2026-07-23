@@ -21,14 +21,17 @@ var runPipeline = async (bag) => {
         CSVColumnRemappers.Experiment.AwayTeam().csv2obj
     );
 
-    var { importSettings = {}} = subjectCRT.getRaw();
-    var { extraIdFields = [] } = importSettings;
+    var extraIdFields = {
+        subject: subjectCRT.getExtraImportIds({ as: 'pointers' }),
+        location: locationCRT.getExtraImportIds({ as: 'pointers' }),
+    }
 
     var { pipelineData, preparedObjects } = await runDefaultPipeline({
         db, csvData, schema, customColumnRemap, unmarshalClientTimezone,
         extraRecordResolvePointers: {
-            subject: [ '/onlineId', ...extraIdFields.map(it => it.pointer) ],
-            //location: [ '/state/custom/name' ],
+            subject: [ '/onlineId', ...extraIdFields.subject ],
+            location: [ ...extraIdFields.location ],
+            personnel: [ '/scientific/state/manualImportId' ],
         },
     });
 
