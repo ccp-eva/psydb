@@ -3,6 +3,14 @@ import { Grid } from '@mpieva/psydb-ui-layout';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Fields, withField, withFieldArray} from '@mpieva/psydb-ui-lib';
 
+var identityObject = (ary) => {
+    var out = {};
+    for (var it of ary) {
+        out[it] = it;
+    }
+    return out;
+}
+
 var Task = withField({
     DefaultWrapper: ({ children }) => (<>{ children }</>),
     Control: (ps) => {
@@ -26,9 +34,22 @@ var Task = withField({
                     { ...sharedBag }
                     dataXPath={ `${dataXPath}.end` }
                 />
-                <Fields.SaneString
+                {/*<Fields.SaneString
                     { ...sharedBag }
                     dataXPath={ `${dataXPath}.description` }
+                />*/}
+                <Fields.GenericEnum
+                    { ...sharedBag }
+                    dataXPath={ `${dataXPath}.description` }
+                    options={ translate.options(identityObject([
+                        '_studyRoadmapTask_studyPreparation',
+                        '_studyRoadmapTask_ethicsApprovalDate',
+                        '_studyRoadmapTask_piloting',
+                        '_studyRoadmapTask_dataCollection',
+                        '_studyRoadmapTask_dataProcessing',
+                        '_studyRoadmapTask_dataAnalysis',
+                        '_studyRoadmapTask_completion',
+                    ]))}
                 />
                 <Fields.GenericEnum
                     { ...sharedBag }

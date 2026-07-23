@@ -12,6 +12,7 @@ const IntraRecordNav = (ps) => {
     
     var [{ translate }] = useI18N();
     var {
+        dev_enableStudyRoadmap,
         dev_enableStudyConsentWorkflow,
         dev_enableWKPRCPatches,
     } = useUIConfig();
@@ -37,6 +38,11 @@ const IntraRecordNav = (ps) => {
     core[`${hashurl}/edit`].label = translate('Edit Details');
 
     var settingsLinks = {
+        // FIXME: url ...
+        //[`${hashurl}/timetable`]: {
+        //    label: translate('Timetable'),
+        //    show: dev_enableStudyRoadmap, enabled: true
+        //},
         [`${hashurl}/selection-settings`]: {
             label: translate('Selection Settings'),
             show: crtSettings.enableSubjectSelectionSettings, enabled: true
