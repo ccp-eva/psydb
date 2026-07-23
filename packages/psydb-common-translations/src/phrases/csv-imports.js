@@ -47,5 +47,13 @@ module.exports = [
     {
         en: 'Hide Available Columns',
         de: 'Verfügbare Spalten Ausblenden',
-    }
+    },
+    {
+        en: 'Treat each line as seperate participation',
+        de: 'Jede Zeile als seperate Teilnahme behandeln',
+    },
+    {
+        en: 'Ignoring ${count} lines as they already exist in database.',
+        de: 'Ignoriere ${count} Zeilen, da sie bereits in der Datenbank existieren.',
+    },
 ]

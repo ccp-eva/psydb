@@ -3,14 +3,9 @@ var { ejson, groupBy } = require('@mpieva/psydb-core-utils');
 var makeExperiment = require('./make-experiment');
 var makeParticipationItems = require('./make-participation-items');
 
-var transformPrepared = (bag) => {
-    var {
-        pipelineData,
-        subjectType, study,
-        //location, labOperators,
-        timezone
-    } = bag;
-
+var default_groupingFN = (bag) => {
+    var { pipelineData } = bag;
+    
     var groupedPipelineData = groupBy({
         items: pipelineData,
         createKey: (it) => {
@@ -20,6 +15,21 @@ var transformPrepared = (bag) => {
         }
     });
 
+    return groupedPipelineData;
+}
+
+var transformPrepared = (bag) => {
+    var {
+        pipelineData,
+        subjectCRT, study,
+        //location, labOperators,
+        timezone,
+
+        groupingFN = default_groupingFN
+    } = bag;
+
+    var groupedPipelineData = groupingFN({ pipelineData });
+
     var transformed = {
         experiments: [],
         participations: [],
@@ -28,7 +38,7 @@ var transformPrepared = (bag) => {
         var { record, parts } = makeExperiment({
             pipelineItemGroup: it,
             
-            subjectType,
+            subjectType: subjectCRT.getType(),
             study,
             //location,
             //labOperators,

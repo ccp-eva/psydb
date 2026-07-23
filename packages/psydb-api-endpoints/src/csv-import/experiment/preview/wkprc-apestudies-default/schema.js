@@ -2,8 +2,8 @@
 var {
     ClosedObject,
     ForeignId,
-    ForeignIdList,
     CustomRecordTypeKey,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var Schema = (context) => {
@@ -11,6 +11,8 @@ var Schema = (context) => {
         'fileId': ForeignId({ collection: 'file' }),
         'subjectType': CustomRecordTypeKey({ collection: 'subject' }),
         'studyId': ForeignId({ collection: 'study' }),
+        
+        'skipPossibleDuplicates': DefaultBool(),
     });
 
     return schema;

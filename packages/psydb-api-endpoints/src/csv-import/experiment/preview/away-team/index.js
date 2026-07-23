@@ -7,6 +7,7 @@ var {
     ResponseBody,
     validateOrThrow,
     fetchRecordLabelsManual,
+    fetchCRTSettings
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -33,13 +34,20 @@ var preview = async (context, next) => {
     var file = await aggregateOne({ db, file: { _id: fileId }});
     var study = await aggregateOne({ db, study: { _id: studyId }});
     
+    var subjectCRT = await fetchCRTSettings({
+        db, collectionName: 'subject', recordType: subjectType, wrap: true
+    });
+    var locationCRT = await fetchCRTSettings({
+        db, collectionName: 'location', recordType: locationType, wrap: true
+    });
+
     var pipelineOutput = await (
         ExperimentCSV.AwayTeam.runPipeline({
             db,
             csvLines: file.blob.toString(),
 
-            subjectType,
-            locationType,
+            subjectCRT,
+            locationCRT,
             study,
             timezone: i18n.timezone
         })

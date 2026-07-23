@@ -234,4 +234,10 @@ module.exports = [
         en: 'Input',
         de: 'Input',
     },
+
+    // FIXME: 'Raw View'/'Raw Data' redundancy
+    {
+        en: 'Raw View',
+        de: 'Rohdaten'
+    }
 ]

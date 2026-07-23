@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { SplitPartitioned } from '@mpieva/psydb-ui-layout';
 
 // FIXME
@@ -23,7 +23,7 @@ const PreviewRecord = (ps) => {
         totalSubjectCount,
     } = previewRecord.state;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <div className='bg-white py-2 px-3 border'>

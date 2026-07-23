@@ -5,6 +5,10 @@ module.exports = [
         de: 'Roadmap'
     },
     {
+        en: 'Timetable',
+        de: 'Timetable'
+    }, // NOTE: instead of roadmap as required by humankind
+    {
         en: 'Assigned To',
         de: 'Verantwortlich'
     },

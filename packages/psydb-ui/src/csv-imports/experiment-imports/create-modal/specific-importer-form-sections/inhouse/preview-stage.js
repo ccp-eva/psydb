@@ -15,7 +15,10 @@ import PreviewRecord from './preview-record';
 
 const PreviewStage = (ps) => {
     var { studyId, subjectType, formValues, gotoPrepare } = ps;
-    var { fileId, locationType } = formValues['$'];
+    var {
+        fileId, locationType,
+        treatEachLineAsSeperateExperiment = false
+    } = formValues['$'];
 
     var translate = useUITranslation();
 
@@ -25,6 +28,7 @@ const PreviewStage = (ps) => {
 
     var commonPayload = {
         fileId, studyId, subjectType, locationType,
+        treatEachLineAsSeperateExperiment,
     }
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.previewCSVExperimentImport({

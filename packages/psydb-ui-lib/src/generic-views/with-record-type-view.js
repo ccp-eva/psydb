@@ -9,7 +9,7 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
@@ -101,8 +101,7 @@ const withRecordTypeView = (options) => {
 
         collectionRecordTypes = collectionRecordTypes || [];
 
-        var [ language ] = useUILanguage();
-        var translate = useUITranslation();
+        var [{ translate, language }] = useI18N();
         var { path, url } = useRouteMatch();
         var { recordType } = useParams();
         var history = useHistory();

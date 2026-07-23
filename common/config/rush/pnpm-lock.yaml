@@ -924,6 +924,9 @@ importers:
       '@mpieva/psydb-api-message-handler-lib':
         specifier: workspace:*
         version: link:../psydb-api-message-handler-lib
+      '@mpieva/psydb-calculate-age':
+        specifier: workspace:*
+        version: link:../psydb-calculate-age
       '@mpieva/psydb-common-lib':
         specifier: workspace:*
         version: link:../psydb-common-lib
@@ -1641,6 +1644,9 @@ importers:
       copy-anything:
         specifier: ~2.0.6
         version: 2.0.6
+      debug:
+        specifier: ~4.3.4
+        version: 4.3.7(supports-color@6.1.0)
       deepmerge:
         specifier: ~4.2.2
         version: 4.2.2
@@ -1681,6 +1687,9 @@ importers:
       '@cdxoo/mongodb-utils':
         specifier: ~1.0.1
         version: 1.0.1
+      debug:
+        specifier: ~4.3.4
+        version: 4.3.7(supports-color@6.1.0)
       mongodb:
         specifier: ~3.6.12
         version: 3.6.12
@@ -2377,8 +2386,8 @@ importers:
         specifier: ~1.5.2
         version: 1.5.2(react-dom@17.0.2)(react@17.0.2)
       react-bootstrap-icons:
-        specifier: ~1.8.0
-        version: 1.8.4(react@17.0.2)
+        specifier: ~1.11.6
+        version: 1.11.6(react@17.0.2)
       react-dom:
         specifier: ~17.0.2
         version: 17.0.2(react@17.0.2)
@@ -12672,8 +12681,8 @@ packages:
       iconv-lite: 0.4.24
       unpipe: 1.0.0
 
-  /react-bootstrap-icons@1.8.4(react@17.0.2):
-    resolution: {integrity: sha512-PTCQqTLn0AdCy622reNmV+b4PwCPIOA0PFYT3CSfiqw5nwDPGntOm3Pr+ZsMxXD655QAs1nrMm7u0t3+HVxhtQ==, tarball: https://registry.npmjs.org/react-bootstrap-icons/-/react-bootstrap-icons-1.8.4.tgz}
+  /react-bootstrap-icons@1.11.6(react@17.0.2):
+    resolution: {integrity: sha512-ycXiyeSyzbS1C4+MlPTYe0riB+UlZ7LV7YZQYqlERV2cxDiKtntI0huHmP/3VVvzPt4tGxqK0K+Y6g7We3U6tQ==, tarball: https://registry.npmjs.org/react-bootstrap-icons/-/react-bootstrap-icons-1.11.6.tgz}
     peerDependencies:
       react: '>=16.8.6'
     dependencies:

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
-import { only } from '@mpieva/psydb-core-utils';
+import { only, merge } from '@mpieva/psydb-core-utils';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useSend } from '@mpieva/psydb-ui-hooks';
@@ -46,11 +46,6 @@ const EditForm = (ps) => {
         }}
     }, { onSuccessfulUpdate });
  
-    var defaults = MainForm.createDefaults({
-        fieldDefinitions: crtSettings.fieldDefinitions,
-        permissions
-    });
-   
     var paths = [
         'name',
         'shorthand',
@@ -69,24 +64,15 @@ const EditForm = (ps) => {
         paths.push('experimentNames');
     }
 
-    var initialValues = only({
-        from: record.state,
-        paths: paths
-    });
-
-    // FIXME: use deep merge
-    initialValues = {
-        ...defaults,
-        ...initialValues,
-        custom: {
-            ...defaults.custom,
-            ...initialValues.custom
-        },
-
-        ...(dev_enableStudyRoadmap && {
+    var { fieldDefinitions } = crtSettings;
+    var initialValues = merge.raw.all([
+        MainForm.createDefaults({ fieldDefinitions, permissions }),
+        only({ from: record.state, paths: paths }),
+        
+        dev_enableStudyRoadmap ?  {
             studyRoadmap: { props: studyRoadmap?.state || { tasks: [] }}
-        }),
-    }
+        } : {}
+    ], { arrayMerge: (base, x) => (x) });
 
     var { sequenceNumber } = record;
 
@@ -115,7 +101,7 @@ const EditForm = (ps) => {
             />
             <hr />
             <GenericRecordEditorFooter.RAW
-                id={ id }
+                id={ record._id }
                 collection={ collection }
                 recordType={ recordType }
                 fetched={ fetched.data }
@@ -125,7 +111,7 @@ const EditForm = (ps) => {
                 enableRemove={ true }
                 onSuccessfulUpdate={ () => {} }
            
-                removeUrl={`${up(url, 2)}/remove`}
+                removeUrl={`${up(url, 1)}/remove`}
                 className='d-flex justify-content-between mt-3'
             />
         </>

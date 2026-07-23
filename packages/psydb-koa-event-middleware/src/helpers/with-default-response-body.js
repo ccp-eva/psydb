@@ -1,10 +1,15 @@
 'use stirct';
+var debug = require('./debug-helper')('withDefaultResponseBody()');
 var { ResponseBody } = require('@mpieva/psydb-api-lib');
 
 var withDefaultResponseBody = async (context, next) => {
     var { cache } = context;
-    if (!context.response.body) {
+    if (context.response.body) {
+        debug('context.response.body already exists');
+    }
+    else {
         if (cache.remoteErrors) {
+            debug('adding default error body');
             //context.status = 700;
             context.body = ResponseBody({
                 // XXX not sure if 700; but needs handling in
@@ -18,6 +23,7 @@ var withDefaultResponseBody = async (context, next) => {
             });
         }
         else {
+            debug('adding default response body');
             context.response.body = ResponseBody({
                 statusCode: 200,
                 data: context.modifiedChannels

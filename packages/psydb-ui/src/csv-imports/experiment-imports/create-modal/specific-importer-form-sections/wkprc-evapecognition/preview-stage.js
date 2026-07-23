@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { only, groupBy } from '@mpieva/psydb-core-utils';
 import { CSVColumnRemappers } from '@mpieva/psydb-common-lib';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 import { Alert, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -17,7 +17,7 @@ const PreviewStage = (ps) => {
     var { studyId, subjectType, formValues, gotoPrepare } = ps;
     var { fileId } = formValues['$'];
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var triggerBag = only({ from: ps, keys: [
         'onSuccessfulUpdate', 'onFailedUpdate'
@@ -25,6 +25,7 @@ const PreviewStage = (ps) => {
 
     var commonPayload = {
         fileId, studyId, subjectType, 
+        skipPossibleDuplicates: true,
     }
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.previewCSVExperimentImport({
@@ -62,7 +63,12 @@ const PreviewStage = (ps) => {
         )
     }
     else {
-        var { previewRecords, related, pipelineData } = fetched.data;
+        var {
+            previewRecords,
+            related,
+            pipelineData,
+            possibleDuplicatesCount,
+        } = fetched.data;
 
         var { invalid = [] } = groupBy({
             items: pipelineData,
@@ -88,6 +94,14 @@ const PreviewStage = (ps) => {
                         CSVColumnRemappers.Experiment
                         .WKPRCApestudiesDefault()
                     } />
+                )}
+                { possibleDuplicatesCount && (
+                    <Alert variant='info'><b>
+                        { translate(
+                            'Ignoring ${count} lines as they already exist in database.',
+                            { count: possibleDuplicatesCount }
+                        )}
+                    </b></Alert>
                 )}
                 { (allOk || canForceImport) && (
                     <div className='d-flex flex-column gapy-2'>

@@ -63,7 +63,8 @@ var verifyFileMimeType = async (context, next) => {
 
 var tryPrepareImport = async (context, next) => {
     var { db, message, cache } = context;
-    var { timezone } = message;
+    var { timezone, payload } = message;
+    var { treatEachLineAsSeperateExperiment = false } = payload;
     var { locationCRT, subjectCRT, study, file } = cache.get();
 
     try {
@@ -72,10 +73,16 @@ var tryPrepareImport = async (context, next) => {
                 db,
                 csvLines: file.blob.toString(),
 
-                locationType: locationCRT.getType(),
-                subjectType: subjectCRT.getType(),
+                locationCRT,
+                subjectCRT,
                 study,
                 timezone,
+
+                ...(treatEachLineAsSeperateExperiment && {
+                    groupingFN: ({ pipelineData }) => (
+                        pipelineData.map(it => ([ it ]))
+                    )
+                })
             })
         );
 

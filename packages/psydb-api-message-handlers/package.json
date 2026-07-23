@@ -11,6 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "@mpieva/psydb-koa-event-middleware": "workspace:*",
+    "@mpieva/psydb-calculate-age": "workspace:*",
     "@mpieva/psydb-mongo-adapter": "workspace:*",
     "@mpieva/psydb-schema-creators": "workspace:*",
     "@mpieva/psydb-schema-enums": "workspace:*",

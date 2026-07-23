@@ -9,6 +9,7 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
+    "debug": "~4.3.4",
     "copy-anything": "~2.0.6",
     "koa-compose": "~4.1.0",
     "mongodb": "~3.6.3",

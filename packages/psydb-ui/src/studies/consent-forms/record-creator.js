@@ -5,6 +5,7 @@ import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 
 import { LoadingIndicator, Alert } from '@mpieva/psydb-ui-layout';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
+import TemplateLoader from './template-loader';
 import MainForm from './main-form';
 
 const CRTSelectionWrapper = (ps) => {
@@ -59,13 +60,23 @@ const FullRecordCreator = (ps) => {
         }
     }, { onSuccessfulUpdate });
 
-    var initialValues = MainForm.createDefaults();
+    var baseInitialValues = MainForm.createDefaults();
+    var [ initialValues, setInitialValues ] = useState(baseInitialValues);
+
     return (
-        <MainForm.Component
-            subjectCRT={ subjectCRT }
-            initialValues={ initialValues }
-            onSubmit={ send.exec }
-        />
+        <>
+            <TemplateLoader
+                subjectType={ subjectCRT.getType() }
+                onLoadTemplate={ setInitialValues }
+            />
+            <hr />
+            <MainForm.Component
+                subjectCRT={ subjectCRT }
+                initialValues={ initialValues }
+                onSubmit={ send.exec }
+                enableReinitialize={ true }
+            />
+        </>
     );
 }
 

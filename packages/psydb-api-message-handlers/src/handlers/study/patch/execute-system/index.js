@@ -12,15 +12,21 @@ var executeSystemEvents = async (context) => {
     var { study } = cache.get();
 
     await maybeOverrideNullEnd(context);
+    console.log(props.runningPeriod);
 
-    var { SET } = prepareStateUpdate({
+    var { SET, UNSET } = prepareStateUpdate({
         values: props
     });
 
     await dispatch({
         collection: 'study',
         channelId: studyId,
-        payload: { $set: SET }
+        payload: {
+            $set: SET,
+            ...(UNSET && {
+                $unset: UNSET
+            })
+        }
     });
 
     if (dev_enableStudyRoadmap) {

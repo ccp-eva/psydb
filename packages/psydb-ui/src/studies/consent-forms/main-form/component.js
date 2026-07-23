@@ -6,14 +6,15 @@ import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 import ConsentFormElementList from './consent-form-element-list';
 
 export const Component = (ps) => {
-    var { subjectCRT, initialValues, onSubmit } = ps;
+    var { subjectCRT, initialValues, onSubmit, enableReinitialize } = ps;
     var [{ translate }] = useI18N();
 
     return (
         <DefaultForm
             initialValues={ initialValues }
             onSubmit={ onSubmit }
-            useAjvAsync
+            useAjvAsync={ true }
+            enableReinitialize={ enableReinitialize }
         >
             {(formikProps) => (
                 <>
