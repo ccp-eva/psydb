@@ -18,11 +18,6 @@ const FieldEditor = (ps) => {
 
     var newFieldModal = useModalReducer();
     var editFieldModal = useModalReducer();
-    var errorModal = useModalReducer();
-
-    var onFailedUpdate = (error) => {
-        errorModal.handleShow({ errorResponse: error.response });
-    };
 
     var handleCommitSettings = useSend(() => ({
         type: 'custom-record-types/commit-settings',
@@ -30,17 +25,18 @@ const FieldEditor = (ps) => {
             id: record._id,
             lastKnownEventId: record._lastKnownEventId,
         }
-    }), { onSuccessfulUpdate, onFailedUpdate });
+    }), { onSuccessfulUpdate });
 
     var handleRemoveField = useSend(({ field }) => ({
         type: 'custom-record-types/remove-field-definition',
         payload: {
             id: record._id,
-            lastKnownEventId: record._lastKnownEventId,
-            subChannelKey: field.subChannelKey,
-            key: field.key
+            key: field.key,
+            ...(field.subChannelKey && {
+                subChannelKey: field.subChannelKey,
+            })
         }
-    }), { onSuccessfulUpdate, onFailedUpdate });
+    }), { onSuccessfulUpdate });
 
     var handleRestoreField = useSend(({ field }) => ({
         type: 'custom-record-types/restore-field-definition',
@@ -50,7 +46,7 @@ const FieldEditor = (ps) => {
             subChannelKey: field.subChannelKey,
             key: field.key
         }
-    }), { onSuccessfulUpdate, onFailedUpdate });
+    }), { onSuccessfulUpdate });
 
     return (
         <div>
@@ -70,10 +66,6 @@ const FieldEditor = (ps) => {
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
             
-            <ErrorResponseModal
-                { ...errorModal.passthrough }
-            />
-
             <FieldList
                 record={ record }
                 onEditField={ editFieldModal.handleShow }
@@ -86,9 +78,7 @@ const FieldEditor = (ps) => {
             <Button
                 variant='danger'
                 onClick={ handleCommitSettings.exec }
-                disabled={
-                    !(record.state.isDirty || record.state.isNew)
-                }
+                disabled={ !(record.state.isDirty || record.state.isNew) }
             >
                 { translate('Commit Fields') }
             </Button>
