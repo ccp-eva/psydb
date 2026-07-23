@@ -53,14 +53,14 @@ module.exports = {
     
     dev_enableCSVSubjectImport: true,
     dev_enableCSVParticipationImport: true,
-    dev_enableCSVSubjectContactHistoryImport: true,
+    //dev_enableCSVSubjectContactHistoryImport: true,
     
     dev_enableStatistics: true,
     dev_showDummyRecordsAsTopOptions: false,
     //dev_enableWKPRCPatches: true,
 
     //dev_enableImprovedContactTracking: true,
-    dev_enableStudyConsentWorkflow: true,
+    //dev_enableStudyConsentWorkflow: true,
     //dev_enableStudyRoadmap: true,
 
     dev_enableSubjectDuplicatesSearch: true,

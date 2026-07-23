@@ -1644,6 +1644,9 @@ importers:
       copy-anything:
         specifier: ~2.0.6
         version: 2.0.6
+      debug:
+        specifier: ~4.3.4
+        version: 4.3.7(supports-color@6.1.0)
       deepmerge:
         specifier: ~4.2.2
         version: 4.2.2
@@ -1684,6 +1687,9 @@ importers:
       '@cdxoo/mongodb-utils':
         specifier: ~1.0.1
         version: 1.0.1
+      debug:
+        specifier: ~4.3.4
+        version: 4.3.7(supports-color@6.1.0)
       mongodb:
         specifier: ~3.6.12
         version: 3.6.12

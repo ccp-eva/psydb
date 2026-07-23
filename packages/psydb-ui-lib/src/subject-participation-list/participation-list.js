@@ -68,7 +68,9 @@ const ParticipationList = (ps) => {
                         <SortableTH
                             label={ translate('Study') }
                             sorter={ sorter }
-                            path='study.shorthand'
+                            path={
+                                IS_WKPRC ? 'study.name' : 'study.shorthand'
+                            }
                         />
                         <SortableTH
                             label={ translate(
@@ -176,6 +178,7 @@ const ParticipationListRow = (ps) => {
         studyId,
         studyType,
         timestamp,
+        study: studyLookup,
         testingAge = undefined, // NOTE: only after anonymization
     } = participationData;
 
@@ -193,7 +196,11 @@ const ParticipationListRow = (ps) => {
 
     return (
         <tr>
-            <td>{ studyRecordsById[studyId]?.state.shorthand || studyId  }</td>
+            <td>{
+                studyLookup?.[IS_WKPRC ? 'name' : 'shorthand']
+                || studyRecordsById[studyId]?.state.shorthand
+                || studyId
+            }</td>
             <TimestampAndMaybeAge { ...({
                 timestamp,
                 testingAge,

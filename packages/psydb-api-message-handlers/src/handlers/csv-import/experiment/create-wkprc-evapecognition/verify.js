@@ -1,21 +1,10 @@
 'use strict';
-var { keyBy, compareIds } = require('@mpieva/psydb-core-utils');
-var {
-    ApiError,
-    compose,
-    withRetracedErrors,
-    aggregateToArray,
-} = require('@mpieva/psydb-api-lib');
+var { ApiError, compose } = require('@mpieva/psydb-api-lib');
+var { verifyOneRecord, verifyOneCRT }
+    = require('@mpieva/psydb-api-message-handler-lib');
+var { ExperimentCSV, CSVImportError }
+    = require('@mpieva/psydb-api-lib/csv-import-utils');
 
-var {
-    verifyOneRecord,
-    verifyOneCRT,
-} = require('@mpieva/psydb-api-message-handler-lib');
-
-var {
-    ExperimentCSV,
-    CSVImportError
-} = require('@mpieva/psydb-api-lib/csv-import-utils');
 
 var compose_verifyAllowedAndPlausible = () => compose([
     verifyPermissions,
@@ -61,8 +50,9 @@ var verifyFileMimeType = async (context, next) => {
 }
 
 var tryPrepareImport = async (context, next) => {
-    var { db, message, cache } = context;
-    var { timezone, payload: { labOperatorIds }} = message;
+    var { db, message, cache, i18n } = context;
+    var { labOperatorIds, skipPossibleDuplicates } = message.payload;
+
     var { subjectCRT, study, file } = cache.get();
 
     try {
@@ -70,10 +60,11 @@ var tryPrepareImport = async (context, next) => {
             ExperimentCSV.WKPRCApestudiesDefault.runPipeline({
                 db,
                 csvLines: file.blob.toString(),
+                skipPossibleDuplicates,
 
-                subjectType: subjectCRT.getType(),
+                subjectCRT,
                 study,
-                timezone,
+                i18n,
             })
         );
 

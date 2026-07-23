@@ -16,7 +16,10 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 var fetchOneCustomRecordType = require('./fetch-one-custom-record-type');
 
 var fetchCRTSettings = async (options) => {
-    var { db, collectionName, recordType, wrap = false } = options;
+    var { db, collectionName, recordType, wrap = false, ...rest } = options;
+    if (!collectionName && !recordType) {
+        ([ collectionName, recordType ] = Object.entries(rest)[0]);
+    }
 
     var collectionCreatorData = allSchemaCreators[collectionName];
     if (!collectionCreatorData || collectionName === 'customRecordType') {
