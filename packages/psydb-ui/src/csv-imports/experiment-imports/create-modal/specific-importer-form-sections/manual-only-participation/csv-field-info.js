@@ -15,7 +15,7 @@ const CSVFieldInfo = (ps) => {
             <Toggler { ...toggleBag }/>
             { isOpen && (
                 <div className='px-3 py-2 bg-white border mb-3'>
-                    <Grid cols={[ '15px', '270px', '1fr' ]}>
+                    <Grid cols={[ '15px', '270px', '270px', '1fr' ]}>
                         <AllColInfos />
                     </Grid>
                 </div>
@@ -27,24 +27,48 @@ const CSVFieldInfo = (ps) => {
 const AllColInfos = (ps) => {
     return (
         <>
-            <ColInfo csvkey='date' example='2001-12-20' isRequired />
-            <ColInfo csvkey='time' example='16:30' isRequired />
-            <ColInfo csvkey='location' example='1, 2, 3 ...' isRequired />
-            <ColInfo csvkey='subject' example='1, 2, 3 ...' isRequired />
-            <ColInfo csvkey='experimenter' example='1, 2, 3 ...' isRequired />
-            <ColInfo csvkey='comment' example='some comment'/>
+            <ColInfo
+                csvkey='date' example='2001-12-20'
+                description='(required)'
+                isRequired
+            />
+            <ColInfo
+                csvkey='time' example='16:30'
+                description='(required)'
+                isRequired
+            />
+            <ColInfo
+                csvkey='location' example='1234'
+                description='ID No. of location record (required)'
+                isRequired
+            />
+            <ColInfo
+                csvkey='subject' example='2345'
+                description='ID No. of subject record (required)'
+                isRequired
+            />
+            <ColInfo
+                csvkey='experimenter' example='3456'
+                description='ID No. of staff member (required)'
+                isRequired
+            />
+            <ColInfo
+                csvkey='comment' example='some comment'
+                description='(column/value optional)'
+            />
         </>
     )
 }
 
 const ColInfo = (ps) => {
-    var { csvkey, example, isRequired } = ps;
+    var { csvkey, example, description, isRequired } = ps;
 
     return (
         <>
             <b>{ isRequired ? ' *' : ''}</b>
             <b>{ csvkey }</b>
             <span>{ example }</span>
+            <i>{ description }</i>
         </>
     )
 }
