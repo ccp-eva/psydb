@@ -38,6 +38,7 @@ const ImportSettings = (ps) => {
                     items: crt.allCustomFields(),
                     byProp: 'pointer'
                 }) }
+                emptyFallback='No extra ID fields set.'
             />
             <Button onClick={ modal.handleShow }>
                 { translate('Edit') }
