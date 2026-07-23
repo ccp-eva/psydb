@@ -60,10 +60,10 @@ const useLinks = (ps) => {
             label: translate('Raw Data'),
             show: true, enabled: true
         },
-        [`${hashurl}/raw-history`]: {
-            label: translate('Raw History'),
-            show: true, enabled: true
-        }
+        //[`${hashurl}/raw-history`]: {
+        //    label: translate('Raw History'),
+        //    show: true, enabled: true
+        //}
     }
     
     if (_rohrpostMetadata) {
