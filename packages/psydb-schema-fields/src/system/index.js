@@ -26,4 +26,6 @@ module.exports = {
 
     StringEnum: require('./string-enum'),
     StringConst: require('./string-const'),
+
+    SubChannelKey: require('./sub-channel-key'),
 }

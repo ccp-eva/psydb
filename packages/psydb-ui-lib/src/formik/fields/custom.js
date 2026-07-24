@@ -28,7 +28,7 @@ export const Custom = (ps) => {
         : fieldDefinitions
     );
 
-    fields = fields.map(it => ({
+    fields = fields.filter(it => !it.isRemoved).map(it => ({
         definition: it,
         dataXPath: (
             subChannelKey
