@@ -45,6 +45,7 @@ const DetailsBody = (ps) => {
             >
                 <Personnel { ...personnelBag }>
                     <Personnel.SequenceNumber />
+                    <Personnel.ManualImportId />
                     <Personnel.Firstname />
                     <Personnel.Lastname />
                     <Personnel.Emails />

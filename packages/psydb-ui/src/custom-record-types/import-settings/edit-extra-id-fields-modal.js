@@ -30,7 +30,7 @@ const EditExtraIdFieldsModalBody = (ps) => {
 }
 
 const EditExtraIdFieldsModal = WithDefaultModal({
-    title: 'Extra Import Ids',
+    title: 'Extra ID Fields',
     size: 'lg',
     Body: EditExtraIdFieldsModalBody
 });

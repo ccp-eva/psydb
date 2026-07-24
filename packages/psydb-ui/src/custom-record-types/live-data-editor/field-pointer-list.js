@@ -8,6 +8,7 @@ const FieldPointerList = (ps) => {
         onRemoveItem,
         dataPointers = [],
         availableFieldDataByPointer,
+        emptyFallback = 'No display fields set.'
     } = ps;
 
     var translate = useUITranslation();
@@ -15,7 +16,7 @@ const FieldPointerList = (ps) => {
     if (dataPointers.length < 1) {
         return (
             <p><i className='text-muted'>
-                { translate('No display fields set.') }
+                { translate(emptyFallback) }
             </i></p>
         )
     }

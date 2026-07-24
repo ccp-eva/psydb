@@ -22,7 +22,7 @@ const EditExtraIdFieldsForm = (ps) => {
             {(formikProps) => (
                 <>
                     <ColumnSelect
-                        columnLabel={ translate('Extra Id Fields') }
+                        columnLabel={ translate('Extra ID Fields') }
                         dataXPath='$.extraIdFields'
                         columns={ crt.findCustomFields({
                             type: { $in: [ 'SaneString', 'DefaultInt' ]}

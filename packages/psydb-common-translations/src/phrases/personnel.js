@@ -20,4 +20,8 @@ module.exports = [
         en: 'Delete Staff Member',
         de: 'Mitarbeiter:in Löschen',
     },
+    {
+        en: 'Manual ID for Imports',
+        de: 'Manuelle ID für Importe'
+    }
 ]

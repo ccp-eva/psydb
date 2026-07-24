@@ -44,7 +44,7 @@ const IntraRecordRoutingBody = (ps) => {
     }
 
     var extra = {}
-    if (record.collection === 'subject') {
+    if (['subject', 'location'].includes(record.collection)) {
         /*extra[`${hashurl}/duplicate-settings`] = {
             label: translate('Duplicate Settings'),
             show: true,
@@ -105,7 +105,7 @@ const IntraRecordRoutingBody = (ps) => {
                         onSuccessfulUpdate={ revision.up }
                     />
                 </Route>
-                { record.collection === 'subject' && (
+                { ['subject', 'location'].includes(record.collection) && (
                     <Route path={`${path}/import-settings`}>
                         <ImportSettings
                             record={ record }

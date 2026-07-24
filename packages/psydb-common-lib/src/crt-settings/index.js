@@ -208,6 +208,22 @@ var CRTSettings = ({ data }) => {
             __availableDisplayFieldsByPointer[it.pointer || it.dataPointer]
         ));
     }
+
+    crt.getImportSettings = () => (
+        data.importSettings || {}
+    );
+    crt.getExtraImportIds = (bag) => {
+        var { as = undefined } = bag;
+        var { extraIdFields = [] } = crt.getImportSettings();
+
+        if (as === 'pointers') {
+            return extraIdFields.map(it => it.pointer);
+        }
+        else {
+            return extraIdFields;
+        }
+    }
+
     return crt;
 }
 
