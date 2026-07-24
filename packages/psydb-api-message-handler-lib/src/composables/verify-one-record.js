@@ -38,7 +38,7 @@ var verifyOneRecord = (...args) => {
         var { db, message, cache } = context;
         
         var recordId = resolveId({ message });
-        debug({ recordId });
+        debug({ collection, recordId });
 
         var record = await (
             db.collection(collection)

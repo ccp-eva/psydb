@@ -4,7 +4,6 @@ var { ObjectId, aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var { getContent: loadCSV } = require('@mpieva/psydb-fixtures/csv');
 
 var tprefix = require('./t-prefix');
-console.log({ tprefix });
 describe(`${tprefix} simple-flow`, function () {
     var db, ids, send;
     before(async function () {
