@@ -2,6 +2,7 @@
 var WrappedCache = require('../../../wrapped-cache');
 
 var createHelperSets = require('./create-helper-sets');
+var createCatTrainerCRT = require('./create-cat-trainer-crt');
 var createCatShelterOrgCRT = require('./create-cat-shelter-org-crt');
 var createCatShelterCRT = require('./create-cat-shelter-crt');
 var createCatLabRoomCRT = require('./create-cat-lab-room-crt');
@@ -16,6 +17,7 @@ module.exports = async (bag) => {
 
     await createHelperSets(context);
 
+    await createCatTrainerCRT(context);
     await createCatShelterOrgCRT(context);
     await createCatShelterCRT(context);
     await createCatLabRoomCRT(context);
