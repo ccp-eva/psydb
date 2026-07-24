@@ -61,14 +61,14 @@ const GenericRecordEditorFooter = (ps) => {
                         ) : <div />}
                       
                         <div className='d-flex gapx-3'>
-                            { canCleanGdpr && enableCleanGdpr && (
+                            { /*canCleanGdpr && enableCleanGdpr && (
                                 <LinkButton
                                     variant='danger'
                                     to={ cleanGdprUrl }
                                 >
                                     { translate('Anonymize') }
                                 </LinkButton>
-                            )}
+                            )*/}
                             { canRemove && enableRemove && (
                                 <LinkButton
                                     variant='danger'
