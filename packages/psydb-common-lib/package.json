@@ -29,7 +29,9 @@
     "date-fns-tz": "~1.3.8",
     "sift": "~16.0.1",
     "escape-string-regexp": "~4.0.0",
-    "append-query": "~2.1.1"
+    "querystring-es3": "~0.2.1",
+    "extend": "~3.0.2",
+    "url": "~0.11.4"
   },
   "devDependencies": {
     "jest": "~29.7.0",
