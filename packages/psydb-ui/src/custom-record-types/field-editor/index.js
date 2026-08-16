@@ -11,7 +11,7 @@ import EditFieldModal from './edit-field-modal';
 
 import FieldList from './field-list';
 
-const FieldEditor = (ps) => {
+const FieldDefinitionEditor = (ps) => {
     var { record, onSuccessfulUpdate } = ps;
 
     var translate = useUITranslation();
@@ -87,4 +87,4 @@ const FieldEditor = (ps) => {
     )
 }
 
-export default FieldEditor;
+export default FieldDefinitionEditor;
