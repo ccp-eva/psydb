@@ -6,6 +6,7 @@ module.exports = {
     context: __dirname,
     mode: 'development',
     devtool: 'inline-source-map',
+    //devtool: 'eval-cheap-module-source-map', 
     entry: './index.js',
     output: {
         //path: path.resolve(__dirname, 'dist'),
@@ -39,14 +40,14 @@ module.exports = {
             },
         ]
     },
-    resolve: {
-        mainFields: [ 'browser', 'main' ],
-        fallback: {
-            //"querystring": require.resolve("querystring-es3"),
-            'querystring': 'querystring-es3',
-        },
-        symlinks: false,
-    },
+    //resolve: {
+    //    mainFields: [ 'browser', 'main' ],
+    //    fallback: {
+    //        "querystring": require.resolve("querystring-es3"),
+    //        //'querystring': 'querystring-es3',
+    //    },
+    //    //symlinks: false,
+    //},
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './template.html'),
@@ -65,4 +66,5 @@ module.exports = {
             }
         }
     },
+    cache: { type: 'filesystem' }
 };

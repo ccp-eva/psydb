@@ -4,7 +4,7 @@
 // node: var { URL, URLSearchParams } = require('url');
 // ....well
 
-var appendQuery = require('append-query');
+var appendQuery = require('./append-query-es3');
 var { entries } = require('@mpieva/psydb-core-utils');
 
 var sanitize = (url = '') => (

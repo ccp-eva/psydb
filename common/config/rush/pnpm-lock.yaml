@@ -1191,9 +1191,6 @@ importers:
       '@mpieva/psydb-schema-fields':
         specifier: workspace:*
         version: link:../psydb-schema-fields
-      append-query:
-        specifier: ~2.1.1
-        version: 2.1.1
       date-fns:
         specifier: ~2.30.0
         version: 2.30.0
@@ -1203,6 +1200,9 @@ importers:
       escape-string-regexp:
         specifier: ~4.0.0
         version: 4.0.0
+      extend:
+        specifier: ~3.0.2
+        version: 3.0.2
       flat:
         specifier: ~5.0.2
         version: 5.0.2
@@ -1212,9 +1212,15 @@ importers:
       jsonpointer:
         specifier: ~5.0.1
         version: 5.0.1
+      querystring-es3:
+        specifier: ~0.2.1
+        version: 0.2.1
       sift:
         specifier: ~16.0.1
         version: 16.0.1
+      url:
+        specifier: ~0.11.4
+        version: 0.11.4
     devDependencies:
       chai:
         specifier: ~4.3.7
@@ -6495,12 +6501,6 @@ packages:
       normalize-path: 3.0.0
       picomatch: 2.3.1
     dev: true
-
-  /append-query@2.1.1:
-    resolution: {integrity: sha512-adm0E8o1o7ay+HbkWvGIpNNeciLB/rxJ0heThHuzSSVq5zcdQ5/ZubFnUoY0imFmk6gZVghSpwoubLVtwi9EHQ==, tarball: https://registry.npmjs.org/append-query/-/append-query-2.1.1.tgz}
-    dependencies:
-      extend: 3.0.2
-    dev: false
 
   /archiver-utils@4.0.1:
     resolution: {integrity: sha512-Q4Q99idbvzmgCTEAAhi32BkOyq8iVI5EwdO0PmBDSGIzzjYNdcFn7Q7k3OzbLy4kLUPXfJtG6fO2RjftXbobBg==, tarball: https://registry.npmjs.org/archiver-utils/-/archiver-utils-4.0.1.tgz}
@@ -12589,7 +12589,6 @@ packages:
 
   /punycode@1.4.1:
     resolution: {integrity: sha512-jmYNElW7yvO7TV33CjSmvSiE2yco3bV2czu/OzDKdMNVZQWfxCblURLhf+47syQRBntjfLdd/H0egrzIG+oaFQ==, tarball: https://registry.npmjs.org/punycode/-/punycode-1.4.1.tgz}
-    dev: true
 
   /punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==, tarball: https://registry.npmjs.org/punycode/-/punycode-2.3.1.tgz}
@@ -12620,7 +12619,6 @@ packages:
   /querystring-es3@0.2.1:
     resolution: {integrity: sha512-773xhDQnZBMFobEiztv8LIl70ch5MSF/jUQVlhwFyBILqq96anmoctVIYz+ZRp0qbCKATTn6ev02M3r7Ga5vqA==, tarball: https://registry.npmjs.org/querystring-es3/-/querystring-es3-0.2.1.tgz}
     engines: {node: '>=0.4.x'}
-    dev: true
 
   /querystringify@2.2.0:
     resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==, tarball: https://registry.npmjs.org/querystringify/-/querystringify-2.2.0.tgz}
@@ -14451,7 +14449,6 @@ packages:
     dependencies:
       punycode: 1.4.1
       qs: 6.15.0
-    dev: true
 
   /use@3.1.1:
     resolution: {integrity: sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==, tarball: https://registry.npmjs.org/use/-/use-3.1.1.tgz}
