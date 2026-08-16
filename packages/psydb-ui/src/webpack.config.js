@@ -42,8 +42,10 @@ module.exports = {
     resolve: {
         mainFields: [ 'browser', 'main' ],
         fallback: {
-            "querystring": require.resolve("querystring-es3"),
-        }
+            //"querystring": require.resolve("querystring-es3"),
+            'querystring': 'querystring-es3',
+        },
+        symlinks: false,
     },
     plugins: [
         new HtmlWebpackPlugin({
