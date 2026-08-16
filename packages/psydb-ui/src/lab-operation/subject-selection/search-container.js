@@ -43,7 +43,7 @@ const SearchContainer = (ps) => {
             recordType: subjectRecordType
         }),
         ageFrames: agent.fetchAgeFrames({
-            studyIds,
+            studyIds, subjectTypes: [ subjectRecordType ],
         })
     }), [ studyIdsString, subjectRecordType ]);
 

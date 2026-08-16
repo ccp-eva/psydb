@@ -29,17 +29,12 @@ const WKPRCCSVExportButton = (ps) => {
 
     var handleExport = () => {
         fetcher.exec().then((response) => {
-            console.log('AAAAAAAAAAAAAAAAAAA')
-            console.log(response);
             var { data } = response;
 
-            var blob = new Blob(
-                [ data ],
-                {
-                    encoding: "UTF-8",
-                    type: "application/force-download;charset=UTF-8"
-                }
-            );
+            var blob = new Blob([ data ], {
+                encoding: "UTF-8",
+                type: "application/force-download;charset=UTF-8"
+            });
 
             var csvURL = window.URL.createObjectURL(blob);
             var tempLink = document.createElement('a');

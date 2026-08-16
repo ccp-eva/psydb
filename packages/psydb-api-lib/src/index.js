@@ -17,6 +17,7 @@ module.exports = {
     CSV: require('./csv'),
 
     validateOrThrow: require('./validate-or-throw'),
+    validateMessageOrThrow: require('./validate-message-or-throw'),
     ...require('./verify-collection-access'),
 
     verifyRecordExists: require('./verify-record-exists'),
@@ -24,6 +25,7 @@ module.exports = {
     verifyStudyAccess: require('./verify-study-access'),
     verifySubjectAccess: require('./verify-subject-access'),
     verifyLabOperationAccess: require('./verify-lab-operation-access'),
+    verifyPermissionFlags: require('./verify-permission-flags'),
    
     checkForeignIdsExist: require('./check-foreign-ids-exist'),
     checkIntervalHasReservation: require('./check-interval-has-reservation'),

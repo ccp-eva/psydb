@@ -72,7 +72,7 @@ const ParticipationList = (ps) => {
         return (
             <TableEmptyFallback
                 tableExtraClassName={ className }
-                emptyInfoText={ translate('No study participations found.') }
+                emptyInfoText={ 'No study participations found.' }
             >
                 <TableHeadCols { ...headBag } />
             </TableEmptyFallback>
@@ -191,6 +191,7 @@ const ParticipationListRow = (ps) => {
         status: participationStatus,
         experimentId,
         timestamp,
+        testingAge = undefined, // NOTE: only after anonymization
     } = participationData;
 
     var hasExperiment = ( participationType !== 'manual' && experimentId );
@@ -209,6 +210,7 @@ const ParticipationListRow = (ps) => {
             />
             <TimestampAndMaybeAge { ...({
                 timestamp,
+                testingAge,
                 record,
                 dateOfBirthField
             })} />

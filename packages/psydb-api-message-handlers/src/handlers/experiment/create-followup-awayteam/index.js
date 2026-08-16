@@ -165,11 +165,15 @@ var createTargetExperiment = async (context) => {
             // FIXME: we might need to pass autoConfirm here for inhouse
             invitationStatus: 'scheduled',
             participationStatus: 'unknown',
+            // FIXME: reset subject comment here?
         })),
         interval: targetInterval,
         experimentOperatorTeamId: targetExperimentOperatorTeamId,
+        experimentOperatorIds: [],
         isCanceled: false,
         isPostprocessed: false,
+        // FIXME: reset general comment?
+        // FIXME: reset comment? (dup?)
     };
 
     await dispatchProps({

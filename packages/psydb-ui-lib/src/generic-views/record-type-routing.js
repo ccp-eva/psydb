@@ -20,6 +20,7 @@ const RecordTypeRouting = (ps) => {
         RecordCreator,
         RecordEditor,
         RecordRemover,
+        RecordAnonymizer,
     } = ps;
 
     return <Switch>
@@ -41,9 +42,10 @@ const RecordTypeRouting = (ps) => {
                 type='create'
                 collection={ collection }
                 recordType={ recordType }
-                onSuccessfulUpdate={
-                    ({ id }) => history.push(`${url}/${id}`)
-                }
+                onSuccessfulUpdate={ (bag = {}) => {
+                    var { id } = bag;
+                    return history.push(id ? `${url}/${id}` : url)
+                }}
             />
         </Route>
 
@@ -61,8 +63,9 @@ const RecordTypeRouting = (ps) => {
                 collection={ collection }
                 recordType={ recordType }
                 removeUrl={ `${url}/:id/remove` }
-                onSuccessfulUpdate={ ({ id }) => {
-                    history.push(`${url}/${id}`)
+                onSuccessfulUpdate={ (bag = {}) => {
+                    var { id } = bag;
+                    return history.push(id ? `${url}/${id}` : url)
                 }}
             />
         </Route>
@@ -73,8 +76,9 @@ const RecordTypeRouting = (ps) => {
                 collection={ collection }
                 recordType={ recordType }
                 removeUrl={ `${url}/:id/remove` }
-                onSuccessfulUpdate={ ({ id }) => {
-                    history.push(`${url}/${id}`)
+                onSuccessfulUpdate={ (bag = {}) => {
+                    var { id } = bag;
+                    return history.push(id ? `${url}/${id}` : url)
                 }}
             />
         </Route>
@@ -88,6 +92,18 @@ const RecordTypeRouting = (ps) => {
                     successInfoBackLink={ `#${url}` }
                     onSuccessfulUpdate={ ({ id }) => {
                         history.push(`${url}/${id}/remove/success`)
+                    }}
+                />
+            </Route>
+        )}
+        { RecordAnonymizer && (
+            <Route path={`${path}/:id/clean-gdpr`}>
+                <RecordAnonymizer
+                    collection={ collection }
+                    recordType={ recordType }
+                    successInfoBackLink={ `#${url}` }
+                    onSuccessfulUpdate={ ({ id }) => {
+                        history.push(`${url}/${id}/clean-gdpr/success`)
                     }}
                 />
             </Route>

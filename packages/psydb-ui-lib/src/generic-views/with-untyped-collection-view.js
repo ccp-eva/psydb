@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
 import enums from '@mpieva/psydb-schema-enums';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { PageWrappers } from '@mpieva/psydb-ui-layout';
 
@@ -14,10 +14,13 @@ const withCollectionView = (options) => {
     var {
         collection: staticCollection,
         RecordList,
+        
         RecordDetails,
         RecordCreator,
         RecordEditor,
         RecordRemover,
+        
+        IntraRecordRouting = undefined,
     } = options;
 
     var RecordTypeView = withRecordTypeView({
@@ -28,6 +31,8 @@ const withCollectionView = (options) => {
         RecordCreator,
         RecordEditor,
         RecordRemover,
+        
+        IntraRecordRouting,
     });
 
     return (ps) => {
@@ -37,7 +42,7 @@ const withCollectionView = (options) => {
             noSpacer
         } = ps;
 
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
         var title = translate(
             enums.collections.getLabel(collection) || collection
         );

@@ -3,6 +3,7 @@ import { keyBy, jsonpointer, entries } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { CustomField } from './custom-field';
+import { AnonField } from './anon-field';
 import { ListOfObjectsField } from './list-of-objects-field';
 
 export const createFullUserOrdered = (options) => (ps) => {
@@ -72,6 +73,13 @@ export const createFullUserOrdered = (options) => (ps) => {
                     record: value,
                     related,
                 };
+
+                if (
+                    value?.gdpr?.state === '[[REDACTED]]'
+                    && pointer.startsWith('/gdpr/state')
+                ) {
+                    return <AnonField { ...shared } definition={ def } />
+                }
 
                 if (Extra) {
                     return <Extra { ...shared } label={ displayName } />

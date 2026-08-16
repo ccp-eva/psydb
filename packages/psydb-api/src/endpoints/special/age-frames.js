@@ -3,7 +3,7 @@ var debug = require('debug')(
     'psydb:api:endpoints:ageFrames'
 );
 
-var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
+var { ObjectId, aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var { ejson, only, keyBy } = require('@mpieva/psydb-core-utils');
 var { __fixRelated } = require('@mpieva/psydb-common-compat');
 
@@ -12,7 +12,6 @@ var {
     validateOrThrow,
     verifyStudyAccess,
     withRetracedErrors,
-    aggregateToArray,
 
     fetchAllCRTSettings,
     fetchRelatedLabelsForMany,
@@ -29,11 +28,16 @@ var {
 var {
     ExactObject,
     ForeignIdList,
+    DefaultArray,
+    CustomRecordTypeKey
 } = require('@mpieva/psydb-schema-fields');
 
 var RequestBodySchema = () => ExactObject({
     properties: {
-        studyIds: ForeignIdList({ collection: 'study' }),
+        'studyIds': ForeignIdList({ collection: 'study' }),
+        'subjectTypes': DefaultArray({
+            items: CustomRecordTypeKey({ collection: 'subject' }),
+        })
     },
     required: [
         'studyIds',
@@ -56,12 +60,15 @@ var ageFrames = async (context, next) => {
         payload: request.body
     })
 
-    var { studyIds } = request.body;
+    var { studyIds, subjectTypes = undefined } = request.body;
 
+    // FIXME: not sure about this
     var hasOtherPermission = (
         permissions.hasSomeLabOperationFlags({
-            types: 'any',
-            flags: [ 'canSelectSubjectsForExperiments' ]
+            types: 'any', flags: [
+                'canSearchTestableSubjects',
+                'canSelectSubjectsForExperiments'
+            ]
         })
     );
     // FIXME: this is incomplete
@@ -76,13 +83,14 @@ var ageFrames = async (context, next) => {
         });
     }
 
-    var ageFrameRecords = await withRetracedErrors(
-        aggregateToArray({ db, ageFrame: [
-            { $match: {
-                studyId: { $in: studyIds }
-            }}
-        ]})
-    );
+    var ageFrameRecords = await aggregateToArray({ db, ageFrame: [
+        { $match: {
+            'studyId': { $in: studyIds },
+            ...(subjectTypes && {
+                'subjectTypeKey': { $in: subjectTypes }
+            })
+        }}
+    ]});
 
     var allCRTSettings = await fetchAllCRTSettings(db, [
         {

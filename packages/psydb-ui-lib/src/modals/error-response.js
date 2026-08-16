@@ -1,20 +1,20 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { useI18N, useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { Modal, JsonRaw } from '@mpieva/psydb-ui-layout';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
-const ErrorResponseModal = ({
-    show,
-    onHide,
-    modalPayloadData,
-    errorResponse
-}) => {
+const ErrorResponseModal = (ps) => {
+    var {
+        show, onHide,
+        modalPayloadData, errorResponse
+    } = ps;
+    
     errorResponse = (
         modalPayloadData
         ? modalPayloadData.errorResponse
         : errorResponse
     );
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     
     if (!errorResponse) {
         return null;
@@ -70,18 +70,20 @@ const getErrorComponents = (statusCode) => {
     }
 } 
 
-const DefaultServerError = ({
-    status,
-    statusCode,
-    apiStatus,
-    data
-}) => {
-    var translate = useUITranslation();
+const DefaultServerError = (ps) => {
+    var { status, statusCode, apiStatus, data } = ps;
+    var { message, stack, ...rest } = data;
+
+    var [{ translate }] = useI18N();
+
     return (
         <div>
             <h5>{ status } ({ statusCode })</h5>
             <div>
-                { data.message }
+                { message }
+                { Object.keys(rest).length > 0 && (
+                    <JsonRaw data={ rest } />
+                )}
             </div>
         </div>
     )
@@ -121,7 +123,7 @@ const NotFoundError = ({
     apiStatus,
     data
 }) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <div className='text-danger'>
             { translate('The given url could not be found.') }
@@ -136,7 +138,7 @@ const BadRequestError = ({
     apiStatus,
     data
 }) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <div className='text-danger'>
             { translate('The data sent contains invalid values.') }
@@ -145,14 +147,14 @@ const BadRequestError = ({
 }
 
 const ExternalDelegateErrorTitle = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <span className='text-warning'>{ translate('Warning') }</span>
     )
 }
 const ExternalDelegationError = (ps) => {
     var { remoteErrors } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var out = [];
     for (var it of remoteErrors) {
         var { apiStatus, data } = it;

@@ -29,7 +29,7 @@ const Inner = (ps) => {
         removeUrl,
     } = ps;
 
-    var { record, schema, related } = fetched;
+    var { record, related } = fetched;
     var { collection, type, state } = record;
     var { isNew, isDirty } = state;
 

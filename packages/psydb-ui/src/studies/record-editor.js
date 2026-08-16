@@ -1,15 +1,16 @@
 import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
-import { only } from '@mpieva/psydb-core-utils';
+import { only, merge } from '@mpieva/psydb-core-utils';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
-import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
+import { usePermissions, useSend } from '@mpieva/psydb-ui-hooks';
 import { Pair } from '@mpieva/psydb-ui-layout';
 import {
     withRecordEditor,
     GenericRecordEditorFooter
 } from '@mpieva/psydb-ui-lib';
+
 import MainForm from './main-form';
 
 
@@ -22,27 +23,29 @@ const EditForm = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var { record, crtSettings, related } = fetched;
-    var { fieldDefinitions } = crtSettings;
-    
+    var {
+        record, crtSettings, related,
+        studyRoadmap, /*studyRoadmapHistory*/
+    } = fetched.data;
+
     var { path, url } = useRouteMatch();
     
-    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
+    var { dev_enableWKPRCPatches, dev_enableStudyRoadmap } = useUIConfig();
     var permissions = usePermissions();
     var [{ translate }] = useI18N();
 
-    var send = useSendPatch({
-        collection,
-        recordType,
-        record,
-        onSuccessfulUpdate
-    });
-    
-    var defaults = MainForm.createDefaults({
-        fieldDefinitions,
-        permissions
-    });
-   
+    var send = useSend((formData) => {
+        var { studyRoadmap, ...props } = formData;
+        return { type: 'study/patch', payload: {
+            _id: record._id,
+            props,
+
+            ...(dev_enableStudyRoadmap && {
+                studyRoadmap
+            })
+        }}
+    }, { onSuccessfulUpdate });
+ 
     var paths = [
         'name',
         'shorthand',
@@ -56,25 +59,20 @@ const EditForm = (ps) => {
         'systemPermissions',
     ];
 
-    if (IS_WKPRC) {
+    if (dev_enableWKPRCPatches) {
         paths = paths.filter(it => (![ 'shorthand' ].includes(it)));
         paths.push('experimentNames');
     }
 
-    var initialValues = only({
-        from: record.state,
-        paths: paths
-    });
-
-    // FIXME: use deep merge
-    initialValues = {
-        ...defaults,
-        ...initialValues,
-        custom: {
-            ...defaults.custom,
-            ...initialValues.custom
-        }
-    }
+    var { fieldDefinitions } = crtSettings;
+    var initialValues = merge.raw.all([
+        MainForm.createDefaults({ fieldDefinitions, permissions }),
+        only({ from: record.state, paths: paths }),
+        
+        dev_enableStudyRoadmap ?  {
+            studyRoadmap: { props: studyRoadmap?.state || { tasks: [] }}
+        } : {}
+    ], { arrayMerge: (base, x) => (x) });
 
     var { sequenceNumber } = record;
 
@@ -96,24 +94,25 @@ const EditForm = (ps) => {
                 crtSettings={ crtSettings }
                 initialValues={ initialValues }
                 onSubmit={ send.exec }
-                related={ related }
                 permissions={ permissions }
                 renderFormBox={ false }
+                related={ related }
+                studyRoadmap={ studyRoadmap }
             />
             <hr />
             <GenericRecordEditorFooter.RAW
-                id={ id }
+                id={ record._id }
                 collection={ collection }
                 recordType={ recordType }
-                fetched={ fetched }
+                fetched={ fetched.data }
                 permissions={ permissions } 
 
                 enableHide={ false }
                 enableRemove={ true }
                 onSuccessfulUpdate={ () => {} }
            
-                removeUrl={`${up(url, 2)}/remove`}
-                className='d-flex justify-content-between mt-3 mb-3'
+                removeUrl={`${up(url, 1)}/remove`}
+                className='d-flex justify-content-between mt-3'
             />
         </>
     );
@@ -125,9 +124,7 @@ const EditForm = (ps) => {
     );
 }
 
-const RecordEditor = withRecordEditor({
+export const RecordEditor = withRecordEditor({
     EditForm,
     shouldFetchSchema: false,
 });
-
-export default RecordEditor;

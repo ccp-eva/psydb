@@ -13,11 +13,15 @@ var createFakeRootFlags = () => ({
     ...([
         'Subjects',
         'SubjectGroups',
+        
         'Studies',
+        'StudyTopics',
+        'StudyConsentDocs',
+        'StudyConsentForms',
+
         'Locations',
         'ExternalPersons',
         'ExternalOrganizations',
-        'StudyTopics',
         'HelperSets',
         'Personnel'
     ]).reduce((acc, it) => ({
@@ -31,13 +35,15 @@ var createFakeRootFlags = () => ({
     canWriteParticipation: true,
 
 
+    canAccessSensitiveFields: true,
     canViewReceptionCalendar: true,
     canViewStudyLabOpsSettings: true,
-    canAccessSensitiveFields: true,
+    canViewStudyLabTeams: true,
 
     labOperation: {
         'inhouse': {
             canWriteReservations: true,
+            canSearchSelectableSubjects: true,
             canSelectSubjectsForExperiments: true,
             canConfirmSubjectInvitation: true,
             canViewExperimentCalendar: true,
@@ -47,6 +53,7 @@ var createFakeRootFlags = () => ({
         },
         'away-team': {
             canWriteReservations: true,
+            canSearchSelectableSubjects: true,
             canSelectSubjectsForExperiments: true,
             canViewExperimentCalendar: true,
             canMoveAndCancelExperiments: true,
@@ -57,6 +64,7 @@ var createFakeRootFlags = () => ({
         },
         'online-video-call': {
             canWriteReservations: true,
+            canSearchSelectableSubjects: true,
             canSelectSubjectsForExperiments: true,
             canConfirmSubjectInvitation: true,
             canViewExperimentCalendar: true,

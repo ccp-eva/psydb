@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -20,7 +20,7 @@ export const Component = (ps) => {
         permissions,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <DefaultForm
@@ -50,7 +50,7 @@ export const Component = (ps) => {
 const FormFields = (ps) => {
     var { fieldDefinitions, related, permissions } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     
     var customFieldBag = {
         fieldDefinitions,
@@ -92,7 +92,7 @@ const ReservationFields = (ps) => {
 
 const AwayTeamReservationFields = (ps) => {
     var { related, permissions } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var prefix = '$.reservationSettings';
     return (
         <>
@@ -106,7 +106,7 @@ const AwayTeamReservationFields = (ps) => {
 
 const InhouseReservationFields = (ps) => {
     var { related, permissions } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var prefix = '$.reservationSettings';
     return (
         <>

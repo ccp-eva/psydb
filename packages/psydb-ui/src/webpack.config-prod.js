@@ -54,6 +54,12 @@ module.exports = {
             }
         })
     },
+    resolve: {
+        mainFields: [ 'browser', 'main' ],
+        fallback: {
+            "querystring": require.resolve("querystring-es3"),
+        }
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './template.html'),

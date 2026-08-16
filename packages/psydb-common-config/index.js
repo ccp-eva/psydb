@@ -53,10 +53,15 @@ module.exports = {
     
     dev_enableCSVSubjectImport: true,
     dev_enableCSVParticipationImport: true,
+    //dev_enableCSVSubjectContactHistoryImport: true,
     
     dev_enableStatistics: true,
     dev_showDummyRecordsAsTopOptions: false,
     //dev_enableWKPRCPatches: true,
+
+    //dev_enableImprovedContactTracking: true,
+    //dev_enableStudyConsentWorkflow: true,
+    //dev_enableStudyRoadmap: true,
 
     dev_enableSubjectDuplicatesSearch: true,
     dev_subjectDuplicatesSearchFields: {
@@ -74,6 +79,10 @@ module.exports = {
             '/gdpr/state/custom/emails', // TODO: min 1
             '/gdpr/state/custom/phones',
             '/gdpr/state/custom/address', // includes only street and number
+            '/scientific/state/custom/dateOfBirth'
+        ],
+        'fs_namibia_subject': [
+            '/gdpr/state/custom/name',
             '/scientific/state/custom/dateOfBirth'
         ]
     },

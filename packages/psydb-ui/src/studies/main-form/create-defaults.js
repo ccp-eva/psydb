@@ -8,7 +8,7 @@ const {
 
 export const createDefaults = (options) => {
     var { fieldDefinitions, permissions } = options;
-    var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
+    var { dev_enableWKPRCPatches, dev_enableStudyRoadmap } = useUIConfig();
 
     return {
         runningPeriod: { end: null },
@@ -19,8 +19,11 @@ export const createDefaults = (options) => {
         custom: Custom({ fieldDefinitions }),
         systemPermissions: SystemPermissions({ permissions }),
 
-        ...(IS_WKPRC && {
+        ...(dev_enableWKPRCPatches && {
             experimentNames: [ '' ]
+        }),
+        ...(dev_enableStudyRoadmap && {
+            studyRoadmap: { props: { tasks: [] }}
         })
     }
 }

@@ -1,6 +1,12 @@
 'use strict';
-var StringConst = (bag = {}) => {
-    var { value, ...extraKeywords } = bag;
+var StringConst = (keywordsOrValue) => {
+    if (typeof keywordsOrValue === 'string') {
+        var value = keywordsOrValue;
+        var extraKeywords = undefined;
+    }
+    else {
+        var { value, ...extraKeywords } = keywordsOrValue;
+    }
 
     var schema = {
         type: 'string',

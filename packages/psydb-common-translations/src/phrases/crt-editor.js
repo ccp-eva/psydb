@@ -234,4 +234,23 @@ module.exports = [
         en: 'Input',
         de: 'Input',
     },
+
+    // FIXME: 'Raw View'/'Raw Data' redundancy
+    {
+        en: 'Raw View',
+        de: 'Rohdaten'
+    },
+
+    {
+        en: 'Import Settings',
+        de: 'Import Settings',
+    },
+    {
+        en: 'Extra ID Fields',
+        de: 'Extra ID-Felder',
+    },
+    {
+        en: 'No extra ID fields set.',
+        de: 'Keine extra ID-Felder.'
+    },
 ]

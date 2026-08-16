@@ -1,5 +1,6 @@
 import React from 'react';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
     Table,
@@ -39,6 +40,12 @@ const DetailContainer = (ps) => {
 
         onCreateExperiment
     } = ps;
+
+    var permissions = usePermissions();
+    var canCreateAppointment = permissions.hasSomeLabOperationFlags({
+        types: [ 'away-team' ],
+        flags: [ 'canSelectSubjectsForExperiments' ]
+    })
 
     var [{ translate }] = useI18N();
     var { definitions } = subjectMetadata;
@@ -102,13 +109,15 @@ const DetailContainer = (ps) => {
                 }) } />
             </Table>
             <div className='mt-3 mb-3'>
-                <Button
-                    size='sm'
-                    disabled={ selectedSubjectIds.length < 1 }
-                    onClick={ () => onCreateExperiment({ locationRecord }) }
-                >
-                    { translate('Create Appointment') }
-                </Button>
+                { canCreateAppointment && (
+                    <Button
+                        size='sm'
+                        disabled={ selectedSubjectIds.length < 1 }
+                        onClick={ () => onCreateExperiment({ locationRecord }) }
+                    >
+                        { translate('Create Appointment') }
+                    </Button>
+                )}
             </div>
         </div>
     );
@@ -126,8 +135,14 @@ const SubjectTableBody = (ps) => {
         selectedSubjectIds,
     } = ps;
 
-    var [{ translate }] = useI18N();
     var { related, definitions } = subjectMetadata;
+
+    var [{ translate }] = useI18N();
+    var permissions = usePermissions();
+
+    var showSelectionInterface = permissions.hasSomeLabOperationFlags({
+        types: [ 'away-team' ], flags: [ 'canSelectSubjectsForExperiments' ]
+    });
 
     var quickSelectSubjects = (
         subjectRecords
@@ -155,7 +170,7 @@ const SubjectTableBody = (ps) => {
                     >
                         
                         {
-                            canSelect
+                            (showSelectionInterface && canSelect)
                             ? <CheckColumn { ...({
                                 record,
                                 selectedRecordIds: selectedSubjectIds,
@@ -207,42 +222,44 @@ const SubjectTableBody = (ps) => {
                     </tr>
                 )
             })}
-            <tr>
-                <td
-                    className='user-select-none'
-                    role='button'
-                    onClick={ () => {
-                        onSelectManySubjects(quickSelectSubjects)
-                    }}
-                >
-                    {(
-                        selectedSubjectIds.length 
-                        === quickSelectSubjects.length
-                    ) ? (
-                        <Icons.CheckSquareFill />
-                    ) : (
-                        <Icons.Square />
-                    )}
-                </td>
-                <td
-                    className='user-select-none'
-                    colSpan={ subjectMetadata.displayFieldData.length + 4 }
-                    style={{ color: 'var(--primary)' }}
-                    role='button'
-                    onClick={ () => {
-                        onSelectManySubjects(quickSelectSubjects)
-                    }}
-                >
-                    <b>{(
-                        selectedSubjectIds.length 
-                        === quickSelectSubjects.length
-                    ) ? (
-                        translate('Deselect All')
-                    ) : (
-                        translate('Select All')
-                    )}</b>
-                </td>
-            </tr>
+            { showSelectionInterface && (
+                <tr>
+                    <td
+                        className='user-select-none'
+                        role='button'
+                        onClick={ () => {
+                            onSelectManySubjects(quickSelectSubjects)
+                        }}
+                    >
+                        {(
+                            selectedSubjectIds.length 
+                            === quickSelectSubjects.length
+                        ) ? (
+                            <Icons.CheckSquareFill />
+                        ) : (
+                            <Icons.Square />
+                        )}
+                    </td>
+                    <td
+                        className='user-select-none'
+                        colSpan={ subjectMetadata.displayFieldData.length + 5 }
+                        style={{ color: 'var(--primary)' }}
+                        role='button'
+                        onClick={ () => {
+                            onSelectManySubjects(quickSelectSubjects)
+                        }}
+                    >
+                        <b>{(
+                            selectedSubjectIds.length 
+                            === quickSelectSubjects.length
+                        ) ? (
+                            translate('Deselect All')
+                        ) : (
+                            translate('Select All')
+                        )}</b>
+                    </td>
+                </tr>
+            )}
         </tbody>
 
     );

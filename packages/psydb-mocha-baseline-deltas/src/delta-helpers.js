@@ -81,9 +81,55 @@ var DeletedValue = (options = {}) => (bag) => {
     }
 }
 
+var AnyString = (options = {}) => (bag) => {
+    var { baseline, current, pointer } = bag;
+    try {
+        expect(JSON.stringify(current))
+            .to.not.eql(JSON.stringify(baseline));
+
+        expect(current).to.be.a('string');
+    }
+    catch (error) {
+        // FIXME: this should trigger handleDeltaError
+        error.message += ` at pointer ${pointer}`;
+        throw error;
+    }
+}
+
+var AnyObject = (options = {}) => (bag) => {
+    var { eventIds } = options;
+    var { baseline, current, pointer } = bag;
+    try {
+        expect(current).to.not.eql(baseline);
+        expect(current).to.be.an('object');
+    }
+    catch (error) {
+        // FIXME: this should trigger handleDeltaError
+        error.message += ` at pointer ${pointer}`;
+        throw error;
+    }
+}
+
+var AnyArray = (options = {}) => (bag) => {
+    var { eventIds } = options;
+    var { baseline, current, pointer } = bag;
+    try {
+        expect(current).to.not.eql(baseline);
+        expect(current).to.be.an('array');
+    }
+    catch (error) {
+        // FIXME: this should trigger handleDeltaError
+        error.message += ` at pointer ${pointer}`;
+        throw error;
+    }
+}
+
 module.exports = {
+    AnyObject,
+    AnyArray,
     AnyRohrpostMeta,
     AnyDate,
+    AnyString,
     AnyObjectId,
     AnyFileId,
     DeletedValue

@@ -1,11 +1,12 @@
 import React from 'react';
 
 import { only } from '@mpieva/psydb-core-utils';
-import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { Pair, FormBox } from '@mpieva/psydb-ui-layout';
 import { withRecordEditor } from '../../lib';
 import MainForm from '../main-form';
-import { SequenceNumber, OnlineId, DuplicateInfo } from '../shared-static';
+import { SequenceNumber, OnlineId, DuplicateInfo, LastSubjectContact }
+    from '../shared-static';
 
 const EditForm = (ps) => {
     var {
@@ -20,9 +21,10 @@ const EditForm = (ps) => {
         renderVisibilityButton = false,
     } = ps;
 
-    var { record, crtSettings, related } = fetched;
+    var { record, crtSettings, related, lookups } = fetched;
     var { fieldDefinitions } = crtSettings;
 
+    var { dev_enableCSVSubjectContactHistoryImport } = useUIConfig();
     var [{ translate }] = useI18N();
 
     var defaults = MainForm.createDefaults({
@@ -67,8 +69,10 @@ const EditForm = (ps) => {
         onlineId
     } = record;
     
+    var isAnonymized = record.gdpr?.state === '[[REDACTED]]';
     var { isHidden } = record.scientific.state.systemPermissions;
     var { mergedDuplicates = [] } = record.scientific.state.internals;
+    
 
     var renderedContent = (
         <div>
@@ -88,17 +92,30 @@ const EditForm = (ps) => {
                 show={ showOnlineId }
                 value={ onlineId }
             />
+            { dev_enableCSVSubjectContactHistoryImport && (
+                <LastSubjectContact
+                    show={ true } value={ lookups.lastSubjectContact }
+                />
+            )}
             <DuplicateInfo
                 mergedDuplicates={ mergedDuplicates }
                 showOnlineId={ showOnlineId }
                 showSequenceNumber={ showSequenceNumber }
             />
 
-            { (
+            {(
                 (showSequenceNumber && sequenceNumber)
                 || (showOnlineId && onlineId)
             ) && (
                 <hr />
+            )}
+            { isAnonymized && (
+                <>
+                    <b className='text-danger fs-3'>
+                        { translate('Anonymized') }
+                    </b>
+                    <hr />
+                </>
             )}
             <MainForm.Component
                 title={ translate('Edit Subject') }
@@ -109,6 +126,7 @@ const EditForm = (ps) => {
                 record={ record }
                 related={ related }
                 permissions={ permissions }
+                isAnonymized={ isAnonymized }
 
                 renderFormBox={ false }
                 renderVisibilityButton={ renderVisibilityButton }

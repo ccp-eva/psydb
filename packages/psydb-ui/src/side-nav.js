@@ -155,6 +155,7 @@ var checkNavItemAllowed = (bag) => {
             ]});
         case '/lab-operation/subject-selection':
             return hasSomeLabOperationFlags({ types: 'any', flags: [
+                'canSearchSelectableSubjects',
                 'canSelectSubjectsForExperiments'
             ]});
         case '/lab-operation/invite-confirmation':
@@ -213,6 +214,7 @@ var checkNavItemAllowed = (bag) => {
             ]);
         case '/statistics':
         case '/csv-imports':
+        case '/study-consent-templates':
         case '/research-groups':
         case '/system-roles':
         case '/custom-record-types':

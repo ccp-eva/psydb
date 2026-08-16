@@ -27,10 +27,12 @@ export const DateOnlyTimestamp = (ps) => {
 export const Timestamp = (ps) => {
     var { ...pass } = ps;
     var translate = useUITranslation();
+
     return (
         <Fields.DateTime
             label={ translate('Date/Time') }
             dataXPath='$.timestamp'
+            initializeAsNoon={ true }
             { ...pass }
         />
     );

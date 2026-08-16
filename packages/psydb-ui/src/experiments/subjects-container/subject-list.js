@@ -76,6 +76,7 @@ const SubjectList = (ps) => {
 const SubjectListRow = (ps) => {
     var {
         experimentRecord,
+        studyConsentDocsBySubject,
 
         record,
         related,
@@ -160,6 +161,7 @@ const SubjectListRow = (ps) => {
                     <ActionsComponent { ...({
                         experimentSubjectData,
                         subjectRecord: record,
+                        studyConsentDocsBySubject,
 
                         hasContactIssue,
                         isUnparticipated

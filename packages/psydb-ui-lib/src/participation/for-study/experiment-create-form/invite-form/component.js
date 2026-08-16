@@ -1,6 +1,6 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { useFetch } from '@mpieva/psydb-ui-hooks';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { usePermissions, useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, SplitPartitioned } from '@mpieva/psydb-ui-layout';
 
 import { DefaultForm } from '../../../../formik';
@@ -75,7 +75,15 @@ const FormBody = (ps) => {
     var { values } = formik;
     var { subjectsAreTestedTogether } = values['$'];
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
+    var permissions = usePermissions();
+
+    var showTeamSelect = ( enableTeamSelect && (
+        permissions.hasSomeFlags([ 'canViewStudyLabTeams' ])
+        || permissions.hasSomeLabOperationFlags({
+            types: 'any', flags: [ 'canChangeOpsTeam' ]
+        })
+    ));
 
     var subjectFieldsBag = {
         label: translate('Subjects'),
@@ -97,7 +105,7 @@ const FormBody = (ps) => {
             <PerSubjectFields { ...subjectFieldsBag } />
             <Fields.Timestamp />
             { 
-                enableTeamSelect
+                showTeamSelect
                 ? <Fields.Team studyId={ studyId } />
                 : <Fields.ExperimentOperators />
             }

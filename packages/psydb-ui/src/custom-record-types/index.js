@@ -9,6 +9,7 @@ import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container'
 import CreateNewType from './create-new-type';
 import EditorContainer from './editor-container';
 import RemoveType from './remove';
+import IntraRecordRouting from './intra-record-routing';
 
 const RecordCreator = (ps) => {
     var { onSuccessfulUpdate } = ps;
@@ -44,9 +45,10 @@ const RecordList = (ps) => {
 const CRTCollectionView = withUntypedCollectionView({
     collection: 'customRecordType',
     RecordList,
-    RecordEditor: EditorContainer,
+    //RecordEditor: EditorContainer,
     RecordCreator,
-    RecordRemover,
+    //RecordRemover,
+    IntraRecordRouting,
 });
 
 const CustomRecordTypes = () => {
