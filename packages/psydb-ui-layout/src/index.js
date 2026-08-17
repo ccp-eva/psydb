@@ -24,6 +24,7 @@ export { default as SideNav } from './side-nav';
 export { default as RoutedSideNav } from './routed-side-nav';
 
 export * from './default-record-side-nav';
+export * from './state-based-side-nav';
 
 export * from './grid';
 export * from './split-partitioned';

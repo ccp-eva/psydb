@@ -253,4 +253,8 @@ module.exports = [
         en: 'No extra ID fields set.',
         de: 'Keine extra ID-Felder.'
     },
+    {
+        en: 'Read Only',
+        de: 'Nur Lesbar'
+    }
 ]
