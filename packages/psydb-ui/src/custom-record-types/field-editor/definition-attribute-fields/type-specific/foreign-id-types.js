@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import enums from '@mpieva/psydb-schema-enums';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Fields, useFormikContext } from '@mpieva/psydb-ui-lib';
 
@@ -23,6 +24,7 @@ export const ForeignId = (ps) => {
 
             <AddReferenceToTarget { ...ps } />
             <TargetReferenceField { ...ps } />
+            <IsReadOnly { ...ps } />
 
             <Options.IsNullableProp { ...ps } />
         </>
@@ -38,8 +40,9 @@ export const ForeignIdList = (ps) => {
 
             <AddReferenceToTarget { ...ps } />
             <TargetReferenceField { ...ps } />
+            <IsReadOnly { ...ps } />
 
-            <MinItemsProp { ...ps } />
+            <Options.MinItemsProp { ...ps } />
         </>
     )
 }
@@ -78,7 +81,24 @@ const RecordType = (ps) => {
     )
 }
 
-const Constraints = withField({ Control: (ps) => {
+const Constraints = (ps) => {
+    var { dataXPath, isUnrestricted } = ps;
+    
+    var [{ translate }] = useI18N();
+    var { values } = useFormikContext();
+
+    var { collection } = getFieldValue(values, `${dataXPath}.props`);
+
+    return (
+        <ForeignIdConstraints
+            label={ translate('Constraint') }
+            dataXPath={ `${dataXPath}.props.constraints` }
+            disabled={ !isUnrestricted || !collection }
+        />
+    )
+}
+
+const ForeignIdConstraints = withField({ Control: (ps) => {
     var { label, dataXPath, disabled } = ps;
     var { values, setFieldValue } = useFormikContext();
 
@@ -196,7 +216,7 @@ const AddReferenceToTarget = (ps) => {
     )
 }
 
-const TargetReferenceTarget = (ps) => {
+const TargetReferenceField = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
     
     var [{ translate }] = useI18N();
@@ -222,6 +242,20 @@ const TargetReferenceTarget = (ps) => {
                 || !recordType
                 || !addReferenceToTarget
             }
+        />
+    )
+}
+
+export const IsReadOnly = (ps) => {
+    var { dataXPath, isUnrestricted } = ps;
+    var [{ translate }] = useI18N();
+
+    return (
+        <Fields.DefaultBool
+            label={ translate('Read Only') }
+            dataXPath={ `${dataXPath}.props.readOnly` }
+            disabled={ !isUnrestricted }
+            required
         />
     )
 }
