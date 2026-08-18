@@ -2949,8 +2949,8 @@ packages:
       tslib: 2.8.1
     optional: true
 
-  /@aws-sdk/credential-providers@3.1103.0:
-    resolution: {integrity: sha512-ZPJYLJx6v8YZOgsoe3Ijr6u0rGq/pvwD4BwIl2yhJgqeIdegsaImuG+EYGbh7ujqvnDiawAmxmnKa2UlDyRdNA==, tarball: https://registry.npmjs.org/@aws-sdk/credential-providers/-/credential-providers-3.1103.0.tgz}
+  /@aws-sdk/credential-providers@3.1104.0:
+    resolution: {integrity: sha512-XGWZd3Y2fnyr764RReDFrXioQBXxjsZybgrjd950drPAPJJr7krgaOtKrxAPj7bUYcmvdh8AaAelqw9WqVEePA==, tarball: https://registry.npmjs.org/@aws-sdk/credential-providers/-/credential-providers-3.1104.0.tgz}
     engines: {node: '>=20.0.0'}
     requiresBuild: true
     dependencies:
@@ -4276,7 +4276,7 @@ packages:
       babel-plugin-polyfill-corejs2: 0.4.17(@babel/core@7.22.20)
       babel-plugin-polyfill-corejs3: 0.8.7(@babel/core@7.22.20)
       babel-plugin-polyfill-regenerator: 0.5.5(@babel/core@7.22.20)
-      core-js-compat: 3.49.0
+      core-js-compat: 3.50.0
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
@@ -6111,7 +6111,7 @@ packages:
     dependencies:
       '@babel/core': 7.22.20
       '@babel/helper-define-polyfill-provider': 0.4.4(@babel/core@7.22.20)
-      core-js-compat: 3.49.0
+      core-js-compat: 3.50.0
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -6177,31 +6177,50 @@ packages:
     engines: {node: 18 || 20 || >=22}
     dev: true
 
-  /bare-addon-resolve@1.10.1:
-    resolution: {integrity: sha512-F/SD2du8keuYSb4xipnGz5j2E6yhNdHA8ZVxtHae6h2uOrpBIjjbhXvjzKZbr5XUOzqBzh/i8GVFycj2DlFQIA==, tarball: https://registry.npmjs.org/bare-addon-resolve/-/bare-addon-resolve-1.10.1.tgz}
+  /bare-addon-resolve@1.10.0(bare-url@2.4.0):
+    resolution: {integrity: sha512-sSd0jieRJlDaODOzj0oe0RjFVC1QI0ZIjGIdPkbrTXsdVVtENg14c+lHHAhHwmWCZ2nQlMhy8jA3Y5LYPc/isA==, tarball: https://registry.npmjs.org/bare-addon-resolve/-/bare-addon-resolve-1.10.0.tgz}
     peerDependencies:
       bare-url: '*'
     peerDependenciesMeta:
       bare-url:
         optional: true
     dependencies:
-      bare-module-resolve: 1.12.4
-      bare-semver: 1.1.0
+      bare-module-resolve: 1.12.1(bare-url@2.4.0)
+      bare-semver: 1.0.2
+      bare-url: 2.4.0
     dev: false
 
-  /bare-module-resolve@1.12.4:
-    resolution: {integrity: sha512-xcfgg2u7HqgJiBmah71O9vvdFAgHCvkqC/WSC2O7Bbgosoc1eC/BWe/6IDJ4OsfKlkxuvC/TDWXC+oH5yeW8mA==, tarball: https://registry.npmjs.org/bare-module-resolve/-/bare-module-resolve-1.12.4.tgz}
+  /bare-module-resolve@1.12.1(bare-url@2.4.0):
+    resolution: {integrity: sha512-hbmAPyFpEq8FoZMd5sFO3u6MC5feluWoGE8YKlA8fCrl6mNtx68Wjg4DTiDJcqRJaovTvOYKfYngoBUnbaT7eg==, tarball: https://registry.npmjs.org/bare-module-resolve/-/bare-module-resolve-1.12.1.tgz}
     peerDependencies:
       bare-url: '*'
     peerDependenciesMeta:
       bare-url:
         optional: true
     dependencies:
-      bare-semver: 1.1.0
+      bare-semver: 1.0.2
+      bare-url: 2.4.0
     dev: false
 
-  /bare-semver@1.1.0:
-    resolution: {integrity: sha512-1Hw5qJ7hXdVt3uPUqjeFTuxyvBUJauvz5A1I2jk8gzjZMHp04n//6nV9MDbG9CMw78JHY2lGV0w6s//LrASm2w==, tarball: https://registry.npmjs.org/bare-semver/-/bare-semver-1.1.0.tgz}
+  /bare-os@3.8.7:
+    resolution: {integrity: sha512-G4Gr1UsGeEy2qtDTZwL7JFLo2wapUarz7iTMcYcMFdS89AIQuBoyjgXZz0Utv7uHs3xA9LckhVbeBi8lEQrC+w==, tarball: https://registry.npmjs.org/bare-os/-/bare-os-3.8.7.tgz}
+    engines: {bare: '>=1.14.0'}
+    dev: false
+
+  /bare-path@3.0.0:
+    resolution: {integrity: sha512-tyfW2cQcB5NN8Saijrhqn0Zh7AnFNsnczRcuWODH0eYAXBsJ5gVxAUuNr7tsHSC6IZ77cA0SitzT+s47kot8Mw==, tarball: https://registry.npmjs.org/bare-path/-/bare-path-3.0.0.tgz}
+    dependencies:
+      bare-os: 3.8.7
+    dev: false
+
+  /bare-semver@1.0.2:
+    resolution: {integrity: sha512-ESVaN2nzWhcI5tf3Zzcq9aqCZ676VWzqw07eEZ0qxAcEOAFYBa0pWq8sK34OQeHLY3JsfKXZS9mDyzyxGjeLzA==, tarball: https://registry.npmjs.org/bare-semver/-/bare-semver-1.0.2.tgz}
+    dev: false
+
+  /bare-url@2.4.0:
+    resolution: {integrity: sha512-NSTU5WN+fy/L0DDenfE8SXQna4voXuW0FHM7wH8i3/q9khUSchfPbPezO4zSFMnDGIf9YE+mt/RWhZgNRKRIXA==, tarball: https://registry.npmjs.org/bare-url/-/bare-url-2.4.0.tgz}
+    dependencies:
+      bare-path: 3.0.0
     dev: false
 
   /base64-js@1.5.1:
@@ -6389,7 +6408,7 @@ packages:
     dependencies:
       baseline-browser-mapping: 2.11.12
       caniuse-lite: 1.0.30001806
-      electron-to-chromium: 1.5.401
+      electron-to-chromium: 1.5.402
       node-releases: 2.0.52
       update-browserslist-db: 1.2.3(browserslist@4.28.7)
     dev: true
@@ -6905,8 +6924,9 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /core-js-compat@3.49.0:
-    resolution: {integrity: sha512-VQXt1jr9cBz03b331DFDCCP90b3fanciLkgiOoy8SBHy06gNf+vQ1A3WFLqG7I8TipYIKeYK9wxd0tUrvHcOZA==, tarball: https://registry.npmjs.org/core-js-compat/-/core-js-compat-3.49.0.tgz}
+  /core-js-compat@3.50.0:
+    resolution: {integrity: sha512-XGpFGbMLHwSt74YLTKho7Ib242qi6O8MSX+sRokV4oz7iKXvQWGYZthjIhjRGMxjzVkAubBO512dKGYcefmX3Q==, tarball: https://registry.npmjs.org/core-js-compat/-/core-js-compat-3.50.0.tgz}
+    engines: {node: '>=6.4.0'}
     dependencies:
       browserslist: 4.28.7
     dev: true
@@ -7580,8 +7600,8 @@ packages:
   /ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==, tarball: https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz}
 
-  /electron-to-chromium@1.5.401:
-    resolution: {integrity: sha512-H6ViHN68nGYlChEvlIU67fn8O2/tpbWQPwck98yaJmh+08LSvHiydzDQ6oXNccLU3kNRVIRS9A4mA7CG+i6fLQ==, tarball: https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.401.tgz}
+  /electron-to-chromium@1.5.402:
+    resolution: {integrity: sha512-/oOpMaPT6Yg+6/1XQhyIPlzgj7Ye9zf+nNM2Uh6OcE2G2oNptWazFa+qB2Pdqqbsc9KnIDzgAntoYN0dbwOXwA==, tarball: https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.402.tgz}
     dev: true
 
   /emittery@0.13.1:
@@ -8654,7 +8674,7 @@ packages:
       he: 1.2.0
       param-case: 3.0.4
       relateurl: 0.2.7
-      terser: 5.49.1
+      terser: 5.49.2
     dev: true
 
   /html-to-text@9.0.5:
@@ -10091,7 +10111,6 @@ packages:
       koa-session: 6.4.0
       sodium-native: 4.3.3
     transitivePeerDependencies:
-      - bare-url
       - supports-color
     dev: false
 
@@ -10840,7 +10859,7 @@ packages:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
-      terser: 5.49.1
+      terser: 5.49.2
       webpack: 5.109.2(webpack-cli@4.10.0)
     dev: true
 
@@ -11130,7 +11149,7 @@ packages:
       mongodb-connection-string-url: 2.6.0
       socks: 2.8.9
     optionalDependencies:
-      '@aws-sdk/credential-providers': 3.1103.0
+      '@aws-sdk/credential-providers': 3.1104.0
       '@mongodb-js/saslprep': 1.4.13
 
   /mri@1.2.0:
@@ -12506,13 +12525,12 @@ packages:
       uuid: 3.4.0
     dev: true
 
-  /require-addon@1.2.0:
-    resolution: {integrity: sha512-VNPDZlYgIYQwWp9jMTzljx+k0ZtatKlcvOhktZ/anNPI3dQ9NXk7cq2U4iJ1wd9IrytRnYhyEocFWbkdPb+MYA==, tarball: https://registry.npmjs.org/require-addon/-/require-addon-1.2.0.tgz}
+  /require-addon@1.1.0:
+    resolution: {integrity: sha512-KbXAD5q2+v1GJnkzd8zzbOxchTkStSyJZ9QwoCq3QwEXAaIlG3wDYRZGzVD357jmwaGY7hr5VaoEAL0BkF0Kvg==, tarball: https://registry.npmjs.org/require-addon/-/require-addon-1.1.0.tgz}
     engines: {bare: '>=1.10.0'}
     dependencies:
-      bare-addon-resolve: 1.10.1
-    transitivePeerDependencies:
-      - bare-url
+      bare-addon-resolve: 1.10.0(bare-url@2.4.0)
+      bare-url: 2.4.0
     dev: false
 
   /require-at@1.0.6:
@@ -13054,9 +13072,7 @@ packages:
   /sodium-native@4.3.3:
     resolution: {integrity: sha512-OnxSlN3uyY8D0EsLHpmm2HOFmKddQVvEMmsakCrXUzSd8kjjbzL413t4ZNF3n0UxSwNgwTyUvkmZHTfuCeiYSw==, tarball: https://registry.npmjs.org/sodium-native/-/sodium-native-4.3.3.tgz}
     dependencies:
-      require-addon: 1.2.0
-    transitivePeerDependencies:
-      - bare-url
+      require-addon: 1.1.0
     dev: false
 
   /sonic-boom@4.2.1:
@@ -13436,8 +13452,8 @@ packages:
       readable-stream: 3.6.2
     dev: true
 
-  /terser@5.49.1:
-    resolution: {integrity: sha512-7A2xlQ5EnGT8KPA92dUh6RbRYTVw8hEaEN9L1K68l4UOXFuV511NnAqObGoRqGOQofQcMypisu1s3xawCEHrvA==, tarball: https://registry.npmjs.org/terser/-/terser-5.49.1.tgz}
+  /terser@5.49.2:
+    resolution: {integrity: sha512-rGbJiKeQ4WDe3EXlDAIaQcwftVfv2Q8o1awFNfvXolJYKkb1AuZY1RTOmqx4LJXZENbWZA7eIsYGHuEzHsi1nQ==, tarball: https://registry.npmjs.org/terser/-/terser-5.49.2.tgz}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
