@@ -1460,18 +1460,18 @@ importers:
 
   ../../packages/psydb-driver-nodejs:
     dependencies:
-      '@mpieva/psydb-axios-wrapper-nodejs':
-        specifier: workspace:*
-        version: link:../psydb-axios-wrapper-nodejs
-      '@mpieva/psydb-core-utils':
-        specifier: workspace:*
-        version: link:../psydb-core-utils
-      '@mpieva/psydb-timezone-helpers':
-        specifier: workspace:*
-        version: link:../psydb-timezone-helpers
+      '@cdxoo/axios-test-wrapper':
+        specifier: ~0.0.5
+        version: 0.0.6(debug@4.3.7)
+      '@cdxoo/objectpath-to-jsonpointer':
+        specifier: ~1.0.0
+        version: 1.0.0
       debug:
         specifier: ~4.3.4
         version: 4.3.7(supports-color@6.1.0)
+      jsonpointer:
+        specifier: ~5.0.1
+        version: 5.0.1
 
   ../../packages/psydb-driver-nodejs-tests:
     devDependencies:
@@ -4383,6 +4383,18 @@ packages:
       - supports-color
     dev: false
 
+  /@cdxoo/axios-test-wrapper@0.0.6(debug@4.3.7):
+    resolution: {integrity: sha512-134mvxd6By9HUM2gEuBZYHmg7onotkTBDWA3NjllIXgNtVcEDkzTjiTP5til8famn72V0cQvXAfOCZ/cKb1R0g==, tarball: https://registry.npmjs.org/@cdxoo/axios-test-wrapper/-/axios-test-wrapper-0.0.6.tgz}
+    dependencies:
+      axios: 1.19.0(debug@4.3.7)
+      axios-cookiejar-support: 6.0.5(axios@1.19.0)(tough-cookie@5.1.2)
+      tough-cookie: 5.1.2
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+      - undici
+    dev: false
+
   /@cdxoo/block-quote@1.0.1:
     resolution: {integrity: sha512-VDMjQuGRJdz9jxU85/srmZg3ePjhQTNOcMQuziecvqSwPrNMmBApMSbC45IAoxqAW9fVVhacMBFdzMtf81o+EQ==, tarball: https://registry.npmjs.org/@cdxoo/block-quote/-/block-quote-1.0.1.tgz}
 
@@ -5666,11 +5678,15 @@ packages:
       debug: 4.3.7(supports-color@6.1.0)
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /agent-base@7.1.4:
     resolution: {integrity: sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==, tarball: https://registry.npmjs.org/agent-base/-/agent-base-7.1.4.tgz}
     engines: {node: '>= 14'}
+    dev: false
+
+  /agent-base@9.0.0:
+    resolution: {integrity: sha512-TQf59BsZnytt8GdJKLPfUZ54g/iaUL2OWDSFCCvMOhsHduDQxO8xC4PNeyIkVcA5KwL2phPSv0douC0fgWzmnA==, tarball: https://registry.npmjs.org/agent-base/-/agent-base-9.0.0.tgz}
+    engines: {node: '>= 20'}
     dev: false
 
   /ajv-errors@1.0.1(ajv@6.12.6):
@@ -6001,6 +6017,20 @@ packages:
       - undici
     dev: false
 
+  /axios-cookiejar-support@6.0.5(axios@1.19.0)(tough-cookie@5.1.2):
+    resolution: {integrity: sha512-ldPOQCJWB0ipugkTNVB8QRl/5L2UgfmVNVQtS9en1JQJ1wW588PqAmymnwmmgc12HLDzDtsJ28xE2ppj4rD4ng==, tarball: https://registry.npmjs.org/axios-cookiejar-support/-/axios-cookiejar-support-6.0.5.tgz}
+    engines: {node: '>=20.0.0'}
+    peerDependencies:
+      axios: '>=0.20.0'
+      tough-cookie: '>=4.0.0'
+    dependencies:
+      axios: 1.19.0(debug@4.3.7)
+      http-cookie-agent: 7.0.4(tough-cookie@5.1.2)
+      tough-cookie: 5.1.2
+    transitivePeerDependencies:
+      - undici
+    dev: false
+
   /axios@1.15.2(debug@4.3.7):
     resolution: {integrity: sha512-wLrXxPtcrPTsNlJmKjkPnNPK2Ihe0hn0wGSaTEiHRPxwjvJwT3hKmXF4dpqxmPO9SoNb2FsYXj/xEo0gHN+D5A==, tarball: https://registry.npmjs.org/axios/-/axios-1.15.2.tgz}
     dependencies:
@@ -6009,6 +6039,18 @@ packages:
       proxy-from-env: 2.1.0
     transitivePeerDependencies:
       - debug
+
+  /axios@1.19.0(debug@4.3.7):
+    resolution: {integrity: sha512-ht/iuYZXEjFxLH/Hkezgd7m6JKlHHXEUSneaDz8uZe1Gj5QZtCnpyDsckvAiEnT89OEbCLmnte4R4sn7P0EKFw==, tarball: https://registry.npmjs.org/axios/-/axios-1.19.0.tgz}
+    dependencies:
+      follow-redirects: 1.16.0(debug@4.3.7)
+      form-data: 4.0.6
+      https-proxy-agent: 5.0.1
+      proxy-from-env: 2.1.0
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+    dev: false
 
   /babel-jest@29.7.0(@babel/core@7.22.20):
     resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==, tarball: https://registry.npmjs.org/babel-jest/-/babel-jest-29.7.0.tgz}
@@ -8744,6 +8786,20 @@ packages:
       tough-cookie: 4.1.4
     dev: false
 
+  /http-cookie-agent@7.0.4(tough-cookie@5.1.2):
+    resolution: {integrity: sha512-BF9iTnice7+LI4tHB8Bm0nFnp+J+bAY5Cll53uEa9NIFQCM7noUyWbImqJhB+j0drmJHvE/Wr6o+8FXq7IVYeA==, tarball: https://registry.npmjs.org/http-cookie-agent/-/http-cookie-agent-7.0.4.tgz}
+    engines: {node: '>=20.0.0'}
+    peerDependencies:
+      tough-cookie: ^4.0.0 || ^5.0.0 || ^6.0.0
+      undici: ^7.0.0
+    peerDependenciesMeta:
+      undici:
+        optional: true
+    dependencies:
+      agent-base: 9.0.0
+      tough-cookie: 5.1.2
+    dev: false
+
   /http-deceiver@1.2.7:
     resolution: {integrity: sha512-LmpOGxTfbpgtGVxJrj5k7asXHCgNZp5nLfp+hWc8QQRqtb7fUy6kRY3BO1h9ddF6yIPYUARgxGOwB42DnxIaNw==, tarball: https://registry.npmjs.org/http-deceiver/-/http-deceiver-1.2.7.tgz}
     dev: true
@@ -8823,7 +8879,6 @@ packages:
       debug: 4.3.7(supports-color@6.1.0)
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /human-signals@2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==, tarball: https://registry.npmjs.org/human-signals/-/human-signals-2.1.0.tgz}
@@ -13503,6 +13558,17 @@ packages:
     resolution: {integrity: sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==, tarball: https://registry.npmjs.org/tiny-warning/-/tiny-warning-1.0.3.tgz}
     dev: true
 
+  /tldts-core@6.1.86:
+    resolution: {integrity: sha512-Je6p7pkk+KMzMv2XXKmAE3McmolOQFdxkKw0R8EYNr7sELW46JqnNeTX8ybPiQgvg1ymCoF8LXs5fzFaZvJPTA==, tarball: https://registry.npmjs.org/tldts-core/-/tldts-core-6.1.86.tgz}
+    dev: false
+
+  /tldts@6.1.86:
+    resolution: {integrity: sha512-WMi/OQ2axVTf/ykqCQgXiIct+mSQDFdH2fkwhPwgEwvJ1kSzZRiinb0zF2Xb8u4+OqPChmyI6MEu4EezNJz+FQ==, tarball: https://registry.npmjs.org/tldts/-/tldts-6.1.86.tgz}
+    hasBin: true
+    dependencies:
+      tldts-core: 6.1.86
+    dev: false
+
   /tmp@0.2.7:
     resolution: {integrity: sha512-e0votIpp4Uo2AJYSzVHV6xCcawuiez3DzqDAbrTc3YxBkplN6e+dM13ZeIcZnDg/QpSuU2zfZ3rzwY8ukEnaXw==, tarball: https://registry.npmjs.org/tmp/-/tmp-0.2.7.tgz}
     engines: {node: '>=14.14'}
@@ -13564,6 +13630,13 @@ packages:
       punycode: 2.3.1
       universalify: 0.2.0
       url-parse: 1.5.10
+
+  /tough-cookie@5.1.2:
+    resolution: {integrity: sha512-FVDYdxtnj0G6Qm/DhNPSb8Ju59ULcup3tuJxkFb5K8Bv2pUXILbf0xZWU8PX8Ov19OXljbUyveOFwRMwkXzO+A==, tarball: https://registry.npmjs.org/tough-cookie/-/tough-cookie-5.1.2.tgz}
+    engines: {node: '>=16'}
+    dependencies:
+      tldts: 6.1.86
+    dev: false
 
   /tr46@1.0.1:
     resolution: {integrity: sha512-dTpowEjclQ7Kgx5SdBkqRzVhERQXov8/l9Ft9dVM9fmg0W0KQSVaXX9T4i6twCPNtYiZM53lpSSUAwJbFPOHxA==, tarball: https://registry.npmjs.org/tr46/-/tr46-1.0.1.tgz}
