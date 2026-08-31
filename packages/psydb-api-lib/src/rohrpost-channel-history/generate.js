@@ -9,6 +9,7 @@ var SET = require('./set');
 var UNSET = require('./unset');
 var PUSH = require('./push');
 var PULL = require('./pull');
+var ADD_TO_SET = require('./add-to-set');
 
 var generate = (bag = {}) => {
     var { events, omitPaths } = bag;
@@ -79,6 +80,8 @@ var applyUpdate = (channel, payload, extraProps) => {
                 return PUSH(...args);
             case '/$pull':
                 return PULL(...args);
+            case '/$addToSet':
+                return ADD_TO_SET(...args);
             default:
                 throw new Error(`unsupprted op "${op}"`);
         }
