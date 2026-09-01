@@ -1,11 +1,7 @@
 import React from 'react';
-import { Button } from '@mpieva/psydb-ui-layout';
-
-import {
-    DefaultForm,
-    Fields,
-    FormBox,
-} from '@mpieva/psydb-ui-lib';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { AsyncButton } from '@mpieva/psydb-ui-layout';
+import { DefaultForm, Fields, FormBox } from '@mpieva/psydb-ui-lib';
 
 export const Component = (ps) => {
     var {
@@ -13,10 +9,13 @@ export const Component = (ps) => {
         fieldDefinitions,
         initialValues,
         onSubmit,
+        isTransmitting,
 
         related,
         permissions,
     } = ps;
+
+    var [{ translate }] = useI18N();
 
     return (
         <FormBox title={ title }>
@@ -34,7 +33,12 @@ export const Component = (ps) => {
                             related={ related }
                             permissions={ permissions }
                         />
-                        <Button type='submit'>Speichern</Button>
+                        <AsyncButton
+                            type='submit'
+                            isTransmitting={ isTransmitting }
+                        >
+                            { translate('Save') }
+                        </AsyncButton>
                     </>
                 )}
             </DefaultForm>
@@ -44,6 +48,8 @@ export const Component = (ps) => {
 
 const FormFields = (ps) => {
     var { fieldDefinitions, related, permissions } = ps;
+    var [{ translate }] = useI18N();
+
     var customFieldBag = {
         fieldDefinitions,
         related,
@@ -51,11 +57,12 @@ const FormFields = (ps) => {
             'PhoneWithTypeList': { enableFaxNumbers: true }
         }
     }
+
     return (
         <>
             <Fields.Custom { ...customFieldBag } />
             <Fields.AccessRightByResearchGroupList
-                label='Zugriff auf diesen Datensatz für'
+                label={ translate('Record Access for') }
                 dataXPath='$.systemPermissions.accessRightsByResearchGroup'
                 related={ related }
                 required
