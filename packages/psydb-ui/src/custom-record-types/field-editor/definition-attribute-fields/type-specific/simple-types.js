@@ -8,14 +8,20 @@ const NoTypeOptionsList = (ps) => {
     )
 }
 
+const OnlyNullableOption = (ps) => {
+    return (
+        <Options.IsNullableProp { ...ps } />
+    )
+}
+
 export const DefaultBool = NoTypeOptions;
 export const ExtBool = NoTypeOptions;
 export const GeoCoords = NoTypeOptions;
 
-export const Email = NoTypeOptions;
+export const Email = OnlyNullableOption;
 export const EmailList = NoTypeOptionsList;
 
-export const Phone = NoTypeOptions;
+export const Phone = OnlyNullableOption;
 export const PhoneList = NoTypeOptionsList
 export const PhoneWithTypeList = NoTypeOptionsList;
 
