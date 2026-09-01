@@ -89,3 +89,5 @@ export {
 export {
     default as PostprocessSubjectForm
 } from './experiments/postprocess-subject-form';
+
+export * from './default-record-remover-success-info';

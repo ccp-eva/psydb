@@ -3,6 +3,7 @@ import React from 'react';
 import { only } from '@mpieva/psydb-core-utils';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
+import { FormBox } from '@mpieva/psydb-ui-layout';
 import { withRecordEditor } from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
 
@@ -33,17 +34,21 @@ const EditForm = (ps) => {
         paths: [ 'custom', 'systemPermissions' ]
     });
 
+    var isHidden = record.state.systemPermissions.isHidden;
+
     return (
-        <>
+        <FormBox
+            title={ translate('Edit External Person') }
+            isRecordHidden={ isHidden }
+        >
             <MainForm.Component
-                title={ translate('Edit External Person') }
                 fieldDefinitions={ fieldDefinitions }
                 initialValues={ initialValues }
                 related={ related }
                 permissions={ permissions }
                 { ...send.passthrough }
             />
-        </>
+        </FormBox>
     )
 }
 

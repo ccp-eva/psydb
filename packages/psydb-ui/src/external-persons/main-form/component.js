@@ -1,7 +1,7 @@
 import React from 'react';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { AsyncButton } from '@mpieva/psydb-ui-layout';
-import { DefaultForm, Fields, FormBox } from '@mpieva/psydb-ui-lib';
+import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 
 export const Component = (ps) => {
     var {
@@ -18,31 +18,28 @@ export const Component = (ps) => {
     var [{ translate }] = useI18N();
 
     return (
-        <FormBox title={ title }>
-            <DefaultForm
-                initialValues={ initialValues }
-                onSubmit={ onSubmit }
-                useAjvAsync
-                enableReinitialize
-            >
-                {(formikProps) => (
-                    <>
-                        { /*console.log(formikProps.values) || ''*/ }
-                        <FormFields
-                            fieldDefinitions={ fieldDefinitions }
-                            related={ related }
-                            permissions={ permissions }
-                        />
-                        <AsyncButton
-                            type='submit'
-                            isTransmitting={ isTransmitting }
-                        >
-                            { translate('Save') }
-                        </AsyncButton>
-                    </>
-                )}
-            </DefaultForm>
-        </FormBox>
+        <DefaultForm
+            initialValues={ initialValues }
+            onSubmit={ onSubmit }
+            useAjvAsync
+            enableReinitialize
+        >
+            {(formikProps) => (
+                <>
+                    <FormFields
+                        fieldDefinitions={ fieldDefinitions }
+                        related={ related }
+                        permissions={ permissions }
+                    />
+                    <AsyncButton
+                        type='submit'
+                        isTransmitting={ isTransmitting }
+                    >
+                        { translate('Save') }
+                    </AsyncButton>
+                </>
+            )}
+        </DefaultForm>
     );
 }
 
