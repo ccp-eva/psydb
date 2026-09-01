@@ -1,5 +1,6 @@
+var siftMaybeESM = require('sift'); // FIXME
 module.exports = {
-    sift: require('sift'),
+    sift: siftMaybeESM.default || siftMaybeESM,
     inlineText: require('@cdxoo/inline-text'),
 
     keyRecords: require('./key-records'),
