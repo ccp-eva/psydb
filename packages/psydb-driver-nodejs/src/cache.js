@@ -1,5 +1,5 @@
 'use strict';
-var { jsonpointer } = require('@mpieva/psydb-core-utils');
+var { jsonpointer } = require('./core-utils');
 
 var Cache = () => {
     var cache = {};
