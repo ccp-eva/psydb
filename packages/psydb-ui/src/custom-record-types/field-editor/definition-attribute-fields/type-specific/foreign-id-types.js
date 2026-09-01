@@ -217,7 +217,7 @@ const AddReferenceToTarget = (ps) => {
 }
 
 const TargetReferenceField = (ps) => {
-    var { dataXPath, isUnrestricted } = ps;
+    var { record, dataXPath, isUnrestricted } = ps;
     
     var [{ translate }] = useI18N();
     var { values } = useFormikContext();
@@ -235,6 +235,15 @@ const TargetReferenceField = (ps) => {
             label={ translate('Target Field') }
             collection={ collection }
             recordType={ recordType }
+            filter={{
+                // TODO: enable ForeignId make sure backend handles change
+                // in 1:1 correctly i.e. remove references from
+                // other targetting source records
+                'type': 'ForeignIdList',
+                'props.collection': record.collection,
+                'props.recordType': record.type,
+                'props.readOnly': true, // TODO
+            }}
             dataXPath={ `${dataXPath}.props.targetReferenceField` }
             required
             disabled={

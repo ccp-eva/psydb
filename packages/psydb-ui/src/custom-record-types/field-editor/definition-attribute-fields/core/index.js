@@ -7,6 +7,7 @@ import KeyAndDisplayName from './key-and-display-name';
 const CoreDefinitionAttributes = (ps) => {
     var {
         dataXPath,
+        record,
         isUnrestricted,
         omittedFieldTypes = []
     } = ps;

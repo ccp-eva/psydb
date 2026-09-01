@@ -33,6 +33,7 @@ const EditFieldForm = (ps) => {
                 ] })
             }}
             onSubmit={ send.exec }
+            record={ record }
             hasSubChannels={ hasSubChannels }
             isUnrestricted={ dev_enableDangerousCRTFieldOps }
             // TODO

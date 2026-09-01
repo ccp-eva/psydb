@@ -7,6 +7,7 @@ import * as DefinitionAttributes from '../definition-attribute-fields';
 
 export const Component = (ps) => {
     var {
+        record,
         hasSubChannels, isUnrestricted,
         initialValues, onSubmit,
     } = ps;
@@ -23,8 +24,9 @@ export const Component = (ps) => {
             {(formikProps) => (
                 <>
                     <FormFields
-                        isUnrestricted={ isUnrestricted }
+                        record={ record }
                         hasSubChannels={ hasSubChannels }
+                        isUnrestricted={ isUnrestricted }
                     />
                     <Button type='submit'>
                         { translate('Save') }
@@ -36,7 +38,7 @@ export const Component = (ps) => {
 }
 
 const FormFields = (ps) => {
-    var { hasSubChannels, isUnrestricted } = ps;
+    var { record, hasSubChannels, isUnrestricted } = ps;
 
     var { values } = useFormikContext();
     var { type } = values['$'].props;
@@ -49,10 +51,12 @@ const FormFields = (ps) => {
             )}
             <DefinitionAttributes.Core
                 dataXPath='$.props'
+                record={ record }
                 isUnrestricted={ isUnrestricted }
             />
             <TypeSpecific
                 dataXPath='$.props'
+                record={ record }
                 isUnrestricted={ isUnrestricted }
             />
         </>
