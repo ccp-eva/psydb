@@ -7,7 +7,7 @@ import {
 } from '../utility-components';
 
 const labels = {
-    '/sequenceNumber': 'ID Nr.',
+    '/sequenceNumber': 'ID No.',
 }
 
 const [ ExternalOrganization, ExternalOrganizationContext ] = createBase();
