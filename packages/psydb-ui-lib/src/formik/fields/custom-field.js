@@ -38,6 +38,7 @@ export const CustomField = (ps) => {
         case 'SaneString':
         case 'FullText':
         case 'Email':
+        case 'Phone':
             isRequired = props.minLength > 0;
             break;
         case 'ForeignId':

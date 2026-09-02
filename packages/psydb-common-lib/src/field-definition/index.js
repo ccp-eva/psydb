@@ -17,6 +17,7 @@ var availableSystemTypes = [
     'ExtBool',
     'Email',
     'Phone',
+    'URLString',
 
     'Address',
     'GeoCoords',

@@ -20,7 +20,10 @@ module.exports = {
     intervalUtils: require('./interval-utils'),
     createSchemaForRecord: require('./create-schema-for-record-type'),
     durations: require('./durations'),
-    fieldDefinitionSchemas: require('./field-definition-schemas'),
+    
+    fieldDefinitionSchemas: require('./field-definition-schemas'), // FIXME
+    FieldDefinitionSchemas: require('./field-definition-schemas'),
+
     fieldStringifiers: require('./field-stringifiers'),
     fieldTypeMetadata: require('./field-type-metadata'),
     

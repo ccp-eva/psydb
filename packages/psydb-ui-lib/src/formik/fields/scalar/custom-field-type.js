@@ -1,5 +1,6 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
+import { FieldDefinitionSchemas } from '@mpieva/psydb-common-lib';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { GenericEnum } from './generic-enum';
 
@@ -17,9 +18,21 @@ export const CustomFieldType = withField({ Control: (ps) => {
         ));
     }
 
-    var options = {};
+    var list = [];
     for (var it of availableTypes) {
-        options[it] = translate(`_fieldtype_${it}`) + ` [${it}]`;
+        list.push({
+            key: it,
+            label: translate(`_fieldtype_${it}`) + ` [${it}]`
+        });
+    }
+
+    list.sort((a, b) => (
+        a.label < b.label ? -1 : 1
+    ))
+
+    var options = {};
+    for (var it of list) {
+        options[it.key] = it.label;
     }
 
     return (
@@ -28,34 +41,8 @@ export const CustomFieldType = withField({ Control: (ps) => {
 }});
 
 const allTypes = [
-    'SaneString',
-    'FullText',
-    
-    'Integer',
-    'DefaultBool',
-    'ExtBool',
-    
-    'DateTime',
-    'DateOnlyServerSide',
-
-    'HelperSetItemId',
-    'HelperSetItemIdList',
-    'ForeignId',
-    'ForeignIdList',
-    
-    'Address',
-    'GeoCoords',
-    'BiologicalGender',
-
-    'Email',
-    'EmailList',
-    'Phone',
-    'PhoneList',
-    'PhoneWithTypeList',
-
-    'ListOfObjects',
-    'Lambda',
-].sort((keyA, keyB) => (
-    keyA < keyB ? -1 : 1
-))
-
+    ...Object.keys(FieldDefinitionSchemas).filter(it => (
+        // FIXME
+        !['URLString', 'URLStringList', 'SaneStringList'].includes(it)
+    ))
+]

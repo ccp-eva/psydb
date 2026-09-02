@@ -8,9 +8,9 @@ const NoTypeOptionsList = (ps) => {
     )
 }
 
-const OnlyNullableOption = (ps) => {
+const OnlyMinLengthOption = (ps) => {
     return (
-        <Options.IsNullableProp { ...ps } />
+        <Options.MinLengthProp { ...ps } />
     )
 }
 
@@ -18,10 +18,10 @@ export const DefaultBool = NoTypeOptions;
 export const ExtBool = NoTypeOptions;
 export const GeoCoords = NoTypeOptions;
 
-export const Email = OnlyNullableOption;
+export const Email = OnlyMinLengthOption;
 export const EmailList = NoTypeOptionsList;
 
-export const Phone = OnlyNullableOption;
+export const Phone = OnlyMinLengthOption;
 export const PhoneList = NoTypeOptionsList
 export const PhoneWithTypeList = NoTypeOptionsList;
 
