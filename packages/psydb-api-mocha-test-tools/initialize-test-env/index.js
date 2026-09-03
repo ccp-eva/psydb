@@ -18,6 +18,9 @@ var locale = require('date-fns/locale/de');
 var mongoHelpers = require('@cdxoo/mongo-test-helpers');
 var { ejson } = require('@mpieva/psydb-core-utils');
 
+var { aggregateOne, aggregateToArray }
+    = require('@mpieva/psydb-mongo-adapter');
+
 var doConnectLocal = require('./do-connect-local');
 var doRestore = require('./do-restore');
 var doGatherLabeledIds = require('./do-gather-labeled-ids');
@@ -87,6 +90,14 @@ var beforeAll = async function () {
             await db.collection(name).removeMany({});
         }
     }
+    
+    this.aggregateOne = (bag) => (
+        aggregateOne({ db: this.getDbHandle(), ...bag })
+    )
+    this.aggregateToArray = (bag) => (
+        aggregateToArray({ db: this.getDbHandle(), ...bag })
+    )
+
 }
 
 var beforeEach = async function () {}

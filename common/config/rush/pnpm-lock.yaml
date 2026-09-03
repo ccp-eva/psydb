@@ -987,6 +987,12 @@ importers:
       jsonpointer:
         specifier: ~5.0.1
         version: 5.0.1
+      just-kebab-case:
+        specifier: ~4.2.0
+        version: 4.2.0
+      just-snake-case:
+        specifier: ~3.2.0
+        version: 3.2.0
       nanoid:
         specifier: ~3.3.6
         version: 3.3.18
@@ -10106,6 +10112,14 @@ packages:
       json-schema: 0.4.0
       verror: 1.10.0
     dev: true
+
+  /just-kebab-case@4.2.0:
+    resolution: {integrity: sha512-p2BdO7o4BI+pMun3J+dhaOfYan5JsZrw9wjshRjkWY9+p+u+kKSMhNWYnot2yHDR9CSahZ9iT3dcqJ+V72qHMw==, tarball: https://registry.npmjs.org/just-kebab-case/-/just-kebab-case-4.2.0.tgz}
+    dev: false
+
+  /just-snake-case@3.2.0:
+    resolution: {integrity: sha512-iugHP9bSE0jOq3BzN0W0rdu/OOkFirPe8FtUw6v9y37UlbUDgJ1x4xiGNfUhI6mV9dc/paaifyiyn+F+mrm8gw==, tarball: https://registry.npmjs.org/just-snake-case/-/just-snake-case-3.2.0.tgz}
+    dev: false
 
   /keygrip@1.1.0:
     resolution: {integrity: sha512-iYSchDJ+liQ8iwbSI2QqsQOvqv58eJCEanyJPJi+Khyu8smkcKSFUCbPwzFcL7YVtZ6eONjqRX/38caJ7QjRAQ==, tarball: https://registry.npmjs.org/keygrip/-/keygrip-1.1.0.tgz}

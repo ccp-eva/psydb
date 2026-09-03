@@ -14,7 +14,7 @@ var INIT_STEP_BAG = (options = {}) => async function () {
     var deltas = BaselineDeltas();
     deltas.update = async () => {
         deltas.push(
-            await this.fetchAllRecords('customRecordTypes'),
+            await this.fetchAllRecords('customRecordType'),
         );
     }
     

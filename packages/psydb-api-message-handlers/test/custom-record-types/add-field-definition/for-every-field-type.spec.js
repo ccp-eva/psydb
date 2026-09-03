@@ -1,29 +1,26 @@
 'use strict';
-var { FieldDefinitions } = require('@mpieva/psydb-common-lib');
+var snake = require('just-snake-case');
+var { FieldDefinitionSchemas } = require('@mpieva/psydb-common-lib');
 var { INIT_STEP_BAG } = require('./init');
-var {
-    CREATE_HELPER_SET,
-    CREATE_CRT,
-    ADD_FIELD_DEFINITION
-} = require('./steps');
+var { CRT, HELPER_SET } = require('./steps');
 
 describe('custom-record-types/add-field-definition', function () {
     before(INIT_STEP_BAG());
-    var db, login, send;
-    before(async function () {
-        await this.restore('init-minimal');
-        
-        db = this.getDbHandle();
-        login = await this.createFakeLogin({ email: 'root@example.com' });
-        ([ send ]) = this.createMessenger({ ...login });
+
+    //HELPER_SET.create('Some Helper Set', { as: 'someHSI' });
+    //CRT.create('location', 'cat_shelter');
+    CRT.create('subject', 'cat_owner');
+    CRT.create('subject', 'cat');
+    
+    CRT('cat').addFieldDefinition({
+        systemType: 'SaneString',
+        key: snake('SaneString'), subChannelKey: 'scientific',
     });
 
-    CREATE_HELPER_SET('Some Helper Set');
-    CREATE_CRT('location', 'cat_shelter');
-    CREATE_CRT('subject', 'cat_owner');
-    CREATE_CRT('subject', 'cat');
-
-    for (var systemType of Object.keys(FieldDefinitions)) {
-        ADD_FIELD_DEFINITION({ systemType: type });
-    }
+    //for (var systemType of ['SaneString']) {
+    //    CRT('cat').addFieldDefinition({
+    //        systemType: systemType,
+    //        key: snake(systemType), subChannelKey: 'scientific',
+    //    });
+    //}
 })
