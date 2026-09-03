@@ -3,12 +3,12 @@ var { BaselineDeltas } = require('@mpieva/psydb-mocha-baseline-deltas');
 
 var createPayload = (bag) => {
     var {
-        currentCrtId, systemType, key, props,
+        currentCrtId, systemType, fieldKey, props,
         subChannelKey = undefined, 
     } = bag;
     
-    var displayName_EN = `${systemType} Dummy key=${key}`;
-    var displayName_DE = `${systemType} Platzhalter key=${key}`;
+    var displayName_EN = `${systemType} Dummy key=${fieldKey}`;
+    var displayName_DE = `${systemType} Platzhalter key=${fieldKey}`;
 
     var payload = {
         'id': currentCrtId,
@@ -16,7 +16,7 @@ var createPayload = (bag) => {
             'subChannelKey': subChannelKey,
         }),
         'props': {
-            'key': key,
+            'key': fieldKey,
             'type': systemType,
             'displayName': displayName_EN,
             'displayNameI18N': { de: displayName_DE },

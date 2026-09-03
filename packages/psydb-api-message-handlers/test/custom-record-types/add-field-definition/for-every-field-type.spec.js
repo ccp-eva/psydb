@@ -14,7 +14,7 @@ describe('custom-record-types/add-field-definition', function () {
     
     CRT('cat').addFieldDefinition({
         systemType: 'SaneString',
-        key: snake('SaneString'), subChannelKey: 'scientific',
+        fieldKey: snake('SaneString'), subChannelKey: 'scientific',
     });
 
     //for (var systemType of ['SaneString']) {

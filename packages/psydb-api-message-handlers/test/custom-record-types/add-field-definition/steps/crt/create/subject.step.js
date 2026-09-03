@@ -3,23 +3,26 @@ var { jsonpointer, ucfirst } = require('@mpieva/psydb-core-utils');
 var { BaselineDeltas } = require('@mpieva/psydb-mocha-baseline-deltas');
 var { KOA_CHANNELS } = require('@mpieva/psydb-api-mocha-test-tools/utils');
 
-var CREATE_SUBJECT_CRT = (type, options = {}) => {
-    var tag = `custom-record-types/create subject ${type}`;
+var CREATE_SUBJECT_CRT = (recordType, options = {}) => {
+
+    var tag = `custom-record-types/create subject ${recordType}`;
+
     return step(tag, async function () {
         var { ids, send, deltas } = this.bag;
         var now = new Date();
 
-        var displayName_EN = `${ucfirst(type)} EN`;
-        var displayName_DE = `${ucfirst(type)} DE`;
+        var displayName_EN = `${ucfirst(recordType)} EN`;
+        var displayName_DE = `${ucfirst(recordType)} DE`;
 
         var payload = {
             'collection': 'subject',
-            'type': type,
+            'type': recordType,
             'props': {
                 'label': displayName_EN,
                 'displayNameI18N': { 'de': displayName_DE }
             }
         }
+
         var [{ channelId }] = await KOA_CHANNELS(send({
             type: 'custom-record-types/create',
             timezone: 'Europe/Berlin',
@@ -30,16 +33,16 @@ var CREATE_SUBJECT_CRT = (type, options = {}) => {
         await deltas.update();
 
         var index = deltas.getCurrent().findIndex((it) => {
-            console.log(it._id['$oid'], String(channelId));
+            //console.log(it._id['$oid'], String(channelId));
             return it._id['$oid'] === String(channelId)
         });
-        console.log({ channelId, index });
+        //console.log({ channelId, index });
 
         deltas.test({ expected: { [index]: {
             '_id': BaselineDeltas.AnyObjectId(),
             '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
             'collection': 'subject',
-            'type': type,
+            'type': recordType,
             'state': {
                 'isDirty': true,
                 'isNew': true,
@@ -79,7 +82,7 @@ var CREATE_SUBJECT_CRT = (type, options = {}) => {
         
         this.bag.currentCrtId = channelId;
         this.bag.currentCrt = record;
-        jsonpointer.set(this, `/cache/crt/${type}`, record)
+        jsonpointer.set(this, `/cache/crt/${recordType}`, record)
     })
 }
 
