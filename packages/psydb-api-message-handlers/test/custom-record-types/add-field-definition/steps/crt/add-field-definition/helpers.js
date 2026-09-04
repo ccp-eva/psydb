@@ -1,4 +1,5 @@
 'use strict';
+var { jsonpointer } = require('@mpieva/psydb-core-utils');
 var { BaselineDeltas } = require('@mpieva/psydb-mocha-baseline-deltas');
 
 var createPayload = (bag) => {
@@ -28,18 +29,21 @@ var createPayload = (bag) => {
 }
 
 var createExpectedCRTDelta = (bag) => {
-    var { payload, extraDefinitionAttributes = {} } = bag;
+    var { currentCrt, payload, extraDefinitionAttributes = {} } = bag;
     var { subChannelKey = undefined, props } = payload;
 
-        var container = (
-            subChannelKey
-            ? `state/nextSettings/subChannelFields/${subChannelKey}`
-            : 'state/nextSettings/fields'
-        )
+    var containerPtr = (
+        subChannelKey
+        ? `state/nextSettings/subChannelFields/${subChannelKey}`
+        : 'state/nextSettings/fields'
+    )
+
+    var containerData = jsonpointer.get(currentCrt, '/' + containerPtr);
+    var index = containerData.findIndex(it => it.key === props.key);
 
     var expected = {
         '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
-        [container]: [{
+        [containerPtr]: { [index]: {
             'key': props.key,
             'type': props.type,
             'displayName': props.displayName,
@@ -55,7 +59,7 @@ var createExpectedCRTDelta = (bag) => {
             ),
             'isNew': true,
             'isDirty': true
-        }]
+        }}
     }
 
     return expected;

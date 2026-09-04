@@ -29,7 +29,7 @@ var build_addFieldDefinitionStep = (buildOptions) => {
                 props: definitionOptions
             });
 
-            for (var [ptr, value] of Object.keys(overrides)) {
+            for (var [ptr, value] of Object.entries(overrides)) {
                 jsonpointer.set(payload, ptr, value)
             }
             
@@ -40,14 +40,14 @@ var build_addFieldDefinitionStep = (buildOptions) => {
 
             await deltas.update();
             
-            var index = deltas.getCurrent().findIndex((it) => {
-                //console.log(it._id['$oid'], String(currentCrtId));
-                return it._id['$oid'] === String(currentCrtId)
+            var index = deltas.getCurrent_RAW().findIndex((it) => {
+                //console.log(String(it._id), String(currentCrtId));
+                return String(it._id) === String(currentCrtId)
             });
             //console.log({ currentCrtId, index });
            
             var expected = createExpectedCRTDelta({
-                payload
+                payload, currentCrt: deltas.getCurrent_RAW()[index]
             });
 
             deltas.test({ expected: {

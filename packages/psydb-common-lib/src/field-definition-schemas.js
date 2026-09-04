@@ -145,7 +145,7 @@ var SaneStringFieldDefinition = () => FieldDefinition({
 var SaneStringListFieldDefinition = () => FieldDefinition({
     type: 'SaneStringList',
     props: {
-        'minLength': MinItemsProp(),
+        'minItems': MinItemsProp(),
     }
 });
 
@@ -159,7 +159,7 @@ var URLStringFieldDefinition = () => FieldDefinition({
 var URLStringListFieldDefinition = () => FieldDefinition({
     type: 'URLStringList',
     props: {
-        'minLength': MinItemsProp(),
+        'minItems': MinItemsProp(),
     }
 });
 

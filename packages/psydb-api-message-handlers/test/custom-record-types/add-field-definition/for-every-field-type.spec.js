@@ -8,19 +8,51 @@ describe('custom-record-types/add-field-definition', function () {
     before(INIT_STEP_BAG());
 
     //HELPER_SET.create('Some Helper Set', { as: 'someHSI' });
-    //CRT.create('location', 'cat_shelter');
+    CRT.create('location', 'cat_shelter');
     CRT.create('subject', 'cat_owner');
     CRT.create('subject', 'cat');
     
+    for (var systemType of [
+        'SaneString',
+        'FullText',
+        'URLString',
+        'Email',
+        'Phone',
+        'Integer',
+        'DefaultBool',
+        'ExtBool',
+        'BiologicalGender',
+        'DateTime',
+        'DateOnlyServerSide',
+        'Address',
+        'GeoCoords',
+        'SaneStringList',
+        'URLStringList',
+        'EmailList',
+        'PhoneList',
+        'PhoneWithTypeList',
+    ]) {
+        CRT('cat').addFieldDefinition({
+            systemType: systemType,
+            fieldKey: snake(systemType), subChannelKey: 'scientific',
+        });
+    }
+
     CRT('cat').addFieldDefinition({
-        systemType: 'SaneString',
-        fieldKey: snake('SaneString'), subChannelKey: 'scientific',
+        systemType: 'ForeignId',
+        fieldKey: snake('ForeignId'), subChannelKey: 'scientific',
+        overrides: {
+            '/props/props/collection': 'subject',
+            '/props/props/recordType': 'cat_shelter'
+        }
     });
 
-    //for (var systemType of ['SaneString']) {
-    //    CRT('cat').addFieldDefinition({
-    //        systemType: systemType,
-    //        key: snake(systemType), subChannelKey: 'scientific',
-    //    });
-    //}
+    CRT('cat').addFieldDefinition({
+        systemType: 'ForeignIdList',
+        fieldKey: snake('ForeignIdList'), subChannelKey: 'scientific',
+        overrides: {
+            '/props/props/collection': 'subject',
+            '/props/props/recordType': 'cat_owner'
+        }
+    });
 })
