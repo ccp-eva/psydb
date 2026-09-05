@@ -8,6 +8,8 @@ describe('custom-record-types/add-field-definition', function () {
     before(INIT_STEP_BAG());
 
     HELPER_SET.create('acquisition');
+    HELPER_SET('acquisition').createItem('shelter');
+
     CRT.create('location', 'cat_shelter');
     CRT.create('subject', 'cat_owner');
     CRT.create('subject', 'cat');
@@ -71,4 +73,42 @@ describe('custom-record-types/add-field-definition', function () {
             '/props/props/setId': cachedIds.helperSet['acquisition']
         })
     });
+
+    CRT('cat').addFieldDefinition({
+        systemType: 'ListOfObjects',
+        fieldKey: snake('ListOfObjects'), subChannelKey: 'scientific',
+        overrides: {
+            '/props/props/fields': [
+                {
+                    'key': 'item_label',
+                    'type': 'SaneString',
+                    'displayName': 'Label',
+                    'displayNameI18N': { de: 'Bezeichnung' },
+                    'props': { minLength: 1 }
+                },
+                {
+                    'key': 'item_value',
+                    'type': 'SaneString',
+                    'displayName': 'Value',
+                    'displayNameI18N': { de: 'Wert' },
+                    'props': { minLength: 1 }
+                }
+            ]
+        }
+    });
+
+    //CRT('cat').createRecord([
+    //    { subChannel: 'scientific', data: {
+    //        'custom': {},
+    //        'comment': '',
+    //        'testingPermissions': [],
+    //        'systemPermissions': {
+    //            'isHidden': false,
+    //            'accessRightsByResearchGroup': []
+    //        }
+    //    }},
+    //    { subChannel: 'gdpr', data: {
+    //        // NONE
+    //    }}
+    //], { as: 'tabby' });
 })

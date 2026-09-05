@@ -10,15 +10,17 @@ var INIT_STEP_BAG = (options = {}) => async function () {
     
     var login = await this.createFakeLogin({ email: 'root@example.com' });
     var [ send ] = this.createMessenger({ ...login });
-    
-    var deltas = BaselineDeltas.Multi([ 'crt', 'helperSet' ]);
+ 
+    // NOTE: we rename customRecordType to crt due to length
+    var collections = [ 'helperSet', 'helperSetItem' ];
+    var deltas = BaselineDeltas.Multi([ 'crt', ...collections ]);
     deltas.update = async () => {
         deltas.crt.push(
             await this.fetchAllRecords('customRecordType'),
         );
-        deltas.helperSet.push(
-            await this.fetchAllRecords('helperSet'),
-        );
+        for (var it of collections) {
+            deltas[it].push(await this.fetchAllRecords(it));
+        }
     }
     deltas.findEntry = (subset, filterOrId) => {
         if (!/[a-f0-9]/.test(String(filterOrId))) {

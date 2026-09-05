@@ -17,6 +17,9 @@ var build_addFieldDefinitionStep = (buildOptions) => {
         } = wrapperOptions;
 
         var tag = `custom-record-type/add-field-definition ${systemType}`;
+        if (withCachedCRT) {
+            tag = `CRT(${withCachedCRT}) : ${tag}`;
+        }
         return step(tag, async function () {
             var { send, deltas, currentCrtId } = this.bag;
 
