@@ -21,7 +21,7 @@ var build_addFieldDefinitionStep = (buildOptions) => {
             var { send, deltas, currentCrtId } = this.bag;
 
             if (withCachedCRT) {
-                currentCrtId = this.cache.crt[withCachedCRT]._id
+                currentCrtId = this.cachedIds.crt[withCachedCRT]
             }
 
             var payload = createPayload({
@@ -29,6 +29,9 @@ var build_addFieldDefinitionStep = (buildOptions) => {
                 props: definitionOptions
             });
 
+            if (typeof overrides === 'function') {
+                overrides = overrides(this);
+            }
             for (var [ptr, value] of Object.entries(overrides)) {
                 jsonpointer.set(payload, ptr, value)
             }
@@ -39,18 +42,13 @@ var build_addFieldDefinitionStep = (buildOptions) => {
             });
 
             await deltas.update();
+            var [ index, record ] = deltas.findEntry('crt', currentCrtId);
             
-            var index = deltas.getCurrent_RAW().findIndex((it) => {
-                //console.log(String(it._id), String(currentCrtId));
-                return String(it._id) === String(currentCrtId)
-            });
-            //console.log({ currentCrtId, index });
-           
             var expected = createExpectedCRTDelta({
-                payload, currentCrt: deltas.getCurrent_RAW()[index]
+                payload, currentCrt: record
             });
 
-            deltas.test({ expected: {
+            deltas.crt.test({ expected: {
                 [index]: expected
             }, asFlatEJSON: true });
         });

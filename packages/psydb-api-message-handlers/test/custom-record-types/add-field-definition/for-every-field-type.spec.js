@@ -7,7 +7,7 @@ var { CRT, HELPER_SET } = require('./steps');
 describe('custom-record-types/add-field-definition', function () {
     before(INIT_STEP_BAG());
 
-    //HELPER_SET.create('Some Helper Set', { as: 'someHSI' });
+    HELPER_SET.create('acquisition');
     CRT.create('location', 'cat_shelter');
     CRT.create('subject', 'cat_owner');
     CRT.create('subject', 'cat');
@@ -54,5 +54,21 @@ describe('custom-record-types/add-field-definition', function () {
             '/props/props/collection': 'subject',
             '/props/props/recordType': 'cat_owner'
         }
+    });
+
+    CRT('cat').addFieldDefinition({
+        systemType: 'HelperSetItemId',
+        fieldKey: snake('HelperSetItemId'), subChannelKey: 'scientific',
+        overrides: ({ cachedIds }) => ({
+            '/props/props/setId': cachedIds.helperSet['acquisition']
+        })
+    });
+    
+    CRT('cat').addFieldDefinition({
+        systemType: 'HelperSetItemIdList',
+        fieldKey: snake('HelperSetItemIdList'), subChannelKey: 'scientific',
+        overrides: ({ cachedIds }) => ({
+            '/props/props/setId': cachedIds.helperSet['acquisition']
+        })
     });
 })

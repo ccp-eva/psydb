@@ -11,11 +11,26 @@ var INIT_STEP_BAG = (options = {}) => async function () {
     var login = await this.createFakeLogin({ email: 'root@example.com' });
     var [ send ] = this.createMessenger({ ...login });
     
-    var deltas = BaselineDeltas();
+    var deltas = BaselineDeltas.Multi([ 'crt', 'helperSet' ]);
     deltas.update = async () => {
-        deltas.push(
+        deltas.crt.push(
             await this.fetchAllRecords('customRecordType'),
         );
+        deltas.helperSet.push(
+            await this.fetchAllRecords('helperSet'),
+        );
+    }
+    deltas.findEntry = (subset, filterOrId) => {
+        if (!/[a-f0-9]/.test(String(filterOrId))) {
+            throw new Error('not implemented');
+        }
+        else {
+            var records = deltas[subset].getCurrent_RAW();
+            var index = records.findIndex((it) => (
+                String(it._id) === String(filterOrId)
+            ));
+            return [ index, records[index] ];
+        }
     }
     
     await deltas.update();

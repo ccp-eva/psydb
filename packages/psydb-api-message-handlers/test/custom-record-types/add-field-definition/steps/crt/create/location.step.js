@@ -29,16 +29,10 @@ var CREATE_LOCATION_CRT = (recordType, options = {}) => {
             payload
         }));
 
-        // FIXME: we need to find by id here to properly test stuff
         await deltas.update();
+        var [ index ] = deltas.findEntry('crt', channelId);
 
-        var index = deltas.getCurrent().findIndex((it) => {
-            //console.log(it._id['$oid'], String(channelId));
-            return it._id['$oid'] === String(channelId)
-        });
-        //console.log({ channelId, index });
-
-        deltas.test({ expected: { [index]: {
+        deltas.crt.test({ expected: { [index]: {
             '_id': BaselineDeltas.AnyObjectId(),
             '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
             'collection': 'location',
@@ -64,13 +58,8 @@ var CREATE_LOCATION_CRT = (recordType, options = {}) => {
             }
         }}, asFlatEJSON: true });
        
-        var record = await this.aggregateOne({ customRecordType: {
-            '_id': channelId
-        }});
-        
         this.bag.currentCrtId = channelId;
-        this.bag.currentCrt = record;
-        jsonpointer.set(this, `/cache/crt/${recordType}`, record)
+        jsonpointer.set(this, `/cachedIds/crt/${recordType}`, channelId)
     })
 }
 
