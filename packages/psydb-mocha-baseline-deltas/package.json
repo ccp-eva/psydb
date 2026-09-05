@@ -10,7 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "chai": "~4.3.7",
-    "@cdxoo/assert-baseline-deltas": "~0.0.12",
+    "@cdxoo/assert-baseline-deltas": "~0.0.13",
+    "@cdxoo/chai-baseline-deltas": "~0.0.3",
     "@mpieva/psydb-core-utils": "workspace:*"
   },
   "devDependencies": {}
