@@ -1,11 +1,12 @@
 'use strict';
 var snake = require('just-snake-case');
-var { FieldDefinitionSchemas } = require('@mpieva/psydb-common-lib');
 var { INIT_STEP_BAG } = require('./init');
-var { CRT, HELPER_SET } = require('./steps');
+var { CRT, HELPER_SET, RESEARCH_GROUP, SUBJECT } = require('./steps');
 
 describe('custom-record-types/add-field-definition', function () {
-    before(INIT_STEP_BAG());
+    before(INIT_STEP_BAG({ trackedCollections: [
+        'crt', 'helperSet', 'helperSetItem', 'researchGroup', 'subject'
+    ]}));
 
     HELPER_SET.create('acquisition');
     HELPER_SET('acquisition').createItem('shelter');
@@ -97,18 +98,29 @@ describe('custom-record-types/add-field-definition', function () {
         }
     });
 
-    //CRT('cat').createRecord([
-    //    { subChannel: 'scientific', data: {
-    //        'custom': {},
-    //        'comment': '',
-    //        'testingPermissions': [],
-    //        'systemPermissions': {
-    //            'isHidden': false,
-    //            'accessRightsByResearchGroup': []
-    //        }
-    //    }},
-    //    { subChannel: 'gdpr', data: {
-    //        // NONE
-    //    }}
-    //], { as: 'tabby' });
+    //RECORD.create('researchGroup', {}, { as: 'cat_group' });
+    //RESEARCH_GROUP.create({}, { as: 'cat_group' });
+    RESEARCH_GROUP.create('cat_group');
+
+    //RECORD.create('subject', 'cat', [], { as: 'tabby' });
+    //CRT('cat').createRecord([], { as: 'tabby' });
+
+    SUBJECT.create('cat', ({ cachedIds }) => ([
+        { subChannel: 'scientific', data: {
+            'custom': {},
+            'comment': '',
+            'testingPermissions': [],
+            'systemPermissions': {
+                'isHidden': false,
+                'accessRightsByResearchGroup': [{
+                    researchGroupId: cachedIds.researchGroup['cat_group'],
+                    permission: 'write'
+                }]
+            }
+        }},
+        { subChannel: 'gdpr', data: {
+            custom: {}, // FIXME
+        }}
+    ]), { as: 'tabby' });
+
 })
