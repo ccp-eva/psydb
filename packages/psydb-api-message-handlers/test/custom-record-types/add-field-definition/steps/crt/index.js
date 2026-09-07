@@ -1,6 +1,7 @@
 'use strict';
 var create = require('./create');
 var addFieldDefinition = require('./add-field-definition');
+var commitSettings = require('./commit-settings');
 var createRecord = require('./create-record');
 
 var CRT = (...args) => {
@@ -24,9 +25,12 @@ var CRT = (...args) => {
     out.addFieldDefinition = (fnBag) => (
         CRT.addFieldDefinition({ ...argsBag, ...fnBag })
     );
-    out.createRecord = (data, options = {}) => (
-        createRecord({ ...argsBag, data, ...options })
+    out.commitSettings = (options = {}) => (
+        commitSettings({ ...argsBag, ...options })
     );
+    //out.createRecord = (data, options = {}) => (
+    //    createRecord({ ...argsBag, data, ...options })
+    //);
 
     return out;
 }
