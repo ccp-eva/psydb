@@ -1,6 +1,4 @@
 'use strict';
-var inline = require('@cdxoo/inline-text');
-
 var {
     ExactObject,
     PartialObject,
@@ -50,6 +48,8 @@ var ResearchGroupState = (bag = {}) => {
         'studyTypes': CRTRefList({ collection: 'study' }),
         'subjectTypes': CRTRefList({ collection: 'subject' }),
         'locationTypes': CRTRefList({ collection: 'location' }),
+        'externalOrganizationTypes': CRTRefList({ collection: 'externalOrganization' }),
+        'externalPersonTypes': CRTRefList({ collection: 'externalPerson' }),
 
         'labMethods': DefaultArray({ items: LabMethodKey(), minItems: 0 }),
 

@@ -1,6 +1,10 @@
 'use strict';
 module.exports = [
     {
+        en: 'External Organization Types',
+        de: 'Externe-Organisations-Typen',
+    },
+    {
         en: 'External Organization',
         de: 'Externe Organisation',
     },

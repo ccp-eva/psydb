@@ -25,17 +25,15 @@ const withRoutingForCustomTypes = (options) => {
         });
     }
 
-    return (ps) => {
-        var {
-            collection,
-            collectionRecordTypes = []
-        } = ps;
-
+    var withRoutingForCustomTypes_COMPONENT = (ps) => {
+        var { collection, collectionRecordTypes = [] } = ps;
         var { url, path } = useRouteMatch();
 
         if (shouldFetchCollectionTypes) {
             var [ didFetch, fetched ] = useFetch((agent) => (
-                agent.readCustomRecordTypeMetadata()
+                agent.readCustomRecordTypeMetadata({
+                    only: [ { collection } ]
+                })
             ), [ collection ]);
 
             if (!didFetch) {
@@ -43,12 +41,8 @@ const withRoutingForCustomTypes = (options) => {
                     <LoadingIndicator size='lg' />
                 )
             }
-
-            collectionRecordTypes = (
-                fetched.data.customRecordTypes.filter(it => (
-                    it.collection ===  collection
-                ))
-            );
+            
+            collectionRecordTypes = fetched.data.customRecordTypes;
         }
 
         return (
@@ -61,7 +55,7 @@ const withRoutingForCustomTypes = (options) => {
                     />
                 </Route>
                 <Route exact path={ `${path}/:id([0-9a-f]{24})` }>
-                    <RecordTypeRedirector collection={ collection} />
+                    <RecordTypeRedirector collection={ collection } />
                 </Route>
                 <Route path={`${path}/:recordType`}>
                     <RecordTypeView { ...({
@@ -72,6 +66,8 @@ const withRoutingForCustomTypes = (options) => {
             </Switch>
         )
     }
+
+    return withRoutingForCustomTypes_COMPONENT;
 }
 
 export default withRoutingForCustomTypes;

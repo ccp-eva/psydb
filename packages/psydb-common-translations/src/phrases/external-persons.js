@@ -1,6 +1,10 @@
 'use strict';
 module.exports = [
     {
+        en: 'External Person Types',
+        de: 'Externe-Personen-Typen',
+    },
+    {
         en: 'External Person',
         de: 'Externe Person',
     },
