@@ -36,6 +36,9 @@ var Permissions = (options) => {
         availableSubjectTypes = [],
         availableLocationTypes = [],
         availableStudyTypes = [],
+        availableExternalOrganizationTypes = [],
+        availableExternalPersonTypes = [],
+
         availableLabMethods = [],
         availableHelperSetIds = [],
         availableSystemRoleIds = [],
@@ -250,6 +253,9 @@ var Permissions = (options) => {
         availableSubjectTypes,
         availableLocationTypes,
         availableStudyTypes,
+        availableExternalOrganizationTypes,
+        availableExternalPersonTypes,
+
         availableLabMethods,
         availableHelperSetIds,
         availableSystemRoleIds,
@@ -305,6 +311,9 @@ Permissions.fromSelf = ({ self }) => {
         'availableSubjectTypes',
         'availableLocationTypes',
         'availableStudyTypes',
+        'availableExternalOrganizationTypes',
+        'availableExternalPersonTypes',
+
         'availableLabMethods',
         'availableHelperSetIds',
         'availableSystemRoleIds',

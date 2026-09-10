@@ -87,11 +87,25 @@ var FieldDefinitions = ({ cache }) => ({
         props: { minLength: 0 }
     },
 
-    'supervisorId': {
+    'assignedStaffMemberId': {
         type: 'ForeignId',
-        key: 'supervisorId',
+        key: 'assignedStaffMemberId',
         displayName: 'Assigned RA',
         displayNameI18N: { 'de': 'Betreuer:in' },
+        props: {
+            collection: 'personnel',
+            isNullable: true,
+            constraints: {},
+            displayEmptyAsUnknown: false,
+            addReferenceToTarget: false,
+        }
+    },
+    
+    'supervisingTrainerId': {
+        type: 'ForeignId',
+        key: 'supervisingTrainerId',
+        displayName: 'Supervising Trainer',
+        displayNameI18N: { 'de': 'Betreuende Trainer:in' },
         props: {
             collection: 'personnel',
             isNullable: true,

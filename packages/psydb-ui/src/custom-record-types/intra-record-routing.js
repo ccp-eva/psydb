@@ -57,8 +57,8 @@ const IntraRecordRoutingBody = (ps) => {
 
     var admin = {};
     if (permissions.isRoot()) {
-        admin[`${hashurl}/raw-view`] = {
-            label: translate('Raw View'),
+        admin[`${hashurl}/raw`] = {
+            label: translate('Raw Data'),
             show: true,
         }
     }
@@ -114,7 +114,7 @@ const IntraRecordRoutingBody = (ps) => {
                     </Route>
                 )}
                 { permissions.isRoot() && (
-                    <Route path={`${path}/raw-view`}>
+                    <Route path={`${path}/raw`}>
                         <RawView record={ record } />
                     </Route>
                 )}

@@ -6,6 +6,7 @@ module.exports = [
     ...require('./subject-groups'),
     ...require('./locations'),
     ...require('./external-organizations'),
+    ...require('./external-persons'),
     ...require('./subject-contact-history'),
     ...require('./personnel'),
 
@@ -58,11 +59,6 @@ module.exports = [
     {
         en: 'Postprocessing (${subject} - ${study})',
         de: 'Nachbereitung (${subject} - ${study})',
-    },
-    {
-        internal: '_sidenav_external-persons',
-        en: 'External Persons',
-        de: 'Externe Personen'
     },
     {
         internal: '_sidenav_study-topics',

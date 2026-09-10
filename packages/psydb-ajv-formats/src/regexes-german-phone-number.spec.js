@@ -1,6 +1,6 @@
 'use strict';
-var expect = require('chai').expect,
-    regex = require('./regexes').germanPhoneNumber;
+var expect = require('chai').expect;
+var regexes = require('./regexes');
 
 var valid = [
     '+49(0)123 1234 1234',
@@ -67,16 +67,35 @@ var invalid = [
 describe('regexes/german-phone-number', () => {
 
     it('does the thing', () => {
+        var rx = regexes.germanPhoneNumber;
+
         console.log('valid')
         valid.forEach(it => {
             console.log(it);
-            expect(regex.test(it)).to.eql(true);
+            expect(rx.test(it)).to.eql(true);
         })
         console.log('invalid')
         invalid.forEach(it => {
             console.log(it);
-            expect(regex.test(it)).to.eql(false);
+            expect(rx.test(it)).to.eql(false);
         })
     });
 
+    it('ok for optional', () => {
+        var rx = regexes.germanPhoneNumberOptional;
+
+        console.log('valid')
+        valid.forEach(it => {
+            console.log(it);
+            expect(rx.test(it)).to.eql(true);
+        })
+        console.log('invalid')
+        invalid.forEach(it => {
+            console.log(it);
+            expect(rx.test(it)).to.eql(false);
+        })
+
+        console.log('empty is valid');
+        expect(rx.test('')).to.eql(true);
+    });
 });

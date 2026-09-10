@@ -1,24 +1,18 @@
 import React from 'react';
-
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Button, Alert } from '@mpieva/psydb-ui-layout';
-import { DefaultForm, useFormikContext } from '@mpieva/psydb-ui-lib';
+import { DefaultForm, Fields, useFormikContext } from '@mpieva/psydb-ui-lib';
 
-import { SubChannelKey } from '../utility-fields';
-import CoreDefinitions from '../core-definitions';
-import * as allBasicPropDefinitions from '../basic-prop-definitions';
-import * as allSpecialPropDefinitions from '../special-prop-definitions';
+import * as DefinitionAttributes from '../definition-attribute-fields';
 
 export const Component = (ps) => {
     var {
-        hasSubChannels,
-        isUnrestricted,
-
-        initialValues,
-        onSubmit,
+        record,
+        hasSubChannels, isUnrestricted,
+        initialValues, onSubmit,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <DefaultForm
@@ -30,8 +24,9 @@ export const Component = (ps) => {
             {(formikProps) => (
                 <>
                     <FormFields
-                        isUnrestricted={ isUnrestricted }
+                        record={ record }
                         hasSubChannels={ hasSubChannels }
+                        isUnrestricted={ isUnrestricted }
                     />
                     <Button type='submit'>
                         { translate('Save') }
@@ -43,34 +38,48 @@ export const Component = (ps) => {
 }
 
 const FormFields = (ps) => {
-    var { hasSubChannels, isUnrestricted } = ps;
+    var { record, hasSubChannels, isUnrestricted } = ps;
+
     var { values } = useFormikContext();
     var { type } = values['$'].props;
-
-    var PropDefinitions = {
-        ...allBasicPropDefinitions,
-        ...allSpecialPropDefinitions,
-    }[type] || Fallback;
+    var TypeSpecific = DefinitionAttributes.TypeSpecific[type] || Fallback;
 
     return (
         <>
             { isUnrestricted && hasSubChannels && (
                 <SubChannelKey />
             )}
-            <CoreDefinitions
+            <DefinitionAttributes.Core
                 dataXPath='$.props'
+                record={ record }
                 isUnrestricted={ isUnrestricted }
             />
-            <PropDefinitions
+            <TypeSpecific
                 dataXPath='$.props'
+                record={ record }
                 isUnrestricted={ isUnrestricted }
             />
         </>
     )
 }
 
+const SubChannelKey = (ps) => {
+    var [{ translate }] = useI18N();
+    return (
+        <Fields.GenericEnum
+            label={ translate('Data Channel') }
+            dataXPath='$.subChannelKey'
+            options={ translate.options({
+                'scientific': 'Default',
+                'gdpr': 'Data Protection (GDPR)',
+            })}
+            required
+        />
+    )
+}
+
 const Fallback = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Alert variant='danger'>
             <b>{ translate('Please select field type!') }</b>

@@ -26,6 +26,20 @@ module.exports = {
         (\\d{1,}\\s*){4,}
         $
     `),
+    germanPhoneNumberOptional: rx(`
+        ^(?:|(?:
+            (
+                \\+\\d{1,2}
+                \\s?(\\(0\\)\\s?)?
+                |
+                0
+            )
+            \\d{2,4}
+            (\\s?\\/\\s?)?
+        
+            (\\d{1,}\\s*){4,}
+        ))$
+    `),
 
     hexColor: rx(`
         ^#[a-fA-F0-9]{6}$

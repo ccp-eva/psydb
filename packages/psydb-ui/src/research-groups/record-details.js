@@ -18,7 +18,7 @@ const DetailsBody = (ps) => {
     var { record, related } = fetched;
     var { url } = useRouteMatch();
     var translate = useUITranslation();
-    
+   
     var canEdit = permissions.hasCollectionFlag('researchGroup', 'write');
 
     var researchGroupBag = {
@@ -42,6 +42,15 @@ const DetailsBody = (ps) => {
                     <ResearchGroup.Shorthand />
                     <ResearchGroup.Address />
                     <ResearchGroup.Description />
+                    {/*<hr />
+                    <ResearchGroup.StudyTypes />
+                    <ResearchGroup.SubjectTypes />
+                    <ResearchGroup.LocationTypes />
+                    <ResearchGroup.ExternalOrganizationTypes />
+                    <ResearchGroup.ExternalPersonTypes />*/}
+                    
+                    {/*<ResearchGroup.HelperSetIds />*/}
+                    {/*<ResearchGroup.SystemRoleIds />*/}
                 </ResearchGroup>
             </DetailsBox>
         </>

@@ -22,6 +22,7 @@ const NewFieldForm = (ps) => {
                 displayNameI18N: {},
             } }}
             onSubmit={ send.exec }
+            record={ record }
             hasSubChannels={ hasSubChannels }
             isUnrestricted={ true }
         />

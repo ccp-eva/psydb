@@ -53,6 +53,9 @@ module.exports = {
     germanPhoneNumber: {
         validate: regexes.germanPhoneNumber,
     },
+    germanPhoneNumberOptional: {
+        validate: regexes.germanPhoneNumberOptional,
+    },
     hexColor: {
         validate: regexes.hexColor,
     },

@@ -1,4 +1,5 @@
-var FieldDefinitionSchemas = require('@mpieva/psydb-common-lib/src/field-definition-schemas');
+'use strict';
+var { FieldDefinitionSchemas } = require('@mpieva/psydb-common-lib');
 
 // to make sure the paths match the real message structure
 var wrapped = (definition) => () => ({
