@@ -1685,11 +1685,11 @@ importers:
   ../../packages/psydb-mocha-baseline-deltas:
     dependencies:
       '@cdxoo/assert-baseline-deltas':
-        specifier: ~0.0.13
-        version: 0.0.13
+        specifier: ~0.0.14
+        version: 0.0.14
       '@cdxoo/chai-baseline-deltas':
-        specifier: ~0.0.3
-        version: 0.0.3
+        specifier: ~0.0.6
+        version: 0.0.6
       '@mpieva/psydb-core-utils':
         specifier: workspace:*
         version: link:../psydb-core-utils
@@ -4387,10 +4387,10 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==, tarball: https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz}
     dev: true
 
-  /@cdxoo/assert-baseline-deltas@0.0.13:
-    resolution: {integrity: sha512-MTVWerdfyBkfz1NGzIPb/o9e3hHmU87ccBYAtbUNF5gnFQ7RQGKrNyfEZZD4/JvbbC06nieBAgE0GA9g2PL4Vg==, tarball: https://registry.npmjs.org/@cdxoo/assert-baseline-deltas/-/assert-baseline-deltas-0.0.13.tgz}
+  /@cdxoo/assert-baseline-deltas@0.0.14:
+    resolution: {integrity: sha512-HSCZG6t6v+h7G3q2WmjNTePKLtUN9Orq/8vWEQfQ1FQWlIoVFlmclhJmjwMoTlG8vrHY9OXP2ZpGnBjppmixdA==, tarball: https://registry.npmjs.org/@cdxoo/assert-baseline-deltas/-/assert-baseline-deltas-0.0.14.tgz}
     dependencies:
-      '@cdxoo/flat': 0.1.1
+      '@cdxoo/flat': 0.2.0
       '@cdxoo/objectpath-to-jsonpointer': 1.0.0
       debug: 4.4.3
       jsonpointer: 5.0.1
@@ -4413,11 +4413,11 @@ packages:
   /@cdxoo/block-quote@1.0.1:
     resolution: {integrity: sha512-VDMjQuGRJdz9jxU85/srmZg3ePjhQTNOcMQuziecvqSwPrNMmBApMSbC45IAoxqAW9fVVhacMBFdzMtf81o+EQ==, tarball: https://registry.npmjs.org/@cdxoo/block-quote/-/block-quote-1.0.1.tgz}
 
-  /@cdxoo/chai-baseline-deltas@0.0.3:
-    resolution: {integrity: sha512-XxphCDlJLyGX82LNhXtuonF4z3nfDEPD5ADIMFwAM6cMMeVomudlx9JIJfJEjdX/joG3VVGaheBZwiRT9SbQgQ==, tarball: https://registry.npmjs.org/@cdxoo/chai-baseline-deltas/-/chai-baseline-deltas-0.0.3.tgz}
+  /@cdxoo/chai-baseline-deltas@0.0.6:
+    resolution: {integrity: sha512-TII5lSjNj1SazpccijPDLw7zPU9LDiCVB144Gm3G3z5GhL/XVwDpcxCax64c+oBkH1TGx6ZuKeuW5ll2nDOJow==, tarball: https://registry.npmjs.org/@cdxoo/chai-baseline-deltas/-/chai-baseline-deltas-0.0.6.tgz}
     dependencies:
-      '@cdxoo/assert-baseline-deltas': 0.0.13
-      '@cdxoo/flat': 0.1.1
+      '@cdxoo/assert-baseline-deltas': 0.0.14
+      '@cdxoo/flat': 0.2.0
       '@cdxoo/tiny-ejson': 1.1.0
       chai: 4.5.0
       debug: 4.4.3
@@ -4447,6 +4447,12 @@ packages:
     resolution: {integrity: sha512-Yw9RebVBA+yX6UZOv15TdqeTS7vUOLzsf/jgUeG8edUYS0Bm1z49LxLn3UY0Ky+sUKe8axXnzS6FbU2BjjaISQ==, tarball: https://registry.npmjs.org/@cdxoo/flat/-/flat-0.1.1.tgz}
     dependencies:
       '@cdxoo/traverse': 0.0.2
+
+  /@cdxoo/flat@0.2.0:
+    resolution: {integrity: sha512-VaWRPyOIGb5GpUayZHBnisu2SFm1kockM1CDNskBtEBDOQTPun5T5HxH4mlLJMeDId7/wNznwzUZOLXQmDMCBw==, tarball: https://registry.npmjs.org/@cdxoo/flat/-/flat-0.2.0.tgz}
+    dependencies:
+      '@cdxoo/traverse': 0.0.2
+    dev: false
 
   /@cdxoo/formik-ajv-async@0.4.2(formik@2.4.9)(react@17.0.2):
     resolution: {integrity: sha512-IspDO3DXE4PD8R2kBuGR9q2FUTFGatyVEN5yPG+04tEajxqY4Sx+nCDzmJ4tfjFoZsb78Wuc0+pmAW3peXIBeA==, tarball: https://registry.npmjs.org/@cdxoo/formik-ajv-async/-/formik-ajv-async-0.4.2.tgz}
