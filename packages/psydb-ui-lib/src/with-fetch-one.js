@@ -9,7 +9,7 @@ import { useRevision, usePermissions, useFetch }
 export const withFetchOne = (options) => {
     var { Body, access, agentFN, paramKeys } = options;
 
-    var WithFetchOne_Wrapper = (ps) => {
+    var withFetchOne_COMPONENT = (ps) => {
         var params = useParams();
         var revision = useRevision();
         var permissions = usePermissions();
@@ -50,7 +50,7 @@ export const withFetchOne = (options) => {
         )
     }
 
-    return WithFetchOne_Wrapper;
+    return withFetchOne_COMPONENT;
 }
 
 const checkAccess = (bag) => {
