@@ -6,7 +6,7 @@ var State = require('./state');
 
 var MongoDoc = (context) => {
     var schema = ClosedObject({
-        'studyType': CustomRecordTypeKey({ collection: 'study' }),
+        'studyId': CustomRecordTypeKey({ collection: 'study' }),
         'subjectType': CustomRecordTypeKey({ collection: 'subject' }),
         'state': State(),
     });
