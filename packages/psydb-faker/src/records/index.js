@@ -6,4 +6,5 @@ module.exports = {
     externalOrganization: require('./external-organization'),
     externalPerson: require('./external-person'),
     location: require('./location'),
+    subject: require('./subject'),
 }
