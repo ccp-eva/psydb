@@ -7,49 +7,17 @@ var { KOA_CHANNELS } = require('@mpieva/psydb-api-mocha-test-tools/utils');
 // down their current behavior, including side effects on other
 // records (e.g. knownOffspringIds of the parents)
 describe('subject/[create|patch] flow', function () {
-    var db, send;
-    var researchGroupId, acquisitionId, rearingHistoryId;
-    var motherId, otherMotherId, fatherId, trainerId, catShelterId;
+    var ids, send;
     var ownerId, catId;
 
     before(async function () {
-        await this.restore([ 'init-cats-with-data' ]);
+        ids = await this.restore([ 'init-cats-with-data-small' ], {
+            gatherIds: true
+        });
 
-        db = this.getDbHandle();
         ([ send ] = this.createMessenger({
             login: { email: 'root@example.com' }
         }));
-
-        researchGroupId = await this.getId('researchGroup', {
-            shorthand: 'Cat-Lab'
-        });
-        acquisitionId = await this.getId('helperSetItem', {
-            label: 'Word of Mouth'
-        });
-        rearingHistoryId = await this.getId('helperSetItem', {
-            label: 'Hand-Reared'
-        });
-
-        // NOTE: founders have no parents themselves
-        var femaleFounders = await findSubjects({ db, filter: {
-            'type': 'cat',
-            'scientific.state.custom.sex': 'female',
-            'scientific.state.custom.motherId': null,
-        }});
-        var maleFounders = await findSubjects({ db, filter: {
-            'type': 'cat',
-            'scientific.state.custom.sex': 'male',
-            'scientific.state.custom.motherId': null,
-        }});
-        ([ motherId, otherMotherId ] = femaleFounders.map(it => it._id));
-        ([ fatherId ] = maleFounders.map(it => it._id));
-
-        ([{ _id: trainerId }] = await findSubjects({ db, filter: {
-            'type': 'catTrainer'
-        }}));
-        ({ _id: catShelterId } = await db.collection('location').findOne(
-            { type: 'catShelter' }, { sort: { _id: 1 }}
-        ));
     });
 
     step('create cat owner', async function () {
@@ -82,17 +50,20 @@ describe('subject/[create|patch] flow', function () {
                 'scientific': {
                     'custom': {
                         'doesDBRegistrationConsentOnPaperExist': true,
-                        'acquisitionId': acquisitionId,
+                        'acquisitionId': ids('Word of Mouth'),
                     },
                     'comment': 'some owner comment',
                     'systemPermissions': {
                         'isHidden': false,
                         'accessRightsByResearchGroup': [
-                            { researchGroupId, permission: 'write' }
+                            {
+                                researchGroupId: ids('Cat-Lab'),
+                                permission: 'write'
+                            }
                         ],
                     },
                     'testingPermissions': [
-                        { researchGroupId, permissionList: [
+                        { researchGroupId: ids('Cat-Lab'), permissionList: [
                             { labProcedureTypeKey: 'inhouse', value: 'yes' },
                             { labProcedureTypeKey: 'away-team', value: 'no' },
                         ]}
@@ -115,7 +86,7 @@ describe('subject/[create|patch] flow', function () {
             '_id': ownerId,
             '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
             'type': 'catOwner',
-            'sequenceNumber': '61',
+            'sequenceNumber': '6',
             'isDummy': false,
             'onlineId': BaselineDeltas.AnyString(),
             'gdpr': {
@@ -135,7 +106,7 @@ describe('subject/[create|patch] flow', function () {
         }}, asFlatEJSON: true });
 
         deltas.sequenceNumbers.test({ expected: {
-            '/0/subject/catOwner': 61
+            '/0/subject/catOwner': 6
         }});
     });
 
@@ -154,12 +125,12 @@ describe('subject/[create|patch] flow', function () {
                         'dateOfBirth': '2024-04-30T22:00:00.000Z',
                         'sex': 'female',
                         'ownerIds': [ ownerId ],
-                        'trainerId': trainerId,
-                        'motherId': motherId,
-                        'fatherId': fatherId,
-                        'catShelterId': catShelterId,
+                        'trainerId': ids(/^Gymnastics, Shoestring /),
+                        'motherId': ids(/^Monsoon /),
+                        'fatherId': ids(/^Music-box /),
+                        'catShelterId': ids(/^Rhoda Estates /),
                         'groupId': null,
-                        'rearingHistoryId': rearingHistoryId,
+                        'rearingHistoryId': ids('Hand-Reared'),
                         'shelterArrivalDate': null,
                         'isSterilized': 'no',
                         'wasFound': false,
@@ -168,7 +139,10 @@ describe('subject/[create|patch] flow', function () {
                     'systemPermissions': {
                         'isHidden': false,
                         'accessRightsByResearchGroup': [
-                            { researchGroupId, permission: 'write' }
+                            {
+                                researchGroupId: ids('Cat-Lab'),
+                                permission: 'write'
+                            }
                         ],
                     },
                 },
@@ -189,7 +163,7 @@ describe('subject/[create|patch] flow', function () {
                 '_id': catId,
                 '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
                 'type': 'cat',
-                'sequenceNumber': '101',
+                'sequenceNumber': '6',
                 'isDummy': false,
                 'onlineId': BaselineDeltas.AnyString(),
                 'gdpr': {
@@ -213,12 +187,16 @@ describe('subject/[create|patch] flow', function () {
                 },
             },
             // NOTE: parents get the new cat added to their offspring
-            ...deltas.expectOffspringAdded({ parentId: motherId, catId }),
-            ...deltas.expectOffspringAdded({ parentId: fatherId, catId }),
+            ...deltas.expectOffspringAdded({
+                parentId: ids(/^Monsoon /), catId
+            }),
+            ...deltas.expectOffspringAdded({
+                parentId: ids(/^Music-box /), catId
+            }),
         }, asFlatEJSON: true });
 
         deltas.sequenceNumbers.test({ expected: {
-            '/0/subject/cat': 101
+            '/0/subject/cat': 6
         }});
     });
 
@@ -237,7 +215,7 @@ describe('subject/[create|patch] flow', function () {
                     'custom': {
                         ...cat.scientific.state.custom,
                         'ownerIds': [],
-                        'motherId': otherMotherId,
+                        'motherId': ids(/^Bongo /),
                         'fatherId': null,
                         'isSterilized': 'yes',
                     },
@@ -264,7 +242,7 @@ describe('subject/[create|patch] flow', function () {
                 'scientific': {
                     '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
                     'state/custom/ownerIds': [],
-                    'state/custom/motherId': otherMotherId,
+                    'state/custom/motherId': ids(/^Bongo /),
                     'state/custom/fatherId': null,
                     'state/custom/isSterilized': 'yes',
                     'state/comment': 'some cat comment',
@@ -272,11 +250,15 @@ describe('subject/[create|patch] flow', function () {
             },
             // NOTE: offspring moves from the old to the new mother,
             // and is removed from the (now unset) father
-            ...deltas.expectOffspringRemoved({ parentId: motherId, catId }),
-            ...deltas.expectOffspringAdded({
-                parentId: otherMotherId, catId
+            ...deltas.expectOffspringRemoved({
+                parentId: ids(/^Monsoon /), catId
             }),
-            ...deltas.expectOffspringRemoved({ parentId: fatherId, catId }),
+            ...deltas.expectOffspringAdded({
+                parentId: ids(/^Bongo /), catId
+            }),
+            ...deltas.expectOffspringRemoved({
+                parentId: ids(/^Music-box /), catId
+            }),
         }, asFlatEJSON: true });
 
         deltas.sequenceNumbers.test({ expected: {}});
@@ -305,7 +287,7 @@ describe('subject/[create|patch] flow', function () {
                         owner.scientific.state.systemPermissions
                     ),
                     'testingPermissions': [
-                        { researchGroupId, permissionList: [
+                        { researchGroupId: ids('Cat-Lab'), permissionList: [
                             { labProcedureTypeKey: 'inhouse', value: 'no' },
                             { labProcedureTypeKey: 'away-team', value: 'yes' },
                         ]}
@@ -395,7 +377,15 @@ var Deltas = function () {
         var ix = offspring.findIndex(it => String(it) === String(catId));
         return { [indexOf(parentId)]: { 'scientific': {
             '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
-            [`state/custom/knownOffspringIds/${ix}`]: BaselineDeltas.DeletedValue(),
+            // NOTE: when the list becomes empty the empty array itself
+            // needs to be expected, a deleted item wont match
+            ...(
+                offspring.length === 1
+                ? { 'state/custom/knownOffspringIds': [] }
+                : { [`state/custom/knownOffspringIds/${ix}`]: (
+                    BaselineDeltas.DeletedValue()
+                )}
+            ),
         }}};
     }
 
@@ -404,13 +394,6 @@ var Deltas = function () {
         push, indexOf, getRecord,
         expectOffspringAdded, expectOffspringRemoved,
     };
-}
-
-var findSubjects = async (bag) => {
-    var { db, filter } = bag;
-    return db.collection('subject').find(filter, {
-        sort: { _id: 1 }
-    }).toArray();
 }
 
 var DefaultInternals = () => ({
