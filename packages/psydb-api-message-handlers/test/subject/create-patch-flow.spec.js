@@ -118,8 +118,6 @@ describe('subject/[create|patch] flow', function () {
     });
 
     step('create cat', async function () {
-        await deltas.update();
-
         var payload = {
             'props': {
                 'gdpr': { 'custom': {
