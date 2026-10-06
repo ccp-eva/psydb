@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"025ba8bc71244609907f04f3a7bc4b2e","collectionName":"mqMessageHistory","type":"collection"}
