@@ -1,5 +1,8 @@
+PSYDB_URL=${PSYDB_URL:-'http://127.0.0.1:8080/'}
+
 #NODE_TLS_REJECT_UNAUTHORIZED='0' \
 DEBUG="*psydb:driver*" node src/run.js \
+    --url "$PSYDB_URL" \
     --mongodb 'mongodb://127.0.0.1:47017/psydb' \
     --restore-fixture 'init-minimal-with-api-key' \
     $@ \

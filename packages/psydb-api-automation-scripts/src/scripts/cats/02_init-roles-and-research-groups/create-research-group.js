@@ -20,6 +20,7 @@ module.exports = async (context) => {
         subjectTypes: [
             { key: 'catOwner' },
             { key: 'cat' },
+            { key: 'catTrainer' },
         ],
         locationTypes: [
             { key: 'instituteroom' },
