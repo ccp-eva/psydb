@@ -37,6 +37,7 @@ module.exports = async (context) => {
             canWriteStudies: true,
             canRemoveStudies: true,
             canViewStudyLabOpsSettings: true,
+            canViewStudyLabTeams: true,
 
             canReadSubjects: true,
             canWriteSubjects: true,

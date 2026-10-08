@@ -5,7 +5,7 @@ module.exports = async (bag) => {
     var { apiKey, driver, cache } = bag;
     var researchGroupId = cache.get('/researchGroup/WKPRC');
     var locationId = cache.get(
-        '/location/wkprc_apeLocation/Chimfushi Sanctuary'
+        '/location/wkprc_ape_location/Chimfushi Sanctuary'
     );
     var subjectGroupId = cache.get(
         '/subjectGroup/wkprc_chimpanzee G1'
@@ -40,7 +40,7 @@ module.exports = async (bag) => {
                         arrivalDate: null,
                         arrivedFrom: '',
                         locationId: locationId,
-                        sensitiveComment: 'possibly sensitive information',
+                        sensitive_comment: 'possibly sensitive information',
                     },
                     comment: 'some information',
                     systemPermissions: {

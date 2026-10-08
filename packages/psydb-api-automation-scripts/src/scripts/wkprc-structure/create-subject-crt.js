@@ -90,7 +90,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'DateOnlyServerSide',
         key: 'dateOfBirth',
         displayName: 'Date of Birth',
-        displayNameI18N: { de: 'Geburtsdatum '},
+        displayNameI18N: { de: 'Geburtsdatum' },
         props: { isNullable: true, isSpecialAgeFrameField: true }
     },
 
@@ -178,7 +178,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         displayNameI18N: { de: 'Location' },
         props: {
             collection: 'location',
-            recordType: 'wkprc_apeLocation', // XXX: was wkprc_ape_location
+            recordType: 'wkprc_ape_location',
             isNullable: true,
             displayEmptyAsUnknown: true,
             addReferenceToTarget: false,
