@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, useUIConfig } from '@mpieva/psydb-ui-contexts';
 
 import {
     usePermissions,
@@ -40,6 +40,7 @@ const Header = ({
 }) => {
     var { path, url } = useRouteMatch();
     var translate = useUITranslation();
+    var { dev_enableWKPRCPatches } = useUIConfig();
 
     title = title || translate('Record Details');
     editLabel = editLabel || translate('Edit');
@@ -64,7 +65,10 @@ const Header = ({
                         { editLabel }
                     </Button>
                 )}
-                {  canSelectSubjectsForExperiments && (
+                { (
+                    canSelectSubjectsForExperiments
+                    && !dev_enableWKPRCPatches
+                ) && (
                     <SelectSubjectContainer
                         className='ml-3'
                         subjectId={ subjectId }
