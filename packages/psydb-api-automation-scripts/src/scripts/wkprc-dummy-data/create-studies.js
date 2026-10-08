@@ -16,8 +16,11 @@ module.exports = async (bag) => {
     await driver.sendMessage({
         type: 'study/create',
         payload: { type: 'wkprc_study', props: {
+            // NOTE: requires dev_enableWKPRCPatches in the api config;
+            // there is no shorthand then, and csv imports only accept
+            // experiments with these names
             name: 'WKPRC Test Study',
-            shorthand: 'TEST',
+            experimentNames: [ 'choice_task', 'other_task', 'multi' ],
             runningPeriod: {
                 start: '2024-01-01T00:00:00.000Z',
                 end: null,
@@ -42,7 +45,7 @@ module.exports = async (bag) => {
             },
         }},
     }, { apiKey });
-    var studyId = cache.addId({ collection: 'study', as: 'TEST' });
+    var studyId = cache.addId({ collection: 'study', as: 'WKPRC Test Study' });
 
     await driver.sendMessage({
         type: 'experimentVariant/create',
@@ -53,7 +56,8 @@ module.exports = async (bag) => {
         },
     }, { apiKey });
     var experimentVariantId = cache.addId({
-        collection: 'experimentVariant', as: 'TEST apestudies-wkprc-default'
+        collection: 'experimentVariant',
+        as: 'WKPRC Test Study apestudies-wkprc-default'
     });
 
     for (var subjectTypeKey of subjectTypes) {
