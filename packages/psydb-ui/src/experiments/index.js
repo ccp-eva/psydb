@@ -15,27 +15,37 @@ import { FormBox } from '@mpieva/psydb-ui-lib';
 
 import ExperimentRedirector from './experiment-redirector';
 import ExperimentContainer from './experiment-container';
+import ExtendedSearch from './extended-search';
 
 const Experiments = () => {
     var { path, url } = useRouteMatch();
     var translate = useUITranslation();
 
     return (
-        <PageWrappers.Level1 title={ translate('Appointment') }>
-            <PageWrappers.Level2 title={ translate('Details') }>
-                <Switch>
-                    <Route exact path={ `${path}/:id([0-9a-f]{24})`}>
-                        <ExperimentRedirector />
-                    </Route>
-                    <Route exact path={ `${path}/:experimentType/remove-success` }>
-                        <RemoveSuccessInfo />
-                    </Route>
-                    <Route path={ `${path}/:experimentType/:id` }>
-                        <ExperimentContainer />
-                    </Route>
-                </Switch>
-            </PageWrappers.Level2>
-        </PageWrappers.Level1>
+        <Switch>
+            <Route exact path={ `${path}/extended-search` }>
+                <PageWrappers.Level1 title={ translate('Participation') }>
+                    <ExtendedSearch />
+                </PageWrappers.Level1>
+            </Route>
+            <Route>
+                <PageWrappers.Level1 title={ translate('Appointment') }>
+                    <PageWrappers.Level2 title={ translate('Details') }>
+                        <Switch>
+                            <Route exact path={ `${path}/:id([0-9a-f]{24})`}>
+                                <ExperimentRedirector />
+                            </Route>
+                            <Route exact path={ `${path}/:experimentType/remove-success` }>
+                                <RemoveSuccessInfo />
+                            </Route>
+                            <Route path={ `${path}/:experimentType/:id` }>
+                                <ExperimentContainer />
+                            </Route>
+                        </Switch>
+                    </PageWrappers.Level2>
+                </PageWrappers.Level1>
+            </Route>
+        </Switch>
     );
 }
 

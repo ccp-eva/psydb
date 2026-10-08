@@ -4,14 +4,16 @@ import { TableBodyCustomCols } from '@mpieva/psydb-custom-fields-ui';
 import {
     StudyIconButton,
     SubjectIconButton,
-    LocationIconButton
+    LocationIconButton,
+    ExperimentIconButton,
 } from '@mpieva/psydb-ui-layout';
 
 // XXX
 const buttonMap = {
     'study': StudyIconButton,
     'subject': SubjectIconButton,
-    'location': LocationIconButton
+    'location': LocationIconButton,
+    'experiment': ExperimentIconButton,
 }
 
 // XXX
@@ -19,6 +21,7 @@ const linkMap = {
     'study': 'studies',
     'subject': 'subjects',
     'location': 'locations',
+    'experiment': 'experiments',
 }
 
 const TableRow = (ps) => {

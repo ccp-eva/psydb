@@ -39,6 +39,7 @@ var apedb = {
         { path: '/csv-imports' },
         { path: '/subjects' },
         { path: '/studies' },
+        { path: '/experiments/extended-search' },
         '=======',
         { path: '/locations' },
         { path: '/subject-groups' },

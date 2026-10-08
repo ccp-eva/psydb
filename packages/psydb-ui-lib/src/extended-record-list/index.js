@@ -15,8 +15,7 @@ import Table from './table';
 import TableRow from './table-row';
 
 const ExtendedRecordList = (ps) => {
-    var { collection, crtSettings, formData } = ps;
-    var { fieldDefinitions } = crtSettings;
+    var { collection, formData, enableCSVExport = true } = ps;
     var { columns } = formData;
 
     var pagination = usePaginationURLSearchParams({ offset: 0, limit: 50 })
@@ -49,6 +48,7 @@ const ExtendedRecordList = (ps) => {
                 collection={ collection }
                 formData={ formData }
                 pagination={ pagination }
+                enableCSVExport={ enableCSVExport }
             />
             { records.length > 0 ? (
                 <Table

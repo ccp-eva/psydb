@@ -7,6 +7,9 @@ var experimentRequests = (bag) => {
         listPostprocessing: dumpPOST({
             url: '/api/experiment/list-postprocessing'
         }),
+        extendedSearch: dumpPOST({
+            url: '/api/experiment/extended-search'
+        }),
     }
 }
 

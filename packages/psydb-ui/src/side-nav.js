@@ -182,6 +182,10 @@ var checkNavItemAllowed = (bag) => {
                 'canReadLocations',
                 'canWriteLocations'
             ]);
+        case '/experiments/extended-search':
+            return hasSomeFlags([
+                'canUseExtendedSearch',
+            ]);
         case '/external-persons':
             return hasSomeFlags([
                 'canReadExternalPersons',

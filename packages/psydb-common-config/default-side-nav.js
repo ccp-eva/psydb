@@ -3,6 +3,7 @@ var nav = [
     { path: '/csv-imports' },
     { path: '/subjects' },
     { path: '/studies' },
+    { path: '/experiments/extended-search' },
     { path: '/calendars', subnav: [
         { path: '/reception' },
         { path: '/inhouse' },
