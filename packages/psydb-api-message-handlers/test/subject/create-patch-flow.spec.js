@@ -88,7 +88,7 @@ describe('subject/[create|patch] flow', function () {
         await deltas.update();
 
         deltas.subject.test({ expected: {
-            [indexOf(deltas.subject, ownerId)]: {
+            '15': {
                 '_id': ownerId,
                 '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
                 'type': 'catOwner',
@@ -163,7 +163,7 @@ describe('subject/[create|patch] flow', function () {
         await deltas.update();
 
         deltas.subject.test({ expected: {
-            [indexOf(deltas.subject, catId)]: {
+            '16': {
                 '_id': catId,
                 '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
                 'type': 'cat',
@@ -190,13 +190,16 @@ describe('subject/[create|patch] flow', function () {
                     },
                 },
             },
-            // NOTE: parents get the new cat added to their offspring
-            ...expectOffspringAdded(deltas.subject, {
-                parentId: ids(/^Monsoon /), catId
-            }),
-            ...expectOffspringAdded(deltas.subject, {
-                parentId: ids(/^Music-box /), catId
-            }),
+            // NOTE: parents get the new cat added to their offspring;
+            // Monsoon already has one, Music-box none
+            '10': { 'scientific': {
+                '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
+                'state/custom/knownOffspringIds/1': catId,
+            }},
+            '11': { 'scientific': {
+                '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
+                'state/custom/knownOffspringIds/0': catId,
+            }},
         }, asFlatEJSON: true });
 
         deltas.sequenceNumbers.test({ expected: {
@@ -205,7 +208,7 @@ describe('subject/[create|patch] flow', function () {
     });
 
     step('patch cat', async function () {
-        var cat = getRecord(deltas.subject, catId);
+        var cat = deltas.subject.getCurrent_RAW()[16];
         var payload = {
             'id': catId,
             'props': {
@@ -235,7 +238,7 @@ describe('subject/[create|patch] flow', function () {
         await deltas.update();
 
         deltas.subject.test({ expected: {
-            [indexOf(deltas.subject, catId)]: {
+            '16': {
                 'gdpr': {
                     '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
                     'state/custom/name': 'Mittens UPDATED',
@@ -251,22 +254,29 @@ describe('subject/[create|patch] flow', function () {
             },
             // NOTE: offspring moves from the old to the new mother,
             // and is removed from the (now unset) father
-            ...expectOffspringRemoved(deltas.subject, {
-                parentId: ids(/^Monsoon /), catId
-            }),
-            ...expectOffspringAdded(deltas.subject, {
-                parentId: ids(/^Bongo /), catId
-            }),
-            ...expectOffspringRemoved(deltas.subject, {
-                parentId: ids(/^Music-box /), catId
-            }),
+            '10': { 'scientific': {
+                '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
+                'state/custom/knownOffspringIds/1': (
+                    BaselineDeltas.DeletedValue()
+                ),
+            }},
+            '12': { 'scientific': {
+                '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
+                'state/custom/knownOffspringIds/1': catId,
+            }},
+            // NOTE: the list becomes empty, so the empty array itself
+            // needs to be expected, a deleted item wont match
+            '11': { 'scientific': {
+                '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
+                'state/custom/knownOffspringIds': [],
+            }},
         }, asFlatEJSON: true });
 
         deltas.sequenceNumbers.test({ expected: {}});
     });
 
     step('patch cat owner', async function () {
-        var owner = getRecord(deltas.subject, ownerId);
+        var owner = deltas.subject.getCurrent_RAW()[15];
         var payload = {
             'id': ownerId,
             'props': {
@@ -303,7 +313,7 @@ describe('subject/[create|patch] flow', function () {
         await deltas.update();
 
         deltas.subject.test({ expected: {
-            [indexOf(deltas.subject, ownerId)]: {
+            '15': {
                 'gdpr': {
                     '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
                     'state/custom/lastname': 'Catlover UPDATED',
@@ -324,55 +334,57 @@ describe('subject/[create|patch] flow', function () {
     });
 });
 
-// NOTE: we have long collections, so expected deltas are keyed by the
-// index of the record in the current state, looked up by its id
-var indexOf = (deltas, id) => {
-    var ix = deltas.getCurrent().findIndex(
-        it => it._id.$oid === String(id)
-    );
-    if (ix < 0) {
-        throw new Error(`no record with id "${id}"`);
-    }
-    return ix;
-}
-
-var getRecord = (deltas, id) => deltas.getCurrent_RAW()[indexOf(deltas, id)];
-
-// NOTE: getBaseline_RAW() returns the ejson'd state after push(),
-// so we use the ejson baseline and compare via $oid
-var getBaselineOffspring = (deltas, parentId) => {
-    var parent = deltas.getBaseline().find(
-        it => it._id.$oid === String(parentId)
-    );
-    return parent.scientific.state.custom.knownOffspringIds || [];
-}
-
-var expectOffspringAdded = (deltas, bag) => {
-    var { parentId, catId } = bag;
-    var offspring = getBaselineOffspring(deltas, parentId);
-    return { [indexOf(deltas, parentId)]: { 'scientific': {
-        '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
-        [`state/custom/knownOffspringIds/${offspring.length}`]: catId,
-    }}};
-}
-
-var expectOffspringRemoved = (deltas, bag) => {
-    var { parentId, catId } = bag;
-    var offspring = getBaselineOffspring(deltas, parentId);
-    var ix = offspring.findIndex(it => it.$oid === String(catId));
-    return { [indexOf(deltas, parentId)]: { 'scientific': {
-        '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
-        // NOTE: when the list becomes empty the empty array itself
-        // needs to be expected, a deleted item wont match
-        ...(
-            offspring.length === 1
-            ? { 'state/custom/knownOffspringIds': [] }
-            : { [`state/custom/knownOffspringIds/${ix}`]: (
-                BaselineDeltas.DeletedValue()
-            )}
-        ),
-    }}};
-}
+// NOTE: utilities for looking up indices dynamically; currently
+// static indices are used instead
+// // NOTE: we have long collections, so expected deltas are keyed by the
+// // index of the record in the current state, looked up by its id
+// var indexOf = (deltas, id) => {
+//     var ix = deltas.getCurrent().findIndex(
+//         it => it._id.$oid === String(id)
+//     );
+//     if (ix < 0) {
+//         throw new Error(`no record with id "${id}"`);
+//     }
+//     return ix;
+// }
+//
+// var getRecord = (deltas, id) => deltas.getCurrent_RAW()[indexOf(deltas, id)];
+//
+// // NOTE: getBaseline_RAW() returns the ejson'd state after push(),
+// // so we use the ejson baseline and compare via $oid
+// var getBaselineOffspring = (deltas, parentId) => {
+//     var parent = deltas.getBaseline().find(
+//         it => it._id.$oid === String(parentId)
+//     );
+//     return parent.scientific.state.custom.knownOffspringIds || [];
+// }
+//
+// var expectOffspringAdded = (deltas, bag) => {
+//     var { parentId, catId } = bag;
+//     var offspring = getBaselineOffspring(deltas, parentId);
+//     return { [indexOf(deltas, parentId)]: { 'scientific': {
+//         '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
+//         [`state/custom/knownOffspringIds/${offspring.length}`]: catId,
+//     }}};
+// }
+//
+// var expectOffspringRemoved = (deltas, bag) => {
+//     var { parentId, catId } = bag;
+//     var offspring = getBaselineOffspring(deltas, parentId);
+//     var ix = offspring.findIndex(it => it.$oid === String(catId));
+//     return { [indexOf(deltas, parentId)]: { 'scientific': {
+//         '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
+//         // NOTE: when the list becomes empty the empty array itself
+//         // needs to be expected, a deleted item wont match
+//         ...(
+//             offspring.length === 1
+//             ? { 'state/custom/knownOffspringIds': [] }
+//             : { [`state/custom/knownOffspringIds/${ix}`]: (
+//                 BaselineDeltas.DeletedValue()
+//             )}
+//         ),
+//     }}};
+// }
 
 var DefaultInternals = () => ({
     'isRemoved': false,
