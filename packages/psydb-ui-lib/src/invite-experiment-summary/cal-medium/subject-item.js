@@ -2,6 +2,10 @@ import React from 'react';
 import { __fixRelated, __fixDefinitions } from '@mpieva/psydb-common-compat';
 import { Fields } from '@mpieva/psydb-custom-fields-common';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
+import {
+    StudyConsentDocIconButton_TODO,
+    StudyConsentDocIconButton_DONE,
+} from '@mpieva/psydb-ui-layout';
 
 import ExperimentSubjectDropdown from '../../experiment-subject-dropdown';
 
@@ -14,6 +18,7 @@ const SubjectItem = (ps) => {
         subjectRelated,
         subjectDisplayFieldData,
         
+        hasStudyConsentDoc,
         onClickConsent,
         onClickComment,
         onClickMove,
@@ -78,6 +83,12 @@ const SubjectItem = (ps) => {
                         onClickMailbox,
                         onClickContactFailed,
                     }) } />
+                    { onClickConsent && (
+                        <StudyConsentDocIconButton { ...({
+                            hasStudyConsentDoc,
+                            onClick: () => onClickConsent({ subjectRecord }),
+                        }) } />
+                    )}
                     { invitationStatus !== 'scheduled' && (
                         <b 
                             className='pl-2 pr-2'
@@ -90,6 +101,22 @@ const SubjectItem = (ps) => {
             </div>
         </li>
     )
+}
+
+const StudyConsentDocIconButton = (ps) => {
+    var { hasStudyConsentDoc, onClick } = ps;
+    var IconButton = (
+        hasStudyConsentDoc
+        ? StudyConsentDocIconButton_DONE
+        : StudyConsentDocIconButton_TODO
+    );
+    return (
+        <IconButton
+            onClick={ onClick }
+            buttonProps={{ variant: 'other' }}
+            buttonStyle={{ color: 'inherit', marginTop: 0, marginLeft: '2px' }}
+        />
+    );
 }
 
 const DisplayPair = (ps) => {

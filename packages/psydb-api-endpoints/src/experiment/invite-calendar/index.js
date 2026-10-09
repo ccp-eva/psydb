@@ -149,6 +149,14 @@ var experimentCalendar = async (context, next) => {
         records: labTeamRecords
     });
 
+    var studyConsentDocs = await aggregateToArray({ db, studyConsentDoc: [
+        { $match: {
+            'studyId': { $in: experimentStudyIds },
+            'subjectId': { $in: subjectIds },
+        }},
+        { $project: { '_id': true, 'studyId': true, 'subjectId': true }}
+    ]});
+
     var subjectRecordsById = keyBy({
         items: allSubjectRecords,
         byProp: '_id'
@@ -163,6 +171,7 @@ var experimentCalendar = async (context, next) => {
             })),
             experimentOperatorTeamRecords: labTeamRecords,
             labTeamRelated,
+            studyConsentDocs,
             experimentRelated,
             subjectRecordsById,
             subjectRelated: __subjectRelated,

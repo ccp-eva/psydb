@@ -34,6 +34,7 @@ const ExperimentSummaryMedium = (ps) => {
         experimentRelated,
         experimentOperatorTeamRecords,
         labTeamRelated,
+        studyConsentDocs = [],
         subjectRecordsById,
         subjectRelated,
         subjectDisplayFieldData,
@@ -161,6 +162,7 @@ const ExperimentSummaryMedium = (ps) => {
                     )}}
 
                     { ...consentFormSelectModal.passthrough }
+                    onRefresh={ onSuccessfulUpdate }
                 />
             )}
 
@@ -266,6 +268,12 @@ const ExperimentSummaryMedium = (ps) => {
                             ...(ConsentFormSelectModal && {
                                 onClickConsent: (
                                     consentFormSelectModal.handleShow
+                                ),
+                                hasStudyConsentDoc: (
+                                    studyConsentDocs.some(doc => (
+                                        doc.studyId === studyId
+                                        && doc.subjectId === it.subjectId
+                                    ))
                                 ),
                             }),
                             onClickComment: commentPerSubjectModal.handleShow,
