@@ -1791,4 +1791,41 @@ module.exports = [
         en: 'Admin Fallback System Role',
         de: 'Fallback System-Rolle für Admins'
     },
+
+    {
+        en: 'Import Type',
+        de: 'Import-Typ'
+    },
+    {
+        en: 'Is Sensitive',
+        de: 'Ist Sensitiv'
+    },
+    {
+        en: 'Placeholder (in Past)',
+        de: 'Platzhalter (in Vergangenheit)'
+    },
+    {
+        en: 'External Organization is referenced by other records!',
+        de: 'Externe Organisation wird von anderen Datensätzen referenziert!'
+    },
+    {
+        en: 'External Person is referenced by other records!',
+        de: 'Externe Person wird von anderen Datensätzen referenziert!'
+    },
+    {
+        en: 'Please select a subject type.',
+        de: 'Bitte Proband:innen-Typ auswählen.'
+    },
+    {
+        en: 'Please select a study and subject type.',
+        de: 'Bitte Studie und Proband:innen-Typ auswählen.'
+    },
+    {
+        en: 'Edit Study',
+        de: 'Studie Bearbeiten'
+    },
+    {
+        en: 'Please Select Record',
+        de: 'Bitte Datensatz auswählen'
+    },
 ]
