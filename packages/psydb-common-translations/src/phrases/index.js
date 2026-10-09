@@ -1604,6 +1604,37 @@ module.exports = [
     },
 
     {
+        internal: '_labMethod_inhouse',
+        en: 'Inhouse',
+        de: 'Intern',
+    },
+    {
+        internal: '_labMethod_away-team',
+        en: 'External',
+        de: 'Extern',
+    },
+    {
+        internal: '_labMethod_online-video-call',
+        en: 'Online Video Call',
+        de: 'Online-Video-Anruf',
+    },
+    {
+        internal: '_labMethod_online-survey',
+        en: 'Online Survey',
+        de: 'Online-Umfrage',
+    },
+    {
+        internal: '_labMethod_apestudies-wkprc-default',
+        en: 'WKPRC',
+        de: 'WKPRC',
+    },
+    {
+        internal: '_labMethod_manual-only-participation',
+        en: 'Field Site',
+        de: 'Field-Site',
+    },
+
+    {
         internal: '_labWorkflow_online-video-call',
         en: 'Online Video Call',
         de: 'Online-Video-Anruf'

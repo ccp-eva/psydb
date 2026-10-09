@@ -103,7 +103,9 @@ const Metadata = (ps) => {
                 { related.subject[subjectId] }
             </Field>
             <Field label={ translate('Appointment') }>
-                { experimentId || (
+                { experimentId ? (
+                    related.experiment?.[experimentId] || experimentId
+                ) : (
                     <span className='text-muted'>
                         { translate('Not Specified') }
                     </span>

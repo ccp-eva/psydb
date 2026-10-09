@@ -92,7 +92,7 @@ var handleNoCRT = async (bag) => {
                 },
                 { format: '${#} ${#}', tokens: [
                     { 
-                        systemType: 'SaneString',
+                        systemType: 'LabMethodKey',
                         dataPointer: '/__type'
                     },
                     {
