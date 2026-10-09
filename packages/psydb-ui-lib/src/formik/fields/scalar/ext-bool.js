@@ -8,6 +8,7 @@ export const ExtBool = withField({ Control: (ps) => {
     var {
         dataXPath, formikField, formikForm,
         disabled = false, inverted = false,
+        helpText,
     } = ps;
 
     var { setFieldValue } = formikForm;
@@ -21,25 +22,34 @@ export const ExtBool = withField({ Control: (ps) => {
         onChange: (next) => setFieldValue(dataXPath, next)
     };
 
-    if (inverted) {
-        return (
+    var buttons = (
+        inverted
+        ? (
             <ButtonGroup className='mt-1'>
                 <YesInverted { ...bag }>{ translate('Yes') }</YesInverted>
                 <NoInverted { ...bag }>{ translate('No') }</NoInverted>
                 <Unknown { ...bag }>{ translate('Unknown') }</Unknown>
             </ButtonGroup>
         )
-    }
-    else {
-        return (
+        : (
             <ButtonGroup className='mt-1'>
                 <Yes { ...bag }>{ translate('Yes') }</Yes>
                 <No { ...bag }>{ translate('No') }</No>
                 <Unknown { ...bag }>{ translate('Unknown') }</Unknown>
             </ButtonGroup>
         )
-    }
+    );
 
+    return (
+        <>
+            { buttons }
+            { helpText && (
+                <small className='form-text text-muted'>
+                    { helpText }
+                </small>
+            )}
+        </>
+    )
 }});
 
 var Yes = (ps) => {

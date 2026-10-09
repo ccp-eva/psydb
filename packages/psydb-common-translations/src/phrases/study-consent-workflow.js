@@ -5,6 +5,22 @@ module.exports = [
         de: 'Hat Problem'
     },
     {
+        en: 'Contains Errors',
+        de: 'Enthält Fehler'
+    },
+    {
+        en: 'Has New Infos',
+        de: 'Hat neue Infos'
+    },
+    {
+        en: 'For when the form contains new info to update in the data sheet.',
+        de: 'Für den Fall, dass das Formular neue Infos für das Datenblatt enthält.'
+    },
+    {
+        en: 'For when the form contains erroneous data.',
+        de: 'Für den Fall, dass das Formular fehlerhafte Daten enthält.'
+    },
+    {
         en: 'Has Data Update',
         de: 'Hat Daten-Update'
     },
