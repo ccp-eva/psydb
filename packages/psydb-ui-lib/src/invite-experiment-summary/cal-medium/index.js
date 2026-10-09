@@ -1,4 +1,5 @@
 import React from 'react';
+import { merge } from '@mpieva/psydb-core-utils';
 import enums from '@mpieva/psydb-schema-enums';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer, useSend } from '@mpieva/psydb-ui-hooks';
@@ -32,12 +33,16 @@ const ExperimentSummaryMedium = (ps) => {
 
         experimentRelated,
         experimentOperatorTeamRecords,
+        labTeamRelated,
         subjectRecordsById,
         subjectRelated,
         subjectDisplayFieldData,
 
         showPast,
         onSuccessfulUpdate,
+
+        // NOTE: injected since it lives in psydb-ui
+        ConsentFormSelectModal,
     } = ps;
 
     var [{ translate }] = useI18N();
@@ -46,6 +51,7 @@ const ExperimentSummaryMedium = (ps) => {
     var changeTeamModal = useModalReducer({ show: false });
     var changeLocationModal = useModalReducer({ show: false });
 
+    var consentFormSelectModal = useModalReducer({ show: false });
     var commentPerSubjectModal = useModalReducer({ show: false });
     var moveSubjectModal = useModalReducer({ show: false });
     var followUpSubjectModal = useModalReducer({ show: false });
@@ -144,6 +150,19 @@ const ExperimentSummaryMedium = (ps) => {
 
                 onSuccessfulUpdate,
             }) } />
+
+            { ConsentFormSelectModal && (
+                <ConsentFormSelectModal
+                    experimentRecord={ experimentRecord }
+                    labTeamRecord={ teamRecord }
+                    related={{ records: merge(
+                        _related,
+                        labTeamRelated?.relatedRecordLabels || {}
+                    )}}
+
+                    { ...consentFormSelectModal.passthrough }
+                />
+            )}
 
             <PerSubjectCommentModal { ...({
                 ...commentPerSubjectModal.passthrough,
@@ -244,6 +263,11 @@ const ExperimentSummaryMedium = (ps) => {
                             subjectRelated,
                             subjectDisplayFieldData,
     
+                            ...(ConsentFormSelectModal && {
+                                onClickConsent: (
+                                    consentFormSelectModal.handleShow
+                                ),
+                            }),
                             onClickComment: commentPerSubjectModal.handleShow,
 
                             onClickMove: moveSubjectModal.handleShow,

@@ -28,6 +28,7 @@ var ExperimentSubjectDropdown = (ps) => {
         subjectRecord,
         enableStatusChanges = true,
 
+        onClickConsent,
         onClickComment,
         onClickMove,
         onClickFollowUp,
@@ -57,6 +58,10 @@ var ExperimentSubjectDropdown = (ps) => {
         subjectRecord,
         experimentType,
     };
+
+    var wrappedOnClickConsent = useCallback(() => (
+        onClickConsent(sharedPayload)
+    ), [ onClickConsent, subjectRecord ]);
 
     var wrappedOnClickComment = useCallback(() => (
         onClickComment(sharedPayload)
@@ -172,6 +177,17 @@ var ExperimentSubjectDropdown = (ps) => {
                             href={`#/subjects/${subjectType}/${subjectId}`}
                         >
                             { translate('Subject Details') }
+                        </Dropdown.Item>
+                        <Dropdown.Divider />
+                    </>
+                )}
+                { onClickConsent && (
+                    <>
+                        <Dropdown.Item
+                            as='button'
+                            onClick={ wrappedOnClickConsent }
+                        >
+                            { translate('Consent Form') }
                         </Dropdown.Item>
                         <Dropdown.Divider />
                     </>

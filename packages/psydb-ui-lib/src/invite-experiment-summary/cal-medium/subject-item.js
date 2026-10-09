@@ -14,6 +14,7 @@ const SubjectItem = (ps) => {
         subjectRelated,
         subjectDisplayFieldData,
         
+        onClickConsent,
         onClickComment,
         onClickMove,
         onClickFollowUp,
@@ -67,6 +68,7 @@ const SubjectItem = (ps) => {
                         variant: 'calendar',
                         subjectRecord,
                         
+                        onClickConsent,
                         onClickComment,
                         onClickMove,
                         onClickFollowUp,

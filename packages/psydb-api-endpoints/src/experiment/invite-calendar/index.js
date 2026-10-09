@@ -143,6 +143,12 @@ var experimentCalendar = async (context, next) => {
         records: experimentRecords
     });
 
+    var labTeamRelated = await fetchRelatedLabelsForMany({
+        db, ...i18n,
+        collectionName: 'experimentOperatorTeam',
+        records: labTeamRecords
+    });
+
     var subjectRecordsById = keyBy({
         items: allSubjectRecords,
         byProp: '_id'
@@ -156,6 +162,7 @@ var experimentCalendar = async (context, next) => {
                 _canFollowUp: studiesById[it.state.studyId].state.enableFollowUpExperiments
             })),
             experimentOperatorTeamRecords: labTeamRecords,
+            labTeamRelated,
             experimentRelated,
             subjectRecordsById,
             subjectRelated: __subjectRelated,
