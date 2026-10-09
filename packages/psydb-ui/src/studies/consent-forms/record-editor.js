@@ -46,6 +46,7 @@ const RecordEditor = (ps) => {
             subjectCRT={ subjectCRT }
             initialValues={ initialValues }
             onSubmit={ send.exec }
+            isTransmitting={ send.isTransmitting }
         />
     );
 }
