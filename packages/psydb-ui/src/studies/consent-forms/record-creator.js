@@ -10,7 +10,7 @@ import MainForm from './main-form';
 
 const CRTSelectionWrapper = (ps) => {
     var { studyId, onSuccessfulUpdate } = ps;
-    var [ subjectType, setSubjectType ] = useState('child');
+    var [ subjectType, setSubjectType ] = useState();
     var [{ translate, language }] = useI18N();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
@@ -22,20 +22,24 @@ const CRTSelectionWrapper = (ps) => {
     }
 
     var { crts } = fetched.data;
+    var effectiveSubjectType = (
+        subjectType || crts.items()[0]?.getType()
+    );
+    var subjectCRT = crts.find({ type: effectiveSubjectType });
 
     return (
         <div>
             <Controls.GenericEnum
-                value={ subjectType }
+                value={ effectiveSubjectType }
                 onChange={ setSubjectType }
                 options={ crts.asOptions({ language }) }
             />
             <hr />
-            { subjectType ? (
+            { subjectCRT ? (
                 <FullRecordCreator
                     studyId={ studyId }
                     onSuccessfulUpdate={ onSuccessfulUpdate }
-                    subjectCRT={ crts.find({ type: subjectType }) }
+                    subjectCRT={ subjectCRT }
                 />
             ) : (
                 <Alert variant='info'><i>

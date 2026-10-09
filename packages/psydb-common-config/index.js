@@ -66,6 +66,8 @@ var mpiccp = {
     dev_enableStatistics: true,
     dev_enableCSVSubjectImport: true,
     dev_enableCSVParticipationImport: true,
+    
+    dev_enableStudyConsentWorkflow: true,
 
     dev_enableSubjectDuplicatesSearch: true,
     dev_subjectDuplicatesSearchFields: {
@@ -102,7 +104,6 @@ var humankind = {
     dev_enableCSVSubjectContactHistoryImport: true,
 
     dev_enableImprovedContactTracking: true,
-    dev_enableStudyConsentWorkflow: true,
     dev_enableStudyRoadmap: true,
     
     enabledLabMethods: [
@@ -111,4 +112,4 @@ var humankind = {
     ],
 }
 
-module.exports = apedb;
+module.exports = mpiccp;
