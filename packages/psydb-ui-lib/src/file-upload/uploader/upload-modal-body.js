@@ -128,6 +128,7 @@ const mbytes = (n) => (
 )
 
 const Rejected = (ps) => {
+    var translate = useUITranslation();
     var { accept = '', maxSize, rejectedFiles } = ps;
     console.log(rejectedFiles);
 
@@ -138,11 +139,11 @@ const Rejected = (ps) => {
         <div className='text-danger'>
             <i className='fas fa-times fa-5x' />
             <div style={{ marginTop: '10px' }}>
-                Mögliche Formate sind:
+                { translate('Possible formats are') }:
                 {' '}
                 { acceptedExtensions.join(', ') }
                 <br />
-                Maximale Dateigrösse: { mbytes(maxSize) }MB
+                { translate('Max. File Size') }: { mbytes(maxSize) }MB
                 <div className='border-top border-danger mt-2 pt-2'>
                     { rejectedFiles.map((it, ix ) => (
                         <div key={ ix } className='text-nowrap'>

@@ -16,4 +16,5 @@ module.exports = {
     ),
 
     CustomRecordTypeKey: require('./custom-record-type-key'),
+    LabMethodKey: require('./lab-method-key'),
 }

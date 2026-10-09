@@ -1,7 +1,7 @@
 import React from 'react';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetchAll } from '@mpieva/psydb-ui-hooks';
-import { Button } from '@mpieva/psydb-ui-layout';
+import { AsyncButton } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 
 import ConsentDocElement from './consent-doc-element';
@@ -9,7 +9,7 @@ import ConsentDocElement from './consent-doc-element';
 export const Component = (ps) => {
     var {
         studyConsentForm, subjectCRT, labOperatorIds,
-        initialValues, onSubmit
+        initialValues, onSubmit, isTransmitting,
     } = ps;
 
     var { studyId } = studyConsentForm;
@@ -35,9 +35,12 @@ export const Component = (ps) => {
                         studyConsentForm={ studyConsentForm }
                         subjectCRT={ subjectCRT }
                     />
-                    <Button type='submit'>
+                    <AsyncButton
+                        type='submit'
+                        isTransmitting={ isTransmitting }
+                    >
                         { translate('Save') }
-                    </Button>
+                    </AsyncButton>
                 </>
             )}
         </DefaultForm>

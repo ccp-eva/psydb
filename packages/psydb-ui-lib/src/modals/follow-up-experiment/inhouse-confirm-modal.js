@@ -12,7 +12,7 @@ import {
     Form,
 } from '@mpieva/psydb-ui-layout';
 
-import { useRequestAgent } from '@mpieva/psydb-ui-contexts';
+import { useRequestAgent, useUITranslation } from '@mpieva/psydb-ui-contexts';
 import datefns from '../../date-fns';
 
 import {
@@ -39,6 +39,7 @@ const FormContainer = (ps) => {
     } = ps;
     
     var agent = useRequestAgent();
+    var translate = useUITranslation();
 
     var {
         _id: studyId,
@@ -82,23 +83,23 @@ const FormContainer = (ps) => {
 
     return (
         <div>
-            <header className='pb-1'><b>Aktuell</b></header>
+            <header className='pb-1'><b>{ translate('Current') }</b></header>
             <div className='p-2 bg-white border'>
                 <Container>
-                    <Pair label='Datum'>
+                    <Pair label={ translate('Date') }>
                         { datefns.format(
                             new Date(experimentState.interval.start),
                             'P'
                         ) }
                     </Pair>
 
-                    <Pair label='Beginn'>
+                    <Pair label={ translate('Start') }>
                         { datefns.format(
                             new Date(experimentState.interval.start),
                             'p'
                         ) }
                     </Pair>
-                    <Pair label='Ende'>
+                    <Pair label={ translate('End') }>
                         { datefns.format(
                             new Date(experimentState.interval.end).getTime() + 1,
                             'p'
@@ -108,16 +109,16 @@ const FormContainer = (ps) => {
                 </Container>
             </div>
 
-            <header className='pb-1 mt-3'><b>nach Verschiebung</b></header>
+            <header className='pb-1 mt-3'><b>{ translate('Reschedule To') }</b></header>
             <div className='p-2 bg-white border'>
                 <Container>
-                    <Pair label='Datum'>
+                    <Pair label={ translate('Date') }>
                         { datefns.format(
                             new Date(confirmData.start),
                             'P'
                         ) }
                     </Pair>
-                    <Pair label='Beginn'>
+                    <Pair label={ translate('Start') }>
                         { datefns.format(
                             new Date(confirmData.start),
                             'p'
@@ -125,7 +126,7 @@ const FormContainer = (ps) => {
                     </Pair>
                     <Row>
                         <Form.Label className='col-sm-4 col-form-label'>
-                            Ende
+                            { translate('End') }
                         </Form.Label>
                         <Col sm={8}>
                             <SlotControl
@@ -140,7 +141,7 @@ const FormContainer = (ps) => {
                 </Container>
             </div>
             <div className='d-flex justify-content-end mt-3'>
-                <Button onClick={ handleSubmit }>Verschieben</Button>
+                <Button onClick={ handleSubmit }>{ translate('Reschedule') }</Button>
             </div>
         </div>
     )

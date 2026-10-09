@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     withField,
@@ -8,6 +9,7 @@ import {
 import * as Fields from '../../form-fields';
 
 const Control = (ps) => {
+    var translate = useUITranslation();
     var {
         dataXPath,
         subjectType,
@@ -18,7 +20,7 @@ const Control = (ps) => {
             <Fields.ForeignId
                 formGroupClassName='w-50 m-0'
                 uiSplit={[4,8]}
-                label='Proband:in'
+                label={ translate('Subject') }
                 dataXPath={`${dataXPath}.subjectId`}
                 collection='subject'
                 recordType={ subjectType }

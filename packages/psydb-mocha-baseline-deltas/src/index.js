@@ -1,12 +1,10 @@
 'use strict';
-var BaselineDeltas = require('./baseline-deltas');
-var helpers = require('./delta-helpers');
+var wrapper = require('@cdxoo/chai-baseline-deltas');
+var extraHelpers = require('./delta-helpers');
 
-for (var [ key, fn ] of Object.entries(helpers)) {
-    BaselineDeltas[key] = fn;
+for (var [ key, fn ] of Object.entries(extraHelpers)) {
+    wrapper[key] = fn;
+    wrapper.BaselineDeltas[key] = fn;
 }
 
-module.exports = {
-    BaselineDeltas,
-    ...helpers
-}
+module.exports = wrapper;

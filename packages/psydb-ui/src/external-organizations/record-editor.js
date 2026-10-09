@@ -1,8 +1,10 @@
 import React from 'react';
 
 import { only } from '@mpieva/psydb-core-utils';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
-import { withRecordEditor, FormBox } from '@mpieva/psydb-ui-lib';
+import { FormBox } from '@mpieva/psydb-ui-layout';
+import { withRecordEditor } from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
 
 const EditForm = (ps) => {
@@ -14,16 +16,10 @@ const EditForm = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var {
-        crtSettings,
-        record,
-        related
-    } = fetched;
+    var { crtSettings, record, related } = fetched;
+    var { fieldDefinitions } = crtSettings;
 
-    var {
-        fieldDefinitions
-    } = crtSettings;
-
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
 
     var send = useSendPatch({
@@ -35,25 +31,22 @@ const EditForm = (ps) => {
 
     var initialValues = only({
         from: record.state,
-        paths: [
-            'custom',
-            'systemPermissions',
-        ]
+        paths: [ 'custom', 'systemPermissions' ]
     });
 
     var isHidden = record.state.systemPermissions.isHidden;
 
     return (
         <FormBox
-            title='Externe Organisation bearbeiten'
+            title={ translate('Edit External Organization') }
             isRecordHidden={ isHidden }
         >
             <MainForm.Component
                 fieldDefinitions={ fieldDefinitions }
                 initialValues={ initialValues }
-                onSubmit={ send.exec }
                 related={ related }
                 permissions={ permissions }
+                { ...send.passthrough }
             />
         </FormBox>
     )

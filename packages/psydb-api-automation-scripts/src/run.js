@@ -12,6 +12,7 @@ var faker = require('@mpieva/psydb-faker');
 
 var cli = require('./cli-setup');
 var execute = require('./execute-with-driver');
+var { initDB } = require('./utils');
 
 var cwd = process.cwd();
 
@@ -80,4 +81,9 @@ co(async () => {
             script: it
         });
     }
-}).catch(error => { console.log(error) });
+}).catch(error => {
+    console.log(error);
+    process.exitCode = 1;
+}).finally(() => (
+    initDB.closeAll()
+));

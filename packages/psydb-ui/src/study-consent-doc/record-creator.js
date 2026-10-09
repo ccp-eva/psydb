@@ -248,6 +248,7 @@ const FullRecordCreator = (ps) => {
             labOperatorIds={ labOperatorIds }
             initialValues={ initialValues }
             onSubmit={ send.exec }
+            isTransmitting={ send.isTransmitting }
         />
     );
 }

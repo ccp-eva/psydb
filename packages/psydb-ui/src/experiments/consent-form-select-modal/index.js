@@ -24,6 +24,7 @@ const FetchWrapper = (ps) => {
     var {
         onHide, modalPayloadData,
         experimentRecord, labTeamRecord, related,
+        onRefresh,
     } = ps;
 
     var { subjectRecord } = modalPayloadData;
@@ -59,6 +60,7 @@ const FetchWrapper = (ps) => {
 
         deferredConsentDocFetch,
         revision,
+        onRefresh,
     }
 
     return (
@@ -75,6 +77,7 @@ const ConsentFormSelectModalBody = (ps) => {
 
         deferredConsentDocFetch,
         revision,
+        onRefresh,
     } = ps;
 
     var [{ translate }] = useI18N();
@@ -91,6 +94,7 @@ const ConsentFormSelectModalBody = (ps) => {
     var existingBag = {
         deferredConsentDocFetch,
         revision,
+        onRefresh,
     }
 
     return (

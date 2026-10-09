@@ -75,7 +75,7 @@ export const FullUserOrdered = (ps) => {
         );
 
         if (def.type === 'Lambda') {
-            return null;
+            continue;
         }
 
         var Component = (

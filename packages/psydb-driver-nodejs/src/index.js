@@ -1,10 +1,10 @@
 'use strict';
 var debug = require('debug')('psydb:driver-nodejs');
 var { inspect } = require('util');
+var createNodeAgent = require('@cdxoo/axios-test-wrapper/node');
 
-var { only } = require('@mpieva/psydb-core-utils');
-var { getSystemTimezone } = require('@mpieva/psydb-timezone-helpers');
-var createNodeAgent = require('@mpieva/psydb-axios-wrapper-nodejs');
+var { only } = require('./core-utils');
+var getSystemTimezone = require('./get-system-timezone');
 
 var { DriverError, RequestError, ApiError } = require('./errors');
 var Cache = require('./cache');
@@ -46,7 +46,9 @@ var Driver = (options) => {
     var cache = Cache();
 
     var writeRequest = customWriteRequest || defaultWriteRequest;
-    agent = agent || createNodeAgent(target);
+    if (!agent) {
+        ([ agent ] = createNodeAgent(target));
+    }
 
     // FIXME: duh
     driver.post = async (bag) => {

@@ -10,6 +10,7 @@ var createPersonnel = require('./create-personnel');
 var createLocations = require('./create-locations');
 var createSubjectGroups = require('./create-subject-groups');
 var createChimpanzees = require('./create-chimpanzees');
+var createStudies = require('./create-studies');
 
 var helperSetItems = {
     'Chimpanzee Sub-Species': [
@@ -57,6 +58,7 @@ module.exports = async (bag) => {
     await createLocations(context);
     await createSubjectGroups(context);
     await createChimpanzees(context);
+    await createStudies(context);
 
     mongo.close();
 }

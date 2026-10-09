@@ -3,7 +3,10 @@ import { createBase, withPair, addComponents } from '../core';
 import {
     SaneString,
     FullText,
-    Address
+    Address,
+    ForeignIdList,
+    //HelperSetIdList,
+    CRTRefList,
 } from '../utility-components';
 
 const labels = {
@@ -13,6 +16,14 @@ const labels = {
     '/state/shorthand': 'Shorthand',
     '/state/address': 'Address',
     '/state/description': 'Description',
+
+    '/state/studyTypes': 'Study Types',
+    '/state/subjectTypes': 'Subject Types',
+    '/state/locationTypes': 'Location Types',
+    '/state/externalOrganizationTypes': 'External Organization Types',
+    '/state/externalPersonTypes': 'External Person Types',
+
+    '/state/systemRoleIds': 'System Roles',
 }
 
 const [ Personnel, PersonnelContext ] = createBase();
@@ -36,6 +47,50 @@ addComponents(Personnel, PersonnelContext, labels, [
         path: '/state/description',
         Component: withPair(FullText)
     },
+    
+    {
+        cname: 'StudyTypes',
+        path: '/state/studyTypes',
+        Component: withPair(CRTRefList.Study)
+    },
+    {
+        cname: 'SubjectTypes',
+        path: '/state/subjectTypes',
+        Component: withPair(CRTRefList.Subject)
+    },
+    {
+        cname: 'LocationTypes',
+        path: '/state/locationTypes',
+        Component: withPair(CRTRefList.Location)
+    },
+    { 
+        cname: 'ExternalOrganizationTypes',
+        path: '/state/externalOrganizationTypes',
+        Component: withPair(CRTRefList.ExternalOrganization)
+    },
+    { 
+        cname: 'ExternalPersonTypes',
+        path: '/state/externalPersonTypes',
+        Component: withPair(CRTRefList.ExternalPerson)
+    },
+    
+    {
+        cname: 'LabMethods',
+        path: '/state/labMethods'
+    },
+    /*{
+        cname: 'HelperSetIds',
+        path: '/state/helperSetIds',
+        Component: withPair(HelperSetIdList)
+    },*/
+    { 
+        cname: 'SystemRoleIds',
+        path: '/state/systemRoleIds',
+        Component: withPair((ps) => (
+            <ForeignIdList { ...ps } props={{ collection: 'systemRole' }} />
+        ))
+    },
+    { cname: 'AdminFallbackRoleId', path: '/state/adminFallbackRoleId' },
 ]);
 
 export default Personnel;

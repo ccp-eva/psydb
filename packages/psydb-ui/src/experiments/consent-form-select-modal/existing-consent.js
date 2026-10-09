@@ -6,7 +6,7 @@ import { Alert, Button, LoadingIndicator, SmallFormFooter, A4Wrapper }
 import { RecordDetails } from '../../study-consent-doc';
 
 const ExistingConsent = (ps) => {
-    var { revision, deferredConsentDocFetch } = ps;
+    var { revision, deferredConsentDocFetch, onRefresh } = ps;
     var [ didFetch, fetched ] = deferredConsentDocFetch;
 
     var [{ translate }] = useI18N();
@@ -25,7 +25,10 @@ const ExistingConsent = (ps) => {
                     <i>{ translate('No consent found!') }</i>
                 </Alert>
                 <SmallFormFooter>
-                    <Button onClick={ revision.up }>
+                    <Button onClick={ () => {
+                        revision.up();
+                        onRefresh && onRefresh();
+                    }}>
                         { translate('Refresh') }
                     </Button>
                 </SmallFormFooter>

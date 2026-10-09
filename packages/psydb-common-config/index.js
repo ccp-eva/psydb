@@ -1,38 +1,10 @@
-module.exports = {
+var common = {
     enableMigrationMode: false,
     i18n: {
         enableI18NSelect: true,
         defaultLanguage: 'en',
         defaultLocaleCode: 'en-US',
     },
-
-    // apedb
-    //sideNav: [
-    //    { path: '/csv-imports' },
-    //    { path: '/subjects' },
-    //    { path: '/studies' },
-    //    '=======',
-    //    { path: '/locations' },
-    //    { path: '/subject-groups' },
-    //    { path: '/study-topics' },
-    //    { path: '/helper-sets' },
-    //    { path: '/personnel' },
-    //    '=======',
-    //    { path: '/research-groups' },
-    //    { path: '/system-roles' },
-    //    { path: '/custom-record-types' },
-    //    { path: '/api-keys' },
-    //    { path: '/audit' },
-    //],
-    
-    enabledLabMethods: [
-        'inhouse',
-        'away-team',
-        'online-video-call',
-        'online-survey',
-        'apestudies-wkprc-default',
-        'manual-only-participation'
-    ],
     twoFactorAuth: { // FIXME: rename twoFactorAuth
         isEnabled: false,
     },
@@ -40,28 +12,62 @@ module.exports = {
         isEnabled: true,
         allowedIps: [ '::/0' ]
     },
-    //disableLogoOverlay: true,
+
     branding: require('./psydb-default-branding'),
     disableLogoOverlay: false,
-
     dev_enableStagingBanner: true,
     dev_enableDevPanel: false,
     dev_copyNoticeGreyscale: true,
-    dev_enableForeignIdRefLinkInForms: false,
-
-    dev_enableDangerousCRTFieldOps: true,
     
+    dev_enableDangerousCRTFieldOps: true,
+
+    dev_enableSubjectDuplicatesSearch: false,
+    dev_subjectDuplicatesSearchFields: {}
+}
+
+var apedb = {
+    ...common,
+    enabledLabMethods: [
+        'apestudies-wkprc-default',
+    ],
+    
+    dev_enableWKPRCPatches: true,
+    dev_showDummyRecordsAsTopOptions: true,
+    dev_enableCSVParticipationImport: true,
+    
+    sideNav: [
+        { path: '/csv-imports' },
+        { path: '/subjects' },
+        { path: '/studies' },
+        '=======',
+        { path: '/locations' },
+        { path: '/subject-groups' },
+        { path: '/study-topics' },
+        { path: '/helper-sets' },
+        { path: '/personnel' },
+        '=======',
+        { path: '/research-groups' },
+        { path: '/system-roles' },
+        { path: '/custom-record-types' },
+        { path: '/api-keys' },
+        { path: '/audit' },
+    ],
+}
+
+var mpiccp = {
+    ...common,
+    enabledLabMethods: [
+        'inhouse',
+        'away-team',
+        'online-video-call',
+        //'online-survey',
+        'manual-only-participation'
+    ],
+    dev_enableStatistics: true,
     dev_enableCSVSubjectImport: true,
     dev_enableCSVParticipationImport: true,
-    //dev_enableCSVSubjectContactHistoryImport: true,
     
-    dev_enableStatistics: true,
-    dev_showDummyRecordsAsTopOptions: false,
-    //dev_enableWKPRCPatches: true,
-
-    //dev_enableImprovedContactTracking: true,
-    //dev_enableStudyConsentWorkflow: true,
-    //dev_enableStudyRoadmap: true,
+    dev_enableStudyConsentWorkflow: true,
 
     dev_enableSubjectDuplicatesSearch: true,
     dev_subjectDuplicatesSearchFields: {
@@ -88,3 +94,22 @@ module.exports = {
     },
     dev_enableSubjectCopyForUnprocessedExperiments: true,
 }
+
+var humankind = {
+    ...common,
+    dev_enableForeignIdRefLinkInForms: false,
+    
+    dev_enableCSVSubjectImport: true,
+    dev_enableCSVParticipationImport: true,
+    dev_enableCSVSubjectContactHistoryImport: true,
+
+    dev_enableImprovedContactTracking: true,
+    dev_enableStudyRoadmap: true,
+    
+    enabledLabMethods: [
+        'inhouse',
+        'away-team',
+    ],
+}
+
+module.exports = mpiccp;

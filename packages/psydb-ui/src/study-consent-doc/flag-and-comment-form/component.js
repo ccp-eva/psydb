@@ -34,14 +34,20 @@ const FormFields = (ps) => {
     return (
         <>
             <Fields.ExtBool
-                label={ translate('Has Issue') }
+                label={ translate('Contains Errors') }
                 dataXPath='$.hasIssue'
                 inverted={ true }
+                helpText={ translate(
+                    'For when the form contains erroneous data.'
+                )}
             />
             <Fields.ExtBool
-                label={ translate('Has Update') }
+                label={ translate('Has New Infos') }
                 dataXPath='$.containsSubjectUpdate'
                 inverted={ true }
+                helpText={ translate(
+                    'For when the form contains new info to update in the data sheet.'
+                )}
             />
             <Fields.FullText
                 label={ translate('Comment') }

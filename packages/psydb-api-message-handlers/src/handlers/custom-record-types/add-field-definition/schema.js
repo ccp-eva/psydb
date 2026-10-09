@@ -1,78 +1,52 @@
 'use strict';
 var {
     ExactObject,
+    ClosedObject,
     OpenObject,
     Id,
-    EventId,
+    StringEnum,
     IdentifierString,
     SaneString,
 } = require('@mpieva/psydb-schema-fields');
 
-var {
-    Message,
-} = require('@mpieva/psydb-schema-helpers');
+var { Message } = require('@mpieva/psydb-schema-helpers');
+var { FieldDefinitionSchemas } = require('@mpieva/psydb-common-lib');
+
+var FieldType = () => StringEnum([
+    ...Object.keys(FieldDefinitionSchemas)
+]);
+
+var SubChannelKey = () => (
+    StringEnum([ 'scientific', 'gdpr' ])
+);
+
+var PayloadProps = () => {
+    return ClosedObject({
+        'key': IdentifierString({ minLength: 1 }),
+        'type': FieldType(),
+        'displayName': SaneString({ minLength: 1 }),
+        'displayNameI18N': OpenObject({
+            'de': SaneString()
+        }),
+        'props': OpenObject({})
+    })
+}
 
 var Schema = () => {
+    var required = {
+        'id': Id(),
+        'props': PayloadProps()
+    }
+
+    var optional = {
+        'subChannelKey': SubChannelKey(),
+    }
+
     return Message({
         type: `custom-record-types/add-field-definition`,
         payload: ExactObject({
-            properties: {
-                id: Id(),
-                subChannelKey: {
-                    type: 'string',
-                    enum: [ 'scientific', 'gdpr' ]
-                }, 
-                props: {
-                    type: 'object',
-                    properties: {
-                        key: IdentifierString({ minLength: 1 }),
-                        type: {
-                            type: 'string',
-                            enum: [
-                                'SaneString',
-                                'SaneStringList',
-                                'URLString',
-                                'URLStringList',
-                                'Address',
-                                'HelperSetItemId',
-                                'HelperSetItemIdList',
-                                'EmailList',
-                                'Email',
-                                'PhoneWithTypeList',
-                                'PhoneList',
-                                'Phone',
-                                'ForeignId',
-                                'ForeignIdList',
-                                'FullText',
-                                'DateTime',
-                                'DateOnlyServerSide',
-                                'BiologicalGender',
-                                'DefaultBool',
-                                'ExtBool',
-                                'GeoCoords',
-                                'ListOfObjects',
-
-                                'Integer',
-                                'Lambda',
-                            ],
-                        },
-                        displayName: SaneString({ minLength: 1 }),
-                        displayNameI18N: OpenObject({
-                            de: SaneString()
-                        })
-                    },
-                    required: [
-                        'type',
-                        'key',
-                        'displayName',
-                        'displayNameI18N'
-                    ]
-                },
-            },
-            required: [
-                'id',
-                'props',
-            ]
+            properties: { ...required, ...optional },
+            required: Object.keys(required)
         })
     });
 }

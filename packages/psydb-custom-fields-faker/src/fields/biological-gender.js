@@ -11,7 +11,7 @@ var getRandomValue = (bag) => {
     if (enableUnknownValue) {
         options.push('unknown'); weights.push(10);
     }
-    if (enableUnknownValue) {
+    if (enableOtherValue) {
         options.push('other'); weights.push(10);
     }
 
