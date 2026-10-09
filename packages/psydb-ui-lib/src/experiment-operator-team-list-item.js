@@ -16,6 +16,7 @@ const StudyTeamListItem = ({
     onDeleteClick,
     enableDelete,
 }) => {
+    var translate = useUITranslation();
     var cls = classnames([
         'd-flex border',
         record.state.hidden ? 'bg-light' : 'bg-white',
@@ -57,7 +58,7 @@ const StudyTeamListItem = ({
                 { relatedRecordLabels && (
                     <>
                         <div>
-                            <span className='d-inline-block pr-2'>Experimenter:innen:</span>
+                            <span className='d-inline-block pr-2'>{ translate('Experimenters') }:</span>
                             <i className='text-muted'>{
                                 record.state.personnelIds
                                 .map(id => (
@@ -67,12 +68,12 @@ const StudyTeamListItem = ({
                             }</i>
                         </div>
                         <div>
-                            <span className='d-inline-block pr-2'>Forschungsgruppe:</span>
+                            <span className='d-inline-block pr-2'>{ translate('Research Group') }:</span>
                             <i className='text-muted'>{ record.state.researchGroupId ? (
                                 relatedRecordLabels.researchGroup[
                                     record.state.researchGroupId
                                 ]._recordLabel
-                            ) : 'Keine' }</i>
+                            ) : translate('None') }</i>
                         </div>
                     </>
                 )}

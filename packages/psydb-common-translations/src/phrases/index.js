@@ -1828,4 +1828,81 @@ module.exports = [
         en: 'Please Select Record',
         de: 'Bitte Datensatz auswählen'
     },
+
+    {
+        en: 'Team Hidden',
+        de: 'Team Ausgeblendet'
+    },
+    {
+        en: 'Mail Subject',
+        de: 'Betreff'
+    },
+    {
+        en: 'Notify Subjects via Mail',
+        de: 'Proband:innen per Mail benachrichtigen'
+    },
+    {
+        en: '... and more',
+        de: '... und weitere'
+    },
+    {
+        en: 'Participations',
+        de: 'Teilnahmen'
+    },
+    {
+        en: 'Subject History',
+        de: 'Proband:innen-Historie'
+    },
+    {
+        en: 'Changed By',
+        de: 'Geändert durch'
+    },
+    {
+        en: 'Possible formats are',
+        de: 'Mögliche Formate sind'
+    },
+    {
+        en: 'Max. File Size',
+        de: 'Maximale Dateigröße'
+    },
+    {
+        en: 'Upload Files',
+        de: 'Dateien hochladen'
+    },
+    {
+        en: 'No teams available',
+        de: 'Keine Teams vorhanden'
+    },
+    {
+        en: 'Select New Room',
+        de: 'Neuen Raum wählen'
+    },
+    {
+        en: 'No further rooms found',
+        de: 'Keine weiteren Räume gefunden'
+    },
+    {
+        en: 'Select',
+        de: 'Wählen'
+    },
+    {
+        en: 'Not in Age Frame',
+        de: 'Nicht im Altersfenster'
+    },
+    {
+        en: 'Appointment is not postprocessed!',
+        de: 'Termin ist nicht nachbereitet!'
+    },
+    {
+        en: 'Only participations of postprocessed appointments can be changed manually.',
+        de: 'Nur Teilnahmen von nachbereiteten Terminen können manuell verändert werden.'
+    },
+    {
+        en: 'Appointment was canceled!',
+        de: 'Termin wurde abgesagt!'
+    },
+    {
+        en: 'Participations of canceled appointments cannot be edited manually.',
+        de: 'Teilnahmen von abgesagten Terminen können nicht manuell bearbeitet werden.'
+    },
 ]

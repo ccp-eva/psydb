@@ -1,4 +1,5 @@
 import React  from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { sliceDays } from '@mpieva/psydb-date-interval-fns';
 import { compareIds, groupBy } from '@mpieva/psydb-core-utils';
 
@@ -33,6 +34,7 @@ const ChangeInviteLocationModalBody = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
+    var translate = useUITranslation();
     var selection = useSelectionReducer();
 
     var [ didFetch, fetched ] = useFetchChain(() => ([
@@ -112,11 +114,11 @@ const ChangeInviteLocationModalBody = (ps) => {
         <div className='mt-3'>
             <div className='bg-white px-3 py-2 border'>
                 <header className='pb-1 border-bottom mb-2'>
-                    <b>Neuen Raum wählen</b>
+                    <b>{ translate('Select New Room') }</b>
                 </header>
                 { (locationIds.length < 1) && (
                     <i className='text-muted'>
-                        Keine Weiteren Räume gefunden
+                        { translate('No further rooms found') }
                     </i>
                 )}
                 <div className='d-flex'>
@@ -124,7 +126,7 @@ const ChangeInviteLocationModalBody = (ps) => {
                         <div className='ml-3' key={ ix }>
                             <header className={ 'text-center border-bottom bg-light px-3' }>
                                 <b>{ labSettings.relatedRecords.location[it]._recordLabel }</b>
-                                <div>Uhrzeit</div>
+                                <div>{ translate('Time') }</div>
                             </header>
                             <LocationTimeSlotList { ...({
                                 locationRecord: { _id: it },
@@ -156,7 +158,7 @@ const ChangeInviteLocationModalBody = (ps) => {
                                     ...(experimentRecordsByLocation[it] || []),
                                 ].length > 0}
                             >
-                                Wählen
+                                { translate('Select') }
                             </Button>
                         </div>
                     ))}
@@ -168,7 +170,7 @@ const ChangeInviteLocationModalBody = (ps) => {
                     variant='primary'
                     disabled={ selection.value.length !== 1 }
                 >
-                    Speichern
+                    { translate('Save') }
                 </Button>
             </div>
         </div>
