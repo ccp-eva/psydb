@@ -56,9 +56,9 @@ const FormSelectionWrapper = (ps) => {
                         <b>{ translate('Subject') }</b>
                         <SubjectPicker
                             studyConsentFormId={ studyConsentFormId }
-                            value={{ _id: subjectId }}
+                            value={ subjectId ? { _id: subjectId } : undefined }
                             onChange={ (record) => (
-                                setSubjectId(record._id || record)
+                                setSubjectId(record?._id || record)
                             )}
                         />
                     </>
@@ -67,9 +67,15 @@ const FormSelectionWrapper = (ps) => {
                     <>
                         <b>{ translate('Experimenter') }</b>
                         <PersonnelPicker
-                            value={{ _id: labOperatorIds[0] }}
+                            value={
+                                labOperatorIds[0]
+                                ? { _id: labOperatorIds[0] }
+                                : undefined
+                            }
                             onChange={ (record) => (
-                                setLabOperatorIds([ record._id || record ])
+                                setLabOperatorIds(
+                                    record ? [ record._id || record ] : []
+                                )
                             )}
                         />
                     </>
