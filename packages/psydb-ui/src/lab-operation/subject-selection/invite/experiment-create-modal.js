@@ -16,7 +16,7 @@ const CreateModalBody = (ps) => {
         studyData,
         inviteType, desiredTestInterval, testableIntervals,
         ageFrameIntervals,
-        subjectId, subjectLabel,
+        subjectId, subjectLabel, subjectDateOfBirth,
         onSuccessfulUpdate,
     } = ps;
 
@@ -111,6 +111,7 @@ const CreateModalBody = (ps) => {
                 onSubmit={ send.exec }
                 initialValues={ initialValues }
                 subjectLabel={ subjectLabel }
+                subjectDateOfBirth={ subjectDateOfBirth }
                 start={ start }
                 minEnd={ minEnd }
                 maxEnd={ maxEnd }

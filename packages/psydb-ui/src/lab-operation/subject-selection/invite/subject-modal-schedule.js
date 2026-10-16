@@ -79,6 +79,7 @@ const SubjectModalSchedule = (ps) => {
         studyData,
         subjectId,
         subjectLabel,
+        subjectDateOfBirth: testableInStudies._ageFrameField, // FIXME
 
         onSuccessfulUpdate,
     }

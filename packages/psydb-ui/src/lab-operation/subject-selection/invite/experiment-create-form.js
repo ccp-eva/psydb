@@ -3,10 +3,12 @@ import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Pair, SmallFormFooter, AsyncButton } from '@mpieva/psydb-ui-layout';
 import { Row } from '@mpieva/psydb-ui-layout'; // XXX
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
+import { calculateAge } from '@mpieva/psydb-common-lib';
 
 const Component = (ps) => {
     var {
         subjectLabel,
+        subjectDateOfBirth,
         start,
         minEnd,
         maxEnd,
@@ -18,7 +20,9 @@ const Component = (ps) => {
     var [{ translate }] = useI18N();
     
     var contactBag = { subjectLabel }
-    var experimentBag = { start, minEnd, maxEnd, slotDuration }
+    var experimentBag = {
+        start, minEnd, maxEnd, slotDuration, subjectDateOfBirth
+    }
 
     return (
         <DefaultForm
@@ -63,7 +67,7 @@ const ContactFields = (ps) => {
 }
 
 const ExperimentFields = (ps) => {
-    var { start, minEnd, maxEnd, slotDuration } = ps;
+    var { start, minEnd, maxEnd, slotDuration, subjectDateOfBirth } = ps;
     var [{ translate, fdate }] = useI18N();
     
     if (minEnd === undefined) {
@@ -81,6 +85,12 @@ const ExperimentFields = (ps) => {
         <>
             <Pair className='m-0 mb-2' label={ translate('Date') }>
                 { fdate(start, 'P') }
+                { subjectDateOfBirth && (
+                    ` (${translate('T-Age')}: ${calculateAge({
+                        base: subjectDateOfBirth,
+                        relativeTo: start,
+                    })})`
+                )}
             </Pair>
 
             <Pair className='m-0 mb-2'label={ translate('Start') }>
