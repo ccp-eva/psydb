@@ -5,6 +5,10 @@ module.exports = [
         de: 'Bitte mindestens ein Feld wählen.',
     },
     {
+        en: 'Duplicates search is not configured for subject type "${recordType}".',
+        de: 'Die Duplikatsuche ist für den Proband:innen-Typ "${recordType}" nicht konfiguriert.',
+    },
+    {
         en: 'No possible duplicates found.',
         de: 'Keine möglichen Duplikate gefunden.',
     },
