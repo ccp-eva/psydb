@@ -51,6 +51,10 @@ const SubjectField = (ps) => {
     }
 
     var { systemType } = definition;
+    // NOTE: foreign ids are entered as plain text label; see create-defaults
+    if (systemType === 'ForeignId') {
+        systemType = 'SaneString';
+    }
     var Component = Fields[systemType];
     return (
         <Component

@@ -238,6 +238,7 @@ const FullRecordCreator = (ps) => {
 
     var initialValues = MainForm.createDefaults({
         subject: subject.record,
+        relatedRecordLabels: subject.relatedRecordLabels,
         studyConsentForm: studyConsentForm.record,
         subjectCRT,
     });
