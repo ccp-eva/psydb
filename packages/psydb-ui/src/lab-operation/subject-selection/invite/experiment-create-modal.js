@@ -15,6 +15,7 @@ const CreateModalBody = (ps) => {
 
         studyData,
         inviteType, desiredTestInterval, testableIntervals,
+        ageFrameIntervals,
         subjectId, subjectLabel,
         onSuccessfulUpdate,
     } = ps;
@@ -37,15 +38,20 @@ const CreateModalBody = (ps) => {
         reservationRecord.state.experimentOperatorTeamId
     );
 
-    var isSubjectTestable = false;
-    //console.log({ testableIntervals });
-    if (testableIntervals) {
-        var intersections = intervalfns.intersect(
+    var isInAgeFrame = false;
+    if (ageFrameIntervals || testableIntervals) {
+        isInAgeFrame = intervalfns.intersect(
             [{ start: start, end: maxEnd }],
-            testableIntervals
-        );
-        //console.log({ intersections });
-        isSubjectTestable = intersections.length > 0;
+            ageFrameIntervals || testableIntervals
+        ).length > 0;
+    }
+
+    var isInDesiredTestInterval = true;
+    if (desiredTestInterval) {
+        isInDesiredTestInterval = intervalfns.intersect(
+            [{ start: start, end: maxEnd }],
+            [ desiredTestInterval ]
+        ).length > 0;
     }
 
     var shouldHide = !enableFollowUpExperiments;
@@ -91,9 +97,14 @@ const CreateModalBody = (ps) => {
 
     return (
         <>
-            { !isSubjectTestable && (
+            { !isInAgeFrame && (
                 <Alert variant='danger'>
                     <b>{ translate('Not in Age Range') }</b>
+                </Alert>
+            )}
+            { isInAgeFrame && !isInDesiredTestInterval && (
+                <Alert variant='warning'>
+                    <b>{ translate('Not in Desired Test Interval!') }</b>
                 </Alert>
             )}
             <ExperimentCreateForm.Component

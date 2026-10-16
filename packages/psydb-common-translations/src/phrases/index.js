@@ -562,6 +562,10 @@ module.exports = [
         de: 'Nicht in Altersfenster'
     },
     {
+        en: 'Not in Desired Test Interval!',
+        de: 'Nicht im gewünschten Testzeitraum!'
+    },
+    {
         en: 'Add',
         de: 'Hinzufügen'
     },

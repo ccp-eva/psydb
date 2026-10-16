@@ -20,6 +20,7 @@ const ExperimentUpdateModalBody = (ps) => {
         
         desiredTestInterval,
         testableIntervals,
+        ageFrameIntervals,
 
         onSuccessfulUpdate,
     } = ps;
@@ -63,24 +64,34 @@ const ExperimentUpdateModalBody = (ps) => {
     var { start, end } = experimentRecord.state.interval;
     end = new Date(end.getTime() + 1);
 
-    var isSubjectTestable = false;
-    //console.log({ testableIntervals });
-    if (testableIntervals) {
-        var intersections = intervalfns.intersect(
+    var isInAgeFrame = false;
+    if (ageFrameIntervals || testableIntervals) {
+        isInAgeFrame = intervalfns.intersect(
             [{ start: start, end: end }],
-            testableIntervals
-        );
-        //console.log({ intersections });
-        isSubjectTestable = intersections.length > 0;
+            ageFrameIntervals || testableIntervals
+        ).length > 0;
+    }
+
+    var isInDesiredTestInterval = true;
+    if (desiredTestInterval) {
+        isInDesiredTestInterval = intervalfns.intersect(
+            [{ start: start, end: end }],
+            [ desiredTestInterval ]
+        ).length > 0;
     }
 
     return (
         <>
-            { !isSubjectTestable && (
+            { !isInAgeFrame && (
                 <Alert variant='danger'>
                     <b>{ translate('Not in Age Range') }</b>
                 </Alert>
-            )} 
+            )}
+            { isInAgeFrame && !isInDesiredTestInterval && (
+                <Alert variant='warning'>
+                    <b>{ translate('Not in Desired Test Interval!') }</b>
+                </Alert>
+            )}
             <ExperimentShortControls {...({
                 start,
                 end,
