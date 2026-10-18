@@ -39,7 +39,6 @@ const ExtendedSearch = (ps) => {
 
     var defaultValues = {
         specialFilters: {
-            isCanceled: 'only-false',
             isPostprocessed: 'any',
         },
         columns: [
@@ -48,6 +47,7 @@ const ExtendedSearch = (ps) => {
             '/state/studyId',
             '/state/locationId',
             '/state/selectedSubjectIds',
+            '/_participationStatus',
         ],
         sort: { column: '/state/interval/start', direction: 'desc' },
         limit: 0,

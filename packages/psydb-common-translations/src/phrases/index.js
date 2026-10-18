@@ -427,6 +427,11 @@ module.exports = [
         en: 'resc.',
         de: 'versch.',
     },
+    {
+        internal: 'deleted_short',
+        en: 'del.',
+        de: 'gel.',
+    },
     
     {
         en: 'Set Remaining to "Not Participated"',

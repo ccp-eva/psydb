@@ -17,10 +17,7 @@ export const Results = (ps) => {
 }
 
 const getRowClassName = (record) => {
-    var { isCanceled, isPostprocessed } = record.state || {};
-    if (isCanceled) {
-        return 'text-danger';
-    }
+    var { isPostprocessed } = record.state || {};
     if (!isPostprocessed) {
         return 'text-orange';
     }

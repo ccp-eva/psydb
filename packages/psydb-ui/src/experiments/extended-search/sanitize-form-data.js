@@ -1,8 +1,11 @@
 const sanitizeFormData = (formData) => {
     var { specialFilters, ...pass } = formData;
+    var { subjectType } = specialFilters || {};
 
     return {
         ...pass,
+        // NOTE: enables subject columns
+        ...(subjectType && { subjectType }),
         specialFilters: sanitizeSpecialFilters(specialFilters),
     };
 }
@@ -11,7 +14,7 @@ const sanitizeSpecialFilters = (values) => {
     var {
         labMethods, interval,
         studyIds, subjectType, subjectIds, experimentOperatorIds,
-        isCanceled, isPostprocessed,
+        isPostprocessed,
     } = values;
 
     var saneLabMethods = (
@@ -33,7 +36,6 @@ const sanitizeSpecialFilters = (values) => {
         ...sanitizeNegatableIds(
             'experimentOperatorIds', experimentOperatorIds
         ),
-        ...(isCanceled && { isCanceled }),
         ...(isPostprocessed && { isPostprocessed }),
     };
 }

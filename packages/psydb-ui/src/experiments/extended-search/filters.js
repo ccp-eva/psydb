@@ -28,11 +28,15 @@ export const Filters = (ps) => {
             <SubjectTypeKey
                 dataXPath='$.specialFilters.subjectType'
                 label={ translate('Subject Type') }
-                extraOnChange={ () => (
-                    setFieldValue('$.specialFilters.subjectIds', [])
-                )}
+                extraOnChange={ () => {
+                    setFieldValue('$.specialFilters.subjectIds', []);
+                    // NOTE: subject columns depend on the subject type
+                    setFieldValue('$.columns', (formData?.columns || []).filter(
+                        it => !it.startsWith('/_subject/')
+                    ));
+                }}
                 helpText={ translate(
-                    'Selecting a subject type enables the filter for specific subjects.'
+                    'Selecting a subject type enables the filter for specific subjects as well as additional subject columns.'
                 )}
             />
             <Fields.ForeignIdList
@@ -67,11 +71,6 @@ export const Filters = (ps) => {
                 dataXPath='$.specialFilters.experimentOperatorIds'
                 label={ translate('Experimenters') }
                 collection='personnel'
-            />
-            <Fields.GenericRadioGroup
-                dataXPath='$.specialFilters.isCanceled'
-                label={ translate('Canceled') }
-                options={ boolOptions }
             />
             <Fields.GenericRadioGroup
                 dataXPath='$.specialFilters.isPostprocessed'

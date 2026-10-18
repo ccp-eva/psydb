@@ -2,10 +2,10 @@ import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
 import { keyBy } from '@mpieva/psydb-core-utils';
-import { SmartArray } from '@mpieva/psydb-common-lib';
+import { SmartArray, CRTSettings } from '@mpieva/psydb-common-lib';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { Button } from '@mpieva/psydb-ui-layout';
+import { usePermissions, useFetch } from '@mpieva/psydb-ui-hooks';
+import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib';
 
 
@@ -15,8 +15,29 @@ const ColumnSelect = withField({
 })
 
 export const Columns = (ps) => {
+    var { formData } = ps;
+    var subjectType = formData?.specialFilters?.subjectType;
+
     var [{ translate }] = useI18N();
     var permissions = usePermissions();
+
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        subjectType
+        ? agent.readCRTSettings({ collection: 'subject', recordType: subjectType })
+        : undefined
+    ), [ subjectType ]);
+
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
+
+    var subjectColumns = (
+        subjectType && fetched.data
+        ? createSubjectColumns({
+            crtSettings: fetched.data, permissions, translate
+        })
+        : []
+    );
     
     var idColumns = SmartArray([
         ( permissions.isRoot() && (
@@ -26,23 +47,19 @@ export const Columns = (ps) => {
 
     var staticColumns = [
         { pointer: '/type', label: translate('Lab Workflow') },
-        { pointer: '/state/interval/start', label: translate('Start') },
-        { pointer: '/state/interval/end', label: translate('End') },
+        { pointer: '/state/interval/start', label: translate('Date/Time') },
         { pointer: '/state/studyId', label: translate('Study') },
         { pointer: '/state/locationId', label: translate('Location') },
-        { pointer: '/state/experimentOperatorTeamId', label: translate('Team') },
         { pointer: '/state/experimentOperatorIds', label: translate('Experimenters') },
-        { pointer: '/state/selectedSubjectIds', label: translate('Subjects') },
-        { pointer: '/state/isCanceled', label: translate('Canceled') },
+        { pointer: '/state/selectedSubjectIds', label: translate('Subject') },
+        { pointer: '/_participationStatus', label: translate('Status') },
         { pointer: '/state/isPostprocessed', label: translate('Postprocessed') },
     ];
 
     var sortableColumns = [
         ...idColumns,
         { pointer: '/type', label: translate('Lab Workflow') },
-        { pointer: '/state/interval/start', label: translate('Start') },
-        { pointer: '/state/interval/end', label: translate('End') },
-        { pointer: '/state/isCanceled', label: translate('Canceled') },
+        { pointer: '/state/interval/start', label: translate('Date/Time') },
         { pointer: '/state/isPostprocessed', label: translate('Postprocessed') },
     ];
 
@@ -52,10 +69,11 @@ export const Columns = (ps) => {
                 columnLabel={ translate('Selected') }
                 orderLabel={ translate('Column Order') }
                 dataXPath='$.columns'
-                columnBlocks={[
+                columnBlocks={ SmartArray([
                     idColumns,
                     staticColumns,
-                ]}
+                    ( subjectColumns.length > 0 && subjectColumns ),
+                ]) }
             >
                 <header className='mb-2 border-bottom'>
                     <b>{ translate('Sort Order') }</b>
@@ -84,4 +102,56 @@ export const Columns = (ps) => {
             </div>
         </div>
     );
+}
+
+// NOTE: subject columns are prefixed with '/_subject', see
+// experiment/extendedSearch endpoint
+const createSubjectColumns = (bag) => {
+    var { crtSettings, permissions, translate } = bag;
+    var {
+        showSequenceNumber,
+        showOnlineId,
+        commentFieldIsSensitive,
+    } = crtSettings;
+
+    var canAccessSensitive = permissions.hasFlag('canAccessSensitiveFields');
+
+    var crt = CRTSettings({ data: crtSettings });
+    var customFields = crt.findCustomFields({
+        'isRemoved': { $ne: true },
+        $or: [
+            { 'props.isSensitive': { $ne: true }},
+            { 'props.isSensitive': canAccessSensitive },
+        ]
+    });
+    var customColumns = customFields.map(it => ({
+        pointer: it.pointer,
+        label: translate.fieldDefinition(it),
+    }));
+    var hasDateOfBirthField = customFields.some(it => (
+        it.props?.isSpecialAgeFrameField
+    ));
+
+    var columns = SmartArray([
+        ( showSequenceNumber && (
+            { pointer: '/sequenceNumber', label: translate('ID No.') }
+        )),
+        ( showOnlineId && (
+            { pointer: '/onlineId', label: translate('Online ID Code') }
+        )),
+        ...customColumns,
+        ( (!commentFieldIsSensitive || canAccessSensitive) && (
+            { pointer: '/scientific/state/comment', label: translate('Comment') }
+        )),
+        // NOTE: virtual column calculated by the api
+        ( hasDateOfBirthField && (
+            { pointer: '/_testingAge', label: translate('T-Age') }
+        )),
+    ]);
+
+    var prefix = translate('Subject');
+    return columns.map(it => ({
+        pointer: `/_subject${it.pointer}`,
+        label: `${prefix}: ${it.label}`,
+    }));
 }

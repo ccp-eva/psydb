@@ -10,6 +10,7 @@ var {
     ForeignIdList,
     DateOnlyServerSideInterval,
     Timezone,
+    CustomRecordTypeKey,
 } = require('@mpieva/psydb-schema-fields');
 
 var enums = require('@mpieva/psydb-schema-enums');
@@ -39,7 +40,6 @@ var BodySchema = () => {
             'experimentOperatorIds': NegatableForeignIdList({
                 collection: 'personnel'
             }),
-            'isCanceled': TriStateBool(),
             'isPostprocessed': TriStateBool(),
         }),
         'columns': DefaultArray({
@@ -50,6 +50,8 @@ var BodySchema = () => {
     };
 
     var optional = {
+        // NOTE: enables subject columns
+        'subjectType': CustomRecordTypeKey({ collection: 'subject' }),
         'sort': MaxObject({
             'column': JsonPointer(),
             'direction': StringEnum([ 'asc', 'desc' ]),

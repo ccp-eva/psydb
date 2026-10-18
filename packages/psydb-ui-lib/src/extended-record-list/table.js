@@ -15,9 +15,10 @@ const Table = (ps) => {
             <TableHead showActionColumn={ true }>
                 <TableHeadCustomCols definitions={ definitions } />
             </TableHead>
-            <tbody>{ records.map(it => (
+            <tbody>{ records.map((it, ix) => (
                 <TableRow
-                    key={ it._id }
+                    // NOTE: records can be unwound i.e. _id is not unique
+                    key={ `${it._id}_${ix}` }
                     collection={ collection }
                     record={ it }
                     related={ related }
