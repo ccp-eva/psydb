@@ -49,6 +49,25 @@ describe('experiment/extendedSearch', function () {
         return koaContext.body.data;
     }
 
+    it('throws when not configured', async function () {
+        var koaContext = this.createKoaContext({
+            ...session,
+            apiConfig: { dev_enableExtendedExperimentSearch: false },
+            request: { body: {} },
+        });
+
+        var error;
+        try {
+            await endpoint(koaContext, async () => {});
+        }
+        catch (e) {
+            error = e;
+        }
+        expect(error?.getInfo()).to.include({
+            statusCode: 409, apiStatus: 'NotConfigured'
+        });
+    });
+
     it('finds experiments without filters', async function () {
         var data = await search.call(this, {});
         var { records, recordsCount, related, displayFieldData } = data;

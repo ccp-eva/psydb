@@ -9,7 +9,7 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { PageWrappers } from '@mpieva/psydb-ui-layout';
 import { FormBox } from '@mpieva/psydb-ui-lib';
 
@@ -20,17 +20,20 @@ import ExtendedSearch from './extended-search';
 const Experiments = () => {
     var { path, url } = useRouteMatch();
     var translate = useUITranslation();
+    var { dev_enableExtendedExperimentSearch = false } = useUIConfig();
 
     return (
         <Switch>
-            <Route exact path={ `${path}/extended-search` }>
-                <PageWrappers.Level1
-                    title={ translate('Participations') }
-                    titleLinkUrl={ `${url}/extended-search` }
-                >
-                    <ExtendedSearch />
-                </PageWrappers.Level1>
-            </Route>
+            { dev_enableExtendedExperimentSearch && (
+                <Route exact path={ `${path}/extended-search` }>
+                    <PageWrappers.Level1
+                        title={ translate('Participations') }
+                        titleLinkUrl={ `${url}/extended-search` }
+                    >
+                        <ExtendedSearch />
+                    </PageWrappers.Level1>
+                </Route>
+            )}
             <Route>
                 <PageWrappers.Level1 title={ translate('Appointment') }>
                     <PageWrappers.Level2 title={ translate('Details') }>

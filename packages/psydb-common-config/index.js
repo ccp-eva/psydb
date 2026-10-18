@@ -22,7 +22,9 @@ var common = {
     dev_enableDangerousCRTFieldOps: true,
 
     dev_enableSubjectDuplicatesSearch: false,
-    dev_subjectDuplicatesSearchFields: {}
+    dev_subjectDuplicatesSearchFields: {},
+
+    dev_enableExtendedExperimentSearch: false,
 }
 
 var apedb = {
@@ -34,6 +36,7 @@ var apedb = {
     dev_enableWKPRCPatches: true,
     dev_showDummyRecordsAsTopOptions: true,
     dev_enableCSVParticipationImport: true,
+    dev_enableExtendedExperimentSearch: true,
     
     sideNav: [
         { path: '/csv-imports' },
@@ -94,6 +97,7 @@ var mpiccp = {
         ]
     },
     dev_enableSubjectCopyForUnprocessedExperiments: true,
+    dev_enableExtendedExperimentSearch: true,
 }
 
 var humankind = {
@@ -138,6 +142,7 @@ var cats = {
         ],
     },
     dev_enableSubjectCopyForUnprocessedExperiments: true,
+    dev_enableExtendedExperimentSearch: true,
 }
 
 module.exports = cats;

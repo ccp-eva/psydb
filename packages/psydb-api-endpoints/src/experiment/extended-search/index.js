@@ -35,7 +35,11 @@ var BodySchema = require('./body-schema');
 // so this does not use extendedSearch.core(); the experiments
 // subjects are unwound, i.e. one row per subject
 var experimentExtendedSearch = async (context, next) => {
-    var { db, permissions, request, i18n } = context;
+    var { db, permissions, request, i18n, apiConfig } = context;
+
+    if (!apiConfig.dev_enableExtendedExperimentSearch) {
+        throw new ApiError(409, 'NotConfigured');
+    }
 
     if (!permissions.hasFlag('canUseExtendedSearch')) {
         throw new ApiError(403);

@@ -105,7 +105,11 @@ const SubjectDetailsContainer = ({
     var canHistory = permissions.isRoot();
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
     var canWriteParticipation = permissions.hasFlag('canWriteParticipation');
-    var canUseExtendedSearch = permissions.hasFlag('canUseExtendedSearch');
+    var { dev_enableExtendedExperimentSearch = false } = useUIConfig();
+    var canUseExperimentSearch = (
+        dev_enableExtendedExperimentSearch
+        && permissions.hasFlag('canUseExtendedSearch')
+    );
 
     var canSelectSubjectsForExperiments = (
         permissions.hasSomeLabOperationFlags({
@@ -150,7 +154,7 @@ const SubjectDetailsContainer = ({
                     />
                     <Header
                         title={ translate('Study Participation') }
-                        experimentSearchUrl={ canUseExtendedSearch && (
+                        experimentSearchUrl={ canUseExperimentSearch && (
                             createExperimentSearchUrl({
                                 subjectId: id, subjectType: recordType
                             })
