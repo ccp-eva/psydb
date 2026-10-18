@@ -175,6 +175,11 @@ module.exports = [
         de: 'Erweiterte Teilnahme-Suche',
     },
     {
+        internal: '_participation_search_link',
+        en: 'Participation Search',
+        de: 'Teilnahme-Suche',
+    },
+    {
         en: 'Postprocessed',
         de: 'Nachbereitet',
     },

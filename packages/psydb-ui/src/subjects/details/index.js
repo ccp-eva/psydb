@@ -55,7 +55,7 @@ const Header = ({
             <div>
                 { experimentSearchUrl && (
                     <LinkButton className='mr-3' to={ experimentSearchUrl }>
-                        { translate('Advanced Participation Search') }
+                        { translate('_participation_search_link') }
                     </LinkButton>
                 )}
                 { canHistory && historyUrl && (
