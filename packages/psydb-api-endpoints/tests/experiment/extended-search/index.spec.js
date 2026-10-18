@@ -223,6 +223,69 @@ describe('experiment/extendedSearch', function () {
         );
     });
 
+    describe('manual', function () {
+        var experimentId = new ObjectId('6a4c4ff88164a7db5d461b8a');
+        before(async function () {
+            await db.collection('experiment').updateOne(
+                { _id: experimentId },
+                { $set: { 'type': 'manual', 'realType': 'away-team' }}
+            );
+        });
+        after(async function () {
+            await db.collection('experiment').updateOne(
+                { _id: experimentId },
+                {
+                    $set: { 'type': 'away-team' },
+                    $unset: { 'realType': true }
+                }
+            );
+        });
+
+        it('uses the real type for filtering and display', async function () {
+            var data = await search.call(this, {
+                labMethods: [ 'away-team' ]
+            });
+            expect(data.recordsCount).to.eql(2);
+            expect(data.records.map(it => it.type)).to.eql([
+                'away-team', 'away-team'
+            ]);
+            expect(data.records[0].realType).to.not.exist;
+
+            var data = await search.call(this, { labMethods: [ 'inhouse' ] });
+            expect(data.recordsCount).to.eql(0);
+        });
+    });
+
+    describe('subject type', function () {
+        var experimentId = new ObjectId('6a4c4ff88164a7db5d461b8a');
+        before(async function () {
+            await db.collection('experiment').updateOne(
+                { _id: experimentId },
+                { $set: { 'state.subjectData.1.subjectType': 'otherType' }}
+            );
+        });
+        after(async function () {
+            await db.collection('experiment').updateOne(
+                { _id: experimentId },
+                { $set: { 'state.subjectData.1.subjectType': 'child' }}
+            );
+        });
+
+        it('only finds subjects of the subject type', async function () {
+            var data = await search.call(this, {}, { subjectType: 'child' });
+            expect(data.recordsCount).to.eql(1);
+            expect(data.records.map(it => (
+                it.state.selectedSubjectIds
+            ))).to.eql([
+                [ new ObjectId('64d42dcb443aa279ca4caee6') ]
+            ]);
+
+            // NOTE: without subject type all subjects are found
+            var data = await search.call(this, {});
+            expect(data.recordsCount).to.eql(2);
+        });
+    });
+
     describe('postprocessed', function () {
         before(async function () {
             await db.collection('experiment').updateOne(

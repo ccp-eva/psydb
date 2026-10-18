@@ -108,11 +108,19 @@ var experimentExtendedSearch = async (context, next) => {
         ( readableStudyIds && { $match: {
             'state.studyId': { $in: readableStudyIds }
         }}),
+        // NOTE: manually added participations have type 'manual'
+        // and the actual lab method stored in realType
+        { $addFields: {
+            'type': { $ifNull: [ '$realType', '$type' ]}
+        }},
         { $match: (
             extendedSearch.experiment.createSpecialFilterConditions(
                 specialFilters, { timezone }
             ) || {}
         )},
+        ( subjectType && { $match: {
+            'state.subjectData.subjectType': subjectType
+        }}),
         SubjectRowsStage(),
         // NOTE: one row per subject; experiments without
         // subjects are kept as a single row
@@ -122,6 +130,10 @@ var experimentExtendedSearch = async (context, next) => {
         }},
         ( subjectIds?.length > 0 && { $match: {
             '_subjectRows.subjectId': { $in: subjectIds.map(ObjectId) }
+        }}),
+        // NOTE: this also drops experiments without subjects
+        ( subjectType && { $match: {
+            '_subjectRows.subjectType': subjectType
         }}),
         // NOTE: keeping it an array so that it still matches
         // the experiment schema for labels and display
@@ -372,6 +384,7 @@ var SubjectRowsStage = () => ({ $addFields: {
         input: { $ifNull: [ '$state.subjectData', [] ]},
         in: {
             subjectId: '$$this.subjectId',
+            subjectType: '$$this.subjectType',
             participationStatus: '$$this.participationStatus',
         }
     }}
