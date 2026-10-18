@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
 import { keyBy } from '@mpieva/psydb-core-utils';
@@ -6,7 +6,7 @@ import { SmartArray, CRTSettings } from '@mpieva/psydb-common-lib';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useFetch } from '@mpieva/psydb-ui-hooks';
 import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
-import { Fields } from '@mpieva/psydb-ui-lib';
+import { Fields, useFormikContext } from '@mpieva/psydb-ui-lib';
 
 
 const ColumnSelect = withField({
@@ -63,8 +63,16 @@ export const Columns = (ps) => {
         { pointer: '/state/isPostprocessed', label: translate('Postprocessed') },
     ];
 
+    var availablePointers = [
+        ...idColumns, ...staticColumns, ...subjectColumns
+    ].map(it => it.pointer);
+
     return (
         <div className='bg-light p-3 border border-top-0'>
+            <PruneUnavailableColumns
+                columns={ formData?.columns }
+                availablePointers={ availablePointers }
+            />
             <ColumnSelect
                 columnLabel={ translate('Selected') }
                 orderLabel={ translate('Column Order') }
@@ -102,6 +110,24 @@ export const Columns = (ps) => {
             </div>
         </div>
     );
+}
+
+// NOTE: selected columns might not be available e.g. when a link
+// presets subject columns that the subject type doesnt have
+const PruneUnavailableColumns = (ps) => {
+    var { columns = [], availablePointers } = ps;
+    var { setFieldValue } = useFormikContext();
+
+    var pruned = columns.filter(it => availablePointers.includes(it));
+    var shouldPrune = pruned.length !== columns.length;
+
+    useEffect(() => {
+        if (shouldPrune) {
+            setFieldValue('$.columns', pruned);
+        }
+    }, [ shouldPrune ]);
+
+    return null;
 }
 
 // NOTE: subject columns are prefixed with '/_subject', see

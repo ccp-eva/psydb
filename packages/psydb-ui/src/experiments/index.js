@@ -24,7 +24,10 @@ const Experiments = () => {
     return (
         <Switch>
             <Route exact path={ `${path}/extended-search` }>
-                <PageWrappers.Level1 title={ translate('Participation') }>
+                <PageWrappers.Level1
+                    title={ translate('Participation') }
+                    titleLinkUrl={ `${url}/extended-search` }
+                >
                     <ExtendedSearch />
                 </PageWrappers.Level1>
             </Route>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory, useLocation } from 'react-router';
+import { useHistory, useLocation, useRouteMatch } from 'react-router';
 import { JsonBase64 } from '@mpieva/psydb-core-utils';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useURLSearchParams } from '@mpieva/psydb-ui-hooks';
@@ -15,6 +15,7 @@ import { Results } from './results';
 const ExtendedSearch = (ps) => {
     var location = useLocation();
     var history = useHistory();
+    var { url } = useRouteMatch();
     var [{ translate }] = useI18N();
 
     var [ query, updateQuery ] = useURLSearchParams({
@@ -53,12 +54,24 @@ const ExtendedSearch = (ps) => {
         limit: 0,
         offset: 0,
 
-        ...decodedFormData
+        ...decodedFormData,
+        // NOTE: links can preset only some of the filters
+        specialFilters: {
+            isPostprocessed: 'any',
+            ...decodedFormData?.specialFilters,
+        },
     };
 
     return (
-        <PageWrappers.Level2 title={ translate('Advanced Participation Search') }>
+        <PageWrappers.Level2
+            title={ translate('Advanced Participation Search') }
+            // NOTE: drops the current form data
+            titleLinkUrl={ url }
+        >
             <DefaultForm
+                // NOTE: formik ignores changes of initialValues so we
+                // need to remount when the form data is dropped
+                key={ formData ? 'with-form-data' : 'fresh' }
                 onSubmit={ (formData) => { handleSwitchTab({
                     nextTab: getNextTabKey(tab),
                     formData,
