@@ -3,7 +3,6 @@ var nav = [
     { path: '/csv-imports' },
     { path: '/subjects' },
     { path: '/studies' },
-    { path: '/experiments/extended-search' },
     { path: '/calendars', subnav: [
         { path: '/reception' },
         { path: '/inhouse' },
@@ -17,6 +16,7 @@ var nav = [
         { path: '/experiment-postprocessing' },
     ]},
     '=======',
+    { path: '/experiments/extended-search' },
     { path: '/locations' },
     { path: '/external-persons' },
     { path: '/external-organizations' },
