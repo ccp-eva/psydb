@@ -27,6 +27,7 @@ const LocationCalendar = (ps) => {
         currentSubjectRecord,
         desiredTestInterval,
         testableIntervals,
+        ageFrameIntervals,
 
         __useNewCanSelect,
         checkEmptySlotSelectable,
@@ -104,6 +105,7 @@ const LocationCalendar = (ps) => {
                 currentSubjectRecord,
                 desiredTestInterval,
                 testableIntervals,
+                ageFrameIntervals,
 
                 __useNewCanSelect,
                 checkEmptySlotSelectable,

@@ -41,6 +41,7 @@ const Modals = (ps) => {
                 related={ related }
 
                 { ...consentFormSelectModal.passthrough }
+                onRefresh={ onSuccessfulUpdate }
             />
 
             <RemoveSubjectManualModal

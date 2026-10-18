@@ -89,6 +89,7 @@ const HasEditedInfo = (ps) => {
 }
 
 const Postprocessing = (ps) => {
+    var translate = useUITranslation();
     var {
         subjectId,
         experimentRecord,
@@ -110,7 +111,7 @@ const Postprocessing = (ps) => {
     return (
         <div className='d-flex align-items-center'>
             <div className='mr-5'>
-                <b>Datum:</b>
+                <b>{ translate('Date') }:</b>
                 {' '}
                 { startDate }
                 {' '}
@@ -119,7 +120,7 @@ const Postprocessing = (ps) => {
                 { endTime }
             </div>
             <div className='mr-5'>
-                <b>Studie:</b>
+                <b>{ translate('Study') }:</b>
                 {' '}
                 { studyLabel }
             </div>
@@ -138,7 +139,7 @@ export const DetailedPostprocessModal = WithDefaultModal({
     Body: DetailedPostprocessModalBody,
 
     size: 'xl',
-    title: 'Nachbereitung',
+    title: 'Postprocessing',
     className: '',
     backdropClassName: '',
     bodyClassName: 'bg-white'

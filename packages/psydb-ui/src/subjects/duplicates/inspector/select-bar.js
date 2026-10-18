@@ -1,5 +1,5 @@
 import React from 'react';
-import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useI18N, useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Grid, Alert } from '@mpieva/psydb-ui-layout';
 import { GenericEnum } from '@mpieva/psydb-ui-form-controls';
 
@@ -37,12 +37,13 @@ const ItemSelect = (ps) => {
 }
 
 const SubjectExperimentSummary = (ps) => {
+    var translate = useUITranslation();
     var { past, future } = ps;
 
     return (
         <div className='d-flex gapx-3 align-items-center justify-content-end'>
-            <b>{ past.length } Teilnahmen</b>
-            <b>{ future.length } Termine</b>
+            <b>{ past.length } { translate('Participations') }</b>
+            <b>{ future.length } { translate('Appointments') }</b>
         </div>
     )
 }

@@ -67,6 +67,8 @@ var mpiccp = {
     dev_enableStatistics: true,
     dev_enableCSVSubjectImport: true,
     dev_enableCSVParticipationImport: true,
+    
+    dev_enableStudyConsentWorkflow: true,
 
     dev_enableSubjectDuplicatesSearch: true,
     dev_subjectDuplicatesSearchFields: {
@@ -103,7 +105,6 @@ var humankind = {
     dev_enableCSVSubjectContactHistoryImport: true,
 
     dev_enableImprovedContactTracking: true,
-    dev_enableStudyConsentWorkflow: true,
     dev_enableStudyRoadmap: true,
     
     enabledLabMethods: [
@@ -112,4 +113,31 @@ var humankind = {
     ],
 }
 
-module.exports = apedb;
+var cats = {
+    ...common,
+    enabledLabMethods: [
+        'inhouse',
+        'away-team',
+        'online-video-call',
+        //'online-survey',
+        'manual-only-participation'
+    ],
+    dev_enableStatistics: true,
+    dev_enableCSVSubjectImport: true,
+    dev_enableCSVParticipationImport: true,
+    
+    dev_enableStudyConsentWorkflow: true,
+    dev_enableImprovedContactTracking: true,
+    dev_enableStudyRoadmap: true,
+
+    dev_enableSubjectDuplicatesSearch: true,
+    dev_subjectDuplicatesSearchFields: {
+        'catOwner': [
+            '/gdpr/state/custom/lastname',
+            '/gdpr/state/custom/firstname',
+        ],
+    },
+    dev_enableSubjectCopyForUnprocessedExperiments: true,
+}
+
+module.exports = cats;

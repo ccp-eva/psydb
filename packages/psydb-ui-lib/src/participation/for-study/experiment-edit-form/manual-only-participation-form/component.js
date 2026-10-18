@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { only } from '@mpieva/psydb-core-utils';
 
 import { DefaultForm } from '../../../../formik';
@@ -51,6 +52,7 @@ export const Component = (ps) => {
 }
 
 const FormBody = (ps) => {
+    var translate = useUITranslation();
     var {
         formik,
         labMethodSettings,
@@ -64,7 +66,7 @@ const FormBody = (ps) => {
     return (
         <>
             <GroupExpSubjectFields
-                label='Proband:innen'
+                label={ translate('Subjects') }
                 dataXPath='$.subjectData'
                 subjectType={ subjectType }
                 enableMove={ false }

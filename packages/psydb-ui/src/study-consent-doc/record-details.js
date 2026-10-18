@@ -103,7 +103,9 @@ const Metadata = (ps) => {
                 { related.subject[subjectId] }
             </Field>
             <Field label={ translate('Appointment') }>
-                { experimentId || (
+                { experimentId ? (
+                    related.experiment?.[experimentId] || experimentId
+                ) : (
                     <span className='text-muted'>
                         { translate('Not Specified') }
                     </span>
@@ -169,6 +171,14 @@ const SubjectField = (ps) => {
         return <Alert variant='danger'>
             <b>ERROR: Could not find subject field for pointer { pointer }</b>
         </Alert>
+    }
+
+    // NOTE: foreign ids are stored as plain text label
+    if (definition.systemType === 'ForeignId') {
+        definition = {
+            ...definition, type: 'SaneString', systemType: 'SaneString',
+            props: {}
+        };
     }
 
     return (

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
@@ -53,12 +54,13 @@ const SubjectModalDetails = ({
 }
 
 const HasEditedInfo = (ps) => {
+    var translate = useUITranslation();
     var { onReEdit } = ps;
     return (
         <Alert variant='info' className='d-flex justify-content-between'>
-            <i>Proband:innendaten gespeichert!</i>
+            <i>{ translate('Subject data saved!') }</i>
             <a role='button' className='force-hover' onClick={ onReEdit }>
-                <b>Erneut bearbeiten</b>
+                <b>{ translate('Edit Again') }</b>
             </a>
         </Alert>
     );

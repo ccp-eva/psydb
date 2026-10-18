@@ -1,9 +1,11 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import classnames from 'classnames';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { Button, AsyncButton } from '@mpieva/psydb-ui-layout';
 
 const ExtraFunctionBar = (ps) => {
+    var translate = useUITranslation();
     var { subjectSelection, fetchBag, onClickInvite } = ps;
 
     var sample = useFetch((agent) => (
@@ -34,7 +36,7 @@ const ExtraFunctionBar = (ps) => {
             'p-2 bg-white',
             'd-flex justify-content-between align-items-center'
         ]) }>
-            <b>Ausgewählt: { subjectSelection.value.length }</b>
+            <b>{ translate('Selected') }: { subjectSelection.value.length }</b>
 
             <div className='d-flex gapx-2'>
                 <AsyncButton

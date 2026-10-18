@@ -2,11 +2,19 @@
 var { expect } = require('@mpieva/psydb-api-mocha-test-tools/chai');
 var { BaselineDeltas } = require('@mpieva/psydb-mocha-baseline-deltas');
 var { KOA_CHANNELS } = require('@mpieva/psydb-api-mocha-test-tools/utils');
+var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 
 describe('subject/remove', function () {
     var db, ids, sendMessage;
     before(async function () {
-        ids = await this.restore('2026-03-24__0113', { gatherIds: true });
+        ids = await this.restore([
+            'init-minimal',
+            'tiny_2026-10-16__1613__cats-01-helper-sets-and-crts',
+            'tiny_2026-10-16__1613__cats-02-roles-and-research-groups',
+            'tiny_2026-10-16__1613__cats-03-personnel',
+            'tiny_2026-10-16__1613__cats-04-orgs-and-locations',
+            'tiny_2026-10-16__1613__cats-05-subjects',
+        ], { gatherIds: true });
         db = this.getDbHandle();
 
         var login = await this.createFakeLogin({ email: 'root@example.com' });
@@ -14,7 +22,7 @@ describe('subject/remove', function () {
     });
 
     it('does mrproper', async function () {
-        var _id = ids(/Charlie2/);
+        var _id = ids(/Pop.*Unique/);
 
         var deltas = BaselineDeltas();
         deltas.push(await this.aggregateAll([
@@ -42,11 +50,6 @@ describe('subject/remove', function () {
         expected['/subject'] = [];
         expected['/rohrpostEvents/0/message/payload'] = DeletedValue();
         expected['/rohrpostEvents/1/message/payload'] = DeletedValue();
-        expected['/rohrpostEvents/2'] = DeletedValue();
-        expected['/rohrpostEvents/3'] = DeletedValue();
-        expected['/rohrpostEvents/4'] = DeletedValue();
-        expected['/rohrpostEvents/5'] = DeletedValue();
-        expected['/rohrpostEvents/6'] = DeletedValue();
 
         expected['/mrproperEvent'] = {
             '_id': BaselineDeltas.AnyObjectId(),
@@ -54,7 +57,7 @@ describe('subject/remove', function () {
             'sessionId': BaselineDeltas.AnyObjectId(),
             'timestamp': BaselineDeltas.AnyDate(),
             'collectionName': 'subject',
-            'channelId': ids(/Charlie2/),
+            'channelId': ids(/Pop.*Unique/),
             'message/personnelId': ids(/ROOT/),
             'message/type': 'MAKE_MRPROPER',
         }
@@ -63,7 +66,16 @@ describe('subject/remove', function () {
     });
     
     it('throws when participations', async function () {
-        var _id = ids(/Test Kind, Alice/);
+        var _id = ids(/Kiss.*Bite/);
+        // NOTE: tiny dumps contain no studies/participations
+        await db.collection('subject').updateOne({ _id }, { $push: {
+            'scientific.state.internals.participatedInStudies': {
+                studyId: new ObjectId(),
+                status: 'participated',
+                timestamp: new Date(),
+            }
+        }});
+
         var error = undefined;
         try {
             await sendMessage({
@@ -76,5 +88,6 @@ describe('subject/remove', function () {
         }
 
         expect(error).to.exist;
+        expect(error.message).to.include('SubjectHasStudyParticipation');
     });
 });

@@ -10,7 +10,7 @@ var displayFields = [
         displayName: 'Title', displayNameI18N: { 'de': 'Titel' }
     },
     {
-        systemType: 'SaneString', // FIXME: CRT
+        systemType: 'CustomRecordTypeKey',
         pointer: '/subjectType',
         displayName: 'Subject Type', displayNameI18N: { 'de': 'Proband:innen-Typ' },
         props: { collection: 'subject' }

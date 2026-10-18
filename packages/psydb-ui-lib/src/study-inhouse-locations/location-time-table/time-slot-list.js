@@ -40,6 +40,7 @@ const TimeSlotList = (ps) => {
         currentSubjectRecord,
         desiredTestInterval,
         testableIntervals,
+        ageFrameIntervals,
 
         __useNewCanSelect,
         checkEmptySlotSelectable,
@@ -160,7 +161,11 @@ const TimeSlotList = (ps) => {
                     day={ day }
                     extraLabel={ translate('Time') }
                     className={ getHeaderClassName({
-                        locationDay, isDayEnabled, testableIntervals
+                        locationDay, isDayEnabled,
+                        desiredTestInterval,
+                        ageFrameIntervals: (
+                            ageFrameIntervals || testableIntervals
+                        )
                     })}
                 />
             )}
@@ -176,29 +181,36 @@ const TimeSlotList = (ps) => {
 }
 
 const getHeaderClassName = (bag) => {
-    var { locationDay, isDayEnabled, testableIntervals } = bag;
+    var {
+        locationDay, isDayEnabled,
+        desiredTestInterval, ageFrameIntervals
+    } = bag;
     
     if (!isDayEnabled) {
         return 'text-center text-grey border-bottom bg-light'
     }
     else {
-        var isSubjectTestable = false;
-        //console.log({ testableIntervals });
-        if (testableIntervals) {
-            var intersections = intervalfns.intersect(
+        var isInAgeFrame = false;
+        if (ageFrameIntervals) {
+            isInAgeFrame = intervalfns.intersect(
                 [ locationDay ],
-                testableIntervals
-            );
-            //console.log({ intersections });
-            isSubjectTestable = intersections.length > 0;
+                ageFrameIntervals
+            ).length > 0;
         }
 
-        if (isSubjectTestable) {
-            return 'text-center text-success border-bottom bg-light';
+        var isInDesiredTestInterval = false;
+        if (desiredTestInterval) {
+            isInDesiredTestInterval = intervalfns.intersect(
+                [ locationDay ],
+                [ desiredTestInterval ]
+            ).length > 0;
         }
-        else {
-            return 'text-center border-bottom bg-light';
-        }
+
+        return [
+            'text-center',
+            isInAgeFrame && 'text-success',
+            isInDesiredTestInterval ? 'border bg-white' : 'border-bottom bg-light',
+        ].filter(Boolean).join(' ');
     }
 }
 
