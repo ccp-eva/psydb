@@ -99,6 +99,10 @@ module.exports = [
         de: 'Proband:innen-Typ'
     },
     {
+        en: 'Selecting a subject type enables the filter for specific subjects.',
+        de: 'Die Auswahl eines Proband:innen-Typs ermöglicht die Filterung nach bestimmten Proband:innen.'
+    },
+    {
         en: 'Subject Types',
         de: 'Proband:innen-Typen'
     },

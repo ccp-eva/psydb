@@ -8,7 +8,7 @@ import { TableHeadCustomCols } from '@mpieva/psydb-custom-fields-ui';
 import TableRow from './table-row';
 
 const Table = (ps) => {
-    var { collection, definitions, records, related } = ps;
+    var { collection, definitions, records, related, rowClassName } = ps;
 
     return (
         <BSTable>
@@ -22,6 +22,7 @@ const Table = (ps) => {
                     record={ it }
                     related={ related }
                     definitions={ definitions }
+                    rowClassName={ rowClassName }
                 />
             )) }</tbody>
         </BSTable>

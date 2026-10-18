@@ -1,13 +1,16 @@
 'use strict';
 var datefns = require('date-fns');
 var { swapTimezone } = require('@mpieva/psydb-timezone-helpers');
+var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 var { createCustomQueryValues } = require('../utils');
 
 var createSpecialFilterConditions = (filters, options = {}) => {
-    var { timezone = 'UTC' } = options;
+    var { timezone = 'UTC', subjectHistoryExperimentIds = [] } = options;
     var {
         labMethods,
         interval,
+        studyIds,
+        subjectIds,
         isCanceled,
         isPostprocessed,
     } = filters;
@@ -33,6 +36,33 @@ var createSpecialFilterConditions = (filters, options = {}) => {
         }});
     }
 
+    if (studyIds && studyIds.length > 0) {
+        AND.push({ 'state.studyId': { $in: studyIds.map(ObjectId) }});
+    }
+
+    // NOTE: this matches the subjects that are shown in the
+    // subjects column, see experiment/extendedSearch endpoint
+    if (subjectIds && subjectIds.length > 0) {
+        var saneSubjectIds = subjectIds.map(ObjectId);
+        AND.push({ $or: [
+            {
+                'state.isPostprocessed': { $ne: true },
+                'state.selectedSubjectIds': { $in: saneSubjectIds },
+            },
+            {
+                'state.isPostprocessed': true,
+                'state.subjectData': { $elemMatch: {
+                    'subjectId': { $in: saneSubjectIds },
+                    'participationStatus': 'participated',
+                }},
+            },
+            {
+                'state.isCanceled': true,
+                '_id': { $in: subjectHistoryExperimentIds },
+            },
+        ]});
+    }
+
     // NOTE: theese flags are not always set on older records
     // so we cant use DefaultBool here as it requires explicit false
     addBoolCondition(AND, 'state.isCanceled', isCanceled);
@@ -40,12 +70,6 @@ var createSpecialFilterConditions = (filters, options = {}) => {
 
     var statics = createCustomQueryValues({
         fields: [
-            {
-                key: 'studyIds',
-                pointer: '/state/studyId',
-                type: 'ForeignId',
-                props: { collection: 'study' }
-            },
             {
                 key: 'experimentOperatorIds',
                 pointer: '/state/experimentOperatorIds',

@@ -47,7 +47,7 @@ const ExtendedSearch = (ps) => {
             '/state/interval/start',
             '/state/studyId',
             '/state/locationId',
-            '/state/experimentOperatorIds',
+            '/state/selectedSubjectIds',
         ],
         sort: { column: '/state/interval/start', direction: 'desc' },
         limit: 0,

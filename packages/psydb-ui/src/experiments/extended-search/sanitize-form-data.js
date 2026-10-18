@@ -10,7 +10,7 @@ const sanitizeFormData = (formData) => {
 const sanitizeSpecialFilters = (values) => {
     var {
         labMethods, interval,
-        studyIds, experimentOperatorIds,
+        studyIds, subjectType, subjectIds, experimentOperatorIds,
         isCanceled, isPostprocessed,
     } = values;
 
@@ -27,7 +27,9 @@ const sanitizeSpecialFilters = (values) => {
         ...(Object.keys(saneInterval).length > 0 && {
             interval: saneInterval
         }),
-        ...sanitizeNegatableIds('studyIds', studyIds),
+        ...(studyIds && { studyIds: studyIds.filter(it => !!it) }),
+        // NOTE: subjectType is only used for the subject picker
+        ...(subjectIds && { subjectIds: subjectIds.filter(it => !!it) }),
         ...sanitizeNegatableIds(
             'experimentOperatorIds', experimentOperatorIds
         ),

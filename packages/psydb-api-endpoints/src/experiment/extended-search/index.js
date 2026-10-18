@@ -1,10 +1,11 @@
 'use strict';
 var debug = require('../debug-helper')('extendedSearch');
 
-var { convertPointerToPath } = require('@mpieva/psydb-core-utils');
+var { convertPointerToPath, compareIds } = require('@mpieva/psydb-core-utils');
 var { SmartArray, SRTSettings } = require('@mpieva/psydb-common-lib');
 var { SystemPermissionStages } = require('@mpieva/psydb-mongo-stages');
 var {
+    ObjectId,
     aggregateToArray,
     aggregateCount
 } = require('@mpieva/psydb-mongo-adapter');
@@ -54,6 +55,9 @@ var experimentExtendedSearch = async (context, next) => {
     columns = columns.filter(it => availablePointers.includes(it));
 
     var readableStudyIds = await fetchReadableStudyIds({ db, permissions });
+    var subjectHistoryExperimentIds = await fetchSubjectHistoryExperimentIds({
+        db, subjectIds: specialFilters.subjectIds
+    });
 
     var mainStages = SmartArray([
         ( readableStudyIds && { $match: {
@@ -61,11 +65,17 @@ var experimentExtendedSearch = async (context, next) => {
         }}),
         { $match: (
             extendedSearch.experiment.createSpecialFilterConditions(
-                specialFilters, { timezone }
+                specialFilters, { timezone, subjectHistoryExperimentIds }
             ) || {}
         )},
+        ( columns.includes('/state/selectedSubjectIds') && (
+            OnlyParticipatedSubjectsWhenPostprocessedStage()
+        )),
         { $project: {
             type: true,
+            // NOTE: always needed by the ui for row coloring
+            'state.isCanceled': true,
+            'state.isPostprocessed': true,
             ...columns.reduce((acc, pointer) => ({
                 ...acc,
                 [ convertPointerToPath(pointer) ]: true
@@ -89,6 +99,10 @@ var experimentExtendedSearch = async (context, next) => {
         ]),
         mongoSettings: { allowDiskUse: true }
     });
+
+    if (columns.includes('/state/selectedSubjectIds')) {
+        await addCanceledExperimentSubjects({ db, records });
+    }
 
     var related = await fetchRelatedLabelsForMany({
         db, collectionName: 'experiment', records, i18n
@@ -120,6 +134,74 @@ var fetchReadableStudyIds = async (bag) => {
     ]});
 
     return studies.map(it => it._id);
+}
+
+// NOTE: canceled experiments dont have their subjects anymore
+// so we need to look them up in the subjects participation history
+var fetchSubjectHistoryExperimentIds = async (bag) => {
+    var { db, subjectIds } = bag;
+
+    if (!subjectIds || subjectIds.length < 1) {
+        return undefined;
+    }
+
+    var path = 'scientific.state.internals.participatedInStudies';
+    var subjects = await db.collection('subject').find(
+        { _id: { $in: subjectIds.map(ObjectId) }},
+        { projection: { [path]: true }}
+    ).toArray();
+
+    return subjects.flatMap(it => (
+        (it.scientific?.state?.internals?.participatedInStudies || [])
+        .map(p => p.experimentId)
+        .filter(it => !!it)
+    ));
+}
+
+// NOTE: once postprocessed we only want to show the subjects
+// that actually participated, not everyone that was selected
+var OnlyParticipatedSubjectsWhenPostprocessedStage = () => ({ $addFields: {
+    'state.selectedSubjectIds': { $cond: {
+        if: { $eq: [ '$state.isPostprocessed', true ] },
+        then: { $map: {
+            input: { $filter: {
+                input: { $ifNull: [ '$state.subjectData', [] ]},
+                cond: { $eq: [
+                    '$$this.participationStatus', 'participated'
+                ]}
+            }},
+            in: '$$this.subjectId'
+        }},
+        else: '$state.selectedSubjectIds'
+    }}
+}});
+
+// NOTE: when an experiment gets canceled its subjects are pulled
+// from the experiment record; the only trace left is the
+// participatedInStudies entry on the subject itself
+var addCanceledExperimentSubjects = async (bag) => {
+    var { db, records } = bag;
+
+    var canceledRecords = records.filter(it => it.state.isCanceled);
+    if (canceledRecords.length < 1) {
+        return;
+    }
+
+    var path = 'scientific.state.internals.participatedInStudies';
+    var subjects = await db.collection('subject').find(
+        { [`${path}.experimentId`]: { $in: canceledRecords.map(it => it._id) }},
+        { projection: { [path]: true }}
+    ).toArray();
+
+    for (var record of canceledRecords) {
+        record.state.selectedSubjectIds = (
+            subjects.filter(subject => (
+                subject.scientific.state.internals.participatedInStudies
+                .some(it => compareIds(it.experimentId, record._id))
+            ))
+            .map(it => it._id)
+        );
+    }
 }
 
 var SortStage = (options) => {

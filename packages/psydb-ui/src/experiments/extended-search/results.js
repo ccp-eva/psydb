@@ -11,6 +11,18 @@ export const Results = (ps) => {
             collection='experiment'
             formData={ saneData }
             enableCSVExport={ false }
+            rowClassName={ getRowClassName }
         />
     )
+}
+
+const getRowClassName = (record) => {
+    var { isCanceled, isPostprocessed } = record.state || {};
+    if (isCanceled) {
+        return 'text-danger';
+    }
+    if (!isPostprocessed) {
+        return 'text-orange';
+    }
+    return '';
 }

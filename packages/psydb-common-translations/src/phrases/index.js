@@ -1247,6 +1247,10 @@ module.exports = [
         de: 'Keine Bedingungen',
     },
     {
+        en: 'No Filter',
+        de: 'Kein Filter',
+    },
+    {
         en: 'Specific Values',
         de: 'Spezifische Werte',
     },

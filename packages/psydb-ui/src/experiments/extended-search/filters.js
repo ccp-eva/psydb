@@ -5,10 +5,15 @@ import {
     FormBox,
     Fields as CoreFields,
     ExtendedSearchFields as Fields,
-    withField
+    withField,
+    useFormikContext,
 } from '@mpieva/psydb-ui-lib';
 
 export const Filters = (ps) => {
+    var { formData } = ps;
+    var { subjectType } = formData?.specialFilters || {};
+    var { setFieldValue } = useFormikContext();
+
     var { enabledLabMethods = [] } = useUIConfig();
     var [{ translate }] = useI18N();
 
@@ -20,6 +25,35 @@ export const Filters = (ps) => {
 
     return (
         <FormBox title={ translate('_extended_search_filters_tab') }>
+            <SubjectTypeKey
+                dataXPath='$.specialFilters.subjectType'
+                label={ translate('Subject Type') }
+                extraOnChange={ () => (
+                    setFieldValue('$.specialFilters.subjectIds', [])
+                )}
+                helpText={ translate(
+                    'Selecting a subject type enables the filter for specific subjects.'
+                )}
+            />
+            <Fields.ForeignIdList
+                dataXPath='$.specialFilters.subjectIds'
+                label={ translate('Subjects') }
+                collection='subject'
+                recordType={ subjectType }
+                disabled={ !subjectType }
+                labelClassName={ subjectType ? '' : 'text-muted opacity-50' }
+                contentFallbackLabel={ translate('No Filter') }
+            />
+            <Fields.ForeignIdList
+                dataXPath='$.specialFilters.studyIds'
+                label={ translate('Studies') }
+                collection='study'
+                contentFallbackLabel={ translate('No Filter') }
+            />
+            <DateRange
+                dataXPath='$.specialFilters.interval'
+                label={ translate('Date Range') }
+            />
             { enabledLabMethods.length > 1 && (
                 <Fields.GenericMultiCheckbox
                     dataXPath='$.specialFilters.labMethods'
@@ -29,15 +63,6 @@ export const Filters = (ps) => {
                     }), {}) }
                 />
             )}
-            <DateRange
-                dataXPath='$.specialFilters.interval'
-                label={ translate('Date Range') }
-            />
-            <Fields.NegatableForeignIdList
-                dataXPath='$.specialFilters.studyIds'
-                label={ translate('Studies') }
-                collection='study'
-            />
             <Fields.NegatableForeignIdList
                 dataXPath='$.specialFilters.experimentOperatorIds'
                 label={ translate('Experimenters') }
@@ -60,6 +85,18 @@ export const Filters = (ps) => {
         </FormBox>
     )
 }
+
+const SubjectTypeKey = withField({ Control: (ps) => {
+    var { helpText, ...pass } = ps;
+    return (
+        <>
+            <CoreFields.SubjectTypeKey.Control { ...pass } />
+            <small className='form-text text-muted'>
+                { helpText }
+            </small>
+        </>
+    )
+}})
 
 const DateRange = withField({ Control: (ps) => {
     var { dataXPath } = ps;

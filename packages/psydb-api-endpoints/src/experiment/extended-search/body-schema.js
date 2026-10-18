@@ -34,9 +34,8 @@ var BodySchema = () => {
                 items: StringEnum(enums.labMethods.keys),
             }),
             'interval': DateOnlyServerSideInterval({ required: [] }),
-            'studyIds': NegatableForeignIdList({
-                collection: 'study'
-            }),
+            'studyIds': ForeignIdList({ collection: 'study' }),
+            'subjectIds': ForeignIdList({ collection: 'subject' }),
             'experimentOperatorIds': NegatableForeignIdList({
                 collection: 'personnel'
             }),

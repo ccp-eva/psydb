@@ -15,7 +15,12 @@ import Table from './table';
 import TableRow from './table-row';
 
 const ExtendedRecordList = (ps) => {
-    var { collection, formData, enableCSVExport = true } = ps;
+    var {
+        collection,
+        formData,
+        enableCSVExport = true,
+        rowClassName,
+    } = ps;
     var { columns } = formData;
 
     var pagination = usePaginationURLSearchParams({ offset: 0, limit: 50 })
@@ -56,6 +61,7 @@ const ExtendedRecordList = (ps) => {
                     definitions={ selectedColumnDefinitions }
                     records={ records }
                     related={ related }
+                    rowClassName={ rowClassName }
                 />
             ) : (
                 <TableFallback definitions={ selectedColumnDefinitions } />
