@@ -4,6 +4,7 @@ import { Button } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 
 import { QuillHTML } from './quill-html';
+import { MailAttachmentList } from './mail-attachment-list';
 
 export const Component = (ps) => {
     var { initialValues, onSubmit, related } = ps;
@@ -27,8 +28,7 @@ export const Component = (ps) => {
     );
 }
 
-// NOTE: mailText and mailAttachments are not editable yet
-// and are passed through
+// NOTE: mailText is not editable yet and is passed through
 const FormFields = (ps) => {
     var { related } = ps;
     var [{ translate }] = useI18N();
@@ -53,6 +53,10 @@ const FormFields = (ps) => {
             <QuillHTML
                 label={ translate('HTML Text') }
                 dataXPath='$.mailHTML'
+            />
+            <MailAttachmentList
+                label={ translate('Attachments') }
+                dataXPath='$.mailAttachments'
             />
             <Fields.URLStringList
                 label={ translate('Links') }

@@ -44,4 +44,12 @@ module.exports = [
         en: 'Links',
         de: 'Links'
     },
+    {
+        en: 'Attachments',
+        de: 'Anhänge'
+    },
+    {
+        en: 'File',
+        de: 'Datei'
+    },
 ]
