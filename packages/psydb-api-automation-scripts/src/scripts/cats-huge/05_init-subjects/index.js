@@ -6,7 +6,7 @@ var createCatOwners = require('./create-cat-owners');
 var createCats = require('./create-cats');
 
 module.exports = async (bag) => {
-    var { driver, apiKey, extraOptions = {}} = bag;
+    var { driver, apiKey, extraOptions = {}, idgen } = bag;
 
     var db = await initDB(extraOptions);
     var ids = await gatherLabeledIds({ db });
@@ -15,7 +15,7 @@ module.exports = async (bag) => {
 
     await prepareRefCache({ db, refcache });
 
-    var context = { driver, refcache, ids, crts };
+    var context = { driver, refcache, ids, crts, idgen };
 
     await createCatTrainers(context);
     await createCatOwners(context);

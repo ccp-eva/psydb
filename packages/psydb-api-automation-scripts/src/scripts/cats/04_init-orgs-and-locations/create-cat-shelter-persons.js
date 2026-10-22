@@ -2,13 +2,15 @@
 var { ObjectId } = require('mongodb');
 var { range, forcePush } = require('@mpieva/psydb-core-utils');
 var { FakeRecords } = require('@mpieva/psydb-faker');
+var { seedFakerForNextId } = require('../../../utils');
 
 module.exports = async (context) => {
-    var { driver, refcache, ids, crts } = context;
+    var { driver, refcache, ids, crts, idgen } = context;
     var crtSettings = crts['externalPerson']['catShelterPerson'];
 
     var persons = []
     for (var ix of range(10)) {
+        seedFakerForNextId({ idgen, collection: 'externalPerson' });
         var faked = FakeRecords['externalPerson']({
             refcache: refcache.data(), crtSettings, overrides: {}
         });

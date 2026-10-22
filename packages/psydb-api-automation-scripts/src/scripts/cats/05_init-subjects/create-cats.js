@@ -2,17 +2,19 @@
 var { ObjectId } = require('mongodb');
 var { range, forcePush } = require('@mpieva/psydb-core-utils');
 var { FakeRecords, Fields } = require('@mpieva/psydb-faker');
+var { seedFakerForNextId } = require('../../../utils');
 
 var FOUNDER_COUNT = 30;
 var OFFSPRING_COUNT = 70;
 
 module.exports = async (context) => {
-    var { driver, refcache, ids, crts } = context;
+    var { driver, refcache, ids, crts, idgen } = context;
     var crtSettings = crts['subject']['cat'];
 
     // founders have no known parents and are born 2012 - 2017
     var founders = [];
     for (var ix of range(FOUNDER_COUNT)) {
+        seedFakerForNextId({ idgen, collection: 'subject' });
         var faked = fakeCat({ refcache, crtSettings, overrides: {
             '/scientific/state/custom/dateOfBirth': (
                 deterministicDate({ ix, fromYear: 2012, years: 6 })
@@ -29,6 +31,7 @@ module.exports = async (context) => {
     // father only sometimes
     var offspring = [];
     for (var ix of range(OFFSPRING_COUNT)) {
+        seedFakerForNextId({ idgen, collection: 'subject' });
         var motherId = Fields.ForeignId({ isNullable: false }, {
             fromList: mothers.map(it => it.meta._id)
         });

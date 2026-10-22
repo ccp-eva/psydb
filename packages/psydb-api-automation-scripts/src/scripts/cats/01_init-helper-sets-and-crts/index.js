@@ -12,9 +12,9 @@ var createCatCRT = require('./create-cat-crt');
 var createCatStudyCRT = require('./create-cat-study-crt');
 
 module.exports = async (bag) => {
-    var { driver, extraOptions } = bag;
+    var { driver, extraOptions, idgen } = bag;
     var cache = WrappedCache({ driver });
-    var context = { driver, cache };
+    var context = { driver, cache, idgen };
 
     await createHelperSets(context);
 
