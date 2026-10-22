@@ -8,7 +8,7 @@ module.exports = async (context) => {
     var asPointers = PointerGen(definitions);
 
     var crt = await driver.crt.create({
-        collection: 'externalPerson', key: 'catTrainer',
+        collection: 'subject', key: 'catTrainer',
         displayNames: {
             'en': 'Cat Trainer',
             'de': 'Katzentrainer:in',
@@ -32,6 +32,13 @@ module.exports = async (context) => {
                 'lastname', 'firstname', 'gender', 'dateOfBirth'
             ])],
         },
+        formOrder: [
+            '/sequenceNumber',
+
+            ...asPointers(Object.keys(definitions)),
+
+            '/scientific/state/comment',
+        ]
     })
     
     await crt.updateGeneralSettings({
@@ -39,6 +46,10 @@ module.exports = async (context) => {
             'en': 'Cat Trainer',
             'de': 'Katzentrainer:in',
         },
+        requiresTestingPermissions: false,
+        showOnlineId: false,
+        showSequenceNumber: true,
+        commentFieldIsSensitive: false,
     });
 
     return crt.meta._id;
@@ -64,24 +75,25 @@ var FieldDefinitions = ({ cache }) => ({
         props: { minLength: 1 }
     },
 
-    'phones': {
+    'dateOfBirth': {
         __subChannelKey: 'gdpr',
-        type: 'PhoneWithTypeList',
-        key: 'phones',
-        displayName: 'Phone',
-        displayNameI18N: { 'de': 'Telefon' },
-        props: {
-            minItems: 0
-        }
+        type: 'DateOnlyServerSide',
+        key: 'dateOfBirth',
+        displayName: 'Date of Birth',
+        displayNameI18N: { 'de': 'Geburtsdatum' },
+        props: { isNullable: false, isSpecialAgeFrameField: false }
     },
 
-    'emails': {
+    'gender': {
         __subChannelKey: 'gdpr',
-        type: 'EmailList',
-        key: 'emails',
-        displayName: 'E-Mails',
-        displayNameI18N: { 'de': 'E-Mails' },
-        props: { minItems: 0 }
+        type: 'BiologicalGender',
+        key: 'gender',
+        displayName: 'Gender',
+        displayNameI18N: { 'de': 'Geschlecht' },
+        props: {
+            enableUnknownValue: false,
+            enableOtherValue: true,
+        }
     },
 
     'address': {
@@ -99,36 +111,22 @@ var FieldDefinitions = ({ cache }) => ({
             isCountryRequired: false,
         }
     },
-   
-    'dateOfBirth': {
-        __subChannelKey: 'gdpr',
-        type: 'DateOnlyServerSide',
-        key: 'dateOfBirth',
-        displayName: 'Date of Birth',
-        displayNameI18N: { 'de': 'Geburtsdatum' },
-        props: { isNullable: false, isSpecialAgeFrameField: true }
-    },
-   
-    'gender': {
-        __subChannelKey: 'gdpr',
-        type: 'BiologicalGender',
-        key: 'gender',
-        displayName: 'Gender',
-        displayNameI18N: { 'de': 'Geschlecht' },
-        props: {
-            enableUnknownValue: false,
-            enableOtherValue: true,
-        }
-    },
-   
-    /////////////////////////////////////////////////////////////////
 
-    'doesDBRegistrationConsentOnPaperExist': {
-        __subChannelKey: 'scientific',
-        type: 'DefaultBool',
-        key: 'doesDBRegistrationConsentOnPaperExist',
-        displayName: 'DB-Consent (Paper)',
-        displayNameI18N: { 'de': 'DB-Einverständnis (Papier)' },
-        props: {}
+    'phone': {
+        __subChannelKey: 'gdpr',
+        type: 'Phone',
+        key: 'phone',
+        displayName: 'Phone',
+        displayNameI18N: { 'de': 'Telefon' },
+        props: { minLength: 0 }
+    },
+
+    'email': {
+        __subChannelKey: 'gdpr',
+        type: 'Email',
+        key: 'email',
+        displayName: 'E-Mail',
+        displayNameI18N: { 'de': 'E-Mail' },
+        props: { minLength: 0 }
     },
 })

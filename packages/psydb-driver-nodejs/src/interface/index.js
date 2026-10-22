@@ -6,6 +6,7 @@ module.exports = {
     personnel: require('./personnel'),
     
     externalOrganization: require('./external-organization'),
+    externalPerson: require('./external-person'),
     location: require('./location'),
     subject: require('./subject'),
     study: require('./study'),

@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"unique":true,"key":{"sequenceNumber":{"$numberInt":"1"}},"name":"sequenceNumber_1"}],"uuid":"bf96bb88dd38432c93443504ded758e7","collectionName":"systemRole","type":"collection"}

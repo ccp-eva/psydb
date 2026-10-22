@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import * as datefns from 'date-fns';
 import { useParams } from 'react-router'
 import { useFetchAll } from '@mpieva/psydb-ui-hooks'
@@ -36,6 +37,7 @@ const filterHistory = (bag) => {
 }
 
 const History = (ps) => {
+    var translate = useUITranslation();
     var { collection, recordType } = ps;
     var { id } = useParams();
 
@@ -57,7 +59,7 @@ const History = (ps) => {
 
     return (
         <>
-            <h3 className='border-bottom'>Proband:innen-Historie</h3>
+            <h3 className='border-bottom'>{ translate('Subject History') }</h3>
             <div className='border p-3 bg-light'>
                 <div className='d-flex'>
                     <div className='w-50 flex-grow-1 pr-2'>
@@ -97,6 +99,7 @@ const History = (ps) => {
 }
 
 var HistoryItem = (ps) => {
+    var translate = useUITranslation();
     var { item, onlyPath, subChannelKey, crtSettings } = ps;
     var { event, diff, version, message } = item;
     var { personnelId } = message;
@@ -114,7 +117,7 @@ var HistoryItem = (ps) => {
                         Versions-ID: { event._id }
                     </div>
                     <div>
-                        Geändert durch:
+                        { translate('Changed By') }:
                         {' '}
                         <a href={`#/personnel/${personnelId}`}>
                             { personnelId }

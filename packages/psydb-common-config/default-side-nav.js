@@ -16,6 +16,7 @@ var nav = [
         { path: '/experiment-postprocessing' },
     ]},
     '=======',
+    { path: '/experiments/extended-search' },
     { path: '/locations' },
     { path: '/external-persons' },
     { path: '/external-organizations' },

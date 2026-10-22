@@ -9,6 +9,10 @@ var addExperimentRoutes = (bag) => {
     router.post('/experiment/list-postprocessing', ...withPostStages({
         endpoint: endpoints_SPLIT.experiment.listPostprocessing,
     }));
+
+    router.post('/experiment/extended-search', ...withPostStages({
+        endpoint: endpoints_SPLIT.experiment.extendedSearch,
+    }));
 }
 
 module.exports = addExperimentRoutes;

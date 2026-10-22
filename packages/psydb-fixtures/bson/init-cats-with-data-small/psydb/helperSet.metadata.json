@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"unique":true,"key":{"sequenceNumber":{"$numberInt":"1"}},"name":"sequenceNumber_1"}],"uuid":"9742dcd58d9245df87109145c0c58372","collectionName":"helperSet","type":"collection"}

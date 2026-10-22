@@ -34,6 +34,9 @@ var readEndpoint = async (context, next) => {
     var related = await fetchRecordLabelsManual(db, {
         'subject': [ record.subjectId ],
         'personnel': [ ...record.labOperatorIds, record.personnelId ],
+        ...(record.experimentId && {
+            'experiment': [ record.experimentId ],
+        }),
     }, { ...i18n })
 
     context.body = ResponseBody({

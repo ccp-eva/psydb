@@ -2,11 +2,12 @@
 var { MongoClient } = require('mongodb');
 var { ejson } = require('@mpieva/psydb-core-utils');
 
+// NOTE: labels as in wkprc-structure
 var subjects = [
-    { type: 'chimpanzee', label: 'Chimpanzee' },
-    { type: 'bonobo', label: 'Bonobo' },
-    { type: 'gorilla', label: 'Gorilla' },
-    { type: 'orang_utan', label: 'Orang-Utan' },
+    { type: 'chimpanzee', label: 'Chimpanzees', labelDE: 'Schimpansen' },
+    { type: 'bonobo', label: 'Bonobos', labelDE: 'Bonobos' },
+    { type: 'gorilla', label: 'Gorillas', labelDE: 'Gorillas' },
+    { type: 'orang_utan', label: 'Orang-Utans', labelDE: 'Orang-Utans' },
 ];
 
 module.exports = async (bag) => {
@@ -26,7 +27,8 @@ module.exports = async (bag) => {
     var context = { apiKey, driver, db };
     for (var it of subjects) {
         await fixLocationField({
-            apiKey, driver, db, type: `wkprc_${it.type}`, label: it.label,
+            apiKey, driver, db, type: `wkprc_${it.type}`,
+            label: it.label, labelDE: it.labelDE,
         })
     }
 
@@ -35,7 +37,7 @@ module.exports = async (bag) => {
 }
 
 var fixLocationField = async (bag) => {
-    var { db, apiKey, driver, type, label } = bag;
+    var { db, apiKey, driver, type, label, labelDE } = bag;
     
     var crt = await db.collection('customRecordType').findOne({
         collection: 'subject',
@@ -53,6 +55,7 @@ var fixLocationField = async (bag) => {
                 type: 'Lambda',
                 key: 'age',
                 displayName: 'Age',
+                displayNameI18N: { de: 'Alter' },
                 props: {
                     fn: 'deltaYMD',
                     input: '/scientific/state/custom/dateOfBirth'
@@ -71,6 +74,7 @@ var fixLocationField = async (bag) => {
                 type: 'ForeignId',
                 key: 'motherId',
                 displayName: 'Mother',
+                displayNameI18N: { de: 'Mutter' },
                 pointer: '/scientific/state/custom/motherId',
                 props: {
                     collection: 'subject',
@@ -99,6 +103,7 @@ var fixLocationField = async (bag) => {
                 type: 'ForeignId',
                 key: 'fatherId',
                 displayName: 'Father',
+                displayNameI18N: { de: 'Vater' },
                 pointer: '/scientific/state/custom/fatherId',
                 props: {
                     collection: 'subject',
@@ -173,6 +178,7 @@ var fixLocationField = async (bag) => {
             '/scientific/state/custom/arrivalDate',
             '/scientific/state/custom/arrivedFrom',
             '/scientific/state/comment',
+            '/scientific/state/custom/sensitive_comment',
         ]}
     }, { apiKey });
 
@@ -181,10 +187,11 @@ var fixLocationField = async (bag) => {
         payload: {
             id: crtId,
             label,
+            displayNameI18N: { de: labelDE },
             requiresTestingPermissions: false,
             showOnlineId: false,
             showSequenceNumber: false,
-            commentFieldIsSensitive: true,
+            commentFieldIsSensitive: false,
         }
     }, { apiKey });
 }

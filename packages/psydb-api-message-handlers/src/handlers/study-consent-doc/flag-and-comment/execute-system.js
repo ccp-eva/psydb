@@ -12,7 +12,7 @@ var executeSystemEvents = async (context) => {
         
         payload: { $set: {
             'state.hasIssue': hasIssue,
-            'state.containsSubjectUpdate': hasIssue,
+            'state.containsSubjectUpdate': containsSubjectUpdate,
             'state.comment': comment,
         }}
     });

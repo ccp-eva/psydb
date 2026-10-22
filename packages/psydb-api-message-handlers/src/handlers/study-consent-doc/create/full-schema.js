@@ -68,6 +68,13 @@ var SubjectFieldValue = (bag) => {
    
     var { systemType, props } = subjectCRT.findOneCustomField({ pointer });
 
+    // NOTE: foreign ids are stored as their plain text label so that
+    // the person filling the form doesnt get to see the option list
+    if (systemType === 'ForeignId') {
+        systemType = 'SaneString';
+        props = {};
+    }
+
     if (isRequired) {
         if (['SaneString', 'FullText'].includes(systemType)) {
             props.minLength = 1;

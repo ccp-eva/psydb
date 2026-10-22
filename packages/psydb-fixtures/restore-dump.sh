@@ -1,4 +1,5 @@
 #!/bin/sh
+set -eo pipefail
 SCRIPT_DIR=$(dirname "$0")
 DUMP=$1
 
@@ -11,5 +12,5 @@ if [ -z $DUMP ]; then
 fi
 
 echo $DUMP
-mongo --host localhost:47017 psydb --eval "printjson(db.dropDatabase())"
-mongorestore --host localhost:47017 --drop -d psydb $DUMP/psydb/
+mongo --host 127.222.0.1:47017 psydb --eval "printjson(db.dropDatabase())"
+mongorestore --host 127.222.0.1:47017 --drop -d psydb $DUMP/psydb/

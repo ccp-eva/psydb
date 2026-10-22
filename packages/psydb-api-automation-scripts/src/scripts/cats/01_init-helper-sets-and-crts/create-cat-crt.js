@@ -100,10 +100,22 @@ var FieldDefinitions = ({ cache }) => ({
             recordType: 'catOwner',
             minItems: 0,
             readOnly: false,
-            addReferenceToTarget: true,
-            targetReferenceField: (
-                '/scientific/state/custom/knownCatIds'
-            ),
+            constraints: {},
+        },
+    },
+
+    'trainerId': {
+        __subChannelKey: 'scientific',
+        type: 'ForeignId',
+        key: 'trainerId',
+        displayName: 'Current Trainer',
+        displayNameI18N: { de: 'Aktuelle:r Trainer:in' },
+        props: {
+            collection: 'subject',
+            recordType: 'catTrainer',
+            isNullable: true,
+            displayEmptyAsUnknown: false,
+            addReferenceToTarget: false,
             constraints: {},
         },
     },

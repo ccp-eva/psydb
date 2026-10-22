@@ -1,12 +1,15 @@
 import React from 'react';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-import { Button } from '@mpieva/psydb-ui-layout';
+import { AsyncButton } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 
 import ConsentFormElementList from './consent-form-element-list';
 
 export const Component = (ps) => {
-    var { subjectCRT, initialValues, onSubmit, enableReinitialize } = ps;
+    var {
+        subjectCRT, initialValues, onSubmit, enableReinitialize,
+        isTransmitting,
+    } = ps;
     var [{ translate }] = useI18N();
 
     return (
@@ -19,9 +22,12 @@ export const Component = (ps) => {
             {(formikProps) => (
                 <>
                     <FormFields subjectCRT={ subjectCRT }/>
-                    <Button type='submit'>
+                    <AsyncButton
+                        type='submit'
+                        isTransmitting={ isTransmitting }
+                    >
                         { translate('Save') }
-                    </Button>
+                    </AsyncButton>
                 </>
             )}
         </DefaultForm>

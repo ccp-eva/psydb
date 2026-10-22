@@ -131,14 +131,28 @@ var FieldDefinitions = ({ cache }) => ({
         props: { minItems: 0 }
     },
    
-    'catShelterOrgId': {
+    'staffMemberIds': {
+        type: 'ForeignIdList',
+        key: 'staffMemberIds',
+        displayName: 'Staff Members',
+        displayNameI18N: { 'de': 'Mitarbeiter:innen' },
+        props: {
+            collection: 'externalPerson',
+            recordType: 'catShelterPerson',
+            constraints: {},
+            minItems: 0,
+            readOnly: false,
+        }
+    },
+
+    'catSupportOrgId': {
         type: 'ForeignId',
-        key: 'catShelterOrgId',
+        key: 'catSupportOrgId',
         displayName: 'Parent Org',
         displayNameI18N: { 'de': 'Träger' },
         props: {
             collection: 'externalOrganization',
-            recordType: 'catShelterOrg',
+            recordType: 'catSupportOrg',
             isNullable: true,
             constraints: {},
             displayEmptyAsUnknown: false,

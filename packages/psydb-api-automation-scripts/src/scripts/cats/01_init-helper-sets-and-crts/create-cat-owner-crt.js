@@ -158,10 +158,10 @@ var FieldDefinitions = ({ cache }) => ({
         },
     },
 
-    'knownCatIds': {
+    'ownedCatIds': {
         __subChannelKey: 'scientific',
         type: 'ForeignIdList',
-        key: 'knownCatIds',
+        key: 'ownedCatIds',
         displayName: 'Cats',
         displayNameI18N: { de: 'Katzen' },
         props: {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     Route,
@@ -22,6 +23,7 @@ const GenericRecordTypeView = ({
 
     CustomRoutingComponent,
 }) => {
+    var translate = useUITranslation();
     var { path, url } = useRouteMatch();
     var { recordType } = useParams();
 
@@ -38,7 +40,7 @@ const GenericRecordTypeView = ({
             { recordType && (
                 <LinkContainer to={ url }>
                     <h5 className='mt-0 mb-3 text-muted' role='button'>
-                        Typ: { typeData.state.label }
+                        { translate('Type') }: { typeData.state.label }
                     </h5>
                 </LinkContainer>
             )}

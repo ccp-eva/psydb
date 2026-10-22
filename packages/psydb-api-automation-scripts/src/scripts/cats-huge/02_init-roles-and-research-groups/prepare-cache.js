@@ -14,10 +14,5 @@ module.exports = async (context) => {
         keys: [ 'catOwner_acquisition', 'cat_rearingHistory' ]
     });
 
-    await cache.prepareKeyedIds({
-        collection: 'researchGroup',
-        keyBy: '/state/shorthand',
-    });
-
     console.dir(ejson(cache.get()), { depth: null });
 }

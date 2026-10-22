@@ -1,0 +1,8 @@
+experiment_name;condition;year;month;day;location;room_enclosure;experimenter_id;group;subject_1;subject_2;role_1;role_2;trial_participants;comment_1
+choice_task;all;2024;10;30;Chimfushi Sanctuary;Observation Room;1;G1;C_JAR_123456;C_STA_123456;focus;stooge;2;some comment
+choice_task;all;2024;10;30;Chimfushi Sanctuary;Observation Room;1;G1;C_JAR_123456;C_STA_123456;focus;stooge;2;some comment
+choice_task;other;2024;10;30;WRONG_LOCATION_NAME;Observation Room;1;G1;C_JAR_123456;;focus;;1;some comment
+choice_task;other;2024;10;30;Zoo Leipzig;Observation Room;1;G2;WRONG_SUBJECT_ID;;focus;;1;some comment
+choice_task;other;2024;10;30;Chimfushi Sanctuary;Observation Room;1;G1;C_JAR_123456;;focus;;1;some comment
+choice_task;other;2024;11;01;Chimfushi Sanctuary;Observation Room;1;G1;C_JAR_123456;;focus;;1;some comment
+;;;;;;;;;;;;;;

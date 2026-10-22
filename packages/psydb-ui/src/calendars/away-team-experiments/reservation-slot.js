@@ -1,7 +1,9 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { ColoredBox } from '@mpieva/psydb-ui-layout';
 
 const ReservationSlot = (ps) => {
+    var translate = useUITranslation();
     var {
         reservationRecord,
         experimentOperatorTeamRecords,
@@ -37,7 +39,7 @@ const ReservationSlot = (ps) => {
                 { hidden && (
                     <>
                         <br />
-                        (Team Ausgeblendet)
+                        ({ translate('Team Hidden') })
                     </>
                 )}
             </div>

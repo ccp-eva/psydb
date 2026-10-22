@@ -8,7 +8,7 @@ module.exports = async (context) => {
     var asPointers = PointerGen(definitions);
 
     var crt = await driver.crt.create({
-        collection: 'externalOrganization', key: 'catShelterOrg',
+        collection: 'externalOrganization', key: 'catSupportOrg',
         displayNames: {
             'en': 'Parent Orgs',
             'de': 'Träger',

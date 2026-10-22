@@ -427,6 +427,11 @@ module.exports = [
         en: 'resc.',
         de: 'versch.',
     },
+    {
+        internal: 'deleted_short',
+        en: 'del.',
+        de: 'gel.',
+    },
     
     {
         en: 'Set Remaining to "Not Participated"',
@@ -560,6 +565,10 @@ module.exports = [
     {
         en: 'Not in Age Range',
         de: 'Nicht in Altersfenster'
+    },
+    {
+        en: 'Not in Desired Test Interval!',
+        de: 'Nicht im gewünschten Testzeitraum!'
     },
     {
         en: 'Add',
@@ -1243,6 +1252,10 @@ module.exports = [
         de: 'Keine Bedingungen',
     },
     {
+        en: 'No Filter',
+        de: 'Kein Filter',
+    },
+    {
         en: 'Specific Values',
         de: 'Spezifische Werte',
     },
@@ -1604,6 +1617,37 @@ module.exports = [
     },
 
     {
+        internal: '_labMethod_inhouse',
+        en: 'Inhouse',
+        de: 'Intern',
+    },
+    {
+        internal: '_labMethod_away-team',
+        en: 'External',
+        de: 'Extern',
+    },
+    {
+        internal: '_labMethod_online-video-call',
+        en: 'Online Video Call',
+        de: 'Online-Video-Anruf',
+    },
+    {
+        internal: '_labMethod_online-survey',
+        en: 'Online Survey',
+        de: 'Online-Umfrage',
+    },
+    {
+        internal: '_labMethod_apestudies-wkprc-default',
+        en: 'WKPRC',
+        de: 'WKPRC',
+    },
+    {
+        internal: '_labMethod_manual-only-participation',
+        en: 'Field Site',
+        de: 'Field-Site',
+    },
+
+    {
         internal: '_labWorkflow_online-video-call',
         en: 'Online Video Call',
         de: 'Online-Video-Anruf'
@@ -1759,5 +1803,119 @@ module.exports = [
     {
         en: 'Admin Fallback System Role',
         de: 'Fallback System-Rolle für Admins'
+    },
+
+    {
+        en: 'Import Type',
+        de: 'Import-Typ'
+    },
+    {
+        en: 'Is Sensitive',
+        de: 'Ist Sensitiv'
+    },
+    {
+        en: 'Placeholder (in Past)',
+        de: 'Platzhalter (in Vergangenheit)'
+    },
+    {
+        en: 'External Organization is referenced by other records!',
+        de: 'Externe Organisation wird von anderen Datensätzen referenziert!'
+    },
+    {
+        en: 'External Person is referenced by other records!',
+        de: 'Externe Person wird von anderen Datensätzen referenziert!'
+    },
+    {
+        en: 'Please select a subject type.',
+        de: 'Bitte Proband:innen-Typ auswählen.'
+    },
+    {
+        en: 'Please select a study and subject type.',
+        de: 'Bitte Studie und Proband:innen-Typ auswählen.'
+    },
+    {
+        en: 'Edit Study',
+        de: 'Studie Bearbeiten'
+    },
+    {
+        en: 'Please Select Record',
+        de: 'Bitte Datensatz auswählen'
+    },
+
+    {
+        en: 'Team Hidden',
+        de: 'Team Ausgeblendet'
+    },
+    {
+        en: 'Mail Subject',
+        de: 'Betreff'
+    },
+    {
+        en: 'Notify Subjects via Mail',
+        de: 'Proband:innen per Mail benachrichtigen'
+    },
+    {
+        en: '... and more',
+        de: '... und weitere'
+    },
+    {
+        en: 'Participations',
+        de: 'Teilnahmen'
+    },
+    {
+        en: 'Subject History',
+        de: 'Proband:innen-Historie'
+    },
+    {
+        en: 'Changed By',
+        de: 'Geändert durch'
+    },
+    {
+        en: 'Possible formats are',
+        de: 'Mögliche Formate sind'
+    },
+    {
+        en: 'Max. File Size',
+        de: 'Maximale Dateigröße'
+    },
+    {
+        en: 'Upload Files',
+        de: 'Dateien hochladen'
+    },
+    {
+        en: 'No teams available',
+        de: 'Keine Teams vorhanden'
+    },
+    {
+        en: 'Select New Room',
+        de: 'Neuen Raum wählen'
+    },
+    {
+        en: 'No further rooms found',
+        de: 'Keine weiteren Räume gefunden'
+    },
+    {
+        en: 'Select',
+        de: 'Wählen'
+    },
+    {
+        en: 'Not in Age Frame',
+        de: 'Nicht im Altersfenster'
+    },
+    {
+        en: 'Appointment is not postprocessed!',
+        de: 'Termin ist nicht nachbereitet!'
+    },
+    {
+        en: 'Only participations of postprocessed appointments can be changed manually.',
+        de: 'Nur Teilnahmen von nachbereiteten Terminen können manuell verändert werden.'
+    },
+    {
+        en: 'Appointment was canceled!',
+        de: 'Termin wurde abgesagt!'
+    },
+    {
+        en: 'Participations of canceled appointments cannot be edited manually.',
+        de: 'Teilnahmen von abgesagten Terminen können nicht manuell bearbeitet werden.'
     },
 ]

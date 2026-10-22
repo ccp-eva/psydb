@@ -18,7 +18,8 @@ export const Custom = (ps) => {
         throw new Error('no fields found, maybe missing subChannelKey')
     }
     var fieldsByKey = keyBy({
-        items: fields,
+        // NOTE: lambdas have no stored value so there is nothing to diff
+        items: fields.filter(it => it.type !== 'Lambda'),
         byProp: 'key',
     });
 

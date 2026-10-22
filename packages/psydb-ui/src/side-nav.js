@@ -105,11 +105,14 @@ var checkNavItemEnabled = (bag) => {
         dev_enableCSVSubjectImport = false,
         dev_enableCSVParticipationImport = false,
         dev_enableStatistics = false,
+        dev_enableExtendedExperimentSearch = false,
     } = config;
 
     switch (path) {
         case '/statistics':
             return dev_enableStatistics;
+        case '/experiments/extended-search':
+            return dev_enableExtendedExperimentSearch;
         case '/csv-imports':
             return (
                 dev_enableCSVSubjectImport
@@ -181,6 +184,10 @@ var checkNavItemAllowed = (bag) => {
             return hasSomeFlags([
                 'canReadLocations',
                 'canWriteLocations'
+            ]);
+        case '/experiments/extended-search':
+            return hasSomeFlags([
+                'canUseExtendedSearch',
             ]);
         case '/external-persons':
             return hasSomeFlags([

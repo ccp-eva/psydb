@@ -5,7 +5,7 @@ var { FakeRecords, Fields } = require('@mpieva/psydb-faker');
 
 module.exports = async (context) => {
     var { driver, refcache, ids, crts } = context;
-    var crtSettings = crts['externalOrganization']['catShelterOrg'];
+    var crtSettings = crts['externalOrganization']['catSupportOrg'];
 
     var orgs = []
     for (var ix of range(5)) {
@@ -13,7 +13,7 @@ module.exports = async (context) => {
             refcache: refcache.data(), crtSettings, overrides: {}
         });
         var org = await driver.externalOrganization.create({
-            type: 'catShelterOrg', data: faked
+            type: 'catSupportOrg', data: faked
         });
         orgs.push(org);
     }
@@ -21,7 +21,7 @@ module.exports = async (context) => {
     await ids.addByDriverResponse('externalOrganization', orgs);
     forcePush({
         into: refcache.data(),
-        pointer: '/externalOrganization/catShelterOrg',
+        pointer: '/externalOrganization/catSupportOrg',
         values: orgs.map(it => new ObjectId(it.meta._id))
     });
 }

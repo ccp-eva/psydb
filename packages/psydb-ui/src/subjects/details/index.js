@@ -1,8 +1,9 @@
 import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
+import { JsonBase64 } from '@mpieva/psydb-core-utils';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, useUIConfig } from '@mpieva/psydb-ui-contexts';
 
 import {
     usePermissions,
@@ -32,6 +33,8 @@ const Header = ({
     historyUrl,
     canHistory,
 
+    experimentSearchUrl,
+
     subjectId,
     subjectType,
     canWriteParticipation,
@@ -40,6 +43,7 @@ const Header = ({
 }) => {
     var { path, url } = useRouteMatch();
     var translate = useUITranslation();
+    var { dev_enableWKPRCPatches } = useUIConfig();
 
     title = title || translate('Record Details');
     editLabel = editLabel || translate('Edit');
@@ -49,6 +53,11 @@ const Header = ({
         <h5 className='d-flex justify-content-between align-items-start'>
             <span className='d-inline-block pt-3'>{ title }</span>
             <div>
+                { experimentSearchUrl && (
+                    <LinkButton className='mr-3' to={ experimentSearchUrl }>
+                        { translate('_participation_search_link') }
+                    </LinkButton>
+                )}
                 { canHistory && historyUrl && (
                     <LinkButton className='mr-3' to={ historyUrl }>
                         { historyLabel }
@@ -64,7 +73,10 @@ const Header = ({
                         { editLabel }
                     </Button>
                 )}
-                {  canSelectSubjectsForExperiments && (
+                { (
+                    canSelectSubjectsForExperiments
+                    && !dev_enableWKPRCPatches
+                ) && (
                     <SelectSubjectContainer
                         className='ml-3'
                         subjectId={ subjectId }
@@ -93,6 +105,11 @@ const SubjectDetailsContainer = ({
     var canHistory = permissions.isRoot();
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
     var canWriteParticipation = permissions.hasFlag('canWriteParticipation');
+    var { dev_enableExtendedExperimentSearch = false } = useUIConfig();
+    var canUseExperimentSearch = (
+        dev_enableExtendedExperimentSearch
+        && permissions.hasFlag('canUseExtendedSearch')
+    );
 
     var canSelectSubjectsForExperiments = (
         permissions.hasSomeLabOperationFlags({
@@ -137,6 +154,11 @@ const SubjectDetailsContainer = ({
                     />
                     <Header
                         title={ translate('Study Participation') }
+                        experimentSearchUrl={ canUseExperimentSearch && (
+                            createExperimentSearchUrl({
+                                subjectId: id, subjectType: recordType
+                            })
+                        )}
                         editLabel={ translate('Add Participation') }
                         canEdit={ canWriteParticipation }
                         onEditClick={ () => (
@@ -167,6 +189,25 @@ const SubjectDetailsContainer = ({
 
         </>
     )
+}
+
+const createExperimentSearchUrl = (bag) => {
+    var { subjectId, subjectType } = bag;
+    var formData = JsonBase64.encode({
+        specialFilters: { subjectType, subjectIds: [ subjectId ] },
+        // NOTE: t-age is pruned in the columns tab when the
+        // subject type has no date of birth field
+        columns: [
+            '/state/selectedSubjectIds',
+            '/state/studyId',
+            '/state/interval/start',
+            '/_subject/_testingAge',
+            '/state/locationId',
+            '/type',
+            '/_participationStatus',
+        ],
+    });
+    return `/experiments/extended-search?tab=filters&formData=${formData}`;
 }
 
 export default SubjectDetailsContainer;

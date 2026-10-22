@@ -1,58 +1,78 @@
 'use strict';
-var { expect } = require('@mpieva/psydb-api-mocha-test-tools/chai');
 var { BaselineDeltas } = require('@mpieva/psydb-mocha-baseline-deltas');
-var { KOA_CHANNELS } = require('@mpieva/psydb-api-mocha-test-tools/utils');
+
+// NOTE: experiments are included since clean-gdpr may fixate testing ages
+// there; the fixture has none, so they must stay untouched
+var COLLECTIONS = [ 'subject', 'rohrpostEvents', 'experiment' ];
 
 describe('subject/clean-gdpr', function () {
-    var db, ids, sendMessage;
-    before(async function () {
-        ids = await this.restore('2026-03-24__0113', { gatherIds: true });
-        db = this.getDbHandle();
+    var ids, send, deltas;
 
-        var login = await this.createFakeLogin({ email: 'root@example.com' });
-        ([ sendMessage ] = this.createMessenger({ ...login }));
+    before(async function () {
+        ids = await this.restore([ 'init-cats-with-data-small' ], {
+            gatherIds: true
+        });
+
+        ([ send ] = this.createMessenger({
+            login: { email: 'root@example.com' }
+        }));
+
+        deltas = BaselineDeltas.Multi(COLLECTIONS);
+        deltas.update = async () => {
+            deltas.push(await this.aggregateAll(COLLECTIONS));
+        }
+
+        await deltas.update();
     });
 
-    it('does clean-gdpr', async function () {
-        var _id = ids(/Charlie2/);
-
-        var deltas = BaselineDeltas();
-        deltas.push({
-            'subject': await this.fetchAllRecords('subject', { _id }),
-            'events': await this.fetchAllRecords(
-                'rohrpostEvents', { channelId: _id }
-            ),
+    step('clean-gdpr of cat owner', async function () {
+        await send({
+            type: 'subject/clean-gdpr',
+            timezone: 'Europe/Berlin',
+            payload: { _id: ids(/^Ironclad, Blackbird /) },
         });
 
-        var payload = { _id };
+        await deltas.update();
 
-        await sendMessage({
-            type: 'subject/clean-gdpr', timezone: 'Europe/Berlin',
-            payload
-        });
-       
-        deltas.push({
-            'subject': await this.fetchAllRecords('subject', { _id }),
-            'events': await this.fetchAllRecords(
-                'rohrpostEvents', { channelId: _id }
-            ),
-        });
-        deltas.test({ expected: {
-            '/subject/0/gdpr/_rohrpostMetadata':
-                BaselineDeltas.AnyRohrpostMeta(),
-            '/subject/0/gdpr/_rohrpostMetadata/EXECUTED_MAKE_CLEAN': true,
-            '/subject/0/gdpr/state': '[[REDACTED]]',
+        deltas.subject.test({ expected: {
+            '5': {
+                'gdpr': {
+                    '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
+                    '_rohrpostMetadata/EXECUTED_MAKE_CLEAN': true,
+                    'state': '[[REDACTED]]',
+                },
+                // NOTE: from fixating testing ages of participations;
+                // dispatched even though there are none
+                'scientific': {
+                    '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
+                },
+            },
+        }, asFlatEJSON: true });
 
-            '/events/0/message/payload': '[[REDACTED]]',
-            '/events/2/message/payload': '[[REDACTED]]',
-            '/events/4/message/payload': '[[REDACTED]]',
-            '/events/7': {
+        deltas.rohrpostEvents.test({ expected: {
+            // NOTE: the original gdpr create event of the owner
+            '167': {
+                'message/payload': '[[REDACTED]]',
+            },
+            // NOTE: new events are appended after the existing 189
+            '189': {
                 '_id': BaselineDeltas.AnyObjectId(),
                 'correlationId': BaselineDeltas.AnyObjectId(),
                 'sessionId': BaselineDeltas.AnyObjectId(),
                 'timestamp': BaselineDeltas.AnyDate(),
                 'collectionName': 'subject',
-                'channelId': ids(/Charlie2/),
+                'channelId': ids(/^Ironclad, Blackbird /),
+                'subChannelKey': 'scientific',
+                'message/personnelId': ids(/ROOT/),
+                'message/payload/~1$set': {},
+            },
+            '190': {
+                '_id': BaselineDeltas.AnyObjectId(),
+                'correlationId': BaselineDeltas.AnyObjectId(),
+                'sessionId': BaselineDeltas.AnyObjectId(),
+                'timestamp': BaselineDeltas.AnyDate(),
+                'collectionName': 'subject',
+                'channelId': ids(/^Ironclad, Blackbird /),
                 'subChannelKey': 'gdpr',
                 'message/personnelId': ids(/ROOT/),
                 'message/type': 'MAKE_CLEAN',
@@ -60,7 +80,9 @@ describe('subject/clean-gdpr', function () {
                     '~1gdpr~1_rohrpostMetadata~1EXECUTED_MAKE_CLEAN': true,
                     '~1gdpr~1state': '[[REDACTED]]',
                 }
-            }
+            },
         }, asFlatEJSON: true });
+
+        deltas.experiment.test({ expected: {}});
     });
 });

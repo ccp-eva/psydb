@@ -46,7 +46,7 @@ module.exports = async (bag) => {
     }});
     cache.addId({ collection: 'helperSet', as: 'wkprc_rearingHistory' });
 
-    await createLocationCRT({ driver, cache, as: 'wkprc_apeLocation' });
+    await createLocationCRT({ driver, cache, as: 'wkprc_ape_location' });
 
     for (var it of subjects) {
         var { type, label, crtLabels, speciesLabels } = it;

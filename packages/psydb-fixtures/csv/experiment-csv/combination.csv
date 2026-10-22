@@ -1,0 +1,5 @@
+experiment_name;condition;year;month;day;location;room_enclosure;experimenter_id;group;subject_1;subject_2;role_1;role_2;trial_participants;comment_1;comment_2
+choice_task;other;2024;10;30;Chimfushi Sanctuary;Observation Room;1;G1;Jaro;;focus;;1;some comment;
+choice_task;other;2024;10;30;Chimfushi Sanctuary;Observation Room;1;G2;Jaro;;focus;;1;some comment;
+other_task;other;2024;10;30;Chimfushi Sanctuary;Observation Room;1;G2;Jaro;;focus;;1;some comment;
+multi;other;2024;11;30;Chimfushi Sanctuary;Observation Room;1;G1;Jaro;Star;focus;other;1;some comment;other comment

@@ -22,7 +22,7 @@ module.exports = async (bag) => {
         var { locationName, groups } = location;
         
         var locationId = cache.get(
-            `/location/wkprc_apeLocation/${locationName}`
+            `/location/wkprc_ape_location/${locationName}`
         );
 
         for (var group of groups) {
@@ -33,7 +33,7 @@ module.exports = async (bag) => {
                     subjectType,
                     props: {
                         name,
-                        locationType: 'wkprc_apeLocation',
+                        locationType: 'wkprc_ape_location',
                         locationId,
                         comment: '',
                         systemPermissions: {
