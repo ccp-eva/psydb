@@ -22,7 +22,7 @@ var {
     gatherRemovedFields
 } = require('@mpieva/psydb-api-lib/src/crt-utils');
 
-var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
+var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 
 var ParamsSchema = require('./params-schema');
 
@@ -153,10 +153,17 @@ var read = async (context, next) => {
     // XXX: oh no ... -> api-endpoints/subject/read
     var lookups = {};
     if (collectionName === 'subject') {
-        lookups.lastSubjectContact = await aggregateOne({
+        // NOTE: latest contact for each contact type
+        lookups.lastSubjectContacts = await aggregateToArray({
             db, subjectContactHistory: [
                 { $match: { 'subjectId': id }},
-                { $sort: { 'contactedAt': -1 }}
+                { $sort: { 'contactedAt': -1 }},
+                { $group: {
+                    _id: '$type',
+                    item: { $first: '$$ROOT' }
+                }},
+                { $replaceRoot: { newRoot: '$item' }},
+                { $sort: { 'type': 1 }},
             ]
         });
     }

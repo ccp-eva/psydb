@@ -45,9 +45,11 @@ var aggregateFromRefs = async (bag) => {
     
     // NOTE: in some cases miltiple pointers can match the same
     // record i.e. when a helperSet is labeled the same in english or german
+    // we must group by value as well, since the same record can be
+    // referenced by different values i.e. sequenceNumber and onlineId
     var resolvedForId = groupBy({
         items: merged,
-        byProp: '_id',
+        createKey: (it) => `${it._id}|${String(it.value)}`,
     });
 
     var out = [];

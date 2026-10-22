@@ -58,7 +58,7 @@ const RecordTable = (ps) => {
             style={{ borderCollapse: 'separate', borderSpacing: 0 }}
             hover={ true }
         >
-            <TableHead showActionColumn>
+            <TableHead>
                 <th>{ translate('Subject Type') }</th>
                 <th>{ translate('Imported At') }</th>
                 <th>{ translate('Imported By') }</th>
@@ -81,12 +81,11 @@ const RecordRow = (ps) => {
     var { _id, subjectType, createdAt, createdBy } = record;
     
     var { url } = useRouteMatch();
-    var [{ locale }] = useI18N();
+    var [{ locale, translate }] = useI18N();
     
     return (
         <LinkRow href={ `#${url}/${_id}` } values={[
-            //related.crts.subject[subjectType],
-            subjectType,
+            translate.crt(related.crts.subject[subjectType]),
             datefns.format(new Date(createdAt), 'P p', { locale }),
             related.records.personnel[createdBy],
         ]} />

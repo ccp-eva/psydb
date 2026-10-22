@@ -3,11 +3,12 @@ import { useRouteMatch, useHistory } from 'react-router';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 
 import IntraRecordNav from './intra-record-nav';
 import SubjectParticipation from './participation';
+import SubjectContactHistory from './contact-history';
 
 const IntraRecordRoutingBody = (ps) => {
     var {
@@ -20,6 +21,7 @@ const IntraRecordRoutingBody = (ps) => {
 
     var { record } = fetched;
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
+    var { dev_enableCSVSubjectContactHistoryImport = false } = useUIConfig();
 
     var [{ translate }] = useI18N();
     var history = useHistory();
@@ -41,6 +43,12 @@ const IntraRecordRoutingBody = (ps) => {
             { canReadParticipation && (
                 <Route path={`${path}/participation`}>
                     <SubjectParticipation { ...sharedBag } />
+                </Route>
+            )}
+
+            { dev_enableCSVSubjectContactHistoryImport && (
+                <Route path={`${path}/contact-history`}>
+                    <SubjectContactHistory { ...sharedBag } />
                 </Route>
             )}
 

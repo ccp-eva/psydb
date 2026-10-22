@@ -113,6 +113,13 @@ var beforeEach = async function () {}
 //}
 
 var afterAll = async function () {
+    // NOTE: connectLocal() opens its own client that
+    // teardown() doesnt know about; keeps mocha from exiting
+    var { local } = this.context.mongo;
+    if (local) {
+        await local.client.close();
+        delete this.context.mongo.local;
+    }
     await mongoHelpers.teardown(this.context.mongo)();
 }
 

@@ -7,6 +7,7 @@ var debug = require('debug')(
 var { only, jsonpointer } = require('@mpieva/psydb-core-utils');
 var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var {
+    ApiError,
     ResponseBody,
     validateOrThrow,
     fetchRecordLabelsManual,

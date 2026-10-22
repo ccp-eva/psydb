@@ -19,6 +19,9 @@ var CSVSubjectContactHistoryColumnRemapper = (bag) => {
         if (col === 'time') {
             return 'time';
         }
+        if (col === 'status') {
+            return 'status';
+        }
         if (col === 'comment') {
             return 'comment';
         }
@@ -32,6 +35,7 @@ var CSVSubjectContactHistoryColumnRemapper = (bag) => {
             contactType: [{ key: 'contactType', type: 'scalar' }],
             date: [{ key: 'date', type: 'scalar' }],
             time: [{ key: 'time', type: 'scalar' }],
+            status: [{ key: 'status', type: 'scalar' }],
             comment: [{ key: 'comment', type: 'scalar' }],
         }
 

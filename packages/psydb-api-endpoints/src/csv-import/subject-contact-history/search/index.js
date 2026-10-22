@@ -2,9 +2,10 @@
 // XXX: stub
 var debug = require('../debug-helper')('search');
 
-var { only } = require('@mpieva/psydb-core-utils');
+var { only, jsonpointer } = require('@mpieva/psydb-core-utils');
 var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var {
+    ApiError,
     ResponseBody,
     validateOrThrow,
     fetchRecordLabelsManual,
@@ -41,9 +42,31 @@ var search = async (context, next) => {
         personnel: records.map(it => it.createdBy),
     }, { oldWrappedLabels: false, ...i18n });
 
+    // FIXME: create utility to fetch related manually
+    var relatedCRTRecords = await aggregateToArray({ db, customRecordType: [
+        { $match: {
+            collection: 'subject',
+            type: { $in: records.map(it => it.subjectType)}
+        }},
+        { $project: {
+            'collection': true,
+            'type': true,
+            'state.label': true,
+            'state.displayNameI18N': true,
+        }}
+    ]});
+    var relatedCRTs = {};
+    for (var it of relatedCRTRecords) {
+        var { collection, type, state } = it;
+        jsonpointer.set(relatedCRTs, `/${collection}/${type}`, state);
+    }
+
     context.body = ResponseBody({ data: {
         records,
-        related: { records: relatedRecordLabels }
+        related: {
+            records: relatedRecordLabels,
+            crts: relatedCRTs
+        }
     }})
     
     await next();

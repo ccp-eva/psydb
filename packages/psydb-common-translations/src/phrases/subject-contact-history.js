@@ -16,4 +16,43 @@ module.exports = [
         en: 'Contacted By',
         de: 'Kontaktiert Durch',
     },
+    {
+        en: 'No contact history found.',
+        de: 'Keine Kontakt-Historie gefunden.',
+    },
+    {
+        internal: '_subjectContactType_email',
+        en: 'E-Mail',
+        de: 'E-Mail',
+    },
+    {
+        internal: '_subjectContactType_phone',
+        en: 'Phone',
+        de: 'Telefon',
+    },
+    {
+        internal: '_subjectContactStatus_sent',
+        en: 'Sent',
+        de: 'Gesendet',
+    },
+    {
+        internal: '_subjectContactStatus_delivered',
+        en: 'Delivered',
+        de: 'Zugestellt',
+    },
+    {
+        internal: '_subjectContactStatus_contact-successful',
+        en: 'Contact Successful',
+        de: 'Erreicht',
+    },
+    {
+        internal: '_subjectContactStatus_mailbox',
+        en: 'Mailbox',
+        de: 'Anrufbeantworter',
+    },
+    {
+        internal: '_subjectContactStatus_contact-failed',
+        en: 'Failed to Contact',
+        de: 'Nicht Erreicht',
+    },
 ]

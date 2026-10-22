@@ -1,5 +1,5 @@
 import React from 'react';
-import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { DefaultRecordSideNav as Nav } from '@mpieva/psydb-ui-layout';
 
@@ -8,6 +8,7 @@ const IntraRecordNav = (ps) => {
     var { record } = fetched;
 
     var [{ translate }] = useI18N();
+    var { dev_enableCSVSubjectContactHistoryImport = false } = useUIConfig();
     var permissions = usePermissions();
 
     var canEdit = permissions.hasCollectionFlag('subject', 'write');
@@ -20,14 +21,18 @@ const IntraRecordNav = (ps) => {
     core[`${hashurl}/edit`].label = translate('Edit Details');
     core[`${hashurl}/edit`].show = canEdit;
 
-    var participationLinks = {
+    var activityLinks = {
         [`${hashurl}/participation`]: {
             label: translate('Study Participation'),
             show: canReadParticipation, enabled: true
         },
+        [`${hashurl}/contact-history`]: {
+            label: translate('Contact History'),
+            show: dev_enableCSVSubjectContactHistoryImport, enabled: true
+        },
     };
-    var hasParticipationLinks = (
-        Object.values(participationLinks).some(it => it.show)
+    var hasActivityLinks = (
+        Object.values(activityLinks).some(it => it.show)
     );
 
     var extraLinks = {
@@ -41,10 +46,10 @@ const IntraRecordNav = (ps) => {
     return (
         <Nav.Container className='bg-light border'>
             <Nav.LinkList links={ core } />
-            { hasParticipationLinks && (
+            { hasActivityLinks && (
                 <>
                     <Nav.HR />
-                    <Nav.LinkList links={ participationLinks } />
+                    <Nav.LinkList links={ activityLinks } />
                 </>
             )}
             { hasExtraLinks && (
