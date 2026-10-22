@@ -1,4 +1,5 @@
 #!/bin/sh
+set -eo pipefail
 SCRIPT_DIR=$(dirname "$0")
 SUFFIX=$1
 
@@ -7,4 +8,4 @@ if [ ! -z $SUFFIX ]; then
     OUTPUT=$OUTPUT"_"$SUFFIX
 fi
 
-mongodump --host localhost:47017 -d psydb -o $OUTPUT
+mongodump --host 127.222.0.1:47017 -d psydb -o $OUTPUT

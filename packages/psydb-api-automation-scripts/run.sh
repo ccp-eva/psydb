@@ -3,7 +3,7 @@ PSYDB_URL=${PSYDB_URL:-'http://127.0.0.1:8080/'}
 #NODE_TLS_REJECT_UNAUTHORIZED='0' \
 DEBUG="*psydb:driver*" node src/run.js \
     --url "$PSYDB_URL" \
-    --mongodb 'mongodb://127.0.0.1:47017/psydb' \
+    --mongodb 'mongodb://127.222.0.1:47017/psydb' \
     --restore-fixture 'init-minimal-with-api-key' \
     $@ \
     src/scripts/cats/01_init-helper-sets-and-crts \
@@ -14,7 +14,7 @@ DEBUG="*psydb:driver*" node src/run.js \
 
 #DEBUG="*psydb:driver*" node src/run.js \
 #    --url "$PSYDB_URL" \
-#    --mongodb 'mongodb://127.0.0.1:47017/psydb' \
+#    --mongodb 'mongodb://127.222.0.1:47017/psydb' \
 #    --restore-fixture 'init-minimal-with-api-key' \
 #    $@ \
 #    src/scripts/cats-small/01_init-helper-sets-and-crts \
@@ -25,7 +25,7 @@ DEBUG="*psydb:driver*" node src/run.js \
 
 #DEBUG="*psydb:driver*" node src/run.js \
 #    --url "$PSYDB_URL" \
-#    --mongodb 'mongodb://127.0.0.1:47017/psydb' \
+#    --mongodb 'mongodb://127.222.0.1:47017/psydb' \
 #    --restore-fixture 'init-minimal-with-api-key' \
 #    $@ \
 #    src/scripts/cats-huge/01_init-helper-sets-and-crts \
@@ -43,7 +43,7 @@ DEBUG="*psydb:driver*" node src/run.js \
 #    src/scripts/wkprc-create-unknown-dummy-apes
 
 #DEBUG="*psydb:driver*" node src/run.js \
-#    --mongodb 'mongodb://127.0.0.1:47017/psydb' \
+#    --mongodb 'mongodb://127.222.0.1:47017/psydb' \
 #    --restore-fixture 'init-minimal-with-api-key' \
 #    $@ \
 #    src/scripts/init-childlab-structure \
