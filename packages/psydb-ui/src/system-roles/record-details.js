@@ -3,7 +3,7 @@ import camelcase from 'camelcase';
 
 import { useRouteMatch  } from 'react-router-dom';
 import { ucfirst } from '@mpieva/psydb-core-utils';
-import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 import { DetailsBox } from '@mpieva/psydb-ui-layout';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
@@ -37,6 +37,7 @@ export const DetailsBody = (ps) => {
     }
 
     var [{ translate }] = useI18N();
+    var { dev_enableStudyEmailTemplates } = useUIConfig();
 
     //var title = `${crtSettings.label} Datensatz-Details`;
     var title = translate('System Role Details');
@@ -167,14 +168,16 @@ export const DetailsBody = (ps) => {
                     />
                 </PermBox>
 
-                <PermBox title={ translate('Study Emails') }>
-                    <Bool
-                        dataXPath='canReadStudyEmailMetaTemplates'
-                    />
-                    <Bool
-                        dataXPath='canWriteStudyEmailMetaTemplates'
-                    />
-                </PermBox>
+                { dev_enableStudyEmailTemplates && (
+                    <PermBox title={ translate('Study Emails') }>
+                        <Bool
+                            dataXPath='canReadStudyEmailMetaTemplates'
+                        />
+                        <Bool
+                            dataXPath='canWriteStudyEmailMetaTemplates'
+                        />
+                    </PermBox>
+                )}
 
                 <PermBox title={ translate('Subjects') }>
                     <Bool

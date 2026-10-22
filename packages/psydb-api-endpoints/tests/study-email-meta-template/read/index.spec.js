@@ -7,7 +7,7 @@ var endpoints = require('../../../src');
 var endpoint = endpoints.studyEmailMetaTemplate.read;
 
 describe('study-email-meta-template/read', function () {
-    var db, ids, catLabId, otherId;
+    var db, ids, catLabId, otherId, fileId;
     before(async function () {
         ids = await this.restore([
             'init-minimal',
@@ -19,26 +19,38 @@ describe('study-email-meta-template/read', function () {
         ], { gatherIds: true });
         db = this.getDbHandle();
 
-        var createDoc = ({ _id, templateName, researchGroupId }) => ({
-            _id,
-            studyType: 'catStudy',
-            subjectType: 'cat',
-            state: {
-                templateName,
-                mailSubject: `${templateName} Subject`,
-                mailSender: 'sender@example.com',
-                mailText: '',
-                mailHTML: '<p>Foo</p>',
-                mailAttachments: [],
-                mailLinks: [],
-                isEnabled: true,
-                systemPermissions: {
-                    accessRightsByResearchGroup: [
-                        { researchGroupId, permission: 'read' }
-                    ],
-                    isHidden: false
-                },
-            }
+        var createDoc = (bag) => {
+            var {
+                _id, templateName, researchGroupId, mailAttachments = []
+            } = bag;
+
+            return {
+                _id,
+                studyType: 'catStudy',
+                subjectType: 'cat',
+                state: {
+                    templateName,
+                    mailSubject: `${templateName} Subject`,
+                    mailSender: 'sender@example.com',
+                    mailText: '',
+                    mailHTML: '<p>Foo</p>',
+                    mailAttachments,
+                    mailLinks: [],
+                    isEnabled: true,
+                    systemPermissions: {
+                        accessRightsByResearchGroup: [
+                            { researchGroupId, permission: 'read' }
+                        ],
+                        isHidden: false
+                    },
+                }
+            };
+        };
+
+        fileId = new ObjectId();
+        await db.collection('file').insertOne({
+            _id: fileId, originalFilename: 'info.pdf',
+            mimetype: 'application/pdf', blob: Buffer.from('foo'),
         });
 
         catLabId = new ObjectId();
@@ -47,6 +59,7 @@ describe('study-email-meta-template/read', function () {
             createDoc({
                 _id: catLabId, templateName: 'Cat-Lab',
                 researchGroupId: ids('Cat-Lab'),
+                mailAttachments: [{ fileId, label: 'Info' }],
             }),
             createDoc({
                 _id: otherId, templateName: 'Other Group',
@@ -91,6 +104,10 @@ describe('study-email-meta-template/read', function () {
         expect(
             related.relatedRecordLabels.researchGroup[ids('Cat-Lab')]
         ).to.eql({ _id: ids('Cat-Lab'), _recordLabel: 'Cat-Lab' });
+        expect(related.files[fileId]).to.eql({
+            _id: fileId, originalFilename: 'info.pdf',
+            mimetype: 'application/pdf'
+        });
     });
 
     it('throws 404 when record not accessible', async function () {

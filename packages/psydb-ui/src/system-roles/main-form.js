@@ -1,5 +1,5 @@
 import React from 'react';
-import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -46,6 +46,7 @@ export const MainForm = (ps) => {
 const FormFields = (ps) => {
     var { related, permissions } = ps;
     var [{ translate }] = useI18N();
+    var { dev_enableStudyEmailTemplates } = useUIConfig();
     
     return (
         <>
@@ -202,16 +203,18 @@ const FormFields = (ps) => {
                 />
             </PermBox>
 
-            <PermBox title={ translate('Study Emails') }>
-                <Bool
-                    label='Can View Study Email Meta Templates'
-                    dataXPath='$.canReadStudyEmailMetaTemplates'
-                />
-                <Bool
-                    label='Can Edit Study Email Meta Templates'
-                    dataXPath='$.canWriteStudyEmailMetaTemplates'
-                />
-            </PermBox>
+            { dev_enableStudyEmailTemplates && (
+                <PermBox title={ translate('Study Emails') }>
+                    <Bool
+                        label='Can View Study Email Meta Templates'
+                        dataXPath='$.canReadStudyEmailMetaTemplates'
+                    />
+                    <Bool
+                        label='Can Edit Study Email Meta Templates'
+                        dataXPath='$.canWriteStudyEmailMetaTemplates'
+                    />
+                </PermBox>
+            )}
 
             <PermBox title={ translate('Subjects') }>
                 <Bool

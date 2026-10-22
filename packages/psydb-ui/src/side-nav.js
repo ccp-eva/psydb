@@ -106,6 +106,7 @@ var checkNavItemEnabled = (bag) => {
         dev_enableCSVParticipationImport = false,
         dev_enableStatistics = false,
         dev_enableExtendedExperimentSearch = false,
+        dev_enableStudyEmailTemplates = false,
     } = config;
 
     switch (path) {
@@ -113,6 +114,8 @@ var checkNavItemEnabled = (bag) => {
             return dev_enableStatistics;
         case '/experiments/extended-search':
             return dev_enableExtendedExperimentSearch;
+        case '/study-email-meta-templates':
+            return dev_enableStudyEmailTemplates;
         case '/csv-imports':
             return (
                 dev_enableCSVSubjectImport

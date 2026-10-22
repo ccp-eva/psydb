@@ -33,6 +33,10 @@ module.exports = [
         de: 'EMail-Meta-Template Bearbeiten'
     },
     {
+        en: 'Email Meta Template Details',
+        de: 'EMail-Meta-Template Details'
+    },
+    {
         en: 'Sender',
         de: 'Absender:in'
     },

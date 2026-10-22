@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { CopyNotice } from '@mpieva/psydb-ui-layout';
 import { ErrorBoundary } from '@mpieva/psydb-ui-lib';
 
@@ -105,7 +106,9 @@ var Home = () => {
     );
 }
 
-var Routing = () => (
+var Routing = () => {
+    var { dev_enableStudyEmailTemplates } = useUIConfig();
+    return (
     <>
     <Route exact path='/' component={ Home } />
     
@@ -127,7 +130,9 @@ var Routing = () => (
     <Route path='/personnel' component={ withEB(Personnel) } />
     
     <Route path='/study-consent-templates' component={ withEB(StudyConsentTemplates) } />
-    <Route path='/study-email-meta-templates' component={ withEB(StudyEmailMetaTemplates) } />
+    { dev_enableStudyEmailTemplates && (
+        <Route path='/study-email-meta-templates' component={ withEB(StudyEmailMetaTemplates) } />
+    )}
     <Route path='/research-groups' component={ withEB(ResearchGroups) } />
     <Route path='/system-roles' component={ withEB(SystemRoles) } />
     <Route path='/custom-record-types' component={ withEB(CustomRecordTypes) } />
@@ -137,6 +142,7 @@ var Routing = () => (
     <Route path='/experiments' component={ withEB(Experiments) } />
     <Route path='/fixes-checker' component={ withEB(FixesChecker) } />
     </>
-)
+    );
+}
 
 export default LayoutedRoutes;

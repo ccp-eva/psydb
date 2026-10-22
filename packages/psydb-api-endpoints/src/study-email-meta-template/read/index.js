@@ -1,7 +1,9 @@
 'use strict';
 var debug = require('../debug-helper')('read');
 
-var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
+var { keyBy } = require('@mpieva/psydb-core-utils');
+var { aggregateOne, aggregateToArray }
+    = require('@mpieva/psydb-mongo-adapter');
 var { SystemPermissionStages } = require('@mpieva/psydb-mongo-stages');
 var { fetchRecordLabelsManual } = require('@mpieva/psydb-db-utils');
 var { ApiError, ResponseBody, validateOrThrow }
@@ -43,9 +45,21 @@ var readEndpoint = async (context, next) => {
         ),
     }, { ...i18n, oldWrappedLabels: true });
 
+    // NOTE: file/read is root only; this lets users see attachment
+    // names of templates they have access to
+    var files = await aggregateToArray({ db, file: [
+        { $match: { _id: { $in: record.state.mailAttachments.map(
+            it => it.fileId
+        )}}},
+        { $project: { _id: true, originalFilename: true, mimetype: true }},
+    ]});
+
     context.body = ResponseBody({
         data: {
-            record, related: { relatedRecordLabels },
+            record, related: {
+                relatedRecordLabels,
+                files: keyBy({ items: files, byProp: '_id' }),
+            },
         },
     });
 

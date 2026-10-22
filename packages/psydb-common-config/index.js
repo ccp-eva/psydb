@@ -131,6 +131,7 @@ var cats = {
     dev_enableCSVParticipationImport: true,
     
     dev_enableStudyConsentWorkflow: true,
+    dev_enableStudyEmailTemplates: true,
     dev_enableImprovedContactTracking: true,
     dev_enableStudyRoadmap: true,
 

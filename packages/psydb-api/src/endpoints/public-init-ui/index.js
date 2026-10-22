@@ -62,6 +62,7 @@ var publicInitUI = async (context, next) => {
         
         '/dev_enableImprovedContactTracking',
         '/dev_enableStudyConsentWorkflow',
+        '/dev_enableStudyEmailTemplates',
         '/dev_enableStudyRoadmap',
         '/dev_enableExtendedExperimentSearch',
     ]});
