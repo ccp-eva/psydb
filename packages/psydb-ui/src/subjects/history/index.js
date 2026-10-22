@@ -59,7 +59,6 @@ const History = (ps) => {
 
     return (
         <>
-            <h3 className='border-bottom'>{ translate('Subject History') }</h3>
             <div className='border p-3 bg-light'>
                 <div className='d-flex'>
                     <div className='w-50 flex-grow-1 pr-2'>

@@ -132,6 +132,7 @@ var cats = {
     
     dev_enableStudyConsentWorkflow: true,
     dev_enableStudyEmailTemplates: true,
+    dev_enableCSVSubjectContactHistoryImport: true,
     dev_enableImprovedContactTracking: true,
     dev_enableStudyRoadmap: true,
 

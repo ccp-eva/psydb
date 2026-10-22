@@ -1,92 +1,13 @@
 import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
-import { JsonBase64 } from '@mpieva/psydb-core-utils';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation, useUIConfig } from '@mpieva/psydb-ui-contexts';
-
-import {
-    usePermissions,
-    useModalReducer,
-    useRevision
-} from '@mpieva/psydb-ui-hooks';
-
-import { LinkButton, Button } from '@mpieva/psydb-ui-layout';
-import { SubjectParticipationList } from '@mpieva/psydb-ui-lib';
-import {
-    CreateModal as ParticipationCreateModal
-} from '@mpieva/psydb-ui-lib/src/participation/for-subject';
-
-
-import SelectSubjectContainer from './select-subject-container';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import { RecordDetails } from '@mpieva/psydb-ui-record-views/subjects';
 
-const Header = ({
-    title,
-    editLabel,
-    editUrl,
-    onEditClick,
-    canEdit,
-    
-    historyLabel,
-    historyUrl,
-    canHistory,
-
-    experimentSearchUrl,
-
-    subjectId,
-    subjectType,
-    canWriteParticipation,
-    canSelectSubjects,
-    canSelectSubjectsForExperiments,
-}) => {
-    var { path, url } = useRouteMatch();
-    var translate = useUITranslation();
-    var { dev_enableWKPRCPatches } = useUIConfig();
-
-    title = title || translate('Record Details');
-    editLabel = editLabel || translate('Edit');
-    historyLabel = historyLabel || translate('History');
-
-    return (
-        <h5 className='d-flex justify-content-between align-items-start'>
-            <span className='d-inline-block pt-3'>{ title }</span>
-            <div>
-                { experimentSearchUrl && (
-                    <LinkButton className='mr-3' to={ experimentSearchUrl }>
-                        { translate('_participation_search_link') }
-                    </LinkButton>
-                )}
-                { canHistory && historyUrl && (
-                    <LinkButton className='mr-3' to={ historyUrl }>
-                        { historyLabel }
-                    </LinkButton>
-                )}
-                { canEdit && editUrl && (
-                    <LinkButton to={ editUrl }>
-                        { editLabel }
-                    </LinkButton>
-                )}
-                { canEdit && onEditClick && (
-                    <Button onClick={ onEditClick }>
-                        { editLabel }
-                    </Button>
-                )}
-                { (
-                    canSelectSubjectsForExperiments
-                    && !dev_enableWKPRCPatches
-                ) && (
-                    <SelectSubjectContainer
-                        className='ml-3'
-                        subjectId={ subjectId }
-                        subjectType={ subjectType }
-                    />
-                )}
-            </div>
-        </h5>
-    )
-}
+import Header from './header';
 
 const SubjectDetailsContainer = ({
     type,
@@ -96,20 +17,12 @@ const SubjectDetailsContainer = ({
     var { path, url } = useRouteMatch();
     var { id } = useParams();
     var translate = useUITranslation();
-    var revision = useRevision();
     var permissions = usePermissions();
-    var participationModal = useModalReducer();
 
     var isRoot = permissions.isRoot();
     var canEdit = permissions.hasCollectionFlag(collection, 'write');
     var canHistory = permissions.isRoot();
-    var canReadParticipation = permissions.hasFlag('canReadParticipation');
     var canWriteParticipation = permissions.hasFlag('canWriteParticipation');
-    var { dev_enableExtendedExperimentSearch = false } = useUIConfig();
-    var canUseExperimentSearch = (
-        dev_enableExtendedExperimentSearch
-        && permissions.hasFlag('canUseExtendedSearch')
-    );
 
     var canSelectSubjectsForExperiments = (
         permissions.hasSomeLabOperationFlags({
@@ -120,12 +33,9 @@ const SubjectDetailsContainer = ({
 
     return (
         <>
-            <h3 className='border-bottom'>
-                { translate('Subject Details') }
-            </h3>
             <div className='border pl-3 bg-light'>
                 <Header
-                    title={ translate('Collected Data') }
+                    title={ translate('Subject Details') }
                     editUrl={ `${up(url, 1)}/edit` }
                     historyUrl={ `${up(url, 1)}/channel-history` }
                     subjectId={ id }
@@ -144,38 +54,6 @@ const SubjectDetailsContainer = ({
                 })} />
             </div>
             
-            { canReadParticipation && (
-                <div className='border pl-3 bg-light mt-4 mb-4'>
-                    <ParticipationCreateModal
-                        { ...participationModal.passthrough }
-                        subjectId={ id }
-                        subjectRecordType={ recordType }
-                        onSuccessfulUpdate={ revision.up }
-                    />
-                    <Header
-                        title={ translate('Study Participation') }
-                        experimentSearchUrl={ canUseExperimentSearch && (
-                            createExperimentSearchUrl({
-                                subjectId: id, subjectType: recordType
-                            })
-                        )}
-                        editLabel={ translate('Add Participation') }
-                        canEdit={ canWriteParticipation }
-                        onEditClick={ () => (
-                            participationModal.handleShow()
-                        )}
-                    />
-                    <hr />
-                    <div className='pr-3 pb-3'>
-                        <SubjectParticipationList
-                            id={ id }
-                            subjectType={ recordType }
-                            revision={ revision }
-                        />
-                    </div>
-                </div>
-            )}
-
             { /*isRoot && (
                 <div className='mb-4'>
                     <LinkButton
@@ -189,25 +67,6 @@ const SubjectDetailsContainer = ({
 
         </>
     )
-}
-
-const createExperimentSearchUrl = (bag) => {
-    var { subjectId, subjectType } = bag;
-    var formData = JsonBase64.encode({
-        specialFilters: { subjectType, subjectIds: [ subjectId ] },
-        // NOTE: t-age is pruned in the columns tab when the
-        // subject type has no date of birth field
-        columns: [
-            '/state/selectedSubjectIds',
-            '/state/studyId',
-            '/state/interval/start',
-            '/_subject/_testingAge',
-            '/state/locationId',
-            '/type',
-            '/_participationStatus',
-        ],
-    });
-    return `/experiments/extended-search?tab=filters&formData=${formData}`;
 }
 
 export default SubjectDetailsContainer;
