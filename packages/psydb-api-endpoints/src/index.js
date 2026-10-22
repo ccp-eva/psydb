@@ -5,6 +5,7 @@ module.exports = {
 
     study: require('./study'),
     studyConsentTemplate: require('./study-consent-template'),
+    studyEmailMetaTemplate: require('./study-email-meta-template'),
     studyConsentForm: require('./study-consent-form'),
     studyConsentDoc: require('./study-consent-doc'),
 

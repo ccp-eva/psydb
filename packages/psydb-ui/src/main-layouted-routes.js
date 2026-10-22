@@ -17,6 +17,7 @@ import SubjectGroups from './subject-groups';
 import Personnel from './personnel';
 
 import StudyConsentTemplates from './study-consent-templates';
+import StudyEmailMetaTemplates from './study-email-meta-templates';
 import ResearchGroups from './research-groups';
 import SystemRoles from './system-roles';
 import ExternalPersons from './external-persons';
@@ -126,6 +127,7 @@ var Routing = () => (
     <Route path='/personnel' component={ withEB(Personnel) } />
     
     <Route path='/study-consent-templates' component={ withEB(StudyConsentTemplates) } />
+    <Route path='/study-email-meta-templates' component={ withEB(StudyEmailMetaTemplates) } />
     <Route path='/research-groups' component={ withEB(ResearchGroups) } />
     <Route path='/system-roles' component={ withEB(SystemRoles) } />
     <Route path='/custom-record-types' component={ withEB(CustomRecordTypes) } />

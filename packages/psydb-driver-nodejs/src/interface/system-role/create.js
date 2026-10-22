@@ -38,6 +38,9 @@ var create = async (bag) => {
         '/canViewStudyLabOpsSettings',
         '/canViewStudyLabTeams',
 
+        '/canReadStudyEmailMetaTemplates',
+        '/canWriteStudyEmailMetaTemplates',
+
         '/canReadSubjects',
         '/canWriteSubjects',
         '/canRemoveSubjects',

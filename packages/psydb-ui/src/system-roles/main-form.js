@@ -202,6 +202,17 @@ const FormFields = (ps) => {
                 />
             </PermBox>
 
+            <PermBox title={ translate('Study Emails') }>
+                <Bool
+                    label='Can View Study Email Meta Templates'
+                    dataXPath='$.canReadStudyEmailMetaTemplates'
+                />
+                <Bool
+                    label='Can Edit Study Email Meta Templates'
+                    dataXPath='$.canWriteStudyEmailMetaTemplates'
+                />
+            </PermBox>
+
             <PermBox title={ translate('Subjects') }>
                 <Bool
                     label='Can View Subjects'

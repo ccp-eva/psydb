@@ -100,6 +100,11 @@ module.exports.StudyEmailTemplate = {
     State: require('./study-email-template/state'),
 }
 
+module.exports.StudyEmailMetaTemplate = {
+    MongoDoc: require('./study-email-meta-template/mongo-doc'),
+    State: require('./study-email-meta-template/state'),
+}
+
 module.exports.StudyConsentTemplate = {
     MongoDoc: require('./study-consent-template/mongo-doc'),
     State: require('./study-consent-template/state'),

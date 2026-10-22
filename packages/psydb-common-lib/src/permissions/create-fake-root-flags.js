@@ -31,6 +31,9 @@ var createFakeRootFlags = () => ({
         [`canRemove${it}`]: true,
     }), {}),
 
+    canReadStudyEmailMetaTemplates: true,
+    canWriteStudyEmailMetaTemplates: true,
+
     canReadParticipation: true,
     canWriteParticipation: true,
 

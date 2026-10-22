@@ -18,6 +18,7 @@ module.exports = [
     ...require('./csv-imports'),
     ...require('./duplicates'),
     ...require('./study-consent-workflow'),
+    ...require('./study-email-workflow'),
     ...require('./study-roadmap'),
 
     ...require('./_record-anonymizer'),

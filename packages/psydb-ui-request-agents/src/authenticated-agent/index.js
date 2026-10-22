@@ -976,6 +976,7 @@ const createAgent = (options = {}) => {
         'studyConsentTemplate',
         'studyConsentForm',
         'studyConsentDoc',
+        'studyEmailMetaTemplate',
         
         'personnel',
         'location',

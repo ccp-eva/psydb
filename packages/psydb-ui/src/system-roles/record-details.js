@@ -167,6 +167,15 @@ export const DetailsBody = (ps) => {
                     />
                 </PermBox>
 
+                <PermBox title={ translate('Study Emails') }>
+                    <Bool
+                        dataXPath='canReadStudyEmailMetaTemplates'
+                    />
+                    <Bool
+                        dataXPath='canWriteStudyEmailMetaTemplates'
+                    />
+                </PermBox>
+
                 <PermBox title={ translate('Subjects') }>
                     <Bool
                         dataXPath='canReadSubjects'

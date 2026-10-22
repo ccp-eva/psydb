@@ -155,6 +155,15 @@ var handleNoCRT = async (bag) => {
                     },
                 ]}
             ],
+            'studyEmailMetaTemplate': [
+                { 'state.templateName': true },
+                { format: '${#}', tokens: [
+                    {
+                        systemType: 'SaneString',
+                        dataPointer: '/state/templateName'
+                    },
+                ]}
+            ],
 
             //////////////////////////////////////////////
 

@@ -219,6 +219,11 @@ var checkNavItemAllowed = (bag) => {
                 'canReadPersonnel',
                 'canWritePersonnel'
             ]);
+        case '/study-email-meta-templates':
+            return hasSomeFlags([
+                'canReadStudyEmailMetaTemplates',
+                'canWriteStudyEmailMetaTemplates'
+            ]);
         case '/statistics':
         case '/csv-imports':
         case '/study-consent-templates':

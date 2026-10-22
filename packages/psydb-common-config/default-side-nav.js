@@ -26,6 +26,7 @@ var nav = [
     { path: '/personnel' },
     '=======',
     { path: '/study-consent-templates' },
+    { path: '/study-email-meta-templates' },
     { path: '/research-groups' },
     { path: '/system-roles' },
     { path: '/custom-record-types' },
