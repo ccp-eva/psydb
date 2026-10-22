@@ -7,11 +7,11 @@ describe('subject/remove (non-duplicates)', function () {
     beforeEach(async function () {
         ids = await this.restore([
             'init-minimal',
-            'tiny_2026-10-16__1613__cats-01-helper-sets-and-crts',
-            'tiny_2026-10-16__1613__cats-02-roles-and-research-groups',
-            'tiny_2026-10-16__1613__cats-03-personnel',
-            'tiny_2026-10-16__1613__cats-04-orgs-and-locations',
-            'tiny_2026-10-16__1613__cats-05-subjects',
+            'tiny_2026-10-22__1606__cats-01-helper-sets-and-crts',
+            'tiny_2026-10-22__1606__cats-02-roles-and-research-groups',
+            'tiny_2026-10-22__1606__cats-03-personnel',
+            'tiny_2026-10-22__1606__cats-04-orgs-and-locations',
+            'tiny_2026-10-22__1606__cats-05-subjects',
         ], { gatherIds: true });
         db = this.getDbHandle();
 
@@ -23,22 +23,22 @@ describe('subject/remove (non-duplicates)', function () {
         await sendMessage({
             type: 'subject/mark-non-duplicates', timezone: 'Europe/Berlin',
             payload: { subjectIds: [
-                ids(/Pop.*Unique/), ids(/Vellum.*Gram/)
+                ids(/Homeownership.*Banking/), ids(/Doubter.*Pita/)
             ]}
         });
 
         await sendMessage({
             type: 'subject/remove', timezone: 'Europe/Berlin',
-            payload: { _id: ids(/Pop.*Unique/) }
+            payload: { _id: ids(/Homeownership.*Banking/) }
         });
 
         var removed = await aggregateOne({ db, subject: [
-            { $match: { _id: ids(/Pop.*Unique/) }},
+            { $match: { _id: ids(/Homeownership.*Banking/) }},
         ]});
         expect(removed).to.not.exist;
 
         var other = await aggregateOne({ db, subject: [
-            { $match: { _id: ids(/Vellum.*Gram/) }},
+            { $match: { _id: ids(/Doubter.*Pita/) }},
         ]});
         expect(
             other.scientific.state.internals.nonDuplicateIds

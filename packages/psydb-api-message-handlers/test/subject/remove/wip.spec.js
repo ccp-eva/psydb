@@ -9,11 +9,11 @@ describe('subject/remove', function () {
     before(async function () {
         ids = await this.restore([
             'init-minimal',
-            'tiny_2026-10-16__1613__cats-01-helper-sets-and-crts',
-            'tiny_2026-10-16__1613__cats-02-roles-and-research-groups',
-            'tiny_2026-10-16__1613__cats-03-personnel',
-            'tiny_2026-10-16__1613__cats-04-orgs-and-locations',
-            'tiny_2026-10-16__1613__cats-05-subjects',
+            'tiny_2026-10-22__1606__cats-01-helper-sets-and-crts',
+            'tiny_2026-10-22__1606__cats-02-roles-and-research-groups',
+            'tiny_2026-10-22__1606__cats-03-personnel',
+            'tiny_2026-10-22__1606__cats-04-orgs-and-locations',
+            'tiny_2026-10-22__1606__cats-05-subjects',
         ], { gatherIds: true });
         db = this.getDbHandle();
 
@@ -22,7 +22,7 @@ describe('subject/remove', function () {
     });
 
     it('does mrproper', async function () {
-        var _id = ids(/Pop.*Unique/);
+        var _id = ids(/Homeownership.*Banking/);
 
         var deltas = BaselineDeltas();
         deltas.push(await this.aggregateAll([
@@ -57,7 +57,7 @@ describe('subject/remove', function () {
             'sessionId': BaselineDeltas.AnyObjectId(),
             'timestamp': BaselineDeltas.AnyDate(),
             'collectionName': 'subject',
-            'channelId': ids(/Pop.*Unique/),
+            'channelId': ids(/Homeownership.*Banking/),
             'message/personnelId': ids(/ROOT/),
             'message/type': 'MAKE_MRPROPER',
         }
@@ -66,7 +66,7 @@ describe('subject/remove', function () {
     });
     
     it('throws when participations', async function () {
-        var _id = ids(/Kiss.*Bite/);
+        var _id = ids(/Maintenance.*Snake/);
         // NOTE: tiny dumps contain no studies/participations
         await db.collection('subject').updateOne({ _id }, { $push: {
             'scientific.state.internals.participatedInStudies': {
