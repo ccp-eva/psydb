@@ -241,4 +241,49 @@ module.exports = [
         en: 'This field type cannot be imported via CSV at the moment.',
         de: 'Dieser Feldtyp kann derzeit nicht per CSV importiert werden.',
     },
+    {
+        internal: '_csvColumnInfo_address_street',
+        en: 'Street of the address.',
+        de: 'Straße der Adresse.',
+    },
+    {
+        internal: '_csvColumnInfo_address_housenumber',
+        en: 'House number.',
+        de: 'Hausnummer.',
+    },
+    {
+        internal: '_csvColumnInfo_address_affix',
+        en: 'Address affix, e.g. apartment (WHG) or rear building (HH).',
+        de: 'Adresszusatz, z.B. Wohnung (WHG) oder Hinterhaus (HH).',
+    },
+    {
+        internal: '_csvColumnInfo_address_postcode',
+        en: 'Postcode.',
+        de: 'Postleitzahl.',
+    },
+    {
+        internal: '_csvColumnInfo_address_city',
+        en: 'City.',
+        de: 'Ort.',
+    },
+    {
+        internal: '_csvColumnInfo_address_country',
+        en: 'Country code; currently only DE is supported.',
+        de: 'Ländercode; derzeit wird nur DE unterstützt.',
+    },
+    {
+        internal: '_csvColumnInfo_address_requiredPart',
+        en: 'Must be given when an address is imported.',
+        de: 'Muss angegeben werden, wenn eine Adresse importiert wird.',
+    },
+    {
+        internal: '_csvColumnInfo_address_optionalPart',
+        en: 'Column and value may be omitted.',
+        de: 'Spalte und Wert können weggelassen werden.',
+    },
+    {
+        internal: '_csvColumnInfo_address_countryFallback',
+        en: 'Defaults to DE.',
+        de: 'Standardwert ist DE.',
+    },
 ]

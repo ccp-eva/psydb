@@ -5,7 +5,7 @@ import { Button } from '@mpieva/psydb-ui-layout';
 
 // NOTE: columns = [{
 //     csvkey, typeLabel?, examples?: [],
-//     description?, descriptionProps?, isRequired?
+//     description? (key or list of keys), descriptionProps?, isRequired?
 // }]
 const CSVColumnInfo = (ps) => {
     var { columns } = ps;
@@ -65,7 +65,11 @@ const ColumnItem = (ps) => {
                 </div>
             )}
             { description && (
-                <div><i>{ translate(description, descriptionProps) }</i></div>
+                <div><i>
+                    { [].concat(description).map(it => (
+                        translate(it, descriptionProps)
+                    )).join(' ') }
+                </i></div>
             )}
         </div>
     )

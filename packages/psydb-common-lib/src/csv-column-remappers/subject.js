@@ -60,6 +60,12 @@ var CSVSubjectColumnRemapper = (bag) => {
     return remapper;
 }
 
+// NOTE: address fields are imported via one column per part
+// i.e. 'address.street', 'address.city', ...
+var ADDRESS_SUBKEYS = [
+    'street', 'housenumber', 'affix', 'postcode', 'city', 'country'
+];
+
 var preGenerate = {
     csv2obj: (bag) => {
         var { subjectCRT } = bag;
@@ -73,13 +79,21 @@ var preGenerate = {
 
         var customMapping = {};
         for (var it of definitions) {
-            var { key, subChannel, pointer } = it;
+            var { key, subChannel, pointer, systemType } = it;
             var mkey = (
                 (dups.includes(key) || staticMapping[key])
                 ? `${subChannel}.${key}`
                 : key
             );
-            customMapping[mkey] = convertPointerToPath(pointer);
+            var path = convertPointerToPath(pointer);
+            if (systemType === 'Address') {
+                for (var subkey of ADDRESS_SUBKEYS) {
+                    customMapping[`${mkey}.${subkey}`] = `${path}.${subkey}`;
+                }
+            }
+            else {
+                customMapping[mkey] = path;
+            }
         }
 
         var mapping = {
@@ -106,19 +120,33 @@ var preGenerate = {
 
         var customMapping = {};
         for (var it of definitions) {
-            var { key, subChannel } = it;
+            var { key, subChannel, systemType } = it;
 
             var mkey = (
                 (dups.includes(key) || staticMapping[key])
                 ? `${subChannel}.${key}`
                 : key
             );
-            customMapping[mkey] = [
+            var base = [
                 { key: subChannel, type: 'object' },
                 { key: 'state', type: 'object' },
                 { key: 'custom', type: 'object' },
-                { key: key, type: 'scalar' },
             ];
+            if (systemType === 'Address') {
+                for (var subkey of ADDRESS_SUBKEYS) {
+                    customMapping[`${mkey}.${subkey}`] = [
+                        ...base,
+                        { key: key, type: 'object' },
+                        { key: subkey, type: 'scalar' },
+                    ];
+                }
+            }
+            else {
+                customMapping[mkey] = [
+                    ...base,
+                    { key: key, type: 'scalar' },
+                ];
+            }
         }
         
         var mapping = {
