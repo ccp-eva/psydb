@@ -16,8 +16,8 @@ var CSVAwayTeamColumnRemapper = (bag) => {
         if ([ 'locationId', 'location' ].includes(col)) {
             return 'locationId';
         }
-        if (/^experimenter(Id)?(\[\d+\])?$/.test(col)) {
-            var arraySuffix = col.replace(/^experimenter(Id)?/, '') || '[0]';
+        if (/^experimenter(Ids)?(\[\d+\])?$/.test(col)) {
+            var arraySuffix = col.replace(/^experimenter(Ids)?/, '') || '[0]';
             return `experimentOperatorIds${arraySuffix}`;
         }
         if ([ 'subjectId', 'subject' ].includes(col)) {
@@ -43,7 +43,7 @@ var CSVAwayTeamColumnRemapper = (bag) => {
                 { key: 'comment', type: 'scalar' }
             ],
             locationId: [{ key: 'locationId', type: 'scalar' }],
-            experimenterId: [{ key: 'experimentOperatorIds', type: 'array' }]
+            experimenterIds: [{ key: 'experimentOperatorIds', type: 'array' }]
         }
 
         return getDemappedCols({ path, mapping });

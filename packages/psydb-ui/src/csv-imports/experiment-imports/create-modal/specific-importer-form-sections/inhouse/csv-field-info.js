@@ -25,7 +25,7 @@ var columns = [
         description: '_csvColumnInfo_experiment_subjectId',
     },
     {
-        csvkey: 'experimenterId',
+        csvkey: 'experimenterIds',
         examples: [ '3456' ], isRequired: true,
         description: '_csvColumnInfo_experiment_experimenterId',
     },

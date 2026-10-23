@@ -103,13 +103,13 @@ module.exports = [
     },
     {
         internal: '_csvColumnInfo_experiment_experimenterId',
-        en: 'ID No. or manual import ID of the staff member. For multiple experimenters use the columns experimenterId[0], experimenterId[1], ...',
-        de: 'ID-Nr. oder manuelle Import-ID der Mitarbeiter:in. Für mehrere Experimenter:innen die Spalten experimenterId[0], experimenterId[1], ... verwenden.',
+        en: 'ID No. or manual import ID of the staff member. For multiple experimenters use the columns experimenterIds[0], experimenterIds[1], ...',
+        de: 'ID-Nr. oder manuelle Import-ID der Mitarbeiter:in. Für mehrere Experimenter:innen die Spalten experimenterIds[0], experimenterIds[1], ... verwenden.',
     },
     {
         internal: '_csvColumnInfo_experiment_experimenterId_simple',
-        en: 'ID No. of the staff member. For multiple experimenters use the columns experimenterId[0], experimenterId[1], ...',
-        de: 'ID-Nr. der Mitarbeiter:in. Für mehrere Experimenter:innen die Spalten experimenterId[0], experimenterId[1], ... verwenden.',
+        en: 'ID No. of the staff member. For multiple experimenters use the columns experimenterIds[0], experimenterIds[1], ...',
+        de: 'ID-Nr. der Mitarbeiter:in. Für mehrere Experimenter:innen die Spalten experimenterIds[0], experimenterIds[1], ... verwenden.',
     },
     {
         internal: '_csvColumnInfo_experiment_comment',

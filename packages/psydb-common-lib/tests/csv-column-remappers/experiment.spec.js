@@ -16,12 +16,13 @@ describe('csv-column-remappers/experiment', () => {
                 for (var col of [ 'locationId', 'location' ]) {
                     expect(csv2obj(col)).to.eql('locationId');
                 }
-                for (var col of [ 'experimenterId', 'experimenter' ]) {
+                for (var col of [ 'experimenterIds', 'experimenter' ]) {
                     expect(csv2obj(col)).to.eql('experimentOperatorIds[0]');
                     expect(csv2obj(`${col}[1]`)).to.eql(
                         'experimentOperatorIds[1]'
                     );
                 }
+                expect(csv2obj('experimenterId')).to.eql(undefined);
                 expect(csv2obj('subjectIdx')).to.eql(undefined);
             });
 
@@ -33,7 +34,7 @@ describe('csv-column-remappers/experiment', () => {
                 ]);
                 expect(ajvpath2csv('locationId')).to.eql([ 'locationId' ]);
                 expect(ajvpath2csv('experimentOperatorIds')).to.eql([
-                    'experimenterId'
+                    'experimenterIds'
                 ]);
             });
         });
