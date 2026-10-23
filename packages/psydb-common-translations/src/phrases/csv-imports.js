@@ -287,23 +287,13 @@ module.exports = [
         de: 'Standardwert ist DE.',
     },
     {
-        internal: '_csvColumnInfo_phoneWithType_number',
-        en: 'Phone number. One entry per index: ${csvkey}[0].number, ${csvkey}[1].number, ...',
-        de: 'Telefonnummer. Ein Eintrag pro Index: ${csvkey}[0].number, ${csvkey}[1].number, ...',
+        internal: '_csvColumnInfo_fieldtype_PhoneWithTypeList',
+        en: 'Phone number. One value per column: ${csvkey}[0], ${csvkey}[1], ... The type is stored as private.',
+        de: 'Telefonnummer. Ein Wert pro Spalte: ${csvkey}[0], ${csvkey}[1], ... Als Typ wird private gespeichert.',
     },
     {
-        internal: '_csvColumnInfo_phoneWithType_type',
-        en: 'Type of the phone number with the same index. Defaults to private. Column and value may be omitted.',
-        de: 'Typ der Telefonnummer mit gleichem Index. Standardwert ist private. Spalte und Wert können weggelassen werden.',
-    },
-    {
-        internal: '_csvColumnInfo_emailList_email',
-        en: 'Email address. One entry per index: ${csvkey}[0].email, ${csvkey}[1].email, ... Each address may only occur once.',
-        de: 'E-Mail-Adresse. Ein Eintrag pro Index: ${csvkey}[0].email, ${csvkey}[1].email, ... Jede Adresse darf nur einmal vorkommen.',
-    },
-    {
-        internal: '_csvColumnInfo_emailList_isPrimary',
-        en: 'Whether the email address with the same index is the primary one. If no entry sets it, ${csvkey}[0] is primary; otherwise missing values are false. Column and value may be omitted.',
-        de: 'Ob die E-Mail-Adresse mit gleichem Index die primäre ist. Wenn kein Eintrag dies setzt, ist ${csvkey}[0] primär; sonst gelten fehlende Werte als false. Spalte und Wert können weggelassen werden.',
+        internal: '_csvColumnInfo_fieldtype_EmailList',
+        en: 'Email address. One value per column: ${csvkey}[0], ${csvkey}[1], ... The address in ${csvkey}[0] is the primary one. Each address may only occur once.',
+        de: 'E-Mail-Adresse. Ein Wert pro Spalte: ${csvkey}[0], ${csvkey}[1], ... Die Adresse in ${csvkey}[0] ist die primäre. Jede Adresse darf nur einmal vorkommen.',
     },
 ]

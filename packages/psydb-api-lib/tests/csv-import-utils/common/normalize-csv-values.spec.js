@@ -80,4 +80,23 @@ describe('csv-import-utils/common/normalize-csv-values', function () {
             ]},
         ]);
     });
+
+    it('accepts plain phone and email list columns', function () {
+        var items = [{
+            phones: [ '+49 151 7953677', 4930123123 ],
+            emails: [ 'a@example.com', 'b@example.com' ],
+        }];
+        normalizeCSVValues({ schema, items });
+
+        expect(items).to.eql([{
+            phones: [
+                { number: '+49 151 7953677', type: 'private' },
+                { number: '4930123123', type: 'private' },
+            ],
+            emails: [
+                { email: 'a@example.com', isPrimary: true },
+                { email: 'b@example.com', isPrimary: false },
+            ],
+        }]);
+    });
 });

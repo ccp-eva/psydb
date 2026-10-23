@@ -13,6 +13,10 @@ var normalizeCSVValues = (bag) => {
     }
 }
 
+var isScalar = (it) => (
+    typeof it === 'string' || typeof it === 'number'
+);
+
 var handlers = {
     // 'dd.mm.yyyy' => 'yyyy-mm-dd'
     'DateOnlyServerSide': (data) => {
@@ -25,6 +29,10 @@ var handlers = {
     // email is primary; otherwise missing ones are false
     'EmailList': (data) => {
         if (Array.isArray(data)) {
+            // NOTE: plain 'emails[0]' columns
+            data = data.map(it => (
+                isScalar(it) ? { email: String(it) } : it
+            ));
             var items = data.filter(it => it && typeof it === 'object');
             var anyGiven = items.some(it => it.isPrimary !== undefined);
             for (var [ ix, it ] of items.entries()) {
@@ -35,6 +43,12 @@ var handlers = {
         }
         return data;
     },
+    // NOTE: plain 'phones[0]' columns
+    'PhoneWithTypeList': (data) => (
+        Array.isArray(data)
+        ? data.map(it => isScalar(it) ? { number: String(it) } : it)
+        : data
+    ),
     // phone type column is optional
     'PhoneWithTypeListItem': (data) => {
         if (typeof data === 'object' && data.type === undefined) {

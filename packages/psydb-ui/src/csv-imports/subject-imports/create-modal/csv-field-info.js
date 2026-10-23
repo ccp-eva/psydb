@@ -59,38 +59,25 @@ const CSVFieldInfo = (ps) => {
             continue;
         }
 
+        // NOTE: the dot form i.e. 'phones[0].type' still works but is
+        // not advertised since it confuses most people
         if (systemType === 'PhoneWithTypeList') {
-            var isRequired = !!requiredByPointer[pointer];
             columns.push({
-                pointer, csvkey: `${csvkey}[0].number`, typeLabel,
+                pointer, csvkey, typeLabel,
                 examples: ft_examples.Phone,
-                description: '_csvColumnInfo_phoneWithType_number',
+                description: '_csvColumnInfo_fieldtype_PhoneWithTypeList',
                 descriptionProps: { csvkey },
-                isRequired,
-            }, {
-                pointer, csvkey: `${csvkey}[0].type`, typeLabel,
-                examples: (
-                    definition.props?.numbertypes || DEFAULT_PHONE_TYPES
-                ),
-                description: '_csvColumnInfo_phoneWithType_type',
-                descriptionProps: { csvkey },
+                isRequired: !!requiredByPointer[pointer],
             });
             continue;
         }
-
         if (systemType === 'EmailList') {
-            var isRequired = !!requiredByPointer[pointer];
             columns.push({
-                pointer, csvkey: `${csvkey}[0].email`, typeLabel,
+                pointer, csvkey, typeLabel,
                 examples: ft_examples.Email,
-                description: '_csvColumnInfo_emailList_email',
+                description: '_csvColumnInfo_fieldtype_EmailList',
                 descriptionProps: { csvkey },
-                isRequired,
-            }, {
-                pointer, csvkey: `${csvkey}[0].isPrimary`, typeLabel,
-                examples: ft_examples.DefaultBool,
-                description: '_csvColumnInfo_emailList_isPrimary',
-                descriptionProps: { csvkey },
+                isRequired: !!requiredByPointer[pointer],
             });
             continue;
         }
