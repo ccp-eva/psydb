@@ -286,4 +286,14 @@ module.exports = [
         en: 'Defaults to DE.',
         de: 'Standardwert ist DE.',
     },
+    {
+        internal: '_csvColumnInfo_phoneWithType_number',
+        en: 'Phone number. One entry per index: ${csvkey}[0].number, ${csvkey}[1].number, ...',
+        de: 'Telefonnummer. Ein Eintrag pro Index: ${csvkey}[0].number, ${csvkey}[1].number, ...',
+    },
+    {
+        internal: '_csvColumnInfo_phoneWithType_type',
+        en: 'Type of the phone number with the same index. Defaults to private. Column and value may be omitted.',
+        de: 'Typ der Telefonnummer mit gleichem Index. Standardwert ist private. Spalte und Wert können weggelassen werden.',
+    },
 ]

@@ -59,6 +59,25 @@ const CSVFieldInfo = (ps) => {
             continue;
         }
 
+        if (systemType === 'PhoneWithTypeList') {
+            var isRequired = !!requiredByPointer[pointer];
+            columns.push({
+                pointer, csvkey: `${csvkey}[0].number`, typeLabel,
+                examples: ft_examples.Phone,
+                description: '_csvColumnInfo_phoneWithType_number',
+                descriptionProps: { csvkey },
+                isRequired,
+            }, {
+                pointer, csvkey: `${csvkey}[0].type`, typeLabel,
+                examples: (
+                    definition.props?.numbertypes || DEFAULT_PHONE_TYPES
+                ),
+                description: '_csvColumnInfo_phoneWithType_type',
+                descriptionProps: { csvkey },
+            });
+            continue;
+        }
+
         var isSupported = !!ft_examples[systemType];
         columns.push({
             pointer,
@@ -119,8 +138,13 @@ const address_examples = {
     country: [ 'DE' ],
 }
 
-// NOTE: types not listed here (e.g. EmailList,
-// PhoneWithTypeList, GeoCoords) cannot be imported via csv currently
+// NOTE: same as in psydb-schema-fields PhoneWithTypeList
+const DEFAULT_PHONE_TYPES = [
+    'business', 'private', 'mobile', 'fax', 'mother', 'father'
+];
+
+// NOTE: types not listed here (e.g. EmailList, GeoCoords)
+// cannot be imported via csv currently
 const ft_examples = {
     'SaneString': [ 'Lorem ipsum' ],
     'FullText': [ 'Lorem ipsum dolor sit amet' ],

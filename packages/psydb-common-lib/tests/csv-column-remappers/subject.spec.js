@@ -25,6 +25,13 @@ describe('csv-column-remappers/subject', () => {
                 subChannel: 'gdpr',
                 pointer: '/gdpr/state/custom/address',
                 props: {},
+            },
+            {
+                key: 'phones',
+                systemType: 'PhoneWithTypeList',
+                subChannel: 'gdpr',
+                pointer: '/gdpr/state/custom/phones',
+                props: {},
             }
         ])
     };
@@ -69,5 +76,17 @@ describe('csv-column-remappers/subject', () => {
         expect(remapper.ajvpath2csv({
             path: 'gdpr.state.custom.address.city'
         })).to.eql([ 'address.city' ]);
+    })
+
+    it('list item sub keys', () => {
+        var remapper = CSVColumnRemappers.SubjectDefault({ subjectCRT });
+
+        expect(remapper.csv2obj({ colkey: 'phones[1].type' })).to.eql(
+            'gdpr.state.custom.phones.1.type'
+        );
+        expect(remapper.csv2obj({ colkey: 'unknown[0]' })).to.eql(undefined);
+        expect(remapper.ajvpath2csv({
+            path: '.gdpr.state.custom.phones[1].number'
+        })).to.eql([ 'phones[1].number' ]);
     })
 })

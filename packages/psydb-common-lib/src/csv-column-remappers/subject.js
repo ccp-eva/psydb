@@ -21,16 +21,21 @@ var CSVSubjectColumnRemapper = (bag) => {
     remapper.csv2obj = (bag) => {
         var { colkey } = bag;
         
-        var maybeArrayIndexMatch = colkey.match(/^(.*)\[(\d+)\]$/);
+        // NOTE: list items can have a sub key i.e. 'phones[0].number'
+        var maybeArrayIndexMatch = colkey.match(
+            /^(.*)\[(\d+)\](\.\w+)?$/
+        );
         var maybeArrayIndex = undefined;
+        var maybeItemKey = '';
         if (maybeArrayIndexMatch) {
             colkey = maybeArrayIndexMatch[1]
             maybeArrayIndex = maybeArrayIndexMatch[2]
+            maybeItemKey = maybeArrayIndexMatch[3] || '';
         }
         
         var out = mappings.csv2obj[colkey];
-        if (maybeArrayIndex) {
-            out += `.${maybeArrayIndex}`;
+        if (out && maybeArrayIndex) {
+            out += `.${maybeArrayIndex}${maybeItemKey}`;
         }
         return out;
     }
@@ -43,16 +48,18 @@ var CSVSubjectColumnRemapper = (bag) => {
     remapper.ajvpath2csv = (bag) => {
         var { path } = bag;
 
-        var maybeArrayIndexMatch = path.match(/^(.*)\[(\d+)\]$/);
+        var maybeArrayIndexMatch = path.match(/^(.*)\[(\d+)\](\.\w+)?$/);
         var maybeArrayIndex = undefined;
+        var maybeItemKey = '';
         if (maybeArrayIndexMatch) {
             path = maybeArrayIndexMatch[1]
             maybeArrayIndex = maybeArrayIndexMatch[2]
+            maybeItemKey = maybeArrayIndexMatch[3] || '';
         }
         
         var cols = getDemappedCols({ path, mapping: mappings.obj2csv });
         if (maybeArrayIndex) {
-            cols = cols.map(it => it += `[${maybeArrayIndex}]`);
+            cols = cols.map(it => it += `[${maybeArrayIndex}]${maybeItemKey}`);
         }
         return cols;
     }
