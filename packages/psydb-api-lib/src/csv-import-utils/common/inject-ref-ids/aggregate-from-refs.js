@@ -16,7 +16,7 @@ var aggregateFromRefs = async (bag) => {
                 [path]: { $in: values },
                 ...extraMatch,
                 $and: [
-                    { 'scentific.state.internals.isRemoved': { $ne: true }},
+                    { 'scientific.state.internals.isRemoved': { $ne: true }},
                     { 'state.internals.isRemoved': { $ne: true }},
                 ]
             }},

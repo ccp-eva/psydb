@@ -12,6 +12,7 @@ var CSVSchema = (bag = {}) => {
         }),
         'contactType': StringEnum([ 'email', 'phone' ]),
         'date': DateYMD(),
+        'contactedBy': ForeignId({ collection: 'personnel' }),
     };
     var optional = {
         'time': TimeHM(),

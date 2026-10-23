@@ -51,8 +51,11 @@ var preview = async (context, next) => {
 
     var relatedIds = { subject: [], personnel: [] };
     for (var it of previewRecords) {
-        var { subjectId } = it;
+        var { subjectId, contactedBy } = it;
         relatedIds.subject.push(subjectId);
+        if (contactedBy) {
+            relatedIds.personnel.push(contactedBy);
+        }
     }
     var related = {
         records: await fetchRecordLabelsManual(db, relatedIds, i18n)

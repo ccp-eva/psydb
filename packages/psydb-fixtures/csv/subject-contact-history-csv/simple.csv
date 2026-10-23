@@ -1,6 +1,6 @@
-subjectId;contactType;date;time;status;comment
-1;email;2026-03-04;09:15;delivered;Initial invitation newsletter
-2;phone;2026-05-12;14:30;contact-failed;Follow-up regarding spring study
-3;phone;2026-07-01;10:00;mailbox;
-qWruqCXs;phone;2026-09-18;16:45;contact-successful;Appointment confirmed
-5;email;2026-10-20;08:05;sent;Asked about availability in November
+subjectId;contactType;date;time;contactedBy;status;comment
+1;email;2026-03-04;09:15;2;delivered;Initial invitation newsletter
+2;phone;2026-05-12;14:30;2;contact-failed;Follow-up regarding spring study
+3;phone;2026-07-01;10:00;3;mailbox;
+qWruqCXs;phone;2026-09-18;16:45;3;contact-successful;Appointment confirmed
+5;email;2026-10-20;08:05;2;sent;Asked about availability in November

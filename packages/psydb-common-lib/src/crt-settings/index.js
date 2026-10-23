@@ -85,7 +85,7 @@ var CRTSettings = ({ data }) => {
             {
                 'systemType': { $in: [
                     'ForeignId',
-                    'HelperSetItem',
+                    'HelperSetItemId',
                     'DateOnlyServerSide',
                     'DateTime',
                     'Integer',

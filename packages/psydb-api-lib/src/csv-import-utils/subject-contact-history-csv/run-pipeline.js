@@ -20,6 +20,7 @@ var runPipeline = async (bag) => {
         db, csvData, schema, customColumnRemap, unmarshalClientTimezone,
         extraRecordResolvePointers: {
             subject: [ '/sequenceNumber', '/onlineId' ],
+            personnel: [ '/scientific/state/manualImportId' ],
         },
     });
 

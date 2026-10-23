@@ -30,7 +30,12 @@ const AllColInfos = (ps) => {
             <ColInfo csvkey='subjectId' example='1, 2, 3 ...' isRequired />
             <ColInfo csvkey='contactType' example='email, phone' isRequired />
             <ColInfo csvkey='date' example='2001-12-20' isRequired />
-            <ColInfo csvkey='time' example='16:30' isRequired />
+            <ColInfo csvkey='time' example='16:30' />
+            <ColInfo
+                csvkey='contactedBy'
+                example='3456 (ID No. or manual import ID of staff member)'
+                isRequired
+            />
             <ColInfo
                 csvkey='status'
                 example='sent, delivered, contact-successful, mailbox, contact-failed'
