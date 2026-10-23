@@ -8,11 +8,11 @@ describe('study-email-meta-template permissions', function () {
     before(async function () {
         ids = await this.restore([
             'init-minimal',
-            'tiny_2026-10-22__1635__cats-01-helper-sets-and-crts',
-            'tiny_2026-10-22__1635__cats-02-roles-and-research-groups',
-            'tiny_2026-10-22__1635__cats-03-personnel',
-            'tiny_2026-10-22__1635__cats-04-orgs-and-locations',
-            'tiny_2026-10-22__1635__cats-05-subjects',
+            'tiny_2026-10-23__0312__cats-01-helper-sets-and-crts',
+            'tiny_2026-10-23__0312__cats-02-roles-and-research-groups',
+            'tiny_2026-10-23__0312__cats-03-personnel',
+            'tiny_2026-10-23__0312__cats-04-orgs-and-locations',
+            'tiny_2026-10-23__0312__cats-05-subjects',
         ], { gatherIds: true });
 
         db = this.getDbHandle();
