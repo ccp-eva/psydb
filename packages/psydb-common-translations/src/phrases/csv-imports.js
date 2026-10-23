@@ -300,4 +300,44 @@ module.exports = [
         en: 'Download Example',
         de: 'Beispiel herunterladen',
     },
+    {
+        en: 'Please select Subject Type and Research Group',
+        de: 'Bitte Proband:innen-Typ und Forschungsgruppe auswählen',
+    },
+    {
+        en: 'CSV has no data!',
+        de: 'CSV enthält keine Daten!',
+    },
+    {
+        en: 'Uploaded',
+        de: 'Hochgeladen',
+    },
+    {
+        en: 'Invalid Rows',
+        de: 'Ungültige Zeilen',
+    },
+    {
+        en: 'Line',
+        de: 'Zeile',
+    },
+    {
+        internal: '_csvIssue_isRequired',
+        en: '"${column}" is required',
+        de: '"${column}" ist erforderlich',
+    },
+    {
+        internal: '_csvIssue_isUnknown',
+        en: '"${column}" is unknown',
+        de: '"${column}" ist unbekannt',
+    },
+    {
+        internal: '_csvIssue_refNoMatch',
+        en: '"${column}" reference value "${value}" did not match any database record',
+        de: '"${column}" Referenzwert "${value}" passt zu keinem Datensatz in der Datenbank',
+    },
+    {
+        internal: '_csvIssue_refMultipleMatches',
+        en: '"${column}" reference value "${value}" must match exactly one database record',
+        de: '"${column}" Referenzwert "${value}" muss zu genau einem Datensatz in der Datenbank passen',
+    },
 ]

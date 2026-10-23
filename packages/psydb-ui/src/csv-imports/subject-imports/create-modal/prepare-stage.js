@@ -19,7 +19,7 @@ const PrepareStage = (ps) => {
     return (
         <>
             <Fields.GenericTypeKey
-                label='Subject Type'
+                label={ translate('Subject Type') }
                 collection='subject'
                 dataXPath='$.subjectType'
             />
@@ -47,7 +47,9 @@ const PrepareStage = (ps) => {
             ) : (
                 <Alert variant='info'>
                     <i>
-                        Please select Subject Type and Research Group
+                        { translate(
+                            'Please select Subject Type and Research Group'
+                        )}
                     </i>
                 </Alert>
             )}

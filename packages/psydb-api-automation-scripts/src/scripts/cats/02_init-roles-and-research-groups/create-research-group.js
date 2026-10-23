@@ -25,7 +25,7 @@ module.exports = async (context) => {
             { key: 'catTrainer' },
         ],
         locationTypes: [
-            { key: 'instituteroom' },
+            { key: 'catLabRoom' },
             { key: 'catShelter' },
         ],
         helperSetIds: [
