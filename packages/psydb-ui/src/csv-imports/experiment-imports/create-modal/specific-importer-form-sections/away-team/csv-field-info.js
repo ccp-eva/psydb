@@ -2,12 +2,13 @@ import React from 'react';
 import { CSVColumnInfo } from '@mpieva/psydb-ui-lib/csv-import';
 
 const CSVFieldInfo = (ps) => {
-    return <CSVColumnInfo columns={ columns } />
+    return <CSVColumnInfo columns={ columns } exampleCSV={ exampleCSV } />
 }
 
 var columns = [
     {
-        csvkey: 'date', examples: [ '2001-12-20' ], isRequired: true,
+        csvkey: 'date', examples: [ '20.12.2001', '2001-12-20' ],
+        isRequired: true,
         description: '_csvColumnInfo_experiment_date',
     },
     {
@@ -34,5 +35,24 @@ var columns = [
         description: '_csvColumnInfo_experiment_comment',
     },
 ];
+
+// NOTE: two subjects in the same appointment
+var exampleCSV = {
+    filename: 'example-away-team.csv',
+    header: [
+        'date', 'time', 'locationId', 'subjectId',
+        'experimenterIds[0]', 'experimenterIds[1]', 'comment'
+    ],
+    rows: [
+        [
+            '20.12.2001', '16:30', '1234', '2345',
+            '3456', '3457', 'Some Comment'
+        ],
+        [
+            '20.12.2001', '16:30', '1234', '2346',
+            '3456', '3457', 'Other Comment'
+        ],
+    ],
+};
 
 export default CSVFieldInfo;

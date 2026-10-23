@@ -99,4 +99,22 @@ describe('csv-import-utils/common/normalize-csv-values', function () {
             ],
         }]);
     });
+
+    it('normalizes date-ymd-or-dmy formatted columns', function () {
+        var schema = ExactObject({ properties: {
+            date: { type: 'string', format: 'date-ymd-or-dmy' },
+        }});
+        var items = [
+            { date: '20.12.2001' },
+            { date: '2001-12-20' },
+            { date: '31.02.2001' },
+        ];
+        normalizeCSVValues({ schema, items });
+
+        expect(items).to.eql([
+            { date: '2001-12-20' },
+            { date: '2001-12-20' },
+            { date: '31.02.2001' },
+        ]);
+    });
 });

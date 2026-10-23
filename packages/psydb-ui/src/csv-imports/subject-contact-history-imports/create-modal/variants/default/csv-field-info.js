@@ -2,7 +2,7 @@ import React from 'react';
 import { CSVColumnInfo } from '@mpieva/psydb-ui-lib/csv-import';
 
 const CSVFieldInfo = (ps) => {
-    return <CSVColumnInfo columns={ columns } />
+    return <CSVColumnInfo columns={ columns } exampleCSV={ exampleCSV } />
 }
 
 var columns = [
@@ -16,7 +16,7 @@ var columns = [
         description: '_csvColumnInfo_contactHistory_contactType',
     },
     {
-        csvkey: 'date', examples: [ '2001-12-20', '20.12.2001' ],
+        csvkey: 'date', examples: [ '20.12.2001', '2001-12-20' ],
         isRequired: true,
         description: '_csvColumnInfo_contactHistory_date',
     },
@@ -40,5 +40,23 @@ var columns = [
         description: '_csvColumnInfo_contactHistory_comment',
     },
 ];
+
+var exampleCSV = {
+    filename: 'example-contact-history.csv',
+    header: [
+        'subjectId', 'contactType', 'date', 'time',
+        'contactedBy', 'status', 'comment'
+    ],
+    rows: [
+        [
+            '2345', 'email', '20.12.2001', '16:30',
+            '3456', 'sent', 'Some Comment'
+        ],
+        [
+            '2346', 'phone', '21.12.2001', '09:15',
+            '3456', 'contact-successful', 'Other Comment'
+        ],
+    ],
+};
 
 export default CSVFieldInfo;

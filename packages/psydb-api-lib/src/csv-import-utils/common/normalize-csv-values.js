@@ -67,6 +67,11 @@ var walk = (schema, data) => {
     if (handler) {
         data = handler(data);
     }
+    // NOTE: plain csv date columns i.e. in experiment imports;
+    // normalized early so that grouping by date works for both formats
+    if (schema.format === 'date-ymd-or-dmy' && typeof data === 'string') {
+        data = normalizeDate(data) || data;
+    }
 
     if (schema.properties && typeof data === 'object') {
         for (var [ key, subschema ] of Object.entries(schema.properties)) {

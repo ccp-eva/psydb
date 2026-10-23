@@ -73,8 +73,8 @@ module.exports = [
     },
     {
         internal: '_csvColumnInfo_experiment_date',
-        en: 'Date of the appointment in the format YYYY-MM-DD.',
-        de: 'Datum des Termins im Format JJJJ-MM-TT.',
+        en: 'Date of the appointment in the format DD.MM.YYYY or YYYY-MM-DD.',
+        de: 'Datum des Termins im Format TT.MM.JJJJ oder JJJJ-MM-TT.',
     },
     {
         internal: '_csvColumnInfo_experiment_time',
@@ -128,8 +128,8 @@ module.exports = [
     },
     {
         internal: '_csvColumnInfo_contactHistory_date',
-        en: 'Date of the contact in the format YYYY-MM-DD or DD.MM.YYYY.',
-        de: 'Datum des Kontakts im Format JJJJ-MM-TT oder TT.MM.JJJJ.',
+        en: 'Date of the contact in the format DD.MM.YYYY or YYYY-MM-DD.',
+        de: 'Datum des Kontakts im Format TT.MM.JJJJ oder JJJJ-MM-TT.',
     },
     {
         internal: '_csvColumnInfo_contactHistory_time',
@@ -183,8 +183,8 @@ module.exports = [
     },
     {
         internal: '_csvColumnInfo_fieldtype_DateOnlyServerSide',
-        en: 'Date in the format YYYY-MM-DD or DD.MM.YYYY.',
-        de: 'Datum im Format JJJJ-MM-TT oder TT.MM.JJJJ.',
+        en: 'Date in the format DD.MM.YYYY or YYYY-MM-DD.',
+        de: 'Datum im Format TT.MM.JJJJ oder JJJJ-MM-TT.',
     },
     {
         internal: '_csvColumnInfo_fieldtype_HelperSetItemId',
