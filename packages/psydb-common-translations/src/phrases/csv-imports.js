@@ -151,4 +151,94 @@ module.exports = [
         en: 'Comment on the contact. Column and value may be omitted.',
         de: 'Kommentar zum Kontakt. Spalte und Wert können weggelassen werden.',
     },
+    {
+        internal: '_csvColumnInfo_fieldtype_SaneString',
+        en: 'Single-line text.',
+        de: 'Einzeiliger Text.',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_FullText',
+        en: 'Text. Line breaks are possible if the value is enclosed in double quotes.',
+        de: 'Text. Zeilenumbrüche sind möglich, wenn der Wert in doppelte Anführungszeichen gesetzt wird.',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_Integer',
+        en: 'Whole number.',
+        de: 'Ganze Zahl.',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_DefaultBool',
+        en: 'true or false.',
+        de: 'true oder false.',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_ExtBool',
+        en: 'yes, no or unknown.',
+        de: 'yes, no oder unknown.',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_DateTime',
+        en: 'Date and time in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.sssZ, UTC).',
+        de: 'Datum und Uhrzeit im ISO-8601-Format (JJJJ-MM-TTTHH:MM:SS.sssZ, UTC).',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_DateOnlyServerSide',
+        en: 'Date in the format YYYY-MM-DD or DD.MM.YYYY.',
+        de: 'Datum im Format JJJJ-MM-TT oder TT.MM.JJJJ.',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_HelperSetItemId',
+        en: 'ID No. or label of an entry of the associated helper table.',
+        de: 'ID-Nr. oder Bezeichnung eines Eintrags der zugehörigen Hilfs-Tabelle.',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_HelperSetItemIdList',
+        en: 'ID No. or label of an entry of the associated helper table. One value per column: ${csvkey}[0], ${csvkey}[1], ...',
+        de: 'ID-Nr. oder Bezeichnung eines Eintrags der zugehörigen Hilfs-Tabelle. Ein Wert pro Spalte: ${csvkey}[0], ${csvkey}[1], ...',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_ForeignId',
+        en: 'ID No. of the referenced record.',
+        de: 'ID-Nr. des referenzierten Datensatzes.',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_ForeignIdList',
+        en: 'ID No. of the referenced record. One value per column: ${csvkey}[0], ${csvkey}[1], ...',
+        de: 'ID-Nr. des referenzierten Datensatzes. Ein Wert pro Spalte: ${csvkey}[0], ${csvkey}[1], ...',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_BiologicalGender',
+        en: 'male, female, other or unknown.',
+        de: 'male, female, other oder unknown.',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_Email',
+        en: 'Email address.',
+        de: 'E-Mail-Adresse.',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_Phone',
+        en: 'Phone number.',
+        de: 'Telefonnummer.',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_PhoneList',
+        en: 'Phone number. One value per column: ${csvkey}[0], ${csvkey}[1], ...',
+        de: 'Telefonnummer. Ein Wert pro Spalte: ${csvkey}[0], ${csvkey}[1], ...',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_SaneStringList',
+        en: 'Single-line text. One value per column: ${csvkey}[0], ${csvkey}[1], ...',
+        de: 'Einzeiliger Text. Ein Wert pro Spalte: ${csvkey}[0], ${csvkey}[1], ...',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_URLStringList',
+        en: 'URL. One value per column: ${csvkey}[0], ${csvkey}[1], ...',
+        de: 'URL. Ein Wert pro Spalte: ${csvkey}[0], ${csvkey}[1], ...',
+    },
+    {
+        internal: '_csvColumnInfo_fieldtype_unsupported',
+        en: 'This field type cannot be imported via CSV at the moment.',
+        de: 'Dieser Feldtyp kann derzeit nicht per CSV importiert werden.',
+    },
 ]

@@ -4,7 +4,8 @@ import { useToggleReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 // NOTE: columns = [{
-//     csvkey, examples?: [], description?, isRequired?
+//     csvkey, typeLabel?, examples?: [],
+//     description?, descriptionProps?, isRequired?
 // }]
 const CSVColumnInfo = (ps) => {
     var { columns } = ps;
@@ -30,8 +31,10 @@ const CSVColumnInfo = (ps) => {
 const ColumnItem = (ps) => {
     var {
         csvkey,
+        typeLabel,
         examples = [],
         description,
+        descriptionProps,
         isRequired
     } = ps;
 
@@ -47,6 +50,9 @@ const ColumnItem = (ps) => {
                         : '_csvColumnInfo_optional'
                     )})
                 </span>
+                { typeLabel && (
+                    <span className='text-muted ml-2'>{ typeLabel }</span>
+                )}
             </div>
             { examples.length > 0 && (
                 <div>
@@ -59,7 +65,7 @@ const ColumnItem = (ps) => {
                 </div>
             )}
             { description && (
-                <div><i>{ translate(description) }</i></div>
+                <div><i>{ translate(description, descriptionProps) }</i></div>
             )}
         </div>
     )
