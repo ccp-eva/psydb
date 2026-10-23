@@ -296,4 +296,14 @@ module.exports = [
         en: 'Type of the phone number with the same index. Defaults to private. Column and value may be omitted.',
         de: 'Typ der Telefonnummer mit gleichem Index. Standardwert ist private. Spalte und Wert können weggelassen werden.',
     },
+    {
+        internal: '_csvColumnInfo_emailList_email',
+        en: 'Email address. One entry per index: ${csvkey}[0].email, ${csvkey}[1].email, ... Each address may only occur once.',
+        de: 'E-Mail-Adresse. Ein Eintrag pro Index: ${csvkey}[0].email, ${csvkey}[1].email, ... Jede Adresse darf nur einmal vorkommen.',
+    },
+    {
+        internal: '_csvColumnInfo_emailList_isPrimary',
+        en: 'Whether the email address with the same index is the primary one. If no entry sets it, ${csvkey}[0] is primary; otherwise missing values are false. Column and value may be omitted.',
+        de: 'Ob die E-Mail-Adresse mit gleichem Index die primäre ist. Wenn kein Eintrag dies setzt, ist ${csvkey}[0] primär; sonst gelten fehlende Werte als false. Spalte und Wert können weggelassen werden.',
+    },
 ]

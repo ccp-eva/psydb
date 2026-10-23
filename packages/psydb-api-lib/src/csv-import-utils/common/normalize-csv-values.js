@@ -21,6 +21,20 @@ var handlers = {
         }
         return data;
     },
+    // isPrimary column is optional; when no item sets it the first
+    // email is primary; otherwise missing ones are false
+    'EmailList': (data) => {
+        if (Array.isArray(data)) {
+            var items = data.filter(it => it && typeof it === 'object');
+            var anyGiven = items.some(it => it.isPrimary !== undefined);
+            for (var [ ix, it ] of items.entries()) {
+                if (it.isPrimary === undefined) {
+                    it.isPrimary = (!anyGiven && ix === 0);
+                }
+            }
+        }
+        return data;
+    },
     // phone type column is optional
     'PhoneWithTypeListItem': (data) => {
         if (typeof data === 'object' && data.type === undefined) {

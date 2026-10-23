@@ -78,6 +78,23 @@ const CSVFieldInfo = (ps) => {
             continue;
         }
 
+        if (systemType === 'EmailList') {
+            var isRequired = !!requiredByPointer[pointer];
+            columns.push({
+                pointer, csvkey: `${csvkey}[0].email`, typeLabel,
+                examples: ft_examples.Email,
+                description: '_csvColumnInfo_emailList_email',
+                descriptionProps: { csvkey },
+                isRequired,
+            }, {
+                pointer, csvkey: `${csvkey}[0].isPrimary`, typeLabel,
+                examples: ft_examples.DefaultBool,
+                description: '_csvColumnInfo_emailList_isPrimary',
+                descriptionProps: { csvkey },
+            });
+            continue;
+        }
+
         var isSupported = !!ft_examples[systemType];
         columns.push({
             pointer,
@@ -143,8 +160,8 @@ const DEFAULT_PHONE_TYPES = [
     'business', 'private', 'mobile', 'fax', 'mother', 'father'
 ];
 
-// NOTE: types not listed here (e.g. EmailList, GeoCoords)
-// cannot be imported via csv currently
+// NOTE: types not listed here (e.g. GeoCoords) cannot be imported
+// via csv currently
 const ft_examples = {
     'SaneString': [ 'Lorem ipsum' ],
     'FullText': [ 'Lorem ipsum dolor sit amet' ],

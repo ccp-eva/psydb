@@ -6,6 +6,7 @@ var {
     SaneString,
     DateOnlyServerSide,
     PhoneWithTypeList,
+    EmailList,
 } = require('@mpieva/psydb-schema-fields');
 
 var normalizeCSVValues = require(
@@ -20,6 +21,7 @@ describe('csv-import-utils/common/normalize-csv-values', function () {
             dates: DefaultArray({ items: DateOnlyServerSide() }),
         }}),
         phones: PhoneWithTypeList({}),
+        emails: EmailList({}),
     }});
 
     it('converts dd.mm.yyyy only for DateOnlyServerSide', function () {
@@ -55,5 +57,27 @@ describe('csv-import-utils/common/normalize-csv-values', function () {
             { number: '+49 151 7953677', type: 'private' },
             { number: '030/123123', type: 'mobile' },
         ]}]);
+    });
+
+    it('sets email isPrimary fallback', function () {
+        var items = [
+            { emails: [{ email: 'a@example.com' }, { email: 'b@example.com' }]},
+            { emails: [
+                { email: 'a@example.com' },
+                { email: 'b@example.com', isPrimary: true }
+            ]},
+        ];
+        normalizeCSVValues({ schema, items });
+
+        expect(items).to.eql([
+            { emails: [
+                { email: 'a@example.com', isPrimary: true },
+                { email: 'b@example.com', isPrimary: false },
+            ]},
+            { emails: [
+                { email: 'a@example.com', isPrimary: false },
+                { email: 'b@example.com', isPrimary: true },
+            ]},
+        ]);
     });
 });
