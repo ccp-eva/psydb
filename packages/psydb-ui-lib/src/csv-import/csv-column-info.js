@@ -7,13 +7,18 @@ import { Button } from '@mpieva/psydb-ui-layout';
 //     csvkey, typeLabel?, examples?: [],
 //     description? (key or list of keys), descriptionProps?, isRequired?
 // }]
+// exampleCSV = { filename, header: [], rows: [[]] }
 const CSVColumnInfo = (ps) => {
-    var { columns } = ps;
+    var { columns, exampleCSV } = ps;
     var [ isOpen, toggleOpen ] = useToggleReducer(false);
 
     return (
         <div>
-            <Toggler isOpen={ isOpen } toggleOpen={ toggleOpen } />
+            <Toggler
+                isOpen={ isOpen }
+                toggleOpen={ toggleOpen }
+                exampleCSV={ exampleCSV }
+            />
             { isOpen && (
                 <div className='px-3 py-2 bg-white border mb-3'>
                     { columns.map((it, ix) => (
@@ -76,11 +81,11 @@ const ColumnItem = (ps) => {
 }
 
 const Toggler = (ps) => {
-    var { isOpen, toggleOpen } = ps;
+    var { isOpen, toggleOpen, exampleCSV } = ps;
     var [{ translate }] = useI18N();
-
+    
     return (
-        <div className='d-flex justify-content-end'>
+        <div className='d-flex justify-content-end align-items-center'>
             <Button variant='link' onClick={ toggleOpen }>
                 { isOpen ? (
                     translate('Hide Available Columns')
@@ -88,8 +93,45 @@ const Toggler = (ps) => {
                     translate('Show Available Columns')
                 )}
             </Button>
+            { exampleCSV && (
+                <Button
+                    size='sm' variant='primary'
+                    onClick={ () => downloadCSV(exampleCSV) }
+                >
+                    { translate('Download Example') }
+                </Button>
+            )}
         </div>
     )
+}
+
+var downloadCSV = (bag) => {
+    var { filename, header, rows } = bag;
+    var content = [ header, ...rows ].map(
+        (row) => row.map(escapeCSVValue).join(';')
+    ).join('\r\n') + '\r\n';
+
+    // NOTE: BOM so that excel detects utf-8
+    var blob = new Blob([ '\ufeff', content ], {
+        type: 'text/csv;charset=utf-8'
+    });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+}
+
+var escapeCSVValue = (value) => {
+    var str = (value === undefined || value === null) ? '' : String(value);
+    return (
+        /[";\r\n]/.test(str)
+        ? `"${str.replace(/"/g, '""')}"`
+        : str
+    );
 }
 
 export default CSVColumnInfo;

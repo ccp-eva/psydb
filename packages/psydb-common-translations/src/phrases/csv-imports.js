@@ -296,4 +296,8 @@ module.exports = [
         en: 'Email address. One value per column: ${csvkey}[0], ${csvkey}[1], ... The address in ${csvkey}[0] is the primary one. Each address may only occur once.',
         de: 'E-Mail-Adresse. Ein Wert pro Spalte: ${csvkey}[0], ${csvkey}[1], ... Die Adresse in ${csvkey}[0] ist die primäre. Jede Adresse darf nur einmal vorkommen.',
     },
+    {
+        en: 'Download Example',
+        de: 'Beispiel herunterladen',
+    },
 ]

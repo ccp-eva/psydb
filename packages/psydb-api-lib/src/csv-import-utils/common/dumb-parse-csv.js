@@ -11,6 +11,7 @@ var dumbParseCSV = (data, { customColumnRemap } = {}) => {
 
     var commonParseOptions = {
         delimiter: detectDelimiter(data),
+        bom: true, // i.e. utf-8 csv files saved by excel
         trim: true,
         skip_empty_lines: true,
         skip_records_with_empty_values: true,

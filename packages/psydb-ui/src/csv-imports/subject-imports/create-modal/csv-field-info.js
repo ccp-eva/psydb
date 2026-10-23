@@ -55,6 +55,7 @@ const CSVFieldInfo = (ps) => {
             columns.push({
                 pointer, csvkey, typeLabel,
                 ...addressPartInfo({ subkey, props: definition.props }),
+                exampleColumns: [[ csvkey, address_samples[subkey] ]],
             });
             continue;
         }
@@ -68,6 +69,9 @@ const CSVFieldInfo = (ps) => {
                 description: '_csvColumnInfo_fieldtype_PhoneWithTypeList',
                 descriptionProps: { csvkey },
                 isRequired: !!requiredByPointer[pointer],
+                exampleColumns: listSampleColumns({
+                    csvkey, samples: ft_samples.PhoneList
+                }),
             });
             continue;
         }
@@ -78,6 +82,9 @@ const CSVFieldInfo = (ps) => {
                 description: '_csvColumnInfo_fieldtype_EmailList',
                 descriptionProps: { csvkey },
                 isRequired: !!requiredByPointer[pointer],
+                exampleColumns: listSampleColumns({
+                    csvkey, samples: ft_samples.EmailList
+                }),
             });
             continue;
         }
@@ -95,6 +102,13 @@ const CSVFieldInfo = (ps) => {
             ),
             descriptionProps: { csvkey },
             isRequired: !!requiredByPointer[pointer],
+            exampleColumns: (
+                !isSupported ? []
+                : /List$/.test(systemType) ? listSampleColumns({
+                    csvkey, samples: ft_samples[systemType]
+                })
+                : [[ csvkey, ft_samples[systemType] ]]
+            ),
         });
     }
 
@@ -105,7 +119,26 @@ const CSVFieldInfo = (ps) => {
     };
     columns.sort((a, b) => orderIndex(a) - orderIndex(b));
 
-    return <CSVColumnInfo columns={ columns } />
+    var exampleColumns = columns.flatMap(it => it.exampleColumns);
+    var exampleCSV = {
+        filename: `example-${subjectType}.csv`,
+        header: exampleColumns.map(([ col ]) => col),
+        rows: [ 0, 1 ].map(ix => (
+            exampleColumns.map(([ col, samples ]) => samples[ix])
+        )),
+    };
+
+    return <CSVColumnInfo columns={ columns } exampleCSV={ exampleCSV } />
+}
+
+// NOTE: lists get two columns i.e. 'tags[0]' and 'tags[1]'
+// samples are [ [ row1_item0, row1_item1 ], [ row2_item0, row2_item1 ] ]
+const listSampleColumns = (bag) => {
+    var { csvkey, samples } = bag;
+    return [ 0, 1 ].map(itemIx => ([
+        `${csvkey}[${itemIx}]`,
+        samples.map(rowItems => rowItems[itemIx]),
+    ]));
 }
 
 // NOTE: the address as a whole is always optional; parts that are
@@ -140,6 +173,48 @@ const address_examples = {
     postcode: [ '04277' ],
     city: [ 'Leipzig' ],
     country: [ 'DE' ],
+}
+
+// NOTE: static data for the example csv; one value per subject row
+const address_samples = {
+    street: [ 'Musterstraße', 'Musterweg' ],
+    housenumber: [ '6', '12' ],
+    affix: [ 'WHG 5', 'HH' ],
+    postcode: [ '04277', '04109' ],
+    city: [ 'Leipzig', 'Leipzig' ],
+    country: [ 'DE', 'DE' ],
+}
+
+const ft_samples = {
+    'SaneString': [ 'Some Words', 'Other Words' ],
+    'FullText': [ 'Lorem ipsum dolor sit amet', 'Consectetur adipiscing' ],
+    'Integer': [ '12', '7' ],
+    'DefaultBool': [ 'true', 'false' ],
+    'ExtBool': [ 'yes', 'unknown' ],
+    'DateTime': [ '1953-05-31T12:00:00.000Z', '2001-12-20T08:30:00.000Z' ],
+    'DateOnlyServerSide': [ '1953-05-31', '20.12.2001' ],
+    'HelperSetItemId': [ '35', '36' ],
+    'ForeignId': [ '44321', '44322' ],
+    'BiologicalGender': [ 'female', 'male' ],
+    'Email': [ 'alice@example.com', 'bob@example.com' ],
+    'Phone': [ '+49 151 7953677', '030/123123' ],
+
+    // lists: per row [ item0, item1 ]
+    'HelperSetItemIdList': [ [ '35', '37' ], [ '36', '' ] ],
+    'ForeignIdList': [ [ '44321', '44323' ], [ '44322', '' ] ],
+    'PhoneList': [
+        [ '+49 151 7953677', '0341/123123' ],
+        [ '030/123123', '' ]
+    ],
+    'EmailList': [
+        [ 'alice@example.com', 'alice.work@example.com' ],
+        [ 'bob@example.com', '' ]
+    ],
+    'SaneStringList': [ [ 'Lorem', 'Ipsum' ], [ 'Dolor', '' ] ],
+    'URLStringList': [
+        [ 'https://example.com', 'https://example.org' ],
+        [ 'https://example.net', '' ]
+    ],
 }
 
 // NOTE: same as in psydb-schema-fields PhoneWithTypeList
