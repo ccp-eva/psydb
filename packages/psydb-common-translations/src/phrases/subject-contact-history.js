@@ -17,6 +17,11 @@ module.exports = [
         de: 'Kontaktiert Durch',
     },
     {
+        internal: '_lastSubjectContact_contactedBy',
+        en: 'By',
+        de: 'Durch',
+    },
+    {
         en: 'Latest Contact (Phone)',
         de: 'Letzter Kontakt (Telefon)',
     },

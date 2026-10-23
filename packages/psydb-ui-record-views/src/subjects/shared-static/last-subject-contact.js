@@ -56,7 +56,9 @@ const LastSubjectContact = (ps) => {
 
 var ContactItem = (ps) => {
     var { item } = ps;
-    var { type, contactedAt, state: { status, comment }} = item;
+    var {
+        type, contactedAt, _contactedByLabel, state: { status, comment }
+    } = item;
     var [{ translate, fdate }] = useI18N();
 
     return (
@@ -72,6 +74,16 @@ var ContactItem = (ps) => {
                     </>
                 )}
             </b>
+            <br />
+            <span>
+                { translate('_lastSubjectContact_contactedBy') }:
+                {' '}
+                { _contactedByLabel || (
+                    <i className='text-lightgrey'>
+                        { translate('Not Specified') }
+                    </i>
+                )}
+            </span>
             { comment && (
                 <>
                     <br />

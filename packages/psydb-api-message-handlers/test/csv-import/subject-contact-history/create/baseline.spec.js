@@ -205,4 +205,57 @@ describe('csv-import/subject-contact-history/create baseline', function () {
             },
         }, asFlatEJSON: true });
     });
+
+    it('accepts dd.mm.yyyy dates', async function () {
+        var { _id: fileId } = await this.createFakeFileUpload({
+            db, buffer: loadCSV('subject-contact-history-csv/german-dates'),
+        });
+
+        var deltas = BaselineDeltas();
+        deltas.push(await this.fetchAllRecords('subjectContactHistory'));
+
+        var { csvImportId } = await KOA_BODYDATA(send({
+            type: 'csv-import/subject-contact-history/create',
+            timezone: 'Europe/Berlin',
+            payload: jsonify({ subjectType, fileId })
+        }));
+
+        deltas.push(await this.fetchAllRecords('subjectContactHistory'));
+
+        var shared = {
+            '_id': BaselineDeltas.AnyObjectId(),
+            '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
+            'csvImportId': csvImportId,
+            'subjectType': subjectType,
+            'timezone': 'Europe/Berlin',
+        }
+
+        // NOTE: last line has an invalid date (31.04.) and is skipped
+        deltas.test({ expected: {
+            '/0': {
+                ...shared,
+                'type': 'email',
+                'subjectId': ids(/Homeownership, Banking/),
+                'contactedBy': ids(/Cat-RA/),
+                'contactedAt': new Date('2026-03-04T08:15:00.000Z'),
+                'state': { 'status': 'sent', 'comment': 'dd.mm.yyyy' },
+            },
+            '/1': {
+                ...shared,
+                'type': 'phone',
+                'subjectId': ids(/Doubter, Pita/),
+                'contactedBy': ids(/Cat-Scientist/),
+                'contactedAt': new Date('2026-07-01T08:00:00.000Z'),
+                'state': { 'status': 'sent', 'comment': 'd.m.yyyy' },
+            },
+            '/2': {
+                ...shared,
+                'type': 'phone',
+                'subjectId': ids(/Maintenance, Snake/),
+                'contactedBy': ids(/Cat-RA/),
+                'contactedAt': new Date('2026-05-12T12:30:00.000Z'),
+                'state': { 'status': 'sent', 'comment': 'yyyy-mm-dd' },
+            },
+        }, asFlatEJSON: true });
+    });
 });

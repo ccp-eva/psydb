@@ -14,6 +14,7 @@ var {
     fetchRecordById,
     fetchRelatedLabels,
     fetchRelatedLabelsForMany,
+    fetchRecordLabelsManual,
 
     validateOrThrow
 } = require('@mpieva/psydb-api-lib');
@@ -166,6 +167,20 @@ var read = async (context, next) => {
                 { $sort: { 'type': 1 }},
             ]
         });
+
+        var contactedByLabels = await fetchRecordLabelsManual(db, {
+            personnel: (
+                lookups.lastSubjectContacts
+                .map(it => it.contactedBy).filter(Boolean)
+            ),
+        }, { oldWrappedLabels: false, language, locale, timezone });
+
+        lookups.lastSubjectContacts = lookups.lastSubjectContacts.map(it => ({
+            ...it,
+            _contactedByLabel: (
+                contactedByLabels.personnel?.[it.contactedBy] || null
+            )
+        }));
     }
 
     context.body = ResponseBody({
