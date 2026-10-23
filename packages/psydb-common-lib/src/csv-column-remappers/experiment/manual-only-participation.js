@@ -13,14 +13,14 @@ var CSVManualOnlyParticipationColumnRemapper = (bag) => {
         if (col === 'time') {
             return 'time';
         }
-        if (col === 'location') {
+        if ([ 'locationId', 'location' ].includes(col)) {
             return 'locationId';
         }
-        if (/^experimenter(\[\d+\])?$/.test(col)) {
-            var arraySuffix = col.replace(/^experimenter/, '') || '[0]';
+        if (/^experimenter(Id)?(\[\d+\])?$/.test(col)) {
+            var arraySuffix = col.replace(/^experimenter(Id)?/, '') || '[0]';
             return `experimentOperatorIds${arraySuffix}`;
         }
-        if (col === 'subject') {
+        if ([ 'subjectId', 'subject' ].includes(col)) {
             return 'subjectData[0].subjectId';
         }
         if (col === 'comment') {
@@ -34,7 +34,7 @@ var CSVManualOnlyParticipationColumnRemapper = (bag) => {
         var mapping = {
             date: [{ key: 'date', type: 'scalar' }],
             time: [{ key: 'time', type: 'scalar' }],
-            subject: [
+            subjectId: [
                 { key: 'subjectData', type: 'array' },
                 { key: 'subjectId', type: 'scalar' }
             ],
@@ -42,8 +42,8 @@ var CSVManualOnlyParticipationColumnRemapper = (bag) => {
                 { key: 'subjectData', type: 'array' },
                 { key: 'comment', type: 'scalar' }
             ],
-            location: [{ key: 'locationId', type: 'scalar' }],
-            experimenter: [{ key: 'experimentOperatorIds', type: 'array' }]
+            locationId: [{ key: 'locationId', type: 'scalar' }],
+            experimenterId: [{ key: 'experimentOperatorIds', type: 'array' }]
         }
 
         return getDemappedCols({ path, mapping });
