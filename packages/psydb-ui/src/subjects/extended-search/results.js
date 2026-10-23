@@ -137,6 +137,12 @@ const TableHead = (ps) => {
             { columns.includes('/_specialHistoricExperimentLocations') && (
                 <th>{ translate('Historical Appointment Locations') }</th>
             )}
+            { columns.includes('/_specialLatestContactPhone') && (
+                <th>{ translate('Latest Contact (Phone)') }</th>
+            )}
+            { columns.includes('/_specialLatestContactEmail') && (
+                <th>{ translate('Latest Contact (E-Mail)') }</th>
+            )}
             <th></th>
         </tr></thead>
     )
@@ -200,6 +206,18 @@ const TableBody = (ps) => {
                             related={ related }
                         />
                     )}
+                    { columns.includes('/_specialLatestContactPhone') && (
+                        <LatestContactColumn
+                            contact={ it._specialLatestContactPhone }
+                            withStatus={ true }
+                        />
+                    )}
+                    { columns.includes('/_specialLatestContactEmail') && (
+                        <LatestContactColumn
+                            contact={ it._specialLatestContactEmail }
+                            withStatus={ false }
+                        />
+                    )}
                     <td>
                         <div className='d-flex justify-content-end'>
                             <SubjectIconButton
@@ -261,6 +279,27 @@ const HistoricExperimentLocationsColumn = (ps) => {
             })
             .join('; ')
         }</td>
+    )
+}
+
+const LatestContactColumn = (ps) => {
+    var { contact, withStatus } = ps;
+    var [{ translate, fdatetime }] = useI18N();
+    if (!contact) {
+        return <td></td>
+    }
+
+    var { contactedAt, status } = contact;
+    return (
+        <td>
+            { fdatetime(contactedAt) }
+            { withStatus && (
+                <>
+                    {' '}
+                    ({ translate(`_subjectContactStatus_${status}`) })
+                </>
+            )}
+        </td>
     )
 }
 

@@ -17,6 +17,14 @@ module.exports = [
         de: 'Kontaktiert Durch',
     },
     {
+        en: 'Latest Contact (Phone)',
+        de: 'Letzter Kontakt (Telefon)',
+    },
+    {
+        en: 'Latest Contact (E-Mail)',
+        de: 'Letzter Kontakt (E-Mail)',
+    },
+    {
         en: 'No contact history found.',
         de: 'Keine Kontakt-Historie gefunden.',
     },

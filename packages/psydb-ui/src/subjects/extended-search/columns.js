@@ -26,7 +26,8 @@ export const Columns = (ps) => {
     var { isRoot, hasFlag } = usePermissions();
     var {
         dev_enableWKPRCPatches = false,
-        dev_enableSubjectDuplicatesSearch = false
+        dev_enableSubjectDuplicatesSearch = false,
+        dev_enableCSVSubjectContactHistoryImport = false,
     } = useUIConfig();
 
     var crt = CRTSettings({ data: crtSettings });
@@ -114,6 +115,17 @@ export const Columns = (ps) => {
             {
                 pointer: '/_specialAgeToday',
                 label: translate('Age Today')
+            },
+        ] : []),
+
+        ...(dev_enableCSVSubjectContactHistoryImport ? [
+            {
+                pointer: '/_specialLatestContactPhone',
+                label: translate('Latest Contact (Phone)')
+            },
+            {
+                pointer: '/_specialLatestContactEmail',
+                label: translate('Latest Contact (E-Mail)')
             },
         ] : []),
 

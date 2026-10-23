@@ -15,7 +15,8 @@ var {
 
 var {
     calculateAge,
-    findCRTAgeFrameField
+    findCRTAgeFrameField,
+    createTranslate,
 } = require('@mpieva/psydb-common-lib');
 
 var { Fields } = require('@mpieva/psydb-custom-fields-common');
@@ -29,6 +30,9 @@ var {
 
 var { extendedSearch } = require('@mpieva/psydb-api-endpoint-lib');
 var RequestBodySchema = require('./request-body-schema');
+var attachLatestContacts = require(
+    '../../extended-search/subjects/attach-latest-contacts'
+);
 
 
 var subjectExtendedSearchExport = async (context, next) => {
@@ -124,6 +128,8 @@ var subjectExtendedSearchExport = async (context, next) => {
         _specialUpcomingExperiments: upcomingExperimentsForSubject[it._id] || [],
     }));
 
+    records = await attachLatestContacts({ db, records, columns });
+
     var columnDefinitions = keyBy({
         items: displayFieldData,
         byProp: 'pointer'
@@ -143,6 +149,10 @@ var subjectExtendedSearchExport = async (context, next) => {
                 return 'Termine';
             case '/_specialHistoricExperimentLocations':
                 return 'Historische Termin-Locations';
+            case '/_specialLatestContactPhone':
+                return 'Letzter Kontakt (Telefon)';
+            case '/_specialLatestContactEmail':
+                return 'Letzter Kontakt (E-Mail)';
             default:
                 return fieldDefinition.displayName;
         }
@@ -168,6 +178,18 @@ var subjectExtendedSearchExport = async (context, next) => {
                 case '/_specialUpcomingExperiments':
                     return formatUpcomingExperiments({
                         record, related, i18n
+                    });
+                    break;
+                case '/_specialLatestContactPhone':
+                    return formatLatestContact({
+                        contact: record._specialLatestContactPhone,
+                        withStatus: true, i18n
+                    });
+                    break;
+                case '/_specialLatestContactEmail':
+                    return formatLatestContact({
+                        contact: record._specialLatestContactEmail,
+                        withStatus: false, i18n
                     });
                     break;
                 default:
@@ -297,6 +319,22 @@ var formatUpcomingExperiments = (bag) => {
     );
 
     return formatted;
+}
+
+var formatLatestContact = (bag) => {
+    var { contact, withStatus, i18n } = bag;
+    if (!contact) {
+        return '';
+    }
+
+    var { contactedAt, status } = contact;
+    var date = Fields.DateTime.stringifyValue({ value: contactedAt, i18n });
+    if (!withStatus) {
+        return date;
+    }
+
+    var translate = createTranslate(i18n.language);
+    return `${date} (${translate(`_subjectContactStatus_${status}`)})`;
 }
 
 module.exports = subjectExtendedSearchExport;
