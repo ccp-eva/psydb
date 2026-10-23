@@ -25,6 +25,9 @@ var common = {
     dev_subjectDuplicatesSearchFields: {},
 
     dev_enableExtendedExperimentSearch: false,
+    
+    // NOTE: true | 'en' | 'de'; true means 'en'
+    dev_appendContactHistoryCommentToSubject: false,
 }
 
 var apedb = {
@@ -133,6 +136,7 @@ var cats = {
     dev_enableStudyConsentWorkflow: true,
     dev_enableStudyEmailTemplates: true,
     dev_enableCSVSubjectContactHistoryImport: true,
+    dev_appendContactHistoryCommentToSubject: 'de',
     dev_enableImprovedContactTracking: true,
     dev_enableStudyRoadmap: true,
 
