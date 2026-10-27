@@ -26,6 +26,7 @@ var {
 
 var { extendedSearch } = require('@mpieva/psydb-api-endpoint-lib');
 var RequestBodySchema = require('./request-body-schema');
+var attachLatestContacts = require('./attach-latest-contacts');
 
 var subjectExtendedSearch = async (context, next) => {
     var { db, permissions, request, i18n } = context;
@@ -129,6 +130,8 @@ var subjectExtendedSearch = async (context, next) => {
         ...it,
         _specialUpcomingExperiments: upcomingExperimentsForSubject[it._id] || [],
     }));
+
+    records = await attachLatestContacts({ db, records, columns });
 
     context.body = ResponseBody({
         data: {

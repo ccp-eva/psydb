@@ -1,10 +1,11 @@
 'use strict';
 var { createId } = require('@mpieva/psydb-api-lib');
+var appendCommentsToSubjects = require('./append-comments-to-subjects');
 
 
 var executeSystemEvents = async (context) => {
     var {
-        db, message, cache, personnelId,
+        db, message, cache, personnelId, apiConfig,
         dispatch, dispatchProps
     } = context;
 
@@ -38,6 +39,15 @@ var executeSystemEvents = async (context) => {
             additionalChannelProps: { ...parts.core, csvImportId },
             props: parts.state,
             initialize: false, // NOTE no schema currently
+        });
+    }
+
+    var { dev_appendContactHistoryCommentToSubject: appendComments = false }
+        = apiConfig;
+    if (appendComments) {
+        await appendCommentsToSubjects({
+            db, dispatchProps, items: subjectContactHistory, timezone,
+            language: appendComments === true ? 'en' : appendComments,
         });
     }
 

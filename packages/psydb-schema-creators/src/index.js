@@ -155,6 +155,14 @@ module.exports = {
     //////////////////////////////////////////////
 
     // XXX: using collection name bites with UC first for imports
+    studyEmailTemplate: {
+        ...metadata.studyEmailTemplate,
+        ...internals.StudyEmailTemplate
+    },
+    studyEmailMetaTemplate: {
+        ...metadata.studyEmailMetaTemplate,
+        ...internals.StudyEmailMetaTemplate
+    },
     studyConsentTemplate: {
         ...metadata.studyConsentTemplate,
         ...internals.StudyConsentTemplate
@@ -170,6 +178,15 @@ module.exports = {
     studyRoadmap: {
         ...metadata.studyRoadmap,
         ...internals.StudyRoadmap
+    },
+
+    StudyEmailTemplate: {
+        ...metadata.studyEmailTemplate,
+        ...internals.StudyEmailTemplate
+    },
+    StudyEmailMetaTemplate: {
+        ...metadata.studyEmailMetaTemplate,
+        ...internals.StudyEmailMetaTemplate
     },
 
     StudyConsentTemplate: {

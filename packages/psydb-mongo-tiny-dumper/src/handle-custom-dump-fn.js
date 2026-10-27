@@ -73,6 +73,28 @@ var createHelpers = (bag) => {
         return mongoutils.aggregateToCursor({ db, ...downstream })
     }
 
+    // NOTE: one query per collection since each tracked
+    // collection is written as a single stream
+    helpers.trackEventsAndMessages = async (channels) => {
+        var events = await helpers.aggregateToArray({ rohrpostEvents: [
+            { $match: { $or: channels.map(({ collection, ids }) => ({
+                'collectionName': collection,
+                'channelId': { $in: ids },
+            }))}},
+        ], track: true });
+
+        var correlationIds = [ ...new Set(
+            events.map(it => it.correlationId)
+        )];
+
+        helpers.aggregateToCursor({ mqMessageHistory: [
+            { $match: { '_id': { $in: correlationIds }}}
+        ], track: true });
+        helpers.aggregateToCursor({ mqMessageQueue: [
+            { $match: { '_id': { $in: correlationIds }}}
+        ], track: true });
+    }
+
     helpers.dump = async () => {
         console.log('Will dump to:', fullOutPath);
 

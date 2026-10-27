@@ -173,6 +173,14 @@ const SubjectField = (ps) => {
         </Alert>
     }
 
+    // NOTE: foreign ids are stored as plain text label
+    if (definition.systemType === 'ForeignId') {
+        definition = {
+            ...definition, type: 'SaneString', systemType: 'SaneString',
+            props: {}
+        };
+    }
+
     return (
         <CustomField definition={ definition } value={ value } />
     )

@@ -86,6 +86,11 @@ var getCollectionReadFlagPointers = ({ collection }) => {
                 '/canReadStudyConsentDocs',
                 '/canWriteStudyConsentDocs'
             ]
+        case 'studyEmailMetaTemplate':
+            return [
+                '/canReadStudyEmailMetaTemplates',
+                '/canWriteStudyEmailMetaTemplates'
+            ]
 
         case 'location':
             return [
@@ -135,6 +140,8 @@ var getCollectionWriteFlagPointers = ({ collection }) => {
             return [ '/canWriteStudyConsentForms' ]
         case 'studyConsentDoc':
             return [ '/canWriteStudyConsentDocs' ]
+        case 'studyEmailMetaTemplate':
+            return [ '/canWriteStudyEmailMetaTemplates' ]
 
         case 'personnel':
             return [ '/canWritePersonnel' ];
@@ -242,6 +249,7 @@ var allCollections = [
 
     'studyConsentForm',
     'studyConsentDoc',
+    'studyEmailMetaTemplate',
 
     // theese have special read/write flags
     // but the same stuff about search for fk applies here

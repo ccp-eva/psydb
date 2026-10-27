@@ -105,4 +105,14 @@ module.exports = [
         en: 'Dynamic Calculation',
         de: 'Dynamische Berechnung',
     },
+    {
+        internal: '_fieldtype_SaneStringList',
+        en: 'List of One Line Variable Texts',
+        de: 'Liste von einzeiligen Freitexten',
+    },
+    {
+        internal: '_fieldtype_URLStringList',
+        en: 'List of URLs',
+        de: 'Liste von URLs',
+    },
 ]

@@ -146,6 +146,24 @@ var handleNoCRT = async (bag) => {
                     },
                 ]}
             ],
+            'studyEmailTemplate': [
+                { 'state.templateName': true },
+                { format: '${#}', tokens: [
+                    {
+                        systemType: 'SaneString',
+                        dataPointer: '/state/templateName'
+                    },
+                ]}
+            ],
+            'studyEmailMetaTemplate': [
+                { 'state.templateName': true },
+                { format: '${#}', tokens: [
+                    {
+                        systemType: 'SaneString',
+                        dataPointer: '/state/templateName'
+                    },
+                ]}
+            ],
 
             //////////////////////////////////////////////
 

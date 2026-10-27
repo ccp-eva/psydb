@@ -37,6 +37,10 @@ var allHandlers = [
     require('./handlers/study-consent-template'),
     require('./handlers/study-consent-form'),
     require('./handlers/study-consent-doc'),
+    
+    require('./handlers/study-email-template'),
+    require('./handlers/study-email-meta-template'),
+    //require('./handlers/study-email-batch'),
 ];
 
 module.exports = allHandlers;

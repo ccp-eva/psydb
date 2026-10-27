@@ -105,11 +105,17 @@ var checkNavItemEnabled = (bag) => {
         dev_enableCSVSubjectImport = false,
         dev_enableCSVParticipationImport = false,
         dev_enableStatistics = false,
+        dev_enableExtendedExperimentSearch = false,
+        dev_enableStudyEmailTemplates = false,
     } = config;
 
     switch (path) {
         case '/statistics':
             return dev_enableStatistics;
+        case '/experiments/extended-search':
+            return dev_enableExtendedExperimentSearch;
+        case '/study-email-meta-templates':
+            return dev_enableStudyEmailTemplates;
         case '/csv-imports':
             return (
                 dev_enableCSVSubjectImport
@@ -182,6 +188,10 @@ var checkNavItemAllowed = (bag) => {
                 'canReadLocations',
                 'canWriteLocations'
             ]);
+        case '/experiments/extended-search':
+            return hasSomeFlags([
+                'canUseExtendedSearch',
+            ]);
         case '/external-persons':
             return hasSomeFlags([
                 'canReadExternalPersons',
@@ -211,6 +221,11 @@ var checkNavItemAllowed = (bag) => {
             return hasSomeFlags([
                 'canReadPersonnel',
                 'canWritePersonnel'
+            ]);
+        case '/study-email-meta-templates':
+            return hasSomeFlags([
+                'canReadStudyEmailMetaTemplates',
+                'canWriteStudyEmailMetaTemplates'
             ]);
         case '/statistics':
         case '/csv-imports':

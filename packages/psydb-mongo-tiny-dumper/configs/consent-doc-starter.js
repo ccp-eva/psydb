@@ -1,5 +1,5 @@
 module.exports = {
-    url: 'mongodb://127.0.0.1:47017/psydb',
+    url: 'mongodb://127.222.0.1:47017/psydb',
 
     customDumpFN: async (bag) => {
         var { aggregateToArray, aggregateToCursor, dump } = bag;

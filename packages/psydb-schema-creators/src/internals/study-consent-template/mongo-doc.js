@@ -8,7 +8,7 @@ var MongoDoc = (context) => {
     var schema = ClosedObject({
         'studyType': CustomRecordTypeKey({ collection: 'study' }),
         'subjectType': CustomRecordTypeKey({ collection: 'subject' }),
-        'props': State(),
+        'state': State(),
     });
     
     return schema;

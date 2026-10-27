@@ -6,7 +6,7 @@ import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
     Table,
-    ExperimentIconButton,
+    SubjectIconButton,
 } from '@mpieva/psydb-ui-layout';
 
 import { datefns } from '@mpieva/psydb-ui-lib';
@@ -34,7 +34,7 @@ const RelatedItems = (ps) => {
     }
 
     return (
-        <Table className='bg-white border'>
+        <Table className='bg-white'>
             <thead>
                 <tr>
                     <th>{ translate('Type') }</th>
@@ -57,16 +57,17 @@ const RelatedItems = (ps) => {
 
 const Item = (ps) => {
     var { record, related } = ps;
-    var { _id, type, subjectId, contactedAt, contactedBy } = record;
+    var { _id, type, subjectId, subjectType, contactedAt, contactedBy }
+        = record;
     var { status, comment } = record.state;
 
     var [{ locale, translate }] = useI18N();
    
-    //var uri = `/experiments/${type}/${record._id}`;
+    var uri = `/subjects/${subjectType}/${subjectId}`;
 
     return (
         <tr>
-            <td>{ type }</td>
+            <td>{ translate(`_subjectContactType_${type}`) }</td>
             <td>{ related.records.subject?.[subjectId]?._recordLabel }</td>
             <td>
                 { datefns.format(new Date(contactedAt), 'P p', { locale }) }
@@ -75,10 +76,23 @@ const Item = (ps) => {
                 related.records.personnel?.[contactedBy]?._recordLabel
                 || <i className='text-lightgrey'>{ translate('Not Specified') }</i>
             }</td>
-            <td>{ status }</td>
+            <td>{ translate(`_subjectContactStatus_${status}`) }</td>
             <td>{ comment }</td>
-            <td className='d-flex justify-content-end'>
-                {/*<ExperimentIconButton to={ uri } />*/}
+            <td>
+                <div className='d-flex justify-content-end'>
+                    <SubjectIconButton
+                        to={ uri }
+                        buttonStyle={{
+                            marginTop: '-5px',
+                            marginBottom: '-5px'
+                        }}
+                        iconStyle={{
+                            width: '22px',
+                            height: '22px',
+                            marginTop: '0px',
+                        }}
+                    />
+                </div>
             </td>
         </tr>
     )

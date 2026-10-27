@@ -9,6 +9,7 @@ import {
 import { LinkContainer } from '@mpieva/psydb-ui-layout';
 import ExtendedSearch from './extended-search';
 import DuplicatesRouting from './duplicates';
+import IntraRecordRouting from './intra-record-routing';
 
 const RecordTypeRouting = ({
     collection,
@@ -67,57 +68,15 @@ const RecordTypeRouting = ({
             })} />
         </Route>
 
-        <Route
-            exact path={`${path}/:id`}
-            render={ (ps) => (
-                <Redirect to={ `${url}/${ps.match.params.id}/details` } />
-            )}
-        />
-
-        <Route path={`${path}/:id/details`}>
-            <RecordDetails
+        <Route path={`${path}/:id`}>
+            <IntraRecordRouting
                 collection={ collection }
                 recordType={ recordType }
-            />
-        </Route>
-
-        <Route path={`${path}/:id/channel-history`}>
-            <RecordHistory
-                collection={ collection }
-                recordType={ recordType }
-            />
-        </Route>
-
-        <Route path={`${path}/:id/edit`}>
-            <RecordEditor
-                type='edit'
-                collection={ collection }
-                recordType={ recordType }
-                onSuccessfulUpdate={ ({ id }) => {
-                    history.push(`${url}/${id}`)
-                }}
-            />
-        </Route>
-        
-        <Route path={`${path}/:id/remove`}>
-            <RecordRemover
-                type='edit'
-                collection={ collection }
-                recordType={ recordType }
-                successInfoBackLink={ `#${url}` }
-                onSuccessfulUpdate={ ({ id }) => {
-                    history.push(`${url}/${id}/remove/success`)
-                }}
-            />
-        </Route>
-        <Route path={`${path}/:id/clean-gdpr`}>
-            <RecordAnonymizer
-                collection={ collection }
-                recordType={ recordType }
-                successInfoBackLink={ `#${url}` }
-                onSuccessfulUpdate={ ({ id }) => {
-                    history.push(`${url}/${id}/clean-gdpr/success`)
-                }}
+                RecordDetails={ RecordDetails }
+                RecordHistory={ RecordHistory }
+                RecordEditor={ RecordEditor }
+                RecordRemover={ RecordRemover }
+                RecordAnonymizer={ RecordAnonymizer }
             />
         </Route>
     </Switch>

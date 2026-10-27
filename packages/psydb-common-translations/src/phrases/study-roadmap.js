@@ -1,9 +1,9 @@
 'use strict';
 module.exports = [
-    {
-        en: 'Roadmap',
-        de: 'Roadmap'
-    },
+    //{
+    //    en: 'Roadmap',
+    //    de: 'Roadmap'
+    //},
     {
         en: 'Timetable',
         de: 'Timetable'
@@ -30,5 +30,41 @@ module.exports = [
     {
         en: 'Current Data',
         de: 'Aktuelle Daten'
+    },
+
+    {
+        internal: '_studyRoadmapTask_studyPreparation',
+        en: 'Study Preparation',
+        de: 'Studienvorbereitung',
+    },
+    {
+        internal: '_studyRoadmapTask_ethicsApprovalDate',
+        en: 'Ethics (Approval Date)',
+        de: 'Ethik (Genehmigungs-Datum)',
+    },
+    {
+        internal: '_studyRoadmapTask_piloting',
+        en: 'Piloting',
+        de: 'Pilotphase',
+    },
+    {
+        internal: '_studyRoadmapTask_dataCollection',
+        en: 'Data Collection',
+        de: 'Datenaufnahme',
+    },
+    {
+        internal: '_studyRoadmapTask_dataProcessing',
+        en: 'Data Processing (cleaning/coding)',
+        de: 'Datenaufbereitung (Bereinigung/Kodierung)',
+    },
+    {
+        internal: '_studyRoadmapTask_dataAnalysis',
+        en: 'Data Analysis',
+        de: 'Datenanalyse',
+    },
+    {
+        internal: '_studyRoadmapTask_completion',
+        en: 'Completed', // FIXME: sic
+        de: 'Abschluss',
     },
 ]

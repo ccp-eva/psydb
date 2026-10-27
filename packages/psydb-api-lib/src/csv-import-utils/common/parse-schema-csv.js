@@ -2,6 +2,7 @@
 var dumbParseCSV = require('./dumb-parse-csv');
 var dumbMakeObjects = require('./dumb-make-objects');
 var validateMany = require('./validate-many');
+var normalizeCSVValues = require('./normalize-csv-values');
 
 var parseSchemaCSV = (bag) => {
     var {
@@ -22,6 +23,8 @@ var parseSchemaCSV = (bag) => {
     //    csvColumns: maybeRemapColumns({ csvColumns, customColumnRemap }),
     //    csvLines
     //});
+
+    normalizeCSVValues({ schema, items: parsed });
 
     var validation = validateMany({ schema, items: parsed, ajvOptions: {
         coerceTypes: true,

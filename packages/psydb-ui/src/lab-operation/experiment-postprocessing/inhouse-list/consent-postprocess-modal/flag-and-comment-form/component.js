@@ -36,19 +36,19 @@ const FormFields = (ps) => {
     return (
         <>
             <Fields.ExtBool
-                label={ translate('Contains Errors') }
+                label={ translate('Contains Erroneous Information') }
                 dataXPath='$.hasIssue'
                 inverted={ true }
                 helpText={ translate(
-                    'For when the form contains erroneous data.'
+                    'Erroneous information was entered when filling out the consent form. This could be e.g. a typo, transposed digits or a very unlikely year of birth. Please describe the error in more detail in the comment.'
                 )}
             />
             <Fields.ExtBool
-                label={ translate('Has New Infos') }
+                label={ translate('Contains New Information') }
                 dataXPath='$.containsSubjectUpdate'
                 inverted={ true }
                 helpText={ translate(
-                    'For when the form contains new info to update in the data sheet.'
+                    'The consent form contains new information that has to be added to the subject\'s profile. This could be e.g. a new last name or a changed phone number.'
                 )}
             />
             <Fields.FullText

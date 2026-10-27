@@ -114,7 +114,7 @@ const PreviewStage = (ps) => {
                         } />
                     ) : (
                         <Alert variant='danger'>
-                            <b>CSV has no data!</b>
+                            <b>{ translate('CSV has no data!') }</b>
                         </Alert>
                     )
                 )}

@@ -5,7 +5,7 @@ var internals = require('../');
 
 var FullSchema = (bag) => ClosedObject({
     '_id': Id(),
-    'type': StringEnum([' email' ]),
+    'type': StringEnum([ 'email', 'phone' ]),
     'subjectType': CustomRecordTypeKey({ collection: 'subject' }),
     'subjectId': ForeignId({ collection: 'subject' }),
     'contactedAt': DateTime(),

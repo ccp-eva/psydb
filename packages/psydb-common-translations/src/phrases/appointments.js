@@ -161,4 +161,26 @@ module.exports = [
         en: '${count} unprocessed appointments',
         de: '${count} Termine die nicht nachbereitet wurden'
     },
+    {
+        internal: '_sidenav_experiments_extended-search',
+        en: 'Participation Search',
+        de: 'Teilnahmesuche',
+    },
+    {
+        en: 'Participation',
+        de: 'Teilnahme',
+    },
+    {
+        en: 'Advanced Participation Search',
+        de: 'Erweiterte Teilnahme-Suche',
+    },
+    {
+        internal: '_participation_search_link',
+        en: 'Participation Search',
+        de: 'Teilnahme-Suche',
+    },
+    {
+        en: 'Postprocessed',
+        de: 'Nachbereitet',
+    },
 ]

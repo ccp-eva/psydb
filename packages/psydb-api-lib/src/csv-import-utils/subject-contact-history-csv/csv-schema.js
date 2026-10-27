@@ -3,9 +3,6 @@ var { ExactObject, ForeignId, SaneString, StringEnum }
     = require('@mpieva/psydb-schema-fields');
 
 
-// NOTE: oneof whith phone type
-// and status property with something like
-// StringEnum([ 'contact-successful', 'contact-failed', 'contact-mailbox' ])
 var CSVSchema = (bag = {}) => {
     var { subjectType } = bag;
 
@@ -13,11 +10,16 @@ var CSVSchema = (bag = {}) => {
         'subjectId': ForeignId({
             collection: 'subject', recordType: subjectType
         }),
-        'contactType': StringEnum([ 'email' ]),
+        'contactType': StringEnum([ 'email', 'phone' ]),
         'date': DateYMD(),
+        'contactedBy': ForeignId({ collection: 'personnel' }),
     };
     var optional = {
         'time': TimeHM(),
+        'status': StringEnum([
+            'sent', 'delivered',
+            'contact-successful', 'mailbox', 'contact-failed',
+        ]),
         'comment': SaneString(), // NOTE: no fulltext for now
     }
 
@@ -31,7 +33,7 @@ var CSVSchema = (bag = {}) => {
 
 // TODO: move
 var DateYMD = (bag = {}) => {
-    var schema = { ...bag, type: 'string', format: 'date' };
+    var schema = { ...bag, type: 'string', format: 'date-ymd-or-dmy' };
     return schema;
 }
 

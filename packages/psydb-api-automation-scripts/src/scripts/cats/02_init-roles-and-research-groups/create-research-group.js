@@ -1,9 +1,11 @@
 'use strict';
 var { Fields } = require('@mpieva/psydb-faker');
+var { seedFakerForNextId } = require('../../../utils');
 
 module.exports = async (context) => {
-    var { driver, ids } = context;
+    var { driver, ids, idgen } = context;
 
+    seedFakerForNextId({ idgen, collection: 'researchGroup' });
     var catlab = await driver.researchGroup.create({ data: { state: {
         name: 'Center for Cat Research',
         shorthand: 'Cat-Lab',
@@ -23,7 +25,7 @@ module.exports = async (context) => {
             { key: 'catTrainer' },
         ],
         locationTypes: [
-            { key: 'instituteroom' },
+            { key: 'catLabRoom' },
             { key: 'catShelter' },
         ],
         helperSetIds: [

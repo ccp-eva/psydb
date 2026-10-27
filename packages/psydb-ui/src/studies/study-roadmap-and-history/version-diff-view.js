@@ -80,8 +80,12 @@ const Task = (ps) => {
                 transform={ fdate }
             />
             <Diff
+                method={ DiffMethod.TrimmedLines }
                 oldValue={ oldData.description }
                 newValue={ newData.description }
+                transform={(description) => (
+                    translate(description)
+                )}
             />
             <Diff
                 oldValue={ oldData.status }

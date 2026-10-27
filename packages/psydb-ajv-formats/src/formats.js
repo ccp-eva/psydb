@@ -67,6 +67,9 @@ module.exports = {
     },
     dateOnlyServerSide: {
         validate: regexes.dateOnlyServerSide,
+    },
+    dateYMDOrDMY: {
+        validate: require('./date-ymd-or-dmy').validate,
     }
     /*dateTime: {
         validate: dateTime,

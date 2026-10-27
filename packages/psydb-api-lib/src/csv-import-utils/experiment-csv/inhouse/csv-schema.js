@@ -53,7 +53,7 @@ var CSVSchema = (bag = {}) => {
 
 // TODO: move
 var DateYMD = (bag = {}) => {
-    var schema = { ...bag, type: 'string', format: 'date' };
+    var schema = { ...bag, type: 'string', format: 'date-ymd-or-dmy' };
     return schema;
 }
 

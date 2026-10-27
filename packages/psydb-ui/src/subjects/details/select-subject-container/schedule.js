@@ -2,6 +2,7 @@ import React from 'react';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Alert } from '@mpieva/psydb-ui-layout';
+import { datefns } from '@mpieva/psydb-ui-lib';
 
 
 import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
@@ -15,6 +16,8 @@ const Schedule = (ps) => {
         selectedStudy,
         subjectRecord,
         inviteType,
+        desiredTestInterval,
+        subjectDateOfBirth,
         testableIntervals,
         revision,
         onSuccessfulUpdate
@@ -29,6 +32,12 @@ const Schedule = (ps) => {
     var studyData = { records: [ selectedStudy ] };
     var subjectId = subjectRecord._id;
     var subjectLabel = subjectRecord._recordLabel;
+
+    // NOTE: interval form values are not aligned to day boundaries
+    var desiredTestDays = desiredTestInterval && {
+        start: datefns.startOfDay(new Date(desiredTestInterval.start)),
+        end: datefns.endOfDay(new Date(desiredTestInterval.end)),
+    };
 
     return (
         !selectedStudy || !inviteType
@@ -49,6 +58,7 @@ const Schedule = (ps) => {
                     studyData={ studyData }
                     subjectId={ subjectId }
                     subjectLabel={ subjectLabel }
+                    subjectDateOfBirth={ subjectDateOfBirth }
                     
                     onSuccessfulUpdate={ onSuccessfulUpdate }
                 />
@@ -72,7 +82,7 @@ const Schedule = (ps) => {
                     subjectRecordType={ subjectRecord.type }
                     currentExperimentType={ inviteType }
                     currentSubjectRecord={ subjectRecord }
-                    //desiredTestInterval={ desiredTestInterval }
+                    desiredTestInterval={ desiredTestDays }
                     testableIntervals={ selectedStudy._testableIntervals }
 
                     //activeLocationType={ 'instituteroom' }

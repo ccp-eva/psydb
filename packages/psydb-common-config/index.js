@@ -22,7 +22,12 @@ var common = {
     dev_enableDangerousCRTFieldOps: true,
 
     dev_enableSubjectDuplicatesSearch: false,
-    dev_subjectDuplicatesSearchFields: {}
+    dev_subjectDuplicatesSearchFields: {},
+
+    dev_enableExtendedExperimentSearch: false,
+    
+    // NOTE: true | 'en' | 'de'; true means 'en'
+    dev_appendContactHistoryCommentToSubject: false,
 }
 
 var apedb = {
@@ -34,12 +39,14 @@ var apedb = {
     dev_enableWKPRCPatches: true,
     dev_showDummyRecordsAsTopOptions: true,
     dev_enableCSVParticipationImport: true,
+    dev_enableExtendedExperimentSearch: true,
     
     sideNav: [
         { path: '/csv-imports' },
         { path: '/subjects' },
         { path: '/studies' },
         '=======',
+        { path: '/experiments/extended-search' },
         { path: '/locations' },
         { path: '/subject-groups' },
         { path: '/study-topics' },
@@ -93,6 +100,7 @@ var mpiccp = {
         ]
     },
     dev_enableSubjectCopyForUnprocessedExperiments: true,
+    dev_enableExtendedExperimentSearch: true,
 }
 
 var humankind = {
@@ -112,4 +120,35 @@ var humankind = {
     ],
 }
 
-module.exports = mpiccp;
+var cats = {
+    ...common,
+    enabledLabMethods: [
+        'inhouse',
+        'away-team',
+        'online-video-call',
+        //'online-survey',
+        'manual-only-participation'
+    ],
+    dev_enableStatistics: true,
+    dev_enableCSVSubjectImport: true,
+    dev_enableCSVParticipationImport: true,
+    
+    dev_enableStudyConsentWorkflow: true,
+    dev_enableStudyEmailTemplates: true,
+    dev_enableCSVSubjectContactHistoryImport: true,
+    dev_appendContactHistoryCommentToSubject: 'de',
+    dev_enableImprovedContactTracking: true,
+    dev_enableStudyRoadmap: true,
+
+    dev_enableSubjectDuplicatesSearch: true,
+    dev_subjectDuplicatesSearchFields: {
+        'catOwner': [
+            '/gdpr/state/custom/lastname',
+            '/gdpr/state/custom/firstname',
+        ],
+    },
+    dev_enableSubjectCopyForUnprocessedExperiments: true,
+    dev_enableExtendedExperimentSearch: true,
+}
+
+module.exports = cats;

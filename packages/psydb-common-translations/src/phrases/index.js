@@ -18,6 +18,7 @@ module.exports = [
     ...require('./csv-imports'),
     ...require('./duplicates'),
     ...require('./study-consent-workflow'),
+    ...require('./study-email-workflow'),
     ...require('./study-roadmap'),
 
     ...require('./_record-anonymizer'),
@@ -427,6 +428,11 @@ module.exports = [
         en: 'resc.',
         de: 'versch.',
     },
+    {
+        internal: 'deleted_short',
+        en: 'del.',
+        de: 'gel.',
+    },
     
     {
         en: 'Set Remaining to "Not Participated"',
@@ -560,6 +566,10 @@ module.exports = [
     {
         en: 'Not in Age Range',
         de: 'Nicht in Altersfenster'
+    },
+    {
+        en: 'Not in Desired Test Interval!',
+        de: 'Nicht im gewünschten Testzeitraum!'
     },
     {
         en: 'Add',
@@ -1241,6 +1251,10 @@ module.exports = [
     {
         en: 'No Conditions',
         de: 'Keine Bedingungen',
+    },
+    {
+        en: 'No Filter',
+        de: 'Kein Filter',
     },
     {
         en: 'Specific Values',

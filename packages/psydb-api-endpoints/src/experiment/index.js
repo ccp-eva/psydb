@@ -4,4 +4,5 @@ module.exports = {
     listPostprocessing: require('./list-postprocessing'),
     inviteCalendar: require('./invite-calendar'),
     awayCalendar: require('./away-calendar'),
+    extendedSearch: require('./extended-search'),
 }

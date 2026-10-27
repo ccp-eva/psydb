@@ -94,7 +94,7 @@ const EditForm = (ps) => {
             />
             { dev_enableCSVSubjectContactHistoryImport && (
                 <LastSubjectContact
-                    show={ true } value={ lookups.lastSubjectContact }
+                    show={ true } value={ lookups.lastSubjectContacts }
                 />
             )}
             <DuplicateInfo

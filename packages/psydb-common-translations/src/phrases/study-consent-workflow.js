@@ -5,20 +5,20 @@ module.exports = [
         de: 'Hat Problem'
     },
     {
-        en: 'Contains Errors',
-        de: 'Enthält Fehler'
+        en: 'Contains Erroneous Information',
+        de: 'Enthält fehlerhafte Informationen'
     },
     {
-        en: 'Has New Infos',
-        de: 'Hat neue Infos'
+        en: 'Contains New Information',
+        de: 'Enthält neue Informationen'
     },
     {
-        en: 'For when the form contains new info to update in the data sheet.',
-        de: 'Für den Fall, dass das Formular neue Infos für das Datenblatt enthält.'
+        en: 'The consent form contains new information that has to be added to the subject\'s profile. This could be e.g. a new last name or a changed phone number.',
+        de: 'Die Einwilligungserklärung enthält neue Informationen, die im Profil der Proband:in ergänzt werden müssen. Das kann z.B. ein neuer Nachname oder eine veränderte Telefonnummer sein.'
     },
     {
-        en: 'For when the form contains erroneous data.',
-        de: 'Für den Fall, dass das Formular fehlerhafte Daten enthält.'
+        en: 'Erroneous information was entered when filling out the consent form. This could be e.g. a typo, transposed digits or a very unlikely year of birth. Please describe the error in more detail in the comment.',
+        de: 'Beim Ausfüllen der Einwilligungserklärung wurden fehlerhafte Informationen eingegeben. Das kann zum Beispiel ein Tippfehler, ein Zahlendreher oder ein sehr unwahrscheinliches Geburtsjahr sein. Bitte im Kommentar den Fehler genauer beschreiben.'
     },
     {
         en: 'Has Data Update',

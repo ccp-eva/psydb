@@ -25,7 +25,7 @@ var cliOptions = [
         long: 'mongodb',
         arg: 'mongodbConnectString',
         description: 'mongodb connect string; some scripts require that',
-        defaults: 'mongodb://127.0.0.1:47017/psydb',
+        defaults: 'mongodb://127.222.0.1:47017/psydb',
     },
     {
         long: 'restore-fixture',

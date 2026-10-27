@@ -10,6 +10,7 @@ export { default as study } from './study';
 export { default as studyConsentTemplate } from './study-consent-template';
 export { default as studyConsentForm } from './study-consent-form';
 export { default as studyConsentDoc } from './study-consent-doc';
+export { default as studyEmailMetaTemplate } from './study-email-meta-template';
 
 export { default as subject } from './subject';
 export { default as subjectContactHistory } from './subject-contact-history';

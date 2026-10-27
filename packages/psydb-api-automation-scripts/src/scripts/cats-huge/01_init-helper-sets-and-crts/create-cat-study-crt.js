@@ -1,8 +1,8 @@
 'use strict';
-var { PointerGen } = require('../../../utils');
+var { PointerGen, seedFakerForNextId } = require('../../../utils');
 
 module.exports = async (context) => {
-    var { driver, cache, as } = context;
+    var { driver, cache, as, idgen } = context;
     
     var displayNames = {
         en: 'Cat Studies',
@@ -12,6 +12,7 @@ module.exports = async (context) => {
     var definitions = FieldDefinitions({ cache });
     var asPointers = PointerGen(definitions);
 
+    seedFakerForNextId({ idgen, collection: 'customRecordType' });
     var crt = await driver.crt.create({
         collection: 'study', key: 'catStudy',
         displayNames,

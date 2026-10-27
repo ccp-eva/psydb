@@ -20,7 +20,7 @@ const PreviewRecord = (ps) => {
         <div className='bg-white py-2 px-3 border'>
             <SplitPartitioned partitions={[ 1, 2, 1, 4 ]}>
                 <span>{ translate('Type') }</span>
-                <BE>{ type }</BE>
+                <BE>{ translate(`_subjectContactType_${type}`) }</BE>
                 <span>{ translate('Subject') }</span>
                 <BE><ForeignId
                     value={ subjectId }
@@ -44,7 +44,7 @@ const PreviewRecord = (ps) => {
             </SplitPartitioned>
             <SplitPartitioned partitions={[ 1, 2, 1, 4 ]}>
                 <span>{ translate('Status') }</span>
-                <BE>{ status }</BE>
+                <BE>{ translate(`_subjectContactStatus_${status}`) }</BE>
                 <span>{ translate('Comment') }</span>
                 <BE>{ comment }</BE>
             </SplitPartitioned>

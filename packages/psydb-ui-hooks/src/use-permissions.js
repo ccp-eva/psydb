@@ -31,6 +31,9 @@ const usePermissions = () => {
         isLabMethodAvailable,
         isSubjectTypeAvailable,
 
+        intersectRecordAccess,
+        hasRecordAccess,
+
         ...raw
     } = wrappedPermissions;
 
@@ -56,6 +59,9 @@ const usePermissions = () => {
 
         hasLabOpsFlags,
         gatherFlags,
+
+        intersectRecordAccess,
+        hasRecordAccess,
     }
 }
 

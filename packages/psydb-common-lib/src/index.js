@@ -16,6 +16,9 @@ module.exports = {
     createRecordLabel: require('./create-record-label'),
 
     CSVColumnRemappers: require('./csv-column-remappers'),
+    createTranslate: (
+        require('@mpieva/psydb-common-translations').createTranslate
+    ),
 
     intervalUtils: require('./interval-utils'),
     createSchemaForRecord: require('./create-schema-for-record-type'),

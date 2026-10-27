@@ -165,6 +165,12 @@ const labels = {
     '/state/canRemoveStudyConsentDocs': (
         'Can Delete Study Consent Docs'
     ),
+    '/state/canReadStudyEmailMetaTemplates': (
+        'Can View Study Email Meta Templates'
+    ),
+    '/state/canWriteStudyEmailMetaTemplates': (
+        'Can Edit Study Email Meta Templates'
+    ),
     '/state/canReadStudyConsentForms': (
         'Can View Study Consent Forms'
     ),

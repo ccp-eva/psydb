@@ -38,7 +38,7 @@ const Task = (ps) => {
         <>
             <span>{ fdate(start) }</span>
             <span>{ fdate(end) }</span>
-            <span>{ description }</span>
+            <span>{ translate(description) }</span>
             <span>{ translate('_studyRoadmapStatus_' + status) }</span>
             <span>{ related.records.personnel[assignedTo] }</span>
         </>

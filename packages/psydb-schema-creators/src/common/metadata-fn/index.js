@@ -32,6 +32,9 @@ module.exports = (bag) => {
         'subjectContactHistory',
         'studyConsentForm',
         'studyConsentDoc',
+        
+        'studyEmailTemplate',
+        'studyEmailMetaTemplate',
     ];
 
     var out = {};

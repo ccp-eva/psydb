@@ -74,18 +74,23 @@ var augmentSubjectTestableIntervals = (bag) => {
             //    desiredTestInterval,
             //    ageFrameIntervals: ageFrameFilters.map(it => it.interval)
             //}, { depth: null });
+            var ageFrameIntervals = ageFrameFilters.map(it => it.interval);
             var testableIntervals = calculateTestableIntervals({
                 desiredTestInterval,
                 dateOfBirth,
-                ageFrameIntervals: ageFrameFilters.map(it => it.interval)
+                ageFrameIntervals,
+            });
+            // NOTE: same as above but ignoring desiredTestInterval
+            var ageFrameMatchIntervals = calculateTestableIntervals({
+                dateOfBirth,
+                ageFrameIntervals,
             });
             //console.log(datefns.add(dateOfBirth, { years: 22, months: 1 }));
             //console.log({ testableIntervals });
 
-            testableIntervals = testableIntervals.map(interval => (
-
-                // NOTE: client wants utc version of
-                // its local date-only value
+            // NOTE: client wants utc version of
+            // its local date-only value
+            var convert = (intervals) => intervals.map(interval => (
                 convertIntervalTZ(
                     interval, { sourceTZ: clientTimezone }
                 )
@@ -93,7 +98,12 @@ var augmentSubjectTestableIntervals = (bag) => {
             //console.log(clientTimezone);
             //console.dir({ testableIntervals }, { depth: null });
         
-            subject[`_testableIntervals_${studyId}`] = testableIntervals;
+            subject[`_testableIntervals_${studyId}`] = (
+                convert(testableIntervals)
+            );
+            subject[`_ageFrameIntervals_${studyId}`] = (
+                convert(ageFrameMatchIntervals)
+            );
         }
     }
 }

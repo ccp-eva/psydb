@@ -9,7 +9,7 @@ import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 import { Study } from '@mpieva/psydb-ui-lib/data-viewers';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
-import StudyRoadmapAndHistory from './study-roadmap-and-history';
+import StudyRoadmapAndHistory from './study-roadmap-and-history/in-details';
 
 export const DetailsBody = (ps) => {
     var { fetched, permissions } = ps;

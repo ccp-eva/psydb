@@ -25,6 +25,7 @@ export const Inhouse = (ps) => {
     var [{ translate }] = useI18N();
     var initialValues = {
         //fileId: '66909c1e373d99dc8b8605be',
+        treatEachLineAsSeperateExperiment: true,
     }
 
     return (

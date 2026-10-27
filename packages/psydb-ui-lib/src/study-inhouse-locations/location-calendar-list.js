@@ -34,6 +34,7 @@ const LocationCalendarList = (ps) => {
         currentSubjectRecord,
         desiredTestInterval,
         testableIntervals,
+        ageFrameIntervals,
 
         locationRecordType,
         teamRecords,
@@ -136,6 +137,7 @@ const LocationCalendarList = (ps) => {
                         currentSubjectRecord,
                         desiredTestInterval,
                         testableIntervals,
+                        ageFrameIntervals,
 
                         __useNewCanSelect,
                         checkEmptySlotSelectable,

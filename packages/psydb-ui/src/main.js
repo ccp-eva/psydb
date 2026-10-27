@@ -5,6 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import { useRequestAgent } from '@mpieva/psydb-ui-contexts';
 import FullScreenRoutes from './main-full-screen-routes';
 import LayoutedRoutes from './main-layouted-routes';
+import ScrollToTopOnNavigation from './scroll-to-top-on-navigation';
 
 const Main = (ps) => {
     var { onSignedIn, onSignedOut } = ps;
@@ -27,15 +28,18 @@ const Main = (ps) => {
     );
 
     return (
-        <Switch>
-            <Route path='/full-screen'>
-                <FullScreenRoutes />
-            </Route>
+        <>
+            <ScrollToTopOnNavigation />
+            <Switch>
+                <Route path='/full-screen'>
+                    <FullScreenRoutes />
+                </Route>
 
-            <Route>
-                <LayoutedRoutes { ...({ onSignOut }) }/>
-            </Route>
-        </Switch>
+                <Route>
+                    <LayoutedRoutes { ...({ onSignOut }) }/>
+                </Route>
+            </Switch>
+        </>
     )
 }
 
