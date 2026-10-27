@@ -16,7 +16,7 @@ VERSION=$(git describe --tags --abbrev=0)
 DATE=$(date +%Y%m%d%H%M)
 COMMIT_ID=$(git rev-parse --short=6 HEAD)
 
-TAG="cdxoo/psydb:$VERSION.$COMMIT_ID"_"$DATE"
+TAG="cdxoo/psydb:$VERSION.$DATE"_"$COMMIT_ID"
 if [ ! -z $SUFFIX ]; then
     TAG=$TAG"_"$SUFFIX
 fi
