@@ -14,8 +14,9 @@ ALPINE_VERSION="3.23"
 VERSION=$(git describe --tags --abbrev=0)
 #VERSION=$(node -pe "require('$REPO_DIR/packages/psydb-web/package.json').version");
 DATE=$(date +%Y%m%d%H%M)
+COMMIT_ID=$(git rev-parse --short=6 HEAD)
 
-TAG="cdxoo/psydb:$VERSION.$DATE"
+TAG="cdxoo/psydb:$VERSION.$COMMIT_ID"_"$DATE"
 if [ ! -z $SUFFIX ]; then
     TAG=$TAG"_"$SUFFIX
 fi
