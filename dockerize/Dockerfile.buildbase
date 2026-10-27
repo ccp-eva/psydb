@@ -1,0 +1,26 @@
+# vim: syn=dockerfile
+ARG RUSH_IMAGE_VERSION
+
+FROM cdxoo/psydb-rush:${RUSH_IMAGE_VERSION}
+
+RUN mkdir -p /usr/src/app /usr/src/app/deploy
+WORKDIR /usr/src/app
+
+# FIXME: maybe not rquired with rush deploy
+COPY rush.json /usr/src/app/
+
+COPY common common
+COPY packages packages
+COPY tools-extra tools-extra
+# NOTE make image smaller
+RUN rm -rf ./packages/psydb-fixtures/bson
+
+RUN NODE_ENV=production \
+    && MONGOMS_DISABLE_POSTINSTALL=1 rush update \
+    && rush deploy --target-folder deploy/ \
+    && echo "... docker might hang for a while now ..."
+# NOTE: RUN command creates thousands of files (node_modules)
+# docker commits these to a new image layer before removing the container
+# this might take a while depending on OS and I/O performance
+
+COPY packages/psydb-ui/dist/ deploy/packages/psydb-ui/dist
