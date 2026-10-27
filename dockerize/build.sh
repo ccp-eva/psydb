@@ -7,6 +7,7 @@ wait_confirm
 
 cd $REPO_DIR
 
+ensure_node_image_exists
 prebuild_ui
 purge_workspace
 

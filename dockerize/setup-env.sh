@@ -8,8 +8,8 @@ SUFFIX=$2
 
 # NOTE: rush.json contains comments so we cant require() it
 RUSH_VERSION=$(sed -n 's/^[[:space:]]*"rushVersion": "\([^"]*\)".*/\1/p' $REPO_DIR/rush.json)
-NODE_VERSION="22.14.0"
-ALPINE_VERSION="3.20"
+NODE_VERSION="22.23.4"
+ALPINE_VERSION="3.23"
 
 VERSION=$(git describe --tags --abbrev=0)
 #VERSION=$(node -pe "require('$REPO_DIR/packages/psydb-web/package.json').version");
@@ -43,6 +43,20 @@ print_tag() {
 wait_confirm() {
     printf ">>> Press enter to continue"
     read _
+}
+
+ensure_node_image_exists() {
+    local NODE_IMAGE="node:${NODE_VERSION}-alpine${ALPINE_VERSION}"
+    echo "checking registry for ${NODE_IMAGE} ..."
+
+    # NOTE: inspects the remote manifest w/o pulling the image
+    if ! docker manifest inspect $NODE_IMAGE > /dev/null; then
+        echo "ERROR: ${NODE_IMAGE} does not exist in docker registry"
+        echo "       check NODE_VERSION/ALPINE_VERSION in setup-env.sh"
+        exit 1
+    fi
+    echo "=> OK"
+    echo
 }
 
 maybe_build_rush_node_alpine() {
