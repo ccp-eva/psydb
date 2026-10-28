@@ -1,14 +1,15 @@
 var displayFields = [
     {
         systemType: 'SaneString', pointer: '/state/internalName',
-        displayName: 'Internal Name', displayNameI18N: { 'de': 'Interner Name' }
+        displayName: 'Shorthand', displayNameI18N: { 'de': 'Kürzel' }
     },
     {
         systemType: 'SaneString', pointer: '/state/title',
-        displayName: 'Title', displayNameI18N: { 'de': 'Titel' }
+        displayName: 'Title for Subjects',
+        displayNameI18N: { 'de': 'Titel für Proband:innen' }
     },
     {
-        systemType: 'SaneString', // FIXME: CRT
+        systemType: 'CustomRecordTypeKey',
         pointer: '/subjectType',
         displayName: 'Subject Type', displayNameI18N: { 'de': 'Proband:innen-Typ' },
         props: { collection: 'subject' }

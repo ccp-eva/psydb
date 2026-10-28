@@ -6,7 +6,8 @@ var { aggregateToArray, aggregateCount }
 var { MatchConstraintsStage } = require('@mpieva/psydb-mongo-stages');
 
 var { SmartArray } = require('@mpieva/psydb-common-lib');
-var { ResponseBody, validateOrThrow } = require('@mpieva/psydb-api-lib');
+var { ResponseBody, validateOrThrow, fetchCRTLabelsManual }
+    = require('@mpieva/psydb-api-lib');
 
 var futils = require('@mpieva/psydb-custom-fields-mongo');
 var definitions = require('./definitions');
@@ -74,9 +75,15 @@ var listEndpoint = async (context, next) => {
     ]});
     debug('done aggregate');
 
+    var related = {
+        crts: await fetchCRTLabelsManual({
+            db, i18n, records, pointers: { 'subject': [ '/subjectType' ]}
+        }),
+    };
+
     context.body = ResponseBody({
         data: {
-            records, recordsCount,
+            records, recordsCount, related,
             displayFieldData: definitions.displayFields,
         },
     });
