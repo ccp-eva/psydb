@@ -77,8 +77,10 @@ const Inner = (ps) => {
 
 const Metadata = (ps) => {
     var { record, related, revision } = ps;
-    var { _rohrpostMetadata, experimentId, personnelId, subjectId, state }
-        = record;
+    var {
+        _rohrpostMetadata, experimentId, personnelId, subjectId,
+        consentObtainedBy, state
+    } = record;
 
     var { createdAt } = _rohrpostMetadata;
     var {
@@ -113,6 +115,15 @@ const Metadata = (ps) => {
             </Field>
             <Field label={ translate('Staff Member') }>
                 { related.personnel[personnelId] }
+            </Field>
+            <Field label={ translate('Person obtaining consent') }>
+                { consentObtainedBy ? (
+                    related.personnel[consentObtainedBy]
+                ) : (
+                    <span className='text-muted'>
+                        { translate('Not Specified') }
+                    </span>
+                ) }
             </Field>
             <Field label={ translate('Date/Time') }>
                 { fdatetime(createdAt) }

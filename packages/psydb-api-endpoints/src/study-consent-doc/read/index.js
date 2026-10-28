@@ -33,7 +33,11 @@ var readEndpoint = async (context, next) => {
 
     var related = await fetchRecordLabelsManual(db, {
         'subject': [ record.subjectId ],
-        'personnel': [ ...record.labOperatorIds, record.personnelId ],
+        'personnel': [
+            ...record.labOperatorIds, record.personnelId,
+            // NOTE: older docs dont have that field
+            ...(record.consentObtainedBy ? [ record.consentObtainedBy ] : []),
+        ],
         ...(record.experimentId && {
             'experiment': [ record.experimentId ],
         }),

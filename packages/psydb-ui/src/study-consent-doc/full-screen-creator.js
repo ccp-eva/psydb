@@ -10,12 +10,12 @@ const FullScreenCreator = (ps) => {
     var [ query ] = useURLSearchParamsB64();
     var {
         studyId, studyConsentFormId, subjectId, labOperatorIds,
-        experimentId = undefined,
+        consentObtainedBy, experimentId = undefined,
     } = query;
     
     if (!(
         studyId && studyConsentFormId && subjectId
-        && labOperatorIds?.length
+        && labOperatorIds?.length && consentObtainedBy
     )) {
         return (
             <Alert variant='danger'>
@@ -30,6 +30,7 @@ const FullScreenCreator = (ps) => {
                 studyConsentFormId={ studyConsentFormId }
                 subjectId={ subjectId }
                 labOperatorIds={ labOperatorIds }
+                consentObtainedBy={ consentObtainedBy }
                 experimentId={ experimentId }
 
                 onSuccessfulUpdate={ () => history.replace(

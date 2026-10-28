@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSelectionReducer } from '@mpieva/psydb-ui-hooks';
-import { Grid, Alert, SmallFormFooter, PaddedText }
-    from '@mpieva/psydb-ui-layout';
+import { Grid, Alert, SmallFormFooter } from '@mpieva/psydb-ui-layout';
 
 import { GenericEnum } from '@mpieva/psydb-ui-form-controls';
 
 import {
     LabOperatorCheckbox,
     LabOperatorDropdown,
+    PersonnelDropdown,
+    ConsentObtainedByRadio,
     GotoButton
 } from './utils';
 
@@ -35,6 +36,7 @@ const ConsentPrepareForm = (ps) => {
     );
 
     var selectedLabOperatorIds = useSelectionReducer();
+    var [ consentObtainedBy, setConsentObtainedBy ] = useState();
 
     var { _id: experimentId, state: { studyId }} = experimentRecord;
     var { _id: subjectId } = subjectRecord;
@@ -48,7 +50,8 @@ const ConsentPrepareForm = (ps) => {
     var gotoBag = {
         experimentId, subjectId, studyId,
         studyConsentFormId: selectedStudyConsentFormId,
-        labOperatorIds: selectedLabOperatorIds.value
+        labOperatorIds: selectedLabOperatorIds.value,
+        consentObtainedBy,
     }
 
     var [ didFetch, fetched ] = deferredConsentDocFetch;
@@ -58,7 +61,7 @@ const ConsentPrepareForm = (ps) => {
 
     return (
         <Grid cols={[ '1fr' ]} gap='1rem'>
-            <Grid cols={[ '200px', '1fr' ]} className='align-items-center'>
+            <Grid cols={[ '225px', '1fr' ]} className='align-items-center'>
                 <b>{ translate('Consent Form') }</b>
                 <GenericEnum
                     options={ studyConsentFormRecords.reduce((acc, it) => ({
@@ -68,8 +71,10 @@ const ConsentPrepareForm = (ps) => {
                     onChange={ setSelectedStudyConsentFormId }
                 />
             </Grid>
-            <Grid cols={[ '200px', '1fr' ]} className='align-items-center'>
-                <PaddedText><b>{ translate('Experimenters') }</b></PaddedText>
+            <Grid cols={[ '225px', '1fr' ]} className='align-items-center'>
+                <b className='align-self-start'>
+                    { translate('Experimenters') }
+                </b>
                 <div>
                     { labOperatorIds.map((it, ix) => (
                         <LabOperatorCheckbox
@@ -89,12 +94,42 @@ const ConsentPrepareForm = (ps) => {
                     />
                 </div>
             </Grid>
+            <Grid cols={[ '225px', '1fr' ]} className='align-items-center'>
+                <b className='align-self-start'>
+                    { translate('Person obtaining consent') }
+                </b>
+                <div>
+                    { labOperatorIds.map((it, ix) => (
+                        <ConsentObtainedByRadio
+                            key={ ix } _id={ it } related={ related }
+                            value={ consentObtainedBy }
+                            onChange={ setConsentObtainedBy }
+                        />
+                    )) }
+                </div>
+                <div />
+                <div>
+                    <i className='text-muted'>
+                        { translate('other Staff Member') }:
+                    </i>
+                    <PersonnelDropdown
+                        value={
+                            labOperatorIds.includes(consentObtainedBy)
+                            ? undefined
+                            : consentObtainedBy
+                        }
+                        onChange={ setConsentObtainedBy }
+                        excludedIds={ labOperatorIds }
+                    />
+                </div>
+            </Grid>
             { !(
                 selectedStudyConsentFormId
                 && selectedLabOperatorIds.value.length > 0
+                && consentObtainedBy
             ) && (
                 <Alert variant='info'>
-                    <i>{ translate('Please select consent form and lab operators.') }</i>
+                    <i>{ translate('Please select consent form, lab operators and person obtaining consent.') }</i>
                 </Alert>
             ) }
             <SmallFormFooter>

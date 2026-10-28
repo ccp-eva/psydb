@@ -8,6 +8,7 @@ var compose_verifyAllowedAndPlausible = () => compose([
     //verifyPermissions,
     verifyStudyConsentFormRecord,
     verifySubjectRecord,
+    verifyConsentObtainedByRecord,
     verifyElementValues,
 ]);
 
@@ -32,6 +33,11 @@ var verifySubjectRecord = verifyOneRecord({
     collection: 'subject',
     by: '/payload/subjectId',
     cache: true
+});
+
+var verifyConsentObtainedByRecord = verifyOneRecord({
+    collection: 'personnel',
+    by: '/payload/consentObtainedBy',
 });
 
 // TODO: verify labOperatorIds

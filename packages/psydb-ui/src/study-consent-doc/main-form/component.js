@@ -8,7 +8,7 @@ import ConsentDocElement from './consent-doc-element';
 
 export const Component = (ps) => {
     var {
-        studyConsentForm, subjectCRT, labOperatorIds,
+        studyConsentForm, subjectCRT, labOperatorIds, consentObtainedBy,
         initialValues, onSubmit, isTransmitting,
     } = ps;
 
@@ -27,6 +27,7 @@ export const Component = (ps) => {
                     <InfoBox
                         studyId={ studyId }
                         labOperatorIds={ labOperatorIds }
+                        consentObtainedBy={ consentObtainedBy }
                     />
 
                     <h1>{ titleI18N?.[language] || title }</h1>
@@ -66,13 +67,16 @@ const FormFields = (ps) => {
 }
 
 var InfoBox = (ps) => {
-    var { style, className, studyId, labOperatorIds = [] } = ps;
+    var {
+        style, className, studyId, labOperatorIds = [], consentObtainedBy
+    } = ps;
     var [{ translate }] = useI18N();
 
+    var personnelIds = [ ...labOperatorIds, consentObtainedBy ];
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
-        personnel: agent.personnel.readManyLabels({ ids: labOperatorIds }),
+        personnel: agent.personnel.readManyLabels({ ids: personnelIds }),
         study: agent.study.readManyLabels({ ids: [ studyId ] }),
-    }), [ studyId, labOperatorIds.join(',') ])
+    }), [ studyId, personnelIds.join(',') ])
 
     if (!didFetch) {
         return null;
@@ -88,9 +92,13 @@ var InfoBox = (ps) => {
             </div>
             <div>
                 <header><b>{ translate('Study Investigator') }</b></header>
-                { Object.values(personnel.labels).map((it, ix) => (
-                    <div>{ it }</div>
+                { labOperatorIds.map((it, ix) => (
+                    <div key={ ix }>{ personnel.labels[it] }</div>
                 )) }
+            </div>
+            <div>
+                <header><b>{ translate('Person obtaining consent') }</b></header>
+                { personnel.labels[consentObtainedBy] }
             </div>
         </div>
     )
