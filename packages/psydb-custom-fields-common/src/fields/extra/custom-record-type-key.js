@@ -36,5 +36,6 @@ module.exports = {
     canSearch: false, // FIXME: rename: canQuickSearch
     
     createQuickSearchSchema,
+    createSearchConstraintsSchema,
     stringifyValue,
 }

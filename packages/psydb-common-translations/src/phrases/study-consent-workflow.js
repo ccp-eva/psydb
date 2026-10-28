@@ -166,6 +166,10 @@ module.exports = [
         de: 'Studiendurchführende:r'
     },
     {
+        en: 'Study Investigators',
+        de: 'Studiendurchführende'
+    },
+    {
         en: 'Person obtaining consent',
         de: 'Einwilligungseinholende:r'
     },
@@ -175,7 +179,7 @@ module.exports = [
     },
     {
         en: 'Please select consent form, lab operators and person obtaining consent.',
-        de: 'Bitte Einwilligungs-Formular, Experimenter und Einwilligungseinholende:n wählen.'
+        de: 'Bitte Einwilligungs-Formular, Studiendurchführende und Einwilligungseinholende:n wählen.'
     },
     {
         en: 'Display Name (EN)',

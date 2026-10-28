@@ -1,6 +1,6 @@
 import React from 'react';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-import { Markdown } from '@mpieva/psydb-ui-layout';
+import { Markdown, Alert } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib';
 
 const ConsentDocElement = (ps) => {

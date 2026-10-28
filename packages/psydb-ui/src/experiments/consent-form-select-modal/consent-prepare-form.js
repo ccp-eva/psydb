@@ -73,7 +73,7 @@ const ConsentPrepareForm = (ps) => {
             </Grid>
             <Grid cols={[ '225px', '1fr' ]} className='align-items-center'>
                 <b className='align-self-start'>
-                    { translate('Experimenters') }
+                    { translate('Study Investigators') }
                 </b>
                 <div>
                     { labOperatorIds.map((it, ix) => (

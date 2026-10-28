@@ -1,4 +1,5 @@
 import React from 'react';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -22,6 +23,7 @@ import FlagAndCommentForm from './flag-and-comment-form';
 const ConsentPostprocessModalBody = (ps) => {
     var { onHide, modalPayloadData, onSuccessfulUpdate } = ps;
     var { studyConsentDocId } = modalPayloadData;
+    var [{ translate }] = useI18N();
 
     var [ didFetch, fetched] = useFetch((agent) => {
         return agent.studyConsentDoc.read({
@@ -35,7 +37,8 @@ const ConsentPostprocessModalBody = (ps) => {
 
     var { record: studyConsentDoc, subjectCRT } = fetched.data;
     var {
-        subjectId, studyId, labOperatorIds, consentObtainedBy
+        _rohrpostMetadata, subjectId, studyId,
+        labOperatorIds, consentObtainedBy
     } = studyConsentDoc;
 
     return studyConsentDoc ? (
@@ -63,6 +66,7 @@ const ConsentPostprocessModalBody = (ps) => {
                                 studyId={ studyId }
                                 labOperatorIds={ labOperatorIds }
                                 consentObtainedBy={ consentObtainedBy }
+                                date={ _rohrpostMetadata.createdAt }
                             />
                             <ConsentDetails.Inner
                                 record={ studyConsentDoc }

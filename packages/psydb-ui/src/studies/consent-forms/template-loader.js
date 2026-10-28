@@ -13,10 +13,8 @@ const TemplateLoader = (ps) => {
     
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.studyConsentTemplate.list({
-            filters: {
-                '/subjectType': subjectType,
-                '/state/isEnabled': true,
-            },
+            constraints: { '/subjectType': subjectType },
+            filters: { '/state/isEnabled': true },
             'limit': 1000,
             'offset': 0
         })

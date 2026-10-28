@@ -68,9 +68,10 @@ const FormFields = (ps) => {
 
 export var InfoBox = (ps) => {
     var {
-        style, className, studyId, labOperatorIds = [], consentObtainedBy
+        style, className, studyId, labOperatorIds = [], consentObtainedBy,
+        date = new Date(), // NOTE: when filling the doc its now
     } = ps;
-    var [{ translate }] = useI18N();
+    var [{ translate, fdate }] = useI18N();
 
     // NOTE: older docs dont have consentObtainedBy
     var personnelIds = [
@@ -79,7 +80,7 @@ export var InfoBox = (ps) => {
     ];
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
         personnel: agent.personnel.readManyLabels({ ids: personnelIds }),
-        study: agent.study.readManyLabels({ ids: [ studyId ] }),
+        study: agent.readRecord({ collection: 'study', id: studyId }),
     }), [ studyId, personnelIds.join(',') ])
 
     if (!didFetch) {
@@ -91,18 +92,28 @@ export var InfoBox = (ps) => {
     return (
         <div className='d-flex justify-content-between mb-3'>
             <div>
-                <header><b>{ translate('Study') }</b></header>
-                { study.labels[studyId] }
+                <div className='mb-2'>
+                    <header><b>{ translate('Study') }</b></header>
+                    { study.record.state.name }
+                </div>
+                <div>
+                    <header><b>{ translate('Date') }</b></header>
+                    { fdate(date) }
+                </div>
             </div>
             <div>
-                <header><b>{ translate('Study Investigator') }</b></header>
-                { labOperatorIds.map((it, ix) => (
-                    <div key={ ix }>{ personnel.labels[it] }</div>
-                )) }
-            </div>
-            <div>
-                <header><b>{ translate('Person obtaining consent') }</b></header>
-                { personnel.labels[consentObtainedBy] }
+                <div className='mb-2'>
+                    <header><b>{ translate('Study Investigator') }</b></header>
+                    { labOperatorIds.map((it, ix) => (
+                        <div key={ ix }>{ personnel.labels[it] }</div>
+                    )) }
+                </div>
+                <div>
+                    <header>
+                        <b>{ translate('Person obtaining consent') }</b>
+                    </header>
+                    { personnel.labels[consentObtainedBy] }
+                </div>
             </div>
         </div>
     )
