@@ -12,7 +12,10 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import { RecordEditor as SubjectEditor } from '@mpieva/psydb-ui-record-views/subjects';
-import { RecordDetails as ConsentDetails } from '../../../../study-consent-doc';
+import {
+    RecordDetails as ConsentDetails,
+    MainForm as ConsentMainForm,
+} from '../../../../study-consent-doc';
 
 import FlagAndCommentForm from './flag-and-comment-form';
 
@@ -31,11 +34,13 @@ const ConsentPostprocessModalBody = (ps) => {
     }
 
     var { record: studyConsentDoc, subjectCRT } = fetched.data;
-    var { subjectId } = studyConsentDoc;
+    var {
+        subjectId, studyId, labOperatorIds, consentObtainedBy
+    } = studyConsentDoc;
 
     return studyConsentDoc ? (
         <Grid
-            cols={[ 'auto', '1fr' ]} gap='1rem'
+            cols={[ '1fr', '1fr' ]} gap='1rem'
             style={{ height: 'calc(100vh - 200px)' }}
         >
             <div
@@ -54,6 +59,11 @@ const ConsentPostprocessModalBody = (ps) => {
                             wrapperClassName=''
                             pageMargin='5mm'
                         >
+                            <ConsentMainForm.InfoBox
+                                studyId={ studyId }
+                                labOperatorIds={ labOperatorIds }
+                                consentObtainedBy={ consentObtainedBy }
+                            />
                             <ConsentDetails.Inner
                                 record={ studyConsentDoc }
                                 subjectCRT={ subjectCRT }

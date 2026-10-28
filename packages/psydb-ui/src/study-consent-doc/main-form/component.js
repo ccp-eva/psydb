@@ -66,13 +66,17 @@ const FormFields = (ps) => {
     )
 }
 
-var InfoBox = (ps) => {
+export var InfoBox = (ps) => {
     var {
         style, className, studyId, labOperatorIds = [], consentObtainedBy
     } = ps;
     var [{ translate }] = useI18N();
 
-    var personnelIds = [ ...labOperatorIds, consentObtainedBy ];
+    // NOTE: older docs dont have consentObtainedBy
+    var personnelIds = [
+        ...labOperatorIds,
+        ...(consentObtainedBy ? [ consentObtainedBy ] : [])
+    ];
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
         personnel: agent.personnel.readManyLabels({ ids: personnelIds }),
         study: agent.study.readManyLabels({ ids: [ studyId ] }),
