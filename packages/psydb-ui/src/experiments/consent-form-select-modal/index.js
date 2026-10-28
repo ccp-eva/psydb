@@ -107,7 +107,7 @@ const ConsentFormSelectModalBody = (ps) => {
 
 
 export const ConsentFormSelectModal = WithDefaultModal({
-    title: 'Consent Form',
+    title: 'Consent Doc',
     size: 'lg',
     bodyClassName: 'bg-white pt-3 pr-3 pl-3',
     Body: FetchWrapper,

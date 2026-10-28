@@ -259,4 +259,8 @@ module.exports = [
         en: 'Consent Doc Details',
         de: 'Einwilligungs-Details'
     },
+    {
+        en: 'Please close this tab and refresh the consent doc',
+        de: 'Bitte Tab schließen und Einwilligung aktualisieren'
+    },
 ]

@@ -3,7 +3,7 @@ import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Alert, Button, LoadingIndicator, SmallFormFooter, A4Wrapper }
     from '@mpieva/psydb-ui-layout';
 
-import { RecordDetails } from '../../study-consent-doc';
+import { RecordDetails, MainForm } from '../../study-consent-doc';
 
 const ExistingConsent = (ps) => {
     var { revision, deferredConsentDocFetch, onRefresh } = ps;
@@ -38,6 +38,12 @@ const ExistingConsent = (ps) => {
     else {
         return (
             <A4Wrapper className='bg-light border' wrapperClassName='py-0'>
+                <MainForm.InfoBox
+                    studyId={ record.studyId }
+                    labOperatorIds={ record.labOperatorIds }
+                    consentObtainedBy={ record.consentObtainedBy }
+                    date={ record._rohrpostMetadata.createdAt }
+                />
                 <RecordDetails.Inner
                     record={ record }
                     subjectCRT={ subjectCRT }
