@@ -11,6 +11,7 @@ var FullSchema = (bag) => {
         'labOperatorIds': ForeignIdList({
             collection: 'personnel', minItems: 1
         }),
+        'consentObtainedBy': ForeignId({ collection: 'personnel' }),
         'props': ClosedObject({
             'elementValues': ElementValues({ studyConsentForm, subjectCRT }),
         }),

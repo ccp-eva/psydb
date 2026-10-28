@@ -9,6 +9,7 @@ var CoreSchema = () => {
         'labOperatorIds': ForeignIdList({
             collection: 'personnel', minItems: 1
         }),
+        'consentObtainedBy': ForeignId({ collection: 'personnel' }),
         'props': { type: 'object' }, // XXX
     }
     var optional = {

@@ -1,6 +1,8 @@
 'use strict';
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const getBuildVersion = require('./get-build-version');
 
 module.exports = {
     context: __dirname,
@@ -40,6 +42,9 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.DefinePlugin({
+            __PSYDB_VERSION__: JSON.stringify(getBuildVersion()),
+        }),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './template.html'),
             title: 'psydb',

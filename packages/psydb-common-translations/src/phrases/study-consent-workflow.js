@@ -133,10 +133,6 @@ module.exports = [
         de: 'Pflichteingabe'
     },
     {
-        en: 'Please select consent form and lab operators.',
-        de: 'Bitte Einwilligungs-Formular und Experimenter wählen.'
-    },
-    {
         en: 'No consent found!',
         de: 'Keine Einwilligung gefunden!'
     },
@@ -168,6 +164,22 @@ module.exports = [
     {
         en: 'Study Investigator',
         de: 'Studiendurchführende:r'
+    },
+    {
+        en: 'Study Investigators',
+        de: 'Studiendurchführende'
+    },
+    {
+        en: 'Person obtaining consent',
+        de: 'Einwilligungseinholende:r'
+    },
+    {
+        en: 'Please select the person obtaining consent.',
+        de: 'Bitte eine Einwilligungseinholende:n wählen.'
+    },
+    {
+        en: 'Please select consent form, lab operators and person obtaining consent.',
+        de: 'Bitte Einwilligungs-Formular, Studiendurchführende und Einwilligungseinholende:n wählen.'
     },
     {
         en: 'Display Name (EN)',
@@ -246,5 +258,9 @@ module.exports = [
     {
         en: 'Consent Doc Details',
         de: 'Einwilligungs-Details'
+    },
+    {
+        en: 'Please close this tab and refresh the consent doc',
+        de: 'Bitte Tab schließen und Einwilligung aktualisieren'
     },
 ]

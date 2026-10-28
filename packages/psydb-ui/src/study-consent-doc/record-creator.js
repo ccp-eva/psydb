@@ -16,6 +16,7 @@ const FormSelectionWrapper = (ps) => {
         studyConsentFormId: props_studyConsentFormId,
         subjectId: props_subjectId,
         labOperatorIds: props_labOperatorIds,
+        consentObtainedBy: props_consentObtainedBy,
         experimentId = undefined,
         enableFullScreenLink = false,
         onSuccessfulUpdate
@@ -30,11 +31,13 @@ const FormSelectionWrapper = (ps) => {
     var [ labOperatorIds, setLabOperatorIds ] = useState([
         //
     ]);
+    var [ consentObtainedBy, setConsentObtainedBy ] = useState();
     var [{ translate, language }] = useI18N();
 
     studyConsentFormId = props_studyConsentFormId || studyConsentFormId;
     subjectId = props_subjectId || subjectId;
     labOperatorIds = props_labOperatorIds || labOperatorIds;
+    consentObtainedBy = props_consentObtainedBy || consentObtainedBy;
 
     return (
         <div>
@@ -80,11 +83,26 @@ const FormSelectionWrapper = (ps) => {
                         />
                     </>
                 )}
+                { (studyConsentFormId && !props_consentObtainedBy) && (
+                    <>
+                        <b>{ translate('Person obtaining consent') }</b>
+                        <PersonnelPicker
+                            value={
+                                consentObtainedBy
+                                ? { _id: consentObtainedBy }
+                                : undefined
+                            }
+                            onChange={ (record) => (
+                                setConsentObtainedBy(record?._id || record)
+                            )}
+                        />
+                    </>
+                )}
             </Grid>
 
             { (
                 studyConsentFormId && subjectId && labOperatorIds?.length > 0
-                && enableFullScreenLink
+                && consentObtainedBy && enableFullScreenLink
             ) && (
                 <div className='d-flex justify-content-end mt-3'>
                     <LinkQ64
@@ -93,7 +111,7 @@ const FormSelectionWrapper = (ps) => {
                         target='_blank'
                         payload={{
                             studyId, subjectId, labOperatorIds,
-                            studyConsentFormId,
+                            consentObtainedBy, studyConsentFormId,
                         }}
                     >
                         { translate('Go Fullscreen ->') }
@@ -102,7 +120,7 @@ const FormSelectionWrapper = (ps) => {
             )}
             { (
                 !props_studyConsentFormId || !props_subjectId
-                || !props_labOperatorIds
+                || !props_labOperatorIds || !props_consentObtainedBy
             ) && (
                 <hr />
             )}
@@ -118,6 +136,10 @@ const FormSelectionWrapper = (ps) => {
                 <Alert variant='info'><i>
                     { translate('Please select an experimenter.') }
                 </i></Alert>
+            ) : (!consentObtainedBy) ? (
+                <Alert variant='info'><i>
+                    { translate('Please select the person obtaining consent.') }
+                </i></Alert>
             ) : (
                 <div className='bg-white border'>
                     <A4Wrapper className='bg-light border'>
@@ -125,6 +147,7 @@ const FormSelectionWrapper = (ps) => {
                             studyConsentFormId={ studyConsentFormId }
                             subjectId={ subjectId }
                             labOperatorIds={ labOperatorIds }
+                            consentObtainedBy={ consentObtainedBy }
                             experimentId={ experimentId }
                             onSuccessfulUpdate={ onSuccessfulUpdate }
                         />
@@ -207,15 +230,15 @@ const PersonnelPicker = (ps) => {
 const FullRecordCreator = (ps) => {
     var {
         studyConsentFormId,
-        subjectId, labOperatorIds, experimentId = undefined,
-        onSuccessfulUpdate
+        subjectId, labOperatorIds, consentObtainedBy,
+        experimentId = undefined, onSuccessfulUpdate
     } = ps;
 
     var send = useSend((formData) => {
         var { elements, ...pass } = formData;
         return { type: 'study-consent-doc/create', payload: {
-            studyConsentFormId, subjectId, labOperatorIds, experimentId,
-            props: { ...formData }
+            studyConsentFormId, subjectId, labOperatorIds, consentObtainedBy,
+            experimentId, props: { ...formData }
         }}
     }, { onSuccessfulUpdate });
 
@@ -253,6 +276,7 @@ const FullRecordCreator = (ps) => {
             studyConsentForm={ studyConsentForm.record }
             subjectCRT={ subjectCRT }
             labOperatorIds={ labOperatorIds }
+            consentObtainedBy={ consentObtainedBy }
             initialValues={ initialValues }
             onSubmit={ send.exec }
             isTransmitting={ send.isTransmitting }

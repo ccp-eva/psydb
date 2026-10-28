@@ -12,6 +12,7 @@ NODE_VERSION="22.23.4"
 ALPINE_VERSION="3.23"
 
 VERSION=$(git describe --tags --abbrev=0)
+export PSYDB_VERSION=$VERSION # picked up by psydb-ui webpack build
 #VERSION=$(node -pe "require('$REPO_DIR/packages/psydb-web/package.json').version");
 DATE=$(date +%Y%m%d%H%M)
 COMMIT_ID=$(git rev-parse --short=6 HEAD)
@@ -108,7 +109,9 @@ remove_buildbase_image() {
 prebuild_ui() {
     rush update
     # rush build warnings will trigger exit w/o env var
-    RUSH_ALLOW_WARNINGS_IN_SUCCESSFUL_BUILD=1 rush build --only @mpieva/psydb-ui
+    # NOTE: rebuild instead of build so a new version tag on unchanged
+    # sources still ends up in the bundle
+    RUSH_ALLOW_WARNINGS_IN_SUCCESSFUL_BUILD=1 rush rebuild --only @mpieva/psydb-ui
 }
 
 # NOTE: Unlinking is not supported when using workspaces.

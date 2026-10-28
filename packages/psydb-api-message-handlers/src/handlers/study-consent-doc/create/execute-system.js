@@ -8,6 +8,7 @@ var executeSystemEvents = async (context) => {
         studyConsentFormId,
         subjectId,
         labOperatorIds,
+        consentObtainedBy,
         experimentId = undefined,
         props
     } = message.payload;
@@ -36,6 +37,7 @@ var executeSystemEvents = async (context) => {
             subjectType,
             personnelId,
             labOperatorIds,
+            consentObtainedBy,
             ...(experimentId && { experimentId }),
         },
 

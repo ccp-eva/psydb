@@ -5,15 +5,17 @@ var displayFields = [
     },
     {
         systemType: 'SaneString', pointer: '/state/title',
-        displayName: 'Title', displayNameI18N: { 'de': 'Titel' }
+        displayName: 'Title for Subjects',
+        displayNameI18N: { 'de': 'Titel für Proband:innen' }
     },
     {
-        systemType: 'SaneString', // FIXME: CRT
+        systemType: 'CustomRecordTypeKey',
         pointer: '/studyType',
         displayName: 'Study Type', displayNameI18N: { 'de': 'Studien-Typ' },
+        props: { collection: 'study' }
     },
     {
-        systemType: 'SaneString', // FIXME: CRT
+        systemType: 'CustomRecordTypeKey',
         pointer: '/subjectType',
         displayName: 'Subject Type', displayNameI18N: { 'de': 'Proband:innen-Typ' },
         props: { collection: 'subject' }

@@ -29,6 +29,7 @@ describe('study-consent-doc/create', function () {
             'studyConsentFormId': ids(/Tiny-Test/),
             'subjectId': ids(/Test Kind, Alice/),
             'labOperatorIds': [ ids(/ROOT/) ],
+            'consentObtainedBy': ids(/ROOT/),
             'props': {
                 'elementValues': {
                     '2': 'Test Parent, Elenor',
@@ -57,6 +58,7 @@ describe('study-consent-doc/create', function () {
             '/0/subjectId': ids(/Test Kind, Alice/),
             '/0/personnelId': ids(/ROOT/),
             '/0/labOperatorIds': [ ids(/ROOT/) ],
+            '/0/consentObtainedBy': ids(/ROOT/),
             '/0/subjectType': 'child',
             '/0/state': {
                 ...PROPS_AS_STATE(payload).state,
@@ -103,6 +105,7 @@ describe('study-consent-doc/create (ForeignId subject field)', function () {
         'studyConsentFormId': ids(/Tiny-Test/),
         'subjectId': ids(/Test Kind, Alice/),
         'labOperatorIds': [ ids(/ROOT/) ],
+        'consentObtainedBy': ids(/ROOT/),
         'props': {
             'elementValues': {
                 '2': 'Test Parent, Elenor',
@@ -135,6 +138,25 @@ describe('study-consent-doc/create (ForeignId subject field)', function () {
                 type: 'study-consent-doc/create',
                 timezone: 'Europe/Berlin',
                 payload: createPayload(''),
+            });
+        }
+        catch (e) {
+            if (!(e instanceof ApiError)) {
+                throw e;
+            }
+            apiError = e;
+        }
+        expect(apiError?.getInfo().apiStatus).to.eql('InvalidMessageSchema');
+    });
+
+    step('rejects missing consentObtainedBy', async function () {
+        var { consentObtainedBy, ...payload } = createPayload('Some Kiga');
+        var apiError = undefined;
+        try {
+            await send({
+                type: 'study-consent-doc/create',
+                timezone: 'Europe/Berlin',
+                payload,
             });
         }
         catch (e) {

@@ -8,7 +8,7 @@ import ConsentDocElement from './consent-doc-element';
 
 export const Component = (ps) => {
     var {
-        studyConsentForm, subjectCRT, labOperatorIds,
+        studyConsentForm, subjectCRT, labOperatorIds, consentObtainedBy,
         initialValues, onSubmit, isTransmitting,
     } = ps;
 
@@ -27,6 +27,7 @@ export const Component = (ps) => {
                     <InfoBox
                         studyId={ studyId }
                         labOperatorIds={ labOperatorIds }
+                        consentObtainedBy={ consentObtainedBy }
                     />
 
                     <h1>{ titleI18N?.[language] || title }</h1>
@@ -65,14 +66,22 @@ const FormFields = (ps) => {
     )
 }
 
-var InfoBox = (ps) => {
-    var { style, className, studyId, labOperatorIds = [] } = ps;
-    var [{ translate }] = useI18N();
+export var InfoBox = (ps) => {
+    var {
+        style, className, studyId, labOperatorIds = [], consentObtainedBy,
+        date = new Date(), // NOTE: when filling the doc its now
+    } = ps;
+    var [{ translate, fdate }] = useI18N();
 
+    // NOTE: older docs dont have consentObtainedBy
+    var personnelIds = [
+        ...labOperatorIds,
+        ...(consentObtainedBy ? [ consentObtainedBy ] : [])
+    ];
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
-        personnel: agent.personnel.readManyLabels({ ids: labOperatorIds }),
-        study: agent.study.readManyLabels({ ids: [ studyId ] }),
-    }), [ studyId, labOperatorIds.join(',') ])
+        personnel: agent.personnel.readManyLabels({ ids: personnelIds }),
+        study: agent.readRecord({ collection: 'study', id: studyId }),
+    }), [ studyId, personnelIds.join(',') ])
 
     if (!didFetch) {
         return null;
@@ -83,14 +92,28 @@ var InfoBox = (ps) => {
     return (
         <div className='d-flex justify-content-between mb-3'>
             <div>
-                <header><b>{ translate('Study') }</b></header>
-                { study.labels[studyId] }
+                <div className='mb-2'>
+                    <header><b>{ translate('Study') }</b></header>
+                    { study.record.state.name }
+                </div>
+                <div>
+                    <header><b>{ translate('Date') }</b></header>
+                    { fdate(date) }
+                </div>
             </div>
             <div>
-                <header><b>{ translate('Study Investigator') }</b></header>
-                { Object.values(personnel.labels).map((it, ix) => (
-                    <div>{ it }</div>
-                )) }
+                <div className='mb-2'>
+                    <header><b>{ translate('Study Investigator') }</b></header>
+                    { labOperatorIds.map((it, ix) => (
+                        <div key={ ix }>{ personnel.labels[it] }</div>
+                    )) }
+                </div>
+                <div>
+                    <header>
+                        <b>{ translate('Person obtaining consent') }</b>
+                    </header>
+                    { personnel.labels[consentObtainedBy] }
+                </div>
             </div>
         </div>
     )

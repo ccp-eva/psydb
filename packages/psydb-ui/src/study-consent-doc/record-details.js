@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import { CRTSettings } from '@mpieva/psydb-common-lib';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend, useRevision } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator, Markdown, A4Wrapper }
+import { LoadingIndicator, Markdown, A4Wrapper, Alert }
     from '@mpieva/psydb-ui-layout';
 
 import { ThemeProvider, useThemeContext } from '@mpieva/psydb-ui-lib/src/data-viewers/core/theme-context'; // XXX
@@ -52,6 +52,7 @@ const RecordDetails = (ps) => {
 
 const Inner = (ps) => {
     var { record, subjectCRT } = ps;
+    var [{ language }] = useI18N();
     subjectCRT = CRTSettings({ data: subjectCRT });
 
     var { elementValues, studyConsentFormSnapshot } = record.state;
@@ -77,8 +78,10 @@ const Inner = (ps) => {
 
 const Metadata = (ps) => {
     var { record, related, revision } = ps;
-    var { _rohrpostMetadata, experimentId, personnelId, subjectId, state }
-        = record;
+    var {
+        _rohrpostMetadata, experimentId, personnelId, subjectId,
+        consentObtainedBy, state
+    } = record;
 
     var { createdAt } = _rohrpostMetadata;
     var {
@@ -113,6 +116,15 @@ const Metadata = (ps) => {
             </Field>
             <Field label={ translate('Staff Member') }>
                 { related.personnel[personnelId] }
+            </Field>
+            <Field label={ translate('Person obtaining consent') }>
+                { consentObtainedBy ? (
+                    related.personnel[consentObtainedBy]
+                ) : (
+                    <span className='text-muted'>
+                        { translate('Not Specified') }
+                    </span>
+                ) }
             </Field>
             <Field label={ translate('Date/Time') }>
                 { fdatetime(createdAt) }
