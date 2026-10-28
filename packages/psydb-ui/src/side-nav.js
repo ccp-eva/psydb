@@ -5,6 +5,13 @@ import { Nav, LinkContainer } from '@mpieva/psydb-ui-layout';
 
 import Logo from './main-logo';
 
+// NOTE: injected by webpack DefinePlugin
+const buildVersion = (
+    typeof __PSYDB_VERSION__ !== 'undefined'
+    ? __PSYDB_VERSION__
+    : 'unknown'
+);
+
 const Link = (ps) => {
     var { to, ...pass } = ps;
 
@@ -34,6 +41,9 @@ const SideNav = (ps) => {
             >
                 <div className='navbar-nav'>
                     { items }
+                </div>
+                <div className='border-top mt-2 pt-2 text-muted small'>
+                    v{ buildVersion }
                 </div>
             </Nav>
         </>
