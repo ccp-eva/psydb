@@ -6,7 +6,7 @@ import { MainForm } from './main-form';
 
 
 const Defaults = () => {
-    var LabOperation = ({ type } = {}) => ({
+    var LabOperation = ({ type, hasConsent = false } = {}) => ({
         canWriteReservations: false,
         canSelectSubjectsForExperiments: false,
         ...(type === 'invite' && {
@@ -16,6 +16,9 @@ const Defaults = () => {
         canMoveAndCancelExperiments: false,
         canChangeOpsTeam: false,
         canPostprocessExperiments: false,
+        ...(hasConsent && {
+            canObtainConsent: false,
+        }),
         ...(type === 'away-team' && {
             canChangeExperimentStudy: false,
             canRemoveExperimentSubject: false,
@@ -79,7 +82,7 @@ const Defaults = () => {
 
         canViewReceptionCalendar:  false,
         labOperation: {
-            'inhouse': LabOperation({ type: 'invite' }),
+            'inhouse': LabOperation({ type: 'invite', hasConsent: true }),
             'away-team': LabOperation({ type: 'away-team' }),
             'online-video-call': LabOperation({ type: 'invite' }),
             'online-survey': Survey(),

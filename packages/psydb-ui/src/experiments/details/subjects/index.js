@@ -144,17 +144,22 @@ const ActionsComponent = (ps) => {
     var canRemoveSubject = permissions.hasLabOperationFlag(
         experimentType, 'canRemoveExperimentSubject'
     );
+    var canObtainConsent = permissions.hasLabOperationFlag(
+        experimentType, 'canObtainConsent'
+    );
     
     return (
         <div className='d-flex justify-content-end media-print-hidden'>
-            { studyConsentDoc ? (
-                <StudyConsentDocIconButton_DONE onClick={
-                    () => onClickConsent({ subjectRecord })
-                } />
-            ) : (
-                <StudyConsentDocIconButton_TODO onClick={
-                    () => onClickConsent({ subjectRecord })
-                } />
+            { canObtainConsent && (
+                studyConsentDoc ? (
+                    <StudyConsentDocIconButton_DONE onClick={
+                        () => onClickConsent({ subjectRecord })
+                    } />
+                ) : (
+                    <StudyConsentDocIconButton_TODO onClick={
+                        () => onClickConsent({ subjectRecord })
+                    } />
+                )
             )}
 
             { permissions.hasFlag('canReadSubjects') && (

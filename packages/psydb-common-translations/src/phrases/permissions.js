@@ -48,6 +48,10 @@ module.exports = [
         en: 'Can Postprocess Appointments',
         de: 'Kann Termine Nachbereiten',
     },
+    {
+        en: 'Can Obtain Consent',
+        de: 'Kann Einwilligungen Einholen',
+    },
 
     {
         en: 'Can Schedule Experimenter Teams',

@@ -233,6 +233,9 @@ const labels = {
     ),
 
     ...inviteLabOpsLabels('inhouse'),
+    [labOpsPath('inhouse', 'canObtainConsent')]: (
+        'Can Obtain Consent'
+    ),
     ...inviteLabOpsLabels('online-video-call'),
     ...awayTeamLabOpsLabels('away-team'),
     ...surveyLabOpsLabels('online-survey'),

@@ -2,7 +2,8 @@ import React from 'react';
 import { merge } from '@mpieva/psydb-core-utils';
 import enums from '@mpieva/psydb-schema-enums';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-import { useModalReducer, useSend } from '@mpieva/psydb-ui-hooks';
+import { useModalReducer, useSend, usePermissions }
+    from '@mpieva/psydb-ui-hooks';
 import { ColoredBox } from '@mpieva/psydb-ui-layout';
 
 import ExperimentDropdown from '../../experiment-dropdown';
@@ -47,6 +48,14 @@ const ExperimentSummaryMedium = (ps) => {
     } = ps;
 
     var [{ translate }] = useI18N();
+    var permissions = usePermissions();
+
+    var canObtainConsent = (
+        !!ConsentFormSelectModal
+        && permissions.hasLabOperationFlag(
+            experimentRecord.type, 'canObtainConsent'
+        )
+    );
 
     var moveExperimentModal = useModalReducer({ show: false });
     var changeTeamModal = useModalReducer({ show: false });
@@ -152,7 +161,7 @@ const ExperimentSummaryMedium = (ps) => {
                 onSuccessfulUpdate,
             }) } />
 
-            { ConsentFormSelectModal && (
+            { canObtainConsent && (
                 <ConsentFormSelectModal
                     experimentRecord={ experimentRecord }
                     labTeamRecord={ teamRecord }
@@ -265,7 +274,7 @@ const ExperimentSummaryMedium = (ps) => {
                             subjectRelated,
                             subjectDisplayFieldData,
     
-                            ...(ConsentFormSelectModal && {
+                            ...(canObtainConsent && {
                                 onClickConsent: (
                                     consentFormSelectModal.handleShow
                                 ),

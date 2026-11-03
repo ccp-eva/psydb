@@ -9,6 +9,7 @@ var LabOperationPermissions = (options) => {
         hasInvitation = false,
         enableCanChangeExperimentStudy = false,
         enableCanRemoveExperimentSubject = false,
+        enableCanObtainConsent = false,
         reservationType = 'location-with-team',
     } = options;
 
@@ -57,6 +58,11 @@ var LabOperationPermissions = (options) => {
                     title: 'kann Proband:innen aus existierenden Terminen entfernen',
                 }),
             }),
+            ...(enableCanObtainConsent && {
+                canObtainConsent: WideBool({
+                    title: 'kann Einwilligungen einholen',
+                }),
+            }),
         },
         required: [
             'canWriteReservations',
@@ -97,7 +103,8 @@ module.exports = {
         properties: {
             'inhouse': LabOperationPermissions({
                 title: 'Interne Termine',
-                hasInvitation: true
+                hasInvitation: true,
+                enableCanObtainConsent: true,
             }),
             'away-team': LabOperationPermissions({
                 title: 'Externe Termine',

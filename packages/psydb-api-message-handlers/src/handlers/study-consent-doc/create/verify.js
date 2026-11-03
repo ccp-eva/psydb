@@ -5,23 +5,22 @@ var { verifyOneRecord, verifyOneCRT }
     = require('@mpieva/psydb-api-message-handler-lib');
 
 var compose_verifyAllowedAndPlausible = () => compose([
-    //verifyPermissions,
+    verifyPermissions,
     verifyStudyConsentFormRecord,
     verifySubjectRecord,
     verifyConsentObtainedByRecord,
     verifyElementValues,
 ]);
 
-// XXX
-//var verifyPermissions = async (context, next) => {
-//    var { db, permissions, message } = context;
-//    
-//    if (!permissions.isRoot()) {
-//        throw new ApiError(403)
-//    }
-//    
-//    await next();
-//}
+var verifyPermissions = async (context, next) => {
+    var { permissions } = context;
+    
+    if (!permissions.hasLabOperationFlag('inhouse', 'canObtainConsent')) {
+        throw new ApiError(403)
+    }
+    
+    await next();
+}
 
 var verifyStudyConsentFormRecord = verifyOneRecord({
     collection: 'studyConsentForm',

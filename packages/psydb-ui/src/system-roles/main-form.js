@@ -358,6 +358,12 @@ const LabOperationFields = (ps) => {
                 label='Can Postprocess Appointments'
                 dataXPath={ `${dataXPath}.canPostprocessExperiments` }
             />
+            { type === 'inhouse' && (
+                <Bool
+                    label='Can Obtain Consent'
+                    dataXPath={ `${dataXPath}.canObtainConsent` }
+                />
+            )}
             { type === 'away-team' && (
                 <Bool
                     label='Can Change Study of Existing Appointments'
