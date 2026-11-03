@@ -35,9 +35,6 @@ const ConsentPrepareForm = (ps) => {
         : undefined
     );
 
-    var selectedLabOperatorIds = useSelectionReducer();
-    var [ consentObtainedBy, setConsentObtainedBy ] = useState();
-
     var { _id: experimentId, state: { studyId }} = experimentRecord;
     var { _id: subjectId } = subjectRecord;
 
@@ -46,6 +43,11 @@ const ConsentPrepareForm = (ps) => {
         || experimentRecord?.state.experimentOperatorIds
         || []
     );
+
+    var selectedLabOperatorIds = useSelectionReducer({
+        defaultSelection: labOperatorIds
+    });
+    var [ consentObtainedBy, setConsentObtainedBy ] = useState();
 
     var gotoBag = {
         experimentId, subjectId, studyId,
