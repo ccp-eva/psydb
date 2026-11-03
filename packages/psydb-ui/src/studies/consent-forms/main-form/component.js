@@ -41,7 +41,7 @@ const FormFields = (ps) => {
     return (
         <>
             <Fields.SaneString
-                label={ translate('Shorthand') }
+                label={ translate('Form-Shorthand') }
                 dataXPath='$.internalName'
                 required
             />

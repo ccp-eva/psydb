@@ -2,7 +2,7 @@ var displayFields = [
     {
         systemType: 'SaneString',
         pointer: '/state/studyConsentFormSnapshot/state/internalName',
-        displayName: 'Consent Form Name', displayNameI18N: { 'de': 'Consent-Formular Name' }
+        displayName: 'Form Shorthand', displayNameI18N: { 'de': 'Formular-Kürzel' }
     },
     {
         systemType: 'SaneString',

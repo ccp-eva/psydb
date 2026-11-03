@@ -25,8 +25,8 @@ module.exports = (bag) => {
             key: 'internalName',
             systemType: 'SaneString',
             pointer: '/state/internalName',
-            displayName: 'Shorthand',
-            displayNameI18N: { de: 'Kürzel' },
+            displayName: 'Form Shorthand',
+            displayNameI18N: { de: 'Formular-Kürzel' },
         },
         {
             key: 'title',

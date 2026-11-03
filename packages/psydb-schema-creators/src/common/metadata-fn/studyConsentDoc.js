@@ -31,8 +31,8 @@ module.exports = (bag) => {
             key: '_studyConsentForm_internalName',
             systemType: 'SaneString',
             pointer: '/state/studyConsentFormSnapshot/state/internalName',
-            displayName: 'Shorthand',
-            displayNameI18N: { de: 'Kürzel' },
+            displayName: 'Form Shorthand',
+            displayNameI18N: { de: 'Formular-Kürzel' },
         },
         {
             key: '_studyConsentForm_title',

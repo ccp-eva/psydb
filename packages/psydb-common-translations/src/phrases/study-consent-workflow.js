@@ -241,6 +241,10 @@ module.exports = [
         en: 'Template-Shorthand',
         de: 'Template-Kürzel'
     },
+    {
+        en: 'Form-Shorthand',
+        de: 'Formular-Kürzel'
+    },
 
     {
         en: 'Available Templates',
