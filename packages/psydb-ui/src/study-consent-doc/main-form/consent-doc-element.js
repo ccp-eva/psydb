@@ -75,11 +75,17 @@ const ExtraField = (ps) => {
     var [{ language }] = useI18N();
     
     var Component = Fields[systemType];
+    var isBool = [ 'DefaultBool', 'ExtBool' ].includes(systemType);
     return (
         <Component
             dataXPath={ `$.elementValues.${index}` }
             label={ displayNameI18N?.[language] || displayName }
             required={ isRequired }
+            { ...(isBool && {
+                // NOTE: labels tend to be long questions/statements
+                uiSplit: [ 9, 3 ],
+                valueClassName: 'align-self-end text-right',
+            })}
         />
     )
 }
