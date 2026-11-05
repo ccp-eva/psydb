@@ -14,6 +14,7 @@ var fetchExperimentRecords = async (bag) => {
         studyIds,
         locationId,
         experimentOperatorTeamIds,
+        subjectRecordType,
     } = bag;
 
     var now = new Date();
@@ -32,6 +33,15 @@ var fetchExperimentRecords = async (bag) => {
                     'state.experimentOperatorTeamId': { $in: (
                         experimentOperatorTeamIds
                 )}
+                }),
+                // NOTE: experiments without subjects are placeholders
+                // which we keep since their study has a setting
+                // for the subject type
+                ...(subjectRecordType && {
+                    $or: [
+                        { 'state.subjectData.subjectType': subjectRecordType },
+                        { 'state.subjectData': { $size: 0 }},
+                    ]
                 }),
                 ...(!showPast && {
                     'state.interval.start': { $gte: (

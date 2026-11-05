@@ -34,13 +34,16 @@ const SubjectItem = (ps) => {
 
     var { subjectId, invitationStatus, comment } = subjectDataItem;
     var subjectRecord = subjectRecordsById[subjectId];
+    if (!subjectRecord) {
+        return null;
+    }
 
     // FIXME
     subjectRelated = __fixRelated(subjectRelated, { isResponse: false });
     subjectDisplayFieldData = __fixDefinitions(
         Array.isArray(subjectDisplayFieldData)
         ? subjectDisplayFieldData
-        : subjectDisplayFieldData[subjectRecord.type]
+        : (subjectDisplayFieldData?.[subjectRecord.type] || [])
     );
 
     return (
