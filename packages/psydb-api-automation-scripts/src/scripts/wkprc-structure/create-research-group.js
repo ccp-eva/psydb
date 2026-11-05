@@ -31,7 +31,7 @@ module.exports = async (context) => {
                 { key: 'wkprc_orangutan' },
             ],
             locationTypes: [
-                { key: 'wkprc_apeLocation' },
+                { key: 'wkprc_ape_location' },
             ],
             helperSetIds: [
                 cache.get('/helperSet/wkprc_chimpanzeeSubSpecies'),

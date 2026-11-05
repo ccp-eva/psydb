@@ -53,6 +53,9 @@ module.exports = {
     germanPhoneNumber: {
         validate: regexes.germanPhoneNumber,
     },
+    germanPhoneNumberOptional: {
+        validate: regexes.germanPhoneNumberOptional,
+    },
     hexColor: {
         validate: regexes.hexColor,
     },
@@ -64,6 +67,9 @@ module.exports = {
     },
     dateOnlyServerSide: {
         validate: regexes.dateOnlyServerSide,
+    },
+    dateYMDOrDMY: {
+        validate: require('./date-ymd-or-dmy').validate,
     }
     /*dateTime: {
         validate: dateTime,

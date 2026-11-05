@@ -12,6 +12,7 @@ const SubjectsContainer = withLabProcedureSettingsIterator({
 
             experimentData,
             subjectDataByType,
+            studyConsentDocsBySubject,
             
             ActionsComponent,
         } = ps;
@@ -29,6 +30,7 @@ const SubjectsContainer = withLabProcedureSettingsIterator({
 
                 experimentData,
                 fullSubjectData,
+                studyConsentDocsBySubject,
 
                 ActionsComponent
             })} />

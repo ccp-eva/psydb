@@ -3,4 +3,5 @@ module.exports = {
     subject: require('./subject'),
     study: require('./study'),
     location: require('./location'),
+    experiment: require('./experiment'),
 }

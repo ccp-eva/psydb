@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { Alert } from '@mpieva/psydb-ui-layout';
 import { UploadModalBody } from '@mpieva/psydb-ui-lib';
@@ -12,6 +13,8 @@ const CSVUploadField = withField({
             value: fileId,
             onChange,
         } = saneFormikField;
+
+        var translate = useUITranslation();
 
         var [ cachedFileRecord, setCachedFileRecord ] = useState();
         // FIXME: this is so ugly bro
@@ -38,7 +41,7 @@ const CSVUploadField = withField({
                 </div>
                 { file && (
                     <Alert variant='info' className='mb-1'>
-                        <b>Uploaded: { file.originalFilename }</b>
+                        <b>{ translate('Uploaded') }: { file.originalFilename }</b>
                     </Alert>
                 )}
                 <div className='border bg-white'>

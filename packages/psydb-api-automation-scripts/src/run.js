@@ -12,6 +12,7 @@ var faker = require('@mpieva/psydb-faker');
 
 var cli = require('./cli-setup');
 var execute = require('./execute-with-driver');
+var { initDB, FixedIdGen } = require('./utils');
 
 var cwd = process.cwd();
 
@@ -74,10 +75,17 @@ co(async () => {
         }
     }
 
+    // NOTE: shared over all scripts so that the counters continue
+    var idgen = FixedIdGen();
     for (var it of scripts) {
         await execute({
-            url, apiKey, extraOptions,
+            url, apiKey, extraOptions, idgen,
             script: it
         });
     }
-}).catch(error => { console.log(error) });
+}).catch(error => {
+    console.log(error);
+    process.exitCode = 1;
+}).finally(() => (
+    initDB.closeAll()
+));

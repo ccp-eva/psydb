@@ -1,31 +1,30 @@
 import React from 'react';
 
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
-import {
-    Pair,
-    Button,
-    Icons,
-    LoadingIndicator,
-    Alert,
-} from '@mpieva/psydb-ui-layout';
+import { Pair, AsyncButton, Icons, LoadingIndicator, Alert, FormBox }
+    from '@mpieva/psydb-ui-layout';
 
 import {
     withRecordRemover,
-    FormBox,
-    ReverseRefList
+    ReverseRefList,
+    DefaultRecordRemoverSuccessInfo,
 } from '@mpieva/psydb-ui-lib';
+
+const Pair39 = (ps) => (
+    <Pair wLeft={ 3 } wRight={ 9 } className='px-3' { ...ps } />
+)
 
 const SafetyForm = (ps) => {
     var {
-        collection,
-        recordType,
-        id,
-        fetched,
+        collection, recordType, id, fetched,
         onSuccessfulUpdate
     } = ps;
 
     var { record } = fetched;
     var { sequenceNumber, _recordLabel } = record;
+
+    var [{ translate }] = useI18N();
 
     var send = useSendRemove({
         collection,
@@ -35,10 +34,7 @@ const SafetyForm = (ps) => {
     });
 
     var [ didFetchRefs, fetchedReverseRefs ] = useFetch((agent) => (
-        agent.fetchRecordReverseRefs({
-            collection,
-            id
-        })
+        agent.fetchRecordReverseRefs({ collection, id })
     ), [ collection, id ]);
 
     if (!didFetchRefs) {
@@ -47,57 +43,48 @@ const SafetyForm = (ps) => {
     var { reverseRefs } = fetchedReverseRefs.data;
 
     return (
-        <FormBox title='Externe Organisation löschen' titleClassName='text-danger'>
-            <Pair 
-                label='Externe Organisation'
-                wLeft={ 3 } wRight={ 9 } className='px-3'
-            >
+        <FormBox
+            title={ translate('Delete External Organization') }
+            titleClassName='text-danger'
+        >
+            <Pair label={ translate('External Organization') }>
                 { _recordLabel }
             </Pair>
-            <Pair 
-                label='ID Nr.'
-                wLeft={ 3 } wRight={ 9 } className='px-3'
-            >
+            <Pair label={ translate('ID No.') }>
                 { sequenceNumber }
             </Pair>
             <hr />
             { reverseRefs.length > 0 && (
                 <>
                     <Alert variant='danger'><b>
-                        Externe Organisation wird von anderen Datensätzen referenziert
+                        { translate('External Organization is referenced by other records!') }
                     </b></Alert>
 
                     <ReverseRefList reverseRefs={ reverseRefs } />
                     <hr />
                 </>
             )}
-            <Button
+            <AsyncButton
                 variant='danger'
-                onClick={ send.exec }
                 disabled={ reverseRefs.length > 0 }
+                { ...send.passthrough }
             >
-                Löschen
-            </Button>
+                { translate('Delete') }
+            </AsyncButton>
         </FormBox>
     )
 }
 
 const SuccessInfo = (ps) => {
-    var { successInfoBackLink } = ps;
+    var [{ translate }] = useI18N();
     return (
-        <FormBox titleClassName='text-success' title='Externe Organisation gelöscht'>
-            <i>Externe Organisation wurde erfolgreich gelöscht</i>
-            { successInfoBackLink && (
-                <>
-                    <hr />
-                    <a href={ successInfoBackLink }>
-                        <Icons.ArrowLeftShort />
-                        {' '}
-                        <b>zurück zur Liste</b>
-                    </a>
-                </>
+        <DefaultRecordRemoverSuccessInfo
+            title={ translate('External Organization Deleted') }
+            blurp={ translate(
+                'External Organization was deleted successfully!'
             )}
-        </FormBox>
+            { ...ps }
+        />
     )
 }
 

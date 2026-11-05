@@ -20,6 +20,9 @@ var PermissionsDataHolder = (bag) => {
         availableSubjectTypes,
         availableLocationTypes,
         availableStudyTypes,
+        availableExternalOrganizationTypes,
+        availableExternalPersonTypes,
+
         availableLabMethods,
         availableHelperSetIds,
         availableSystemRoleIds,
@@ -45,6 +48,8 @@ var PermissionsDataHolder = (bag) => {
             subjectTypes: availableSubjectTypes = [],
             locationTypes: availableLocationTypes = [],
             studyTypes: availableStudyTypes = [],
+            externalOrganizationTypes: availableExternalOrganizationTypes = [],
+            externalPersonTypes: availableExternalPersonTypes = [],
             labMethods: availableLabMethods = [],
             helperSetIds: availableHelperSetIds = [],
         } = (
@@ -91,6 +96,9 @@ var PermissionsDataHolder = (bag) => {
         availableSubjectTypes,
         availableLocationTypes,
         availableStudyTypes,
+        availableExternalOrganizationTypes,
+        availableExternalPersonTypes,
+        
         availableLabMethods,
         availableHelperSetIds,
         availableSystemRoleIds,

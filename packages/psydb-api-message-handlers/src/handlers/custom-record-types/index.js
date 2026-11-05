@@ -16,6 +16,8 @@ var CustomTypeGroup = MessageHandlerGroup([
     require('./set-duplicate-check-settings'),
     require('./commit-settings'),
     require('./remove'),
+
+    require('./import-settings-ops/set-extra-id-fields'),
 ]);
 
 module.exports = CustomTypeGroup;

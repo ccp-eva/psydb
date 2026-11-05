@@ -99,6 +99,7 @@ const FormContainer = (ps) => {
 }
 
 const InhouseConfirmModalBody = (ps) => {
+    var translate = useUITranslation();
     var {
         onHide,
 
@@ -163,7 +164,7 @@ const InhouseConfirmModalBody = (ps) => {
         <>
             { !isSubjectTestable && (
                 <Alert variant='danger'>
-                    <b>Nicht in Altersfenster</b>
+                    <b>{ translate('Not in Age Frame') }</b>
                 </Alert>
             )} 
             <DefaultForm

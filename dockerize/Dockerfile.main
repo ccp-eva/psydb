@@ -1,0 +1,25 @@
+# vim: syn=dockerfile
+ARG BUILDBASE_VERSION
+ARG NODE_VERSION
+ARG ALPINE_VERSION
+
+FROM cdxoo/psydb-buildbase:${BUILDBASE_VERSION} as psydb_buildbase
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION}
+
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY --from=psydb_buildbase /usr/src/app/deploy/common common
+COPY --from=psydb_buildbase /usr/src/app/deploy/packages packages
+
+RUN npm config set update-notifier false
+
+# FIXME: not sure if we want UTC instead
+RUN apk add --no-cache tzdata gcompat
+ENV TZ="UTC"
+
+EXPOSE 8080
+
+WORKDIR /usr/src/app/packages/psydb-web
+VOLUME /usr/src/app/config
+CMD npm run production

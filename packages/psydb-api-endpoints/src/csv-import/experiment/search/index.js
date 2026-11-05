@@ -36,6 +36,12 @@ var search = async (context, next) => {
         }},
         { $sort: {
             createdAt: -1
+        }},
+        { $project: {
+            type: true,
+            studyId: true,
+            createdAt: true,
+            createdBy: true,
         }}
     ]});
 

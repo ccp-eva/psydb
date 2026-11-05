@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { demuxed } from '@mpieva/psydb-ui-utils';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
@@ -11,6 +12,7 @@ import {
 import { RecordEditor } from '@mpieva/psydb-ui-record-views/subjects';
 
 const SubjectRecordViewModalBody = (ps) => {
+    var translate = useUITranslation();
     var {
         show,
         onHide,
@@ -57,7 +59,7 @@ const SubjectRecordViewModalBody = (ps) => {
                 <>
                     <hr />
                     <div className='d-flex justify-content-end'>
-                        <Button onClick={ handleHide }>Schliessen</Button>
+                        <Button onClick={ handleHide }>{ translate('Close') }</Button>
                     </div>
                     <hr />
                 </>
@@ -67,12 +69,13 @@ const SubjectRecordViewModalBody = (ps) => {
 }
 
 const HasEditedInfo = (ps) => {
+    var translate = useUITranslation();
     var { onReEdit } = ps;
     return (
         <Alert variant='info' className='d-flex justify-content-between'>
-            <i>Proband:innendaten gespeichert!</i>
+            <i>{ translate('Subject data saved!') }</i>
             <a role='button' className='force-hover' onClick={ onReEdit }>
-                <b>Erneut bearbeiten</b>
+                <b>{ translate('Edit Again') }</b>
             </a>
         </Alert>
     );
@@ -82,7 +85,7 @@ export const SubjectRecordViewModal = WithDefaultModal({
     Body: SubjectRecordViewModalBody,
 
     size: 'xl',
-    title: 'Proband:in',
+    title: 'Subject',
     className: '',
     backdropClassName: '',
     bodyClassName: 'bg-light'

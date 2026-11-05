@@ -1,7 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:lib:self');
 var { ejson } = require('@mpieva/psydb-core-utils');
-var withRetracedErrors = require('../with-retraced-errors');
+var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var twoFactorAuth = require('../two-factor-auth')
 var setup = require('./setup');
 
@@ -25,7 +25,7 @@ var Self = async (bag) => {
     var personnelRecords = await fetchPersonnelRecords({
         db, query
     });
-    if (personnelRecords.length != 1) {
+    if (personnelRecords.length !== 1) {
         debug(`found ${personnelRecords.length} personnel records`);
         return self;
     }
@@ -77,34 +77,31 @@ var fetchPersonnelRecords = async (bag) => {
         : requiredProjection
     );
 
-    var personnelRecords = await withRetracedErrors(
-        db.collection('personnel').aggregate([
-            { $addFields: { '_primaryEmail': {
-                $first: { $filter: {
-                    input: '$gdpr.state.emails',
-                    as: 'it',
-                    cond: { $eq: [ '$$it.isPrimary', true ]}
-                }}
-            }}},
-            { $addFields: {
-                '_primaryEmail': { $toLower: '$_primaryEmail.email' }
-            }},
-            { $match: {
-                $or: [
-                    { 'scientific.state.hasRootAccess': true },
-                    { 'scientific.state.researchGroupSettings.0': {
-                        $exists: true
-                    }},
-                ],
-                ...query
-            }},
-            { $match: {
-                'scientific.state.internals.isRemoved': { $ne: true },
-            }},
-            { $project: projection }
-        ])
-        .toArray()
-    );
+    var personnelRecords = await aggregateToArray({ db, personnel: [
+        { $addFields: { '_primaryEmail': {
+            $first: { $filter: {
+                input: '$gdpr.state.emails',
+                as: 'it',
+                cond: { $eq: [ '$$it.isPrimary', true ]}
+            }}
+        }}},
+        { $addFields: {
+            '_primaryEmail': { $toLower: '$_primaryEmail.email' }
+        }},
+        { $match: {
+            $or: [
+                { 'scientific.state.hasRootAccess': true },
+                { 'scientific.state.researchGroupSettings.0': {
+                    $exists: true
+                }},
+            ],
+            ...query
+        }},
+        { $match: {
+            'scientific.state.internals.isRemoved': { $ne: true },
+        }},
+        { $project: projection }
+    ]});
 
     return personnelRecords;
 }

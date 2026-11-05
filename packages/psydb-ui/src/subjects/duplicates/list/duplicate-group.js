@@ -2,9 +2,8 @@ import React from 'react';
 import { useRouteMatch, useLocation } from 'react-router';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { URL } from '@mpieva/psydb-ui-utils';
+import { LinkQ64 } from '@mpieva/psydb-ui-layout';
 import { TableBodyCustomCols } from '@mpieva/psydb-custom-fields-ui';
-
-import LinkQ64 from './link-q64';
 
 const DuplicateGroup = (ps) => {
     var { items, recordType, inspectedFields, related } = ps;

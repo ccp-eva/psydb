@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { only } from '@mpieva/psydb-core-utils';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
@@ -15,24 +15,19 @@ import MainForm from '../main-form';
 
 export const EditorMainForm = (ps) => {
     var {
-        collection,
-        id,
-        fetched,
-        onSuccessfulUpdate
+        collection, id, fetched, isAnonymized,
+        onSuccessfulUpdate,
     } = ps;
 
-    var {
-        record,
-        schema,
-        related
-    } = fetched;
-
+    var { record, schema, related } = fetched;
+    
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
 
     var send = useSendPatch({
         collection,
         record,
-        subChannels: ['gdpr', 'scientific'],
+        subChannels: [ 'gdpr', 'scientific' ],
         onSuccessfulUpdate
     });
 
@@ -60,11 +55,12 @@ export const EditorMainForm = (ps) => {
 
     return (
         <MainForm.Component
-            title='Mitarbeiter:in bearbeiten'
+            title={ translate('Edit Staff Member') }
             initialValues={ initialValues }
-            onSubmit={ send.exec }
             related={ related }
             permissions={ permissions }
+            isAnonymized={ isAnonymized }
+            { ...send.passthrough }
         />
     );
 }

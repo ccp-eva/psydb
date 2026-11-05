@@ -63,12 +63,15 @@ const WorkflowLocationTypeSelectControl = (ps) => {
 
     // FIXME: control should get passed more props
     return (
-        <Wrapper { ...ps }>
-            <Controls.GenericEnum
-                { ...saneFormikField }
-                options={ options }
-            />
-        </Wrapper>
+        <>
+            <Wrapper { ...ps }>
+                <Controls.GenericEnum
+                    { ...saneFormikField }
+                    options={ options }
+                />
+            </Wrapper>
+            <hr />
+        </>
     )
 }
 

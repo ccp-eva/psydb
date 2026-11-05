@@ -20,8 +20,18 @@ var runPipeline = async (bag) => {
         CSVColumnRemappers.SubjectDefault({ subjectCRT }).csv2obj
     );
 
+    var { importSettings = {}} = subjectCRT.getRaw();
+    var { extraIdFields = [] } = importSettings;
+
     var { pipelineData, preparedObjects } = await runDefaultPipeline({
         db, csvData, schema, customColumnRemap, unmarshalClientTimezone,
+        // TODO: actually we need to adde extra id pointers for all the
+        // existing crts here
+        ...(extraIdFields.length > 0 && {
+            extraRecordResolvePointers: {
+                subject: extraIdFields.map(it => it.pointer)
+            }
+        })
         //extraRecordResolvePointers: {
         //    location: [ '/sequenceNumber' ],
         //    personnel: [ '/sequenceNumber' ]

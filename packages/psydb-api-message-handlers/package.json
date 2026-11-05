@@ -11,6 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "@mpieva/psydb-koa-event-middleware": "workspace:*",
+    "@mpieva/psydb-calculate-age": "workspace:*",
     "@mpieva/psydb-mongo-adapter": "workspace:*",
     "@mpieva/psydb-schema-creators": "workspace:*",
     "@mpieva/psydb-schema-enums": "workspace:*",
@@ -51,7 +52,9 @@
     "@mpieva/psydb-api-mocha-test-tools": "workspace:*",
     "@cdxoo/mongodb-restore": "~2.0.1",
     "@cdxoo/mongo-test-helpers": "~0.7.1",
-    "mongodb-memory-server": "~6.9.2"
+    "mongodb-memory-server": "~6.9.2",
+    "just-kebab-case": "~4.2.0",
+    "just-snake-case": "~3.2.0"
   },
   "config": {
     "mongodbMemoryServer": {

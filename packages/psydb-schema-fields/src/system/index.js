@@ -6,6 +6,7 @@ module.exports = {
     // FIXME: duplicate
     CustomRecordTypeName: require('./custom-record-type-key'),
     CustomRecordTypeKey: require('./custom-record-type-key'),
+    CustomRecordTypeKeyList: require('./custom-record-type-key-list'),
     CustomRecordTypeFieldKey: require('./custom-record-type-field-key'),
     
     EventId: require('./event-id'),
@@ -25,4 +26,6 @@ module.exports = {
 
     StringEnum: require('./string-enum'),
     StringConst: require('./string-const'),
+
+    SubChannelKey: require('./sub-channel-key'),
 }

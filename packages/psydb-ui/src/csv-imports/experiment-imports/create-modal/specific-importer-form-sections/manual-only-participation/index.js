@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { only } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Alert, Button, SmallFormFooter } from '@mpieva/psydb-ui-layout';
 import { UploadModalBody } from '@mpieva/psydb-ui-lib';
@@ -13,6 +13,7 @@ import {
 
 import CSVUploadField from '../../../../csv-upload-field';
 import WorkflowLocationTypeSelect from './workflow-location-type-select';
+import CSVFieldInfo from './csv-field-info';
 import PreviewStage from './preview-stage';
 
 export const ManualOnlyParticipation = (ps) => {
@@ -21,7 +22,7 @@ export const ManualOnlyParticipation = (ps) => {
         'onSuccessfulUpdate', 'onFailedUpdate'
     ]});
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var initialValues = {
         //fileId: '66909c1e373d99dc8b8605be',
     }
@@ -62,7 +63,7 @@ const PrepareStage = (ps) => {
         fileId,
     } = formValues['$'];
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>
@@ -72,12 +73,15 @@ const PrepareStage = (ps) => {
                 studyId={ studyId }
                 subjectType={ subjectType }
             />
-            <hr />
             { locationType ? (
-                <CSVUploadField
-                    label={ translate('Upload File') }
-                    dataXPath='$.fileId'
-                />
+                <>
+                    <CSVFieldInfo />
+
+                    <CSVUploadField
+                        label={ translate('Upload File') }
+                        dataXPath='$.fileId'
+                    />
+                </>
             ) : (
                 <Alert variant='info'>
                     <i>

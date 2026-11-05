@@ -1,5 +1,6 @@
+var siftMaybeESM = require('sift'); // FIXME
 module.exports = {
-    sift: require('sift'),
+    sift: siftMaybeESM.default || siftMaybeESM,
     inlineText: require('@cdxoo/inline-text'),
 
     keyRecords: require('./key-records'),
@@ -7,17 +8,25 @@ module.exports = {
     makeRX: require('./make-rx'),
     makeDiaRX: require('./make-dia-rx'),
 
+    SRTSettings: require('./srt-settings'),
+
     CRTSettings: require('./crt-settings'),
     CRTSettingsList: require('./crt-settings-list'),
     FieldDefinition: require('./field-definition'),
     createRecordLabel: require('./create-record-label'),
 
     CSVColumnRemappers: require('./csv-column-remappers'),
+    createTranslate: (
+        require('@mpieva/psydb-common-translations').createTranslate
+    ),
 
     intervalUtils: require('./interval-utils'),
     createSchemaForRecord: require('./create-schema-for-record-type'),
     durations: require('./durations'),
-    fieldDefinitionSchemas: require('./field-definition-schemas'),
+    
+    fieldDefinitionSchemas: require('./field-definition-schemas'), // FIXME
+    FieldDefinitionSchemas: require('./field-definition-schemas'),
+
     fieldStringifiers: require('./field-stringifiers'),
     fieldTypeMetadata: require('./field-type-metadata'),
     
@@ -64,4 +73,5 @@ module.exports = {
   
     SimpleCache: require('./simple-cache'),
     SmartArray: require('./smart-array'),
+    URL: require('./url-helper'),
 }

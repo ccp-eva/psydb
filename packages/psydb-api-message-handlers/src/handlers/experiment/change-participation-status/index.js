@@ -99,6 +99,22 @@ handler.triggerSystemEvents = async ({
     );
     var { color, personnelIds } = experimentOperatorTeam.state;
 
+    // NOTE: when a consent was obtained for this participation
+    // the lab operators selected there take precedence over
+    // the members of the experiment operator team
+    var [ consentDoc ] = await (
+        db.collection('studyConsentDoc').find(
+            { experimentId, subjectId },
+            { projection: { labOperatorIds: true }}
+        )
+        .sort({ '_rohrpostMetadata.createdAt': -1 })
+        .limit(1)
+        .toArray()
+    );
+    if (consentDoc?.labOperatorIds?.length > 0) {
+        personnelIds = consentDoc.labOperatorIds;
+    }
+
     var unprocessedSubjects = (
         experimentRecord.state.subjectData.filter(it => (
             it.participationStatus === 'unknown'

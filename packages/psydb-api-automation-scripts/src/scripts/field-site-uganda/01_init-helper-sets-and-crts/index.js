@@ -4,6 +4,7 @@ var WrappedCache = require('../../../wrapped-cache');
 var createHelperSets = require('./create-helper-sets');
 var createVillageCRT = require('./create-village-crt');
 var createSchoolCRT = require('./create-school-crt');
+var createRoomCRT = require('./create-room-crt');
 var createSubjectCRT = require('./create-subject-crt');
 
 module.exports = async (bag) => {
@@ -15,5 +16,6 @@ module.exports = async (bag) => {
 
     await createVillageCRT(context);
     await createSchoolCRT(context);
+    await createRoomCRT(context);
     await createSubjectCRT(context);
 }

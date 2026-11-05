@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import classnames from 'classnames';
 import { withField } from '@cdxoo/formik-utils';
 import { hasNone } from '@mpieva/psydb-core-utils';
@@ -33,13 +34,14 @@ export const OpsTeamSelect = withField({ Control: (ps) => {
 }})
 
 const OpsTeamSelectControl = (ps) => {
+    var translate = useUITranslation();
     var { value, onChange, teamRecords, disabled } = ps;
 
     return (
         hasNone(teamRecords)
         ? (
             <PaddedText className='text-danger'>
-                Keine Teams vorhanden
+                { translate('No teams available') }
             </PaddedText>
         )
         : teamRecords.map((it, ix) => (

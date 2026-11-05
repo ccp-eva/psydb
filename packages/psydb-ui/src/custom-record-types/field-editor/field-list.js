@@ -1,6 +1,6 @@
 import React from 'react';
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     Button,
@@ -9,13 +9,14 @@ import {
     RemoveIconButton
 } from '@mpieva/psydb-ui-layout';
 
-const FieldList = ({
-    record,
-    onEditField,
-    onRemoveField,
-    onRestoreField,
-}) => {
-    var translate = useUITranslation();
+const FieldList = (ps) => {
+    var {
+        record,
+        onEditField,
+        onRemoveField,
+        onRestoreField,
+    } = ps;
+    var [{ translate }] = useI18N();
 
     var {
         hasSubChannels,
@@ -68,14 +69,16 @@ const FieldList = ({
     );
 }
 
-const Row = ({
-    field,
-    hasSubChannels,
-    onEditField,
-    onRemoveField,
-    onRestoreField,
-}) => {
-    var translate = useUITranslation();
+const Row = (ps) => {
+    var {
+        field,
+        hasSubChannels,
+        onEditField,
+        onRemoveField,
+        onRestoreField,
+    } = ps;
+
+    var [{ translate }] = useI18N();
     
     var className = [];
     var style = {};
@@ -105,26 +108,23 @@ const Row = ({
                 <td>{ field.subChannelKey }</td>
             )}
             <td className='d-flex justify-content-end'>
-                { field.isRemoved
-                    ? (
-                        <Button
-                            size='sm'
-                            onClick={ () => onRestoreField({ field })}
-                        >
-                            { translate('Restore') }
-                        </Button>
-                    )
-                    : (
-                        <>
-                            <EditIconButton
-                                onClick={ () => onEditField({ field }) }
-                            />
-                            <RemoveIconButton
-                                onClick={ () => onRemoveField({ field }) }
-                            />
-                        </>
-                    )
-                }
+                { field.isRemoved ? (
+                    <Button
+                        size='sm'
+                        onClick={ () => onRestoreField({ field })}
+                    >
+                        { translate('Restore') }
+                    </Button>
+                ) : (
+                    <>
+                        <EditIconButton
+                            onClick={ () => onEditField({ field }) }
+                        />
+                        <RemoveIconButton
+                            onClick={ () => onRemoveField({ field }) }
+                        />
+                    </>
+                )}
             </td>
         </tr>
     )

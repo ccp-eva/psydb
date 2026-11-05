@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { only } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Alert, Button, SmallFormFooter } from '@mpieva/psydb-ui-layout';
 import { UploadModalBody } from '@mpieva/psydb-ui-lib';
@@ -21,7 +21,7 @@ export const WKPRCEVApeCognition = (ps) => {
         'onSuccessfulUpdate', 'onFailedUpdate'
     ]});
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var initialValues = {
         //fileId: '6671e48d90dbc5f198044a6e',
         //fileId: '6671e49790dbc5f198044a7a',
@@ -67,7 +67,7 @@ const PrepareStage = (ps) => {
         fileId,
     } = formValues['$'];
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>

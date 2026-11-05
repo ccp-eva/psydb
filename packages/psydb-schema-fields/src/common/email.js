@@ -1,6 +1,6 @@
 'use strict';
 var Email = (keywords = {}) => {
-    var { minLength, ...extraKeywords } = keywords;
+    var { minLength = 0, ...extraKeywords } = keywords;
 
     return {
         systemType: 'Email',

@@ -6,10 +6,12 @@ import CSVExtendedSearchExportButton
     from '../csv-extended-search-export-button.js';
 
 const TableFNs = (ps) => {
-    var { collection, pagination, formData } = ps;
+    var { collection, pagination, formData, enableCSVExport = true } = ps;
 
     var permissions = usePermissions();
-    var canUseCSVExport = permissions.hasFlag('canUseCSVExport');
+    var canUseCSVExport = (
+        enableCSVExport && permissions.hasFlag('canUseCSVExport')
+    );
 
     return (
         <div className={

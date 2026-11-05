@@ -2,7 +2,9 @@
 var WrappedCache = require('../../../wrapped-cache');
 
 var createHelperSets = require('./create-helper-sets');
-var createCatShelterOrgCRT = require('./create-cat-shelter-org-crt');
+var createCatTrainerCRT = require('./create-cat-trainer-crt');
+var createCatShelterPersonCRT = require('./create-cat-shelter-person-crt');
+var createCatSupportOrgCRT = require('./create-cat-support-org-crt');
 var createCatShelterCRT = require('./create-cat-shelter-crt');
 var createCatLabRoomCRT = require('./create-cat-lab-room-crt');
 var createCatOwnerCRT = require('./create-cat-owner-crt');
@@ -10,13 +12,15 @@ var createCatCRT = require('./create-cat-crt');
 var createCatStudyCRT = require('./create-cat-study-crt');
 
 module.exports = async (bag) => {
-    var { driver, extraOptions } = bag;
+    var { driver, extraOptions, idgen } = bag;
     var cache = WrappedCache({ driver });
-    var context = { driver, cache };
+    var context = { driver, cache, idgen };
 
     await createHelperSets(context);
 
-    await createCatShelterOrgCRT(context);
+    await createCatTrainerCRT(context);
+    await createCatShelterPersonCRT(context);
+    await createCatSupportOrgCRT(context);
     await createCatShelterCRT(context);
     await createCatLabRoomCRT(context);
     await createCatOwnerCRT(context);

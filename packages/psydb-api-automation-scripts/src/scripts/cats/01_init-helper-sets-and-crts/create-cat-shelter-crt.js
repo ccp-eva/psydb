@@ -1,12 +1,13 @@
 'use strict';
-var { PointerGen } = require('../../../utils');
+var { PointerGen, seedFakerForNextId } = require('../../../utils');
 
 module.exports = async (context) => {
-    var { driver, cache } = context;
+    var { driver, cache, idgen } = context;
 
     var definitions = FieldDefinitions({ cache });
     var asPointers = PointerGen(definitions);
 
+    seedFakerForNextId({ idgen, collection: 'customRecordType' });
     var crt = await driver.crt.create({
         collection: 'location', key: 'catShelter',
         displayNames: {
@@ -87,11 +88,25 @@ var FieldDefinitions = ({ cache }) => ({
         props: { minLength: 0 }
     },
 
-    'supervisorId': {
+    'assignedStaffMemberId': {
         type: 'ForeignId',
-        key: 'supervisorId',
+        key: 'assignedStaffMemberId',
         displayName: 'Assigned RA',
         displayNameI18N: { 'de': 'Betreuer:in' },
+        props: {
+            collection: 'personnel',
+            isNullable: true,
+            constraints: {},
+            displayEmptyAsUnknown: false,
+            addReferenceToTarget: false,
+        }
+    },
+    
+    'supervisingTrainerId': {
+        type: 'ForeignId',
+        key: 'supervisingTrainerId',
+        displayName: 'Supervising Trainer',
+        displayNameI18N: { 'de': 'Betreuende Trainer:in' },
         props: {
             collection: 'personnel',
             isNullable: true,
@@ -117,14 +132,28 @@ var FieldDefinitions = ({ cache }) => ({
         props: { minItems: 0 }
     },
    
-    'catShelterOrgId': {
+    'staffMemberIds': {
+        type: 'ForeignIdList',
+        key: 'staffMemberIds',
+        displayName: 'Staff Members',
+        displayNameI18N: { 'de': 'Mitarbeiter:innen' },
+        props: {
+            collection: 'externalPerson',
+            recordType: 'catShelterPerson',
+            constraints: {},
+            minItems: 0,
+            readOnly: false,
+        }
+    },
+
+    'catSupportOrgId': {
         type: 'ForeignId',
-        key: 'catShelterOrgId',
+        key: 'catSupportOrgId',
         displayName: 'Parent Org',
         displayNameI18N: { 'de': 'Träger' },
         props: {
             collection: 'externalOrganization',
-            recordType: 'catShelterOrg',
+            recordType: 'catSupportOrg',
             isNullable: true,
             constraints: {},
             displayEmptyAsUnknown: false,

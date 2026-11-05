@@ -21,17 +21,18 @@ const General = (ps) => {
         studyData,
         onSuccessfulUpdate
     } = ps;
-    
+   
     var [ i18n ] = useI18N();
     var permissions = usePermissions();
 
     // FIXME
     experimentData = __fixRelated(experimentData);
     studyData = __fixRelated(studyData);
+    var opsTeamRelated = opsTeamData && __fixRelated(opsTeamData).related;
 
-    var { shorthand, researchGroupIds } = studyData.record.state;
+    var { name, shorthand, researchGroupIds } = studyData.record.state;
     var { _id: experimentId, type, realType, state: {
-        interval, comment
+        interval, comment, experimentOperatorIds
     }} = experimentData.record;
 
     var t = realType || type;
@@ -59,12 +60,15 @@ const General = (ps) => {
     var sharedBag = {
         experimentId,
         experimentTypeLabel: enums.labMethods.mapping[t],
-        studyLabel: shorthand,
+        studyLabel: shorthand || name,
         firstResearchGroupId,
         researchGroupLabel,
         interval,
         locationData,
         opsTeamData,
+        opsTeamRelated,
+        experimentOperatorIds,
+        experimentRelated: experimentData.related,
 
         onSuccessfulUpdate
     }

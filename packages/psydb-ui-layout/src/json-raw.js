@@ -15,17 +15,29 @@ const orderKeysDeep = (that) => {
 export const JsonRaw = (ps) => {
     var { title, data, orderKeys = false, ...pass } = ps;
     
+    return (
+        <div { ...pass }>
+            <b>{ title }</b>
+            <PRE
+                data={ data } orderKeys={ orderKeys }
+                className='bg-light p-3 border'
+            />
+        </div>
+    )
+}
+
+const PRE = (ps) => {
+    var { data, orderKeys = false, ...pass } = ps;
+
     if (orderKeys) {
         data = orderKeysDeep(data);
     }
 
     return (
-        <div { ...pass }>
-            <b>{ title }</b>
-            <pre className='bg-light p-3 border'>
-                { JSON.stringify(data, null, 4) }
-            </pre>
-        </div>
+        <pre { ...pass }>
+            { JSON.stringify(data, null, 4) }
+        </pre>
     )
 }
+JsonRaw.PRE = PRE;
 

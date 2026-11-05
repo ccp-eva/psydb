@@ -50,6 +50,10 @@ const SubjectModalSchedule = (ps) => {
         // FIXME
         testableInStudies[`_testableIntervals_${studyId}`]
     );
+    var ageFrameIntervals = (
+        // FIXME
+        testableInStudies[`_ageFrameIntervals_${studyId}`]
+    );
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchSubjectPossibleTestIntervals({
@@ -70,10 +74,12 @@ const SubjectModalSchedule = (ps) => {
         inviteType,
         desiredTestInterval,
         testableIntervals: (testableIntervals || fetchedIntervals),
+        ageFrameIntervals: (ageFrameIntervals || fetchedIntervals),
         
         studyData,
         subjectId,
         subjectLabel,
+        subjectDateOfBirth: testableInStudies._ageFrameField, // FIXME
 
         onSuccessfulUpdate,
     }
@@ -122,6 +128,7 @@ const SubjectModalSchedule = (ps) => {
                 currentSubjectRecord={{ _id: subjectId /* FIXME */ }}
                 desiredTestInterval={ desiredTestInterval }
                 testableIntervals={ testableIntervals || fetchedIntervals }
+                ageFrameIntervals={ ageFrameIntervals || fetchedIntervals }
 
                 //activeLocationType={ 'instituteroom' }
                 onSelectReservationSlot={ experimentCreateModal.handleShow }

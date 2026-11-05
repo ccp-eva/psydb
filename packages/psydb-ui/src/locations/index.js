@@ -31,9 +31,7 @@ const LocationCollectionView = withCollectionView({
 });
 
 const Locations = () => {
-    return (
-        <LocationCollectionView />
-    );
+    return <LocationCollectionView />
 }
 
 export default Locations;

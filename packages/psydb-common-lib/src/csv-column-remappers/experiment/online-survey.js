@@ -13,7 +13,7 @@ var CSVOnlineSurveyColumnRemapper = (bag) => {
         if (col === 'time') {
             return 'time';
         }
-        if (col === 'subject') {
+        if ([ 'subjectId', 'subject' ].includes(col)) {
             return 'subjectData[0].subjectId';
         }
     }
@@ -24,7 +24,7 @@ var CSVOnlineSurveyColumnRemapper = (bag) => {
         var mapping = {
             date: [{ key: 'date', type: 'scalar' }],
             time: [{ key: 'time', type: 'scalar' }],
-            subject: [
+            subjectId: [
                 { key: 'subjectData', type: 'array' },
                 { key: 'subjectId', type: 'scalar' }
             ],

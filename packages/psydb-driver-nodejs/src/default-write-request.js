@@ -1,7 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:driver-nodejs');
 
-var { getSystemTimezone } = require('@mpieva/psydb-timezone-helpers');
+var getSystemTimezone = require('./get-system-timezone');
 var maybeInjectApiKey = require('./maybe-inject-api-key');
 var handleError = require('./handle-error');
 

@@ -9,16 +9,18 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
     PageWrappers,
-    Alert
+    Alert,
+    JsonRaw,
 } from '@mpieva/psydb-ui-layout';
 
 import GenericRecordListContainer from '../record-list-container';
 import RecordTypeRouting from './record-type-routing';
+import RecordTypeRouting_INTRA from './record-type-routing_INTRA';
 
 const DefaultRecordDetails = (ps) => (
     <Alert variant='danger'>
@@ -44,6 +46,27 @@ const DefaultRecordCreator = (ps) => (
     </Alert>
 )
 
+const DefaultRecordRawView = (ps) => {
+    var { prefetched } = ps;
+    var { record } = (prefetched.data || prefetched);
+    
+    return (
+        <JsonRaw data={ record } />
+    )
+}
+
+const DefaultRecordRawHistory = (ps) => {
+    var { prefetched } = ps;
+    var { record } = (prefetched.data || prefetched);
+
+    // TODO: useFetch etc
+    return (
+        <div>
+            <b className='text-danger'>TODO</b>
+        </div>
+    )
+}
+
 
 const withRecordTypeView = (options) => {
     var {
@@ -53,15 +76,21 @@ const withRecordTypeView = (options) => {
         RecordCreator = DefaultRecordCreator,
         RecordEditor = DefaultRecordEditor,
         RecordRemover,
+        RecordAnonymizer,
+        RecordRawView = DefaultRecordRawView,
+        RecordRawHistory = DefaultRecordRawHistory,
 
         CustomRouting,
+        IntraRecordRouting,
         shouldFetchCollectionTypes = false,
     } = options;
 
     // NOTE: allow omission of record details if only editor present
     RecordDetails = RecordDetails || RecordEditor;
 
-    const Routing = CustomRouting || RecordTypeRouting;
+    const Routing = CustomRouting || (
+        IntraRecordRouting ? RecordTypeRouting_INTRA : RecordTypeRouting
+    );
 
     const RecordTypeView = (ps) => {
         var {
@@ -72,8 +101,7 @@ const withRecordTypeView = (options) => {
 
         collectionRecordTypes = collectionRecordTypes || [];
 
-        var [ language ] = useUILanguage();
-        var translate = useUITranslation();
+        var [{ translate, language }] = useI18N();
         var { path, url } = useRouteMatch();
         var { recordType } = useParams();
         var history = useHistory();
@@ -135,6 +163,12 @@ const withRecordTypeView = (options) => {
                     RecordCreator,
                     RecordEditor,
                     RecordRemover,
+                    RecordAnonymizer,
+
+                    RecordRawView,
+                    RecordRawHistory,
+                    
+                    IntraRecordRouting,
                 }) } />
             </PageWrappers.Level2>
         );

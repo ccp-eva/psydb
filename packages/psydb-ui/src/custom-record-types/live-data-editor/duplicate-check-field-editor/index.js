@@ -1,13 +1,9 @@
 import React from 'react';
-import sift from 'sift';
 import { keyBy } from '@mpieva/psydb-core-utils';
+import { convertCRTRecordToSettings, CRTSettings }
+    from '@mpieva/psydb-common-lib';
 
-import {
-    convertCRTRecordToSettings,
-    CRTSettings
-} from '@mpieva/psydb-common-lib';
-
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import FieldPointerList from '../field-pointer-list';
@@ -16,7 +12,7 @@ import Modal from './modal';
 const DuplicateCheckFieldEditor = (ps) => {
     var { record, onSuccessfulUpdate } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var modal = useModalReducer();
 
     var crtSettings = convertCRTRecordToSettings(record);

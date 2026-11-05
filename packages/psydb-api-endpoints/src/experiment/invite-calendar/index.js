@@ -2,7 +2,7 @@
 var debug = require('../debug-helper')('inviteCalendar');
 
 var enums = require('@mpieva/psydb-schema-enums');
-var { keyBy, forcePush, merge } = require('@mpieva/psydb-core-utils');
+var { keyBy, forcePush, merge, unique } = require('@mpieva/psydb-core-utils');
 var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var { fetchRelated } = require('@mpieva/psydb-api-endpoint-lib');
 var {
@@ -62,7 +62,7 @@ var experimentCalendar = async (context, next) => {
     );
 
     var studyRecords = await fetchStudyRecords({
-        db, studyId, interval,
+        db, studyId, interval, subjectRecordType,
         researchGroupIds: allowedResearchGroupIds,
         labMethods: allowedExperimentTypes,
     });
@@ -78,6 +78,7 @@ var experimentCalendar = async (context, next) => {
         studyIds: filteredStudyIds,
         locationId,
         experimentOperatorTeamIds,
+        subjectRecordType,
     });
  
     var labTeamRecords = await fetchLabTeamRecords({
@@ -119,7 +120,7 @@ var experimentCalendar = async (context, next) => {
     var shownDisplayFieldsByCRT = {};
     var allSubjectRecords = [];
     var __subjectRelated = {};
-    for (var it of subjectTypes) {
+    for (var it of unique(subjectTypes)) {
         var lookup = await lookupSubjects.onlyDisplayFields({
             db, subjectType: it, subjectIds: subjectIdsByCRT[it]
         });
@@ -143,6 +144,20 @@ var experimentCalendar = async (context, next) => {
         records: experimentRecords
     });
 
+    var labTeamRelated = await fetchRelatedLabelsForMany({
+        db, ...i18n,
+        collectionName: 'experimentOperatorTeam',
+        records: labTeamRecords
+    });
+
+    var studyConsentDocs = await aggregateToArray({ db, studyConsentDoc: [
+        { $match: {
+            'studyId': { $in: experimentStudyIds },
+            'subjectId': { $in: subjectIds },
+        }},
+        { $project: { '_id': true, 'studyId': true, 'subjectId': true }}
+    ]});
+
     var subjectRecordsById = keyBy({
         items: allSubjectRecords,
         byProp: '_id'
@@ -156,14 +171,15 @@ var experimentCalendar = async (context, next) => {
                 _canFollowUp: studiesById[it.state.studyId].state.enableFollowUpExperiments
             })),
             experimentOperatorTeamRecords: labTeamRecords,
+            labTeamRelated,
+            studyConsentDocs,
             experimentRelated,
             subjectRecordsById,
             subjectRelated: __subjectRelated,
-            subjectDisplayFieldData: (
-                subjectRecordType
-                ? shownDisplayFieldsByCRT[subjectRecordType]
-                : shownDisplayFieldsByCRT
-            ),
+            // NOTE: experiments are not filtered by subject type
+            // so they can contain subjects of other types than
+            // subjectRecordType; always return definitions by type
+            subjectDisplayFieldData: shownDisplayFieldsByCRT,
         },
     });
 

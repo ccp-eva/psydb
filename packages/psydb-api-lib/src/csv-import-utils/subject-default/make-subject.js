@@ -3,6 +3,11 @@ var { copy } = require('copy-anything');
 var { jsonpointer } = require('@mpieva/psydb-core-utils');
 var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 
+var ADDRESS_FALLBACKS = {
+    country: 'DE', city: '', postcode: '',
+    street: '', housenumber: '', affix: '',
+};
+
 var makeSubject = (bag) => {
     var {
         preparedObject,
@@ -22,6 +27,17 @@ var makeSubject = (bag) => {
     var gdprState = copy(preparedObject.gdpr?.state || {});
     var scientificState = copy(preparedObject.scientific?.state || {});
     // TODO: transform testingPermissions
+
+    var states = { gdpr: gdprState, scientific: scientificState };
+    for (var def of subjectCRT.allCustomFields()) {
+        if (def.systemType === 'Address') {
+            var state = states[def.subChannel];
+            var address = state?.custom?.[def.key];
+            if (address) {
+                state.custom[def.key] = { ...ADDRESS_FALLBACKS, ...address };
+            }
+        }
+    }
 
     var researchGroupId = researchGroup._id;
     jsonpointer.set(

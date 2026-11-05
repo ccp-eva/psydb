@@ -47,6 +47,7 @@ const useReadRecord = (options, dependencies = []) => {
     var {
         didReject,
         record,
+        lookups,
         ...related
     } = fetched.record.data;
 
@@ -58,6 +59,7 @@ const useReadRecord = (options, dependencies = []) => {
             schema: fetched.schema.data
         }),
         record,
+        lookups,
         related,
     }];
 }

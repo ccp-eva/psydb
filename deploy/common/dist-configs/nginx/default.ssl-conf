@@ -21,6 +21,13 @@ server {
     ssl_stapling_verify on;
 
     location / {
+        # NOTE: only allow uncompressed, gzip or deflate request bodies;
+        # rejects e.g. brotli (CVE-2026-111497, node2shell)
+        if ($http_content_encoding !~ "^(|identity|gzip|deflate)$") {
+            add_header Accept-Encoding "identity, gzip, deflate" always;
+            return 415;
+        }
+
         proxy_set_header X-Forwarded-Host $host;
         proxy_set_header X-Forwarded-Server $host;
         # using remote addr instead of $proxy_add_x_forwarded_for

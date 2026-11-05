@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { withField } from '@cdxoo/formik-utils';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
@@ -18,6 +19,7 @@ const CommentField = withField({
 const Body = (ps) => {
     var { onHide, modalPayloadData, onSuccessfulUpdate } = ps;
     var { experimentId, experimentComment } = modalPayloadData;
+    var translate = useUITranslation();
 
     var send = useSend((formData) => ({
         type: 'experiment/change-comment',
@@ -38,12 +40,12 @@ const Body = (ps) => {
             { (formikProps) => (
                 <>
                     <CommentField
-                        label='Terminkommentar'
+                        label={ translate('Appointment Comment') }
                         dataXPath='$.comment'
                     />
                     <div className='mt-3 d-flex justify-content-end'>
                         <Button type='submit'>
-                            Speichern
+                            { translate('Save') }
                         </Button>
                     </div>
                 </>
@@ -54,7 +56,7 @@ const Body = (ps) => {
 
 
 const EditExperimentCommentModal = WithDefaultModal({
-    title: 'Terminkommentar bearbeiten',
+    title: 'Edit Appointment Comment',
     size: 'lg',
     Body,
 });

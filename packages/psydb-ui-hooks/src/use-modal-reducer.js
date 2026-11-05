@@ -46,4 +46,12 @@ var reducer = (state, action) => {
     }
 }
 
+useModalReducer.many = (count) => {
+    var out = [];
+    for (var ix = 0; ix < count; ix += 1) {
+        out.push(useModalReducer());
+    }
+    return out;
+}
+
 export default useModalReducer;

@@ -26,15 +26,21 @@ export const Custom = (ps) => {
     var keys = onlyKeys || Object.keys(fieldsByKey);
     return (
         <>
-            { keys.map((k, ix) => (
-                <CustomField
-                    key={ ix }
-                    definition={ fieldsByKey[k] }
-                    value={ value[k] }
-                    record={ record }
-                    related={ related }
-                />
-            ))}
+            { keys.map((k, ix) => {
+                var field = fieldsByKey[k];
+                if (field.isRemoved) {
+                    return null;
+                }
+                else {
+                    return <CustomField
+                        key={ ix }
+                        definition={ field }
+                        value={ value[k] }
+                        record={ record }
+                        related={ related }
+                    />
+                }
+            })}
         </>
     )
 }

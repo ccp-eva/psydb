@@ -10,7 +10,8 @@ var dumbParseCSV = (data, { customColumnRemap } = {}) => {
     var csvColumns, csvLines;
 
     var commonParseOptions = {
-        delimiter: [ ',', ';' ],
+        delimiter: detectDelimiter(data),
+        bom: true, // i.e. utf-8 csv files saved by excel
         trim: true,
         skip_empty_lines: true,
         skip_records_with_empty_values: true,
@@ -76,6 +77,22 @@ var dumbParseCSV = (data, { customColumnRemap } = {}) => {
 
     //console.dir(out, { depth: null });
     return { csvLines, parsed: out };
+}
+
+// NOTE: we cannot allow both "," and ";" as delimiters at once since
+// values might contain the other character (e.g. "some,comment" in a
+// file delimited by ";"); so we use whichever is used in the header line
+var detectDelimiter = (data) => {
+    var headerLine = (
+        String(data).split(/\r?\n/).find(it => it.trim() !== '') || ''
+    );
+
+    var count = (char) => headerLine.split(char).length - 1;
+    return (
+        count(';') > count(',')
+        ? ';'
+        : ','
+    );
 }
 
 module.exports = dumbParseCSV;

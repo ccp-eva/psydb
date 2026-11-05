@@ -3,6 +3,7 @@ export * from './url-string';
 export * from './full-text';
 export * from './integer';
 export * from './foreign-id';
+export * from './file-id';
 export * from './helper-set-item-id';
 export * from './generic-enum';
 export * from './default-bool';
@@ -28,3 +29,4 @@ export * from './location-type-key';
 
 export * from './helper-set-id';
 export * from './crt-field-pointer';
+export * from './custom-field-type';

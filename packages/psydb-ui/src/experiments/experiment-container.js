@@ -31,8 +31,8 @@ const ExperimentContainer = () => {
     var { experimentData: { record }} = fetched.data;
     var { interval, isCanceled, isPostprocessed } = record.state;
 
-    var now = new Date(),
-        experimentStart = new Date(interval.start);
+    var now = new Date();
+    var experimentStart = new Date(interval.start);
 
     var noonifiedStart = (
         datefns.add(datefns.startOfDay(experimentStart), { hours: 12 })

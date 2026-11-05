@@ -6,6 +6,10 @@ module.exports = [
         de: 'Studien',
     },
     {
+        en: 'New Study',
+        de: 'Neue Studie'
+    },
+    {
         en: 'Study',
         de: 'Studie'
     },
@@ -58,6 +62,10 @@ module.exports = [
         de: 'Studie Löschen'
     },
     {
+        en: 'Study Deleted',
+        de: 'Studie Gelöscht'
+    },
+    {
         en: 'Study is referenced by other records!',
         de: 'Studie wird von anderen Datensätzen referenziert!'
     },
@@ -89,4 +97,15 @@ module.exports = [
         en: 'Assigned Studies',
         de: 'Studienzuordnung'
     },
+    {
+        en: 'Can View Lab Teams of Studies',
+        de: 'Kann Lab-Teams von Studien Einsehen'
+    },
+
+    ////////////////
+    
+    {
+        en: 'DIST CLEAN',
+        de: 'DIST CLEAN'
+    }
 ]

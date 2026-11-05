@@ -23,7 +23,7 @@ const InvalidItemList = (ps) => {
 
     return (
         <div style={ style } className={ className }>
-            <b>{ 'Invalid Rows' }</b>
+            <b>{ translate('Invalid Rows') }</b>
             <div className='d-flex flex-column gapy-2'>
                 { items.map((it, ix) => {
                     var bag = { key: ix, item: it, remapper, demapping };
@@ -51,10 +51,11 @@ const CSVLine = (ps) => {
 
 const IssueItemWrapper = (ps) => {
     var { index, remapper, demapping, children } = ps;
+    var translate = useUITranslation();
     return (
         <div className='d-flex'>
             <b style={{ display: 'block', minWidth: '70px' }}>
-                Line { index + 1 }
+                { translate('Line') } { index + 1 }
             </b>
             <div className='flex-grow-1'>
                 { children }
@@ -175,6 +176,7 @@ var demap = ({ dataPath, demapping }) => {
 var ValidationError = (ps) => {
     var { error, remapper, demapping } = ps;
     var { dataPath, keyword, params, message } = error;
+    var translate = useUITranslation();
     
     console.log({ error });
 
@@ -191,7 +193,9 @@ var ValidationError = (ps) => {
             : demap({ dataPath, demapping })
         )
         return cols.map((it, ix) => (
-            <div key={ ix }><b>{' - '}"{ it }" is required</b></div>
+            <div key={ ix }><b>
+                {' - '}{ translate('_csvIssue_isRequired', { column: it }) }
+            </b></div>
         ))
     }
     else if (keyword === 'additionalProperties') {
@@ -202,7 +206,9 @@ var ValidationError = (ps) => {
             : demap({ dataPath: additionalProperty, demapping })
         )
         return cols.map((it, ix) => (
-            <div key={ ix }><b>{' - '}"{ it }" is unknown</b></div>
+            <div key={ ix }><b>
+                {' - '}{ translate('_csvIssue_isUnknown', { column: it }) }
+            </b></div>
         ))
     }
     else if (keyword === 'enum') {
@@ -236,6 +242,7 @@ var ReplacementError = (ps) => {
     var { error, remapper, demapping } = ps;
     var { matchingItems, mapping } = error;
     var { csvColumn, value } = mapping;
+    var translate = useUITranslation();
    
     // FIXME: csvCOlumn??
     console.log({ csvColumn });
@@ -248,12 +255,11 @@ var ReplacementError = (ps) => {
 
     return cols.map((it, ix) => (
         <div key={ ix }><b>
-            {' - '}"{ it }" reference value "{ value }"
-            {' '}
-            { matchingItems.length === 0 ? (
-                'did not match any database record'
-            ) : (
-                'must match exactly one database record'
+            {' - '}{ translate(
+                matchingItems.length === 0
+                ? '_csvIssue_refNoMatch'
+                : '_csvIssue_refMultipleMatches',
+                { column: it, value }
             )}
         </b></div>
     ))

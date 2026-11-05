@@ -60,6 +60,7 @@ var getCollectionReadFlagPointers = ({ collection }) => {
                 '/canReadSubjectGroups',
                 '/canWriteSubjectGroups'
             ];
+        
         case 'study':
             return [
                 '/canReadStudies',
@@ -70,6 +71,26 @@ var getCollectionReadFlagPointers = ({ collection }) => {
                 '/labOperation/away-team/canWriteReservations',
                 '/labOperation/online-video-call/canWriteReservations',
             ];
+        case 'studyTopic':
+            return [
+                '/canReadStudyTopics',
+                '/canWriteStudyTopics'
+            ]
+        case 'studyConsentForm':
+            return [
+                '/canReadStudyConsentForms',
+                '/canWriteStudyConsentForms'
+            ]
+        case 'studyConsentDoc':
+            return [
+                '/canReadStudyConsentDocs',
+                '/canWriteStudyConsentDocs'
+            ]
+        case 'studyEmailMetaTemplate':
+            return [
+                '/canReadStudyEmailMetaTemplates',
+                '/canWriteStudyEmailMetaTemplates'
+            ]
 
         case 'location':
             return [
@@ -86,11 +107,6 @@ var getCollectionReadFlagPointers = ({ collection }) => {
                 '/canReadExternalOrganizations',
                 '/canWriteExternalOrganizations'
             ];
-        case 'studyTopic':
-            return [
-                '/canReadStudyTopics',
-                '/canWriteStudyTopics'
-            ]
         case 'personnel':
             return [
                 '/canReadPersonnel',
@@ -115,8 +131,18 @@ var getCollectionWriteFlagPointers = ({ collection }) => {
             return [ '/canWriteSubjects' ];
         case 'subjectGroup':
             return [ '/canWriteSubjectGroups' ];
+        
         case 'study':
             return [ '/canWriteStudies' ];
+        case 'studyTopic':
+            return [ '/canWriteStudyTopics' ]
+        case 'studyConsentForm':
+            return [ '/canWriteStudyConsentForms' ]
+        case 'studyConsentDoc':
+            return [ '/canWriteStudyConsentDocs' ]
+        case 'studyEmailMetaTemplate':
+            return [ '/canWriteStudyEmailMetaTemplates' ]
+
         case 'personnel':
             return [ '/canWritePersonnel' ];
 
@@ -126,8 +152,6 @@ var getCollectionWriteFlagPointers = ({ collection }) => {
             return [ '/canWriteExternalPersons' ];
         case 'externalOrganization':
             return [ '/canWriteExternalOrganizations' ];
-        case 'studyTopic':
-            return [ '/canWriteStudyTopics' ]
         case 'personnel':
             return [ '/canWritePersonnel' ];
 
@@ -152,10 +176,16 @@ var getCollectionRemoveFlagPointers = ({ collection }) => {
             return [ '/canRemoveExternalPersons' ];
         case 'externalOrganization':
             return [ '/canRemoveExternalOrganizations' ];
+
         case 'study':
             return [ '/canRemoveStudies' ];
         case 'studyTopic':
             return [ '/canRemoveStudyTopics' ];
+        case 'studyConsentForm':
+            return [ '/canRemoveStudyConsentForms' ]
+        case 'studyConsentDoc':
+            return [ '/canRemoveStudyConsentDocs' ]
+
         case 'helperSet':
         case 'helperSetItem':
             return [ '/canRemoveHelperSets' ];
@@ -216,6 +246,10 @@ var allCollections = [
     'location',
     'studyTopic',
     'subjectGroup',
+
+    'studyConsentForm',
+    'studyConsentDoc',
+    'studyEmailMetaTemplate',
 
     // theese have special read/write flags
     // but the same stuff about search for fk applies here

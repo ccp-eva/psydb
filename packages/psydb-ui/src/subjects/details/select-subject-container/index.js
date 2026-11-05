@@ -85,6 +85,9 @@ const SelectSubjectModalBody = (ps) => {
 
     var { record, related, crtSettings } = fetched;
     var ageField = findCRTAgeFrameField(crtSettings, { as: 'definition' });
+    var subjectDateOfBirth = (
+        ageField ? jsonpointer.get(record, ageField.pointer) : undefined
+    );
 
     return (
         <div className='mt-3'>
@@ -128,6 +131,8 @@ const SelectSubjectModalBody = (ps) => {
                     subjectRecord={ record }
                     selectedStudy={ selectedStudy }
                     inviteType={ selectedProcedure }
+                    desiredTestInterval={ desiredTestInterval }
+                    subjectDateOfBirth={ subjectDateOfBirth }
                     subjectType={ record.type }
                     onSuccessfulUpdate={ (shouldHide, response) => {
                         var experimentId = response.data.data.find(it => (

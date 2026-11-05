@@ -30,8 +30,10 @@
     "@mpieva/psydb-schema-fields-special": "workspace:*",
     "@mpieva/psydb-mongo-adapter": "workspace:*",
     "@mpieva/psydb-mongo-stages": "workspace:*",
+    "@mpieva/psydb-db-utils": "workspace:*",
     "@mpieva/psydb-rohrpost-utils": "workspace:*",
     "@mpieva/psydb-custom-fields-common": "workspace:*",
+    "@mpieva/psydb-custom-fields-mongo": "workspace:*",
     "@mpieva/psydb-api-lib-errors": "workspace:*",
     "@mpieva/psydb-api-lib": "workspace:*",
     "@mpieva/psydb-api-endpoint-lib": "workspace:*"

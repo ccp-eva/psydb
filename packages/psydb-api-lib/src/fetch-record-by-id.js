@@ -76,11 +76,16 @@ var fetchRecordById = async ({
         ]
     );
 
-    var { type } = await (
+    var stub = await (
         db.collection(collectionName).findOne(
             { _id: id }, { projection: { type: true }}
         )
     );
+    if (!stub) {
+        return undefined;
+    }
+
+    var { type } = stub;
 
     if (hasCustomTypes) {
         // FIXME

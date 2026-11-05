@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"unique":true,"key":{"sequenceNumber":{"$numberInt":"1"}},"name":"sequenceNumber_1"}],"uuid":"4fa6fe8f56da42fdbe24833c6e09dfa6","collectionName":"researchGroup","type":"collection"}

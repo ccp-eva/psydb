@@ -6,7 +6,6 @@ import {
     Switch,
 } from 'react-router-dom';
 
-import { LinkContainer } from '@mpieva/psydb-ui-layout';
 import ExtendedSearch from './extended-search';
 import IntraRecordRouting from './intra-record-routing';
 
@@ -66,7 +65,6 @@ const RecordTypeRouting = ({
                 recordType,
 
                 RecordDetails,
-                RecordCreator,
                 RecordEditor,
                 RecordRemover,
             }) } />

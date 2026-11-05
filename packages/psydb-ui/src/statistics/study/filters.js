@@ -37,7 +37,7 @@ const StudyStatisticsFilters = () => {
             />
             <hr />
             <SmallFormFooter>
-                <Button type='submit'>Weiter</Button>
+                <Button type='submit'>{ translate('Next') }</Button>
             </SmallFormFooter>
         </FormBox>
     )

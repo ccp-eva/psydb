@@ -1,6 +1,5 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
-var util = require('util'); // because debug depth
 
 var {
     ApiError,
@@ -44,7 +43,6 @@ var checkAllowedAndPlausible = async ({
 
     var {
         id,
-        lastKnownEventId,
         subChannelKey,
         props,
     } = message.payload;
@@ -143,7 +141,6 @@ var triggerSystemEvents = async ({
     var { payload } = message;
     var {
         id,
-        lastKnownEventId,
         subChannelKey,
         props
     } = payload;

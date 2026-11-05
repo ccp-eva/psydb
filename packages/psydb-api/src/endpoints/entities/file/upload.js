@@ -6,7 +6,7 @@ var { createId, ResponseBody, ApiError } = require('@mpieva/psydb-api-lib');
 
 var fileUploadEndpoint = async (context, next) => {
     var { db, permissions, self } = context;
-    if (!permissions.isRoot()) {
+    if (!canUpload(permissions)) {
         throw new ApiError(403);
     }
 
@@ -38,7 +38,7 @@ var fileUploadEndpoint = async (context, next) => {
         mongoDocs.push({
             _id: await createId(),
             correlationId,
-            createdBy: self._id,
+            createdBy: self.personnelId,
             createdAt: now,
             uploadKey: key,
             hash,
@@ -62,5 +62,11 @@ var fileUploadEndpoint = async (context, next) => {
     }
     await next();
 }
+
+// NOTE: mail meta templates have file attachments
+var canUpload = (permissions) => (
+    permissions.isRoot()
+    || permissions.hasCollectionFlag('studyEmailMetaTemplate', 'write')
+);
 
 module.exports = fileUploadEndpoint;

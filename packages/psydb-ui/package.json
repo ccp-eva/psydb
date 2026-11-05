@@ -85,7 +85,9 @@
     "svg-url-loader": "~8.0.0",
     "react-diff-viewer": "~3.1.1",
     "@cdxoo/json-base64": "~1.0.0",
-    "@cdxoo/react-compose-contexts": "~1.0.0-beta.0"
+    "@cdxoo/react-compose-contexts": "~1.0.0-beta.0",
+    "querystring-es3": "~0.2.1",
+    "react-string-diff": "~0.2.0"
   },
   "config": {
     "mongodbMemoryServer": {

@@ -35,6 +35,7 @@ for (var k of Object.keys(ObjectFields)) {
 
 const {
     ForeignIdList,
+    FileIdList,
     HelperSetItemIdList,
     GenericEnumList,
     IntegerEnumList,
@@ -57,6 +58,7 @@ const {
 
 export {
     ForeignIdList,
+    FileIdList,
     HelperSetItemIdList,
     GenericEnumList,
     IntegerEnumList,

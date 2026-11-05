@@ -263,7 +263,7 @@ var extendedSearchCore = async (bag) => {
             SortStage({ ...sort }),
             { $skip: offset },
             ...(limit ? [{ $limit: limit }] : [])
-        ],
+        ].filter(it => !!it),
         mongoSettings: {
             allowDiskUse: true,
             collation: { locale: 'de@collation=phonebook' }

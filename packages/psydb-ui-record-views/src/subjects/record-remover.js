@@ -1,20 +1,12 @@
 import React from 'react';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
-import {
-    Pair,
-    Button,
-    Icons,
-    LoadingIndicator,
-    Alert,
-} from '@mpieva/psydb-ui-layout';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
+import { Pair, AsyncButton, Icons, LoadingIndicator, Alert }
+    from '@mpieva/psydb-ui-layout';
+import { withRecordRemover, FormBox, ReverseRefList }
+    from '@mpieva/psydb-ui-lib';
 
-import {
-    withRecordRemover,
-    FormBox,
-    ReverseRefList
-} from '@mpieva/psydb-ui-lib';
 
 const SafetyForm = (ps) => {
     var {
@@ -28,20 +20,17 @@ const SafetyForm = (ps) => {
     var { record } = fetched;
     var { sequenceNumber, _recordLabel } = record;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
-    var send = useSendRemove({
-        collection,
-        recordType,
-        record,
-        subChannels: [ 'gdpr', 'scientific' ],
-        onSuccessfulUpdate
-    });
+    var send = useSend(() => ({
+        type: 'subject/remove',
+        payload: { _id: record._id }
+    }), { onSuccessfulUpdate: (response) => {
+        onSuccessfulUpdate?.({ response });
+    }});
 
     var [ didFetchRefs, fetchedReverseRefs ] = useFetch((agent) => (
-        agent.fetchSubjectReverseRefs({
-            id
-        })
+        agent.fetchSubjectReverseRefs({ id })
     ), [ id ]);
 
     var [ didFetchParticipation, fetchedParticipation ] = (
@@ -102,13 +91,13 @@ const SafetyForm = (ps) => {
             )}
 
 
-            <Button
+            <AsyncButton
                 variant='danger'
-                onClick={ send.exec }
                 disabled={ reverseRefs.length > 0 || studyTypes.length > 0 }
+                { ...send.passthrough }
             >
                 { translate('Delete') }
-            </Button>
+            </AsyncButton>
         </FormBox>
     )
 }
@@ -118,7 +107,7 @@ const ParticipationList = (ps) => {
         participationByStudyType
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var allStudiesById = (
         Object.values(participationByStudyType)
@@ -161,7 +150,7 @@ const ParticipationList = (ps) => {
 
 const SuccessInfo = (ps) => {
     var { successInfoBackLink } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <FormBox
             titleClassName='text-success'

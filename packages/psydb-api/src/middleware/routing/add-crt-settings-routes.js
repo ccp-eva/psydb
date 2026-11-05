@@ -14,6 +14,10 @@ var addCRTSettingsRoutes = (bag) => {
             enableApiKeyAuth: true,
         })
     );
+    
+    router.post('/crt-settings/read-many', ...withPostStages({
+        endpoint: endpoints_SPLIT.crtSettings.readMany
+    }));
 }
 
 module.exports = addCRTSettingsRoutes;

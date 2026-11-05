@@ -8,10 +8,11 @@ const FieldSelection = (ps) => {
     var { dev_subjectDuplicatesSearchFields } = useUIConfig();
     var [{ translate }] = useI18N();
 
+    var pointerConfig = (
+        dev_subjectDuplicatesSearchFields?.[recordType] || []
+    );
     var definitions = crtSettings.findCustomFields({
-        pointer: { $in: dev_subjectDuplicatesSearchFields[recordType].map(
-            it => arrify(it)[0]
-        )}
+        pointer: { $in: pointerConfig.map(it => arrify(it)[0]) }
     });
 
     return (

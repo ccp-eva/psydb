@@ -1,4 +1,5 @@
 import React  from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { demuxed } from '@mpieva/psydb-ui-utils';
 
 import {
@@ -7,6 +8,7 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 const HandleDuplicateModalBody = (ps) => {
+    var translate = useUITranslation();
     var { onHide, modalPayloadData, onSuccessfulUpdate, recordType } = ps;
     var { responseData, formikForm } = modalPayloadData;
     var { possibleDuplicates, more } = responseData;
@@ -22,7 +24,7 @@ const HandleDuplicateModalBody = (ps) => {
         <div>
             <div className='mt-2'>
                 <header className='pb-1'>
-                    Mögliche Duplikate
+                    { translate('Possible Duplicates') }
                 </header>
                 <div>
                     { possibleDuplicates.map(it => (
@@ -36,7 +38,7 @@ const HandleDuplicateModalBody = (ps) => {
                     ))}
                 </div>
                 { more && (
-                    '... und weitere'
+                    translate('... and more')
                 )}
             </div>
             <div className='d-flex justify-content-end mt-3 border-top pt-3'>
@@ -53,7 +55,7 @@ const HandleDuplicateModalBody = (ps) => {
 }
 
 const HandleDuplicateModal = WithDefaultModal({
-    title: 'Mögliche Duplikate',
+    title: 'Possible Duplicates',
     size: 'md',
     bodyClassName: 'bg-light pt-0 pr-3 pl-3',
     Body: HandleDuplicateModalBody,

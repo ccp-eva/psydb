@@ -1,0 +1,14 @@
+# vim: syn=dockerfile
+ARG RUSH_VERSION
+ARG NODE_VERSION
+ARG ALPINE_VERSION
+
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION}
+# NOTE: new stage need to make global scope args accessible
+ARG RUSH_VERSION
+
+RUN apk add --no-cache make gcc g++ python3 curl git sed grep
+RUN npm config set update-notifier false \
+    && npm install -g @microsoft/rush@${RUSH_VERSION}
+# NOTE: rush version fails non-zero when run outside a rush repo
+RUN rush version 2>/dev/null || echo "OK"

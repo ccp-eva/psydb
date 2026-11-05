@@ -2,7 +2,7 @@ import React from 'react';
 import { jsonpointer } from '@mpieva/psydb-core-utils';
 import { __fixDefinitions, __fixRelated } from '@mpieva/psydb-common-compat';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetch,
@@ -88,7 +88,7 @@ export const Results = (ps) => {
 
 
 const TableFallback = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <>
             <BSTable>
@@ -112,7 +112,7 @@ const Table = (ps) => {
 
 const TableHead = (ps) => {
     var { columns, definitions } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <thead><tr>
             <TableHeadCustomCols definitions={ definitions } />
@@ -136,6 +136,12 @@ const TableHead = (ps) => {
             )}
             { columns.includes('/_specialHistoricExperimentLocations') && (
                 <th>{ translate('Historical Appointment Locations') }</th>
+            )}
+            { columns.includes('/_specialLatestContactPhone') && (
+                <th>{ translate('Latest Contact (Phone)') }</th>
+            )}
+            { columns.includes('/_specialLatestContactEmail') && (
+                <th>{ translate('Latest Contact (E-Mail)') }</th>
             )}
             <th></th>
         </tr></thead>
@@ -185,6 +191,11 @@ const TableBody = (ps) => {
                             related={ related }
                         />
                     )}
+                    { columns.includes('/_specialUpcomingExperiments') && (
+                        <ExperimentColumn
+                            experiments={ it._specialUpcomingExperiments }
+                        />
+                    )}
                     { columns.includes('/_specialHistoricExperimentLocations') && (
                         <HistoricExperimentLocationsColumn
                             participation={
@@ -195,9 +206,16 @@ const TableBody = (ps) => {
                             related={ related }
                         />
                     )}
-                    { columns.includes('/_specialUpcomingExperiments') && (
-                        <ExperimentColumn
-                            experiments={ it._specialUpcomingExperiments }
+                    { columns.includes('/_specialLatestContactPhone') && (
+                        <LatestContactColumn
+                            contact={ it._specialLatestContactPhone }
+                            withStatus={ true }
+                        />
+                    )}
+                    { columns.includes('/_specialLatestContactEmail') && (
+                        <LatestContactColumn
+                            contact={ it._specialLatestContactEmail }
+                            withStatus={ false }
                         />
                     )}
                     <td>
@@ -223,13 +241,14 @@ const MergedDuplicateColumn = (ps) => {
 
 const ParticipationColumn = (ps) => {
     var { participation, related } = ps;
+    var [{ fdatetime }] = useI18N();
     return (
         <td>{
             participation
             .filter(it => it.status === 'participated')
             .map(it => {
                 var { studyId, timestamp } = it;
-                var date = datefns.format(new Date(timestamp), 'dd.MM.yyyy');
+                var date = fdatetime(timestamp);
                 var label = (
                     related.records.study?.[studyId]?._recordLabel
                     || studyId
@@ -244,13 +263,14 @@ const ParticipationColumn = (ps) => {
 
 const HistoricExperimentLocationsColumn = (ps) => {
     var { participation, related } = ps;
+    var [{ fdate }] = useI18N();
     return (
         <td>{
             participation
             .filter(it => it.status === 'participated')
             .map(it => {
                 var { locationId, timestamp } = it;
-                var date = datefns.format(new Date(timestamp), 'dd.MM.yyyy');
+                var date = fdate(timestamp);
                 var label = (
                     related.records.location?.[locationId]?._recordLabel
                     || locationId
@@ -261,12 +281,33 @@ const HistoricExperimentLocationsColumn = (ps) => {
         }</td>
     )
 }
+
+const LatestContactColumn = (ps) => {
+    var { contact, withStatus } = ps;
+    var [{ translate, fdatetime }] = useI18N();
+    if (!contact) {
+        return <td></td>
+    }
+
+    var { contactedAt, status } = contact;
+    return (
+        <td>
+            { fdatetime(contactedAt) }
+            { withStatus && (
+                <>
+                    {' '}
+                    ({ translate(`_subjectContactStatus_${status}`) })
+                </>
+            )}
+        </td>
+    )
+}
+
 const ExperimentColumn = (ps) => {
     var { experiments, related } = ps;
+    var [{ fdatetime }] = useI18N();
     var items = experiments.map((it, ix) => {
-        var date = datefns.format(
-            new Date(it.state.interval.start), 'dd.MM.yyyy'
-        );
+        var date = fdatetime(it.state.interval.start);
         return (
             <LinkContainer
                 key={ ix }

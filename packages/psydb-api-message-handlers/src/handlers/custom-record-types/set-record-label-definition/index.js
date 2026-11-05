@@ -70,6 +70,12 @@ handler.checkAllowedAndPlausible = async ({
             // also depth maybe ...
             throw new ApiError(400, 'ForeignIdFieldNotSupported');
         }
+        if (resolved.schema.systemType === 'ForeignIdList') {
+            // FIXME: we currently cannot handle foreignId in label
+            // field since it could lead to circles in graph
+            // also depth maybe ...
+            throw new ApiError(400, 'ForeignIdListFieldNotSupported');
+        }
         gatheredFieldData.push({
             // FIXME: not sure if we wanna store that
             //inSchemaPointer: resolved.inSchemaPointer,

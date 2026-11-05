@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -18,7 +18,7 @@ export const MainForm = (ps) => {
         permissions,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <FormBox title={ title }>
@@ -45,7 +45,9 @@ export const MainForm = (ps) => {
 
 const FormFields = (ps) => {
     var { related, permissions } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
+    var { dev_enableStudyEmailTemplates } = useUIConfig();
+    
     return (
         <>
             <Fields.SaneString
@@ -169,7 +171,50 @@ const FormFields = (ps) => {
                     label='Can View Lab Workflow Settings of Studies'
                     dataXPath='$.canViewStudyLabOpsSettings'
                 />
+                <Bool
+                    label='Can View Lab Teams of Studies'
+                    dataXPath='$.canViewStudyLabTeams'
+                />
             </PermBox>
+            <PermBox title={ translate('Study Consent') }>
+                <Bool
+                    label='Can View Study Consent Docs'
+                    dataXPath='$.canReadStudyConsentDocs'
+                />
+                <Bool
+                    label='Can Edit Study Consent Docs'
+                    dataXPath='$.canWriteStudyConsentDocs'
+                />
+                <Bool
+                    label='Can Delete Study Consent Docs'
+                    dataXPath='$.canRemoveStudyConsentDocs'
+                />
+                <Bool
+                    label='Can View Study Consent Forms'
+                    dataXPath='$.canReadStudyConsentForms'
+                />
+                <Bool
+                    label='Can Edit Study Consent Forms'
+                    dataXPath='$.canWriteStudyConsentForms'
+                />
+                <Bool
+                    label='Can Delete Study Consent Forms'
+                    dataXPath='$.canRemoveStudyConsentForms'
+                />
+            </PermBox>
+
+            { dev_enableStudyEmailTemplates && (
+                <PermBox title={ translate('Study Emails') }>
+                    <Bool
+                        label='Can View Study Email Meta Templates'
+                        dataXPath='$.canReadStudyEmailMetaTemplates'
+                    />
+                    <Bool
+                        label='Can Edit Study Email Meta Templates'
+                        dataXPath='$.canWriteStudyEmailMetaTemplates'
+                    />
+                </PermBox>
+            )}
 
             <PermBox title={ translate('Subjects') }>
                 <Bool
@@ -271,7 +316,7 @@ const LabOperationFields = (ps) => {
     var { type, title, hasInvitation } = ps;
     var dataXPath = `$.labOperation.${type}`;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <PermBox title={ title }>
@@ -282,6 +327,10 @@ const LabOperationFields = (ps) => {
                         : 'Can Schedule Experimenter Teams'
                 }
                 dataXPath={ `${dataXPath}.canWriteReservations` }
+            />
+            <Bool
+                label='Can Search Selectable Subjects'
+                dataXPath={ `${dataXPath}.canSearchSelectableSubjects` }
             />
             <Bool
                 label='Can Select Subjects for Appointments'
@@ -309,6 +358,12 @@ const LabOperationFields = (ps) => {
                 label='Can Postprocess Appointments'
                 dataXPath={ `${dataXPath}.canPostprocessExperiments` }
             />
+            { type === 'inhouse' && (
+                <Bool
+                    label='Can Obtain Consent'
+                    dataXPath={ `${dataXPath}.canObtainConsent` }
+                />
+            )}
             { type === 'away-team' && (
                 <Bool
                     label='Can Change Study of Existing Appointments'
@@ -329,7 +384,7 @@ const SurveyFields = (ps) => {
     var { type, title } = ps;
     var dataXPath = `$.labOperation.${type}`;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <PermBox title={ title }>
@@ -354,7 +409,8 @@ const MainHeader = (ps) => {
 
 const Bool = (ps) => {
     var { label, ...pass } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
+    
     return (
         <Fields.DefaultBool
             uiSplit={[ 8, 4 ]}

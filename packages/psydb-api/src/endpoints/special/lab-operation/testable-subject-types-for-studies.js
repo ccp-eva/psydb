@@ -7,6 +7,8 @@ var {
     unique
 } = require('@mpieva/psydb-core-utils');
 
+var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
+
 var {
     validateOrThrow,
     ApiError,
@@ -36,66 +38,68 @@ var RequestBodySchema = () => ExactObject({
 });
 
 var testableSubjectTypesForStudies = async (context, next) => {
-    var { 
-        db,
-        permissions,
-        request,
-    } = context;
+    var { db, permissions, request } = context;
 
     validateOrThrow({
         schema: RequestBodySchema(),
         payload: request.body
     });
 
-    var {
-        studyIds,
-        labProcedureType,
-    } = request.body;
+    var { studyIds, labProcedureType } = request.body;
+    var { isRoot, availableStudyTypes, availableSubjectTypes } = permissions;
 
     // TODO: permissions
 
-    var studyRecords = await db.collection('study').aggregate([
+    var studyRecords = await aggregateToArray({ db, study: [
         { $match: {
-            _id: { $in: studyIds }
+            '_id': { $in: studyIds },
+            // XXX: this needs to be moved to SystemPermissionStages?
+            ...(!isRoot() && {
+                'type': { $in: availableStudyTypes.map(it => it.key) }
+            })
         }},
         ...SystemPermissionStages({
             collection: 'study',
             permissions
         }),
         StripEventsStage(),
-    ]).toArray()
+    ]});
 
-    var settingRecords = await (
-        db.collection('experimentVariantSetting').aggregate([
+    var settingRecords = await aggregateToArray({
+        db, experimentVariantSetting: [
             { $match: {
-                studyId: { $in: studyIds },
-                type: labProcedureType
+                'studyId': { $in: studyIds },
+                'type': labProcedureType,
+
+                ...(!isRoot() && {
+                    'state.subjectTypeKey': {
+                        $in: availableSubjectTypes.map(it => it.key)
+                    }
+                })
             }},
             { $project: { _id: true, 'state.subjectTypeKey': true }},
-        ]).toArray()
-    );
+        ]
+    });
 
     var subjectTypeKeys = unique(settingRecords.map((it) => (
         it.state.subjectTypeKey
     )));
 
-    var subjectRecordTypeRecords = await (
-        db.collection('customRecordType').aggregate([
-            { $match: {
-                collection: 'subject',
-                type: { $in: subjectTypeKeys }
-            }},
-            { $project: {
-                collection: true,
-                type: true,
-                'state.label': true,
-            }}
-        ]).toArray()
-    );
+    var subjectCRTRecords = await aggregateToArray({ db, customRecordType: [
+        { $match: {
+            collection: 'subject',
+            type: { $in: subjectTypeKeys }
+        }},
+        { $project: {
+            collection: true,
+            type: true,
+            'state.label': true,
+        }}
+    ]});
     
     context.body = ResponseBody({
         data: {
-            subjectRecordTypeRecords,
+            subjectRecordTypeRecords: subjectCRTRecords
         }
     });
 

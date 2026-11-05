@@ -1,5 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:api:fetchRelated');
+var { jsonpointer, forcePush } = require('@mpieva/psydb-core-utils');
 var {
     mappifyPointer,
     fetchRecordLabelsManual,
@@ -17,13 +18,38 @@ var fetchRelated = async (bag) => {
     for (var it of definitions) {
         var { systemType, pointer, props } = it;
 
-        if (/^ForeignId/.test(systemType)) {
-            var { collection } = props;
-            todoRecordIds[collection] = fromItems(pointer);
-        }
-
         if (/^HelperSetItem/.test(systemType)) {
             todoHelperSetItemIds.push(...fromItems(pointer));
+        }
+
+        if (/^ForeignId/.test(systemType)) {
+            var { collection } = props;
+            forcePush({
+                into: todoRecordIds, pointer: '/' + collection,
+                values: fromItems(pointer)
+            });
+        }
+
+        // XXX: only personnel is using ths though
+        if ('PersonnelResearchGroupSettingsList' === systemType) {
+            var todoResearchGroupIds = [];
+            var todoSystemRoleIds = [];
+            for (var r of records) {
+                var settings = jsonpointer.get(r, pointer);
+                for (var s of settings) {
+                    todoResearchGroupIds.push(s.researchGroupId)
+                    todoSystemRoleIds.push(s.systemRoleId)
+                }
+            }
+
+            forcePush({
+                into: todoRecordIds, pointer: '/researchGroup',
+                values: todoResearchGroupIds
+            });
+            forcePush({
+                into: todoRecordIds, pointer: '/systemRole',
+                values: todoSystemRoleIds
+            });
         }
     }
 

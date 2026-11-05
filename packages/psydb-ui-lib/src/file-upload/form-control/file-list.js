@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 const FileList = (ps) => {
     var { records = [], onRemove, canRemove, multiple } = ps;
@@ -20,6 +21,7 @@ const FileList = (ps) => {
 };
 
 const Row = (ps) => {
+    var translate = useUITranslation();
     var { file, multiple, onRemove, canRemove } = ps;
     
     return (
@@ -31,7 +33,7 @@ const Row = (ps) => {
                         className='bs5 d-inline-block'
                         onClick={ () => onRemove(file._id, { multiple }) }
                     >
-                        Entfernen
+                        { translate('Remove') }
                     </a>
                 )}
             </td>
@@ -39,13 +41,16 @@ const Row = (ps) => {
     );
 }
 
-var Empty = () => (
-    <span
-        className="m-l-sm block"
-        style={{ color: '#bbb', paddingTop: '5px' }}
-    >
-        Keine
-    </span>
-);
+var Empty = () => {
+    var translate = useUITranslation();
+    return (
+        <span
+            className="m-l-sm block"
+            style={{ color: '#bbb', paddingTop: '5px' }}
+        >
+            { translate('None') }
+        </span>
+    );
+}
 
 export default FileList;

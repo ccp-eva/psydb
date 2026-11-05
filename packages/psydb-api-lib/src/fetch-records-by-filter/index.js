@@ -122,6 +122,12 @@ var fetchRecordByFilter = async (bag) => {
         }),
 
         isNotRemovedStage({ hasSubChannels }),
+        
+        ...(hasSubChannels ? [{
+            $addFields: { '_isAnonymized': { $eq: [
+                '$gdpr.state', '[[REDACTED]]'
+            ]}}
+        }] : []),
 
         ...maybeStages({
             condition: Array.isArray(onlyIds),
@@ -253,12 +259,15 @@ var fetchRecordByFilter = async (bag) => {
         displayFieldStage = ProjectDisplayFieldsStage({
             displayFields,
             additionalProjection: {
-                type: true,
+                'type': true,
                 '_isHidden': (
                     hasSubChannels
                     ? '$scientific.state.systemPermissions.isHidden'
                     : '$state.systemPermissions.isHidden'
                 ),
+                ...(hasSubChannels && {
+                    '_isAnonymized': true
+                }),
                 ...(recordLabelDefinition && {
                     '_recordLabelDefinitionFields': true 
                 }),

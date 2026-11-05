@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"c654249de4cb4023b4dc9668dc9b72f7","collectionName":"rohrpostEvents","type":"collection"}

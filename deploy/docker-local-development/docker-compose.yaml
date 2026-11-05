@@ -1,0 +1,73 @@
+name: psydb-local-dev
+
+services:
+  haproxy:
+    image: haproxy:3.0-alpine
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+      - greenmail
+      - roundcube
+      - mailhog
+    ports:
+      - "127.222.0.1:47017:47017" # mongodb
+      - "127.222.0.1:8811:8811"   # greenmail api
+      - "127.222.0.1:3025:3025"   # greenmail smtp
+      - "127.222.0.1:3143:3143"   # greenmail imap
+      - "127.222.0.1:8822:8822"   # roundcube web
+      - "127.222.0.1:1025:1025"   # mailhog smtp
+      - "127.222.0.1:8833:8833"   # mailhog web
+    volumes:
+      - ./config/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    networks:
+      - psydb-local-dev-net
+
+  mongodb:
+    image: mongo:4.4.30
+    restart: unless-stopped
+    volumes:
+      - ./data/mongodb:/data/db
+    networks:
+      - psydb-local-dev-net
+
+  greenmail:
+    image: greenmail/standalone:2.1.3
+    restart: unless-stopped
+    environment:
+      GREENMAIL_OPTS: >-
+        -Dgreenmail.setup.test.all
+        -Dgreenmail.hostname=0.0.0.0
+        -Dgreenmail.auth.disabled
+        -Dgreenmail.verbose
+      # NOTE: auth disabled => any user/password is accepted on login
+      #       and the mailbox gets created on the fly
+    networks:
+      - psydb-local-dev-net
+
+  roundcube:
+    image: roundcube/roundcubemail:1.6.11-apache
+    restart: unless-stopped
+    depends_on:
+      - greenmail
+    environment:
+      ROUNDCUBEMAIL_DEFAULT_HOST: greenmail
+      ROUNDCUBEMAIL_DEFAULT_PORT: 3143
+      ROUNDCUBEMAIL_SMTP_SERVER: greenmail
+      ROUNDCUBEMAIL_SMTP_PORT: 3025
+      ROUNDCUBEMAIL_DB_TYPE: sqlite
+    volumes:
+      - ./config/roundcube-custom.inc.php:/var/roundcube/config/custom.inc.php:ro
+      - ./data/roundcube:/var/roundcube/db
+    networks:
+      - psydb-local-dev-net
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    restart: unless-stopped
+    networks:
+      - psydb-local-dev-net
+
+networks:
+  psydb-local-dev-net:
+    name: psydb-local-dev-net
+    driver: bridge

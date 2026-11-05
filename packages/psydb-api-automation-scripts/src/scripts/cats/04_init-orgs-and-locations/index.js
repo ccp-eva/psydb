@@ -1,21 +1,23 @@
 'use strict';
 var { initDB, fetchCRTs, gatherRefCache, gatherLabeledIds }
     = require('../../../utils');
-var createCatShelterOrgs = require('./create-cat-shelter-orgs');
+var createCatSupportOrgs = require('./create-cat-support-orgs');
+var createCatShelterPersons = require('./create-cat-shelter-persons');
 var createCatShelters = require('./create-cat-shelters');
 var createCatLabRooms = require('./create-cat-lab-rooms');
 
 module.exports = async (bag) => {
-    var { driver, apiKey, extraOptions = {}} = bag;
+    var { driver, apiKey, extraOptions = {}, idgen } = bag;
 
     var db = await initDB(extraOptions);
     var ids = await gatherLabeledIds({ db });
     var refcache = await gatherRefCache({ db });
     var crts = await fetchCRTs({ db });
     
-    var context = { driver, refcache, ids, crts };
+    var context = { driver, refcache, ids, crts, idgen };
 
-    await createCatShelterOrgs(context);
+    await createCatSupportOrgs(context);
+    await createCatShelterPersons(context);
     await createCatShelters(context);
     await createCatLabRooms(context);
 

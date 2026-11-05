@@ -34,6 +34,8 @@ export * from './with-record-creator';
 export * from './with-record-editor';
 export * from './with-record-remover';
 
+export * from './with-fetch-one';
+
 export { default as formatDateInterval } from './format-date-interval';
 export * from './with-lab-procedure-settings-iterator';
 
@@ -87,3 +89,5 @@ export {
 export {
     default as PostprocessSubjectForm
 } from './experiments/postprocess-subject-form';
+
+export * from './default-record-remover-success-info';

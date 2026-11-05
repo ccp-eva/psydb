@@ -1,11 +1,12 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
+import { sift } from '@mpieva/psydb-common-lib';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import { GenericEnum } from './generic-enum';
 
 export const CRTFieldPointer = withField({ Control: (ps) => {
-    var { collection, recordType, ...pass } = ps;
+    var { collection, recordType, filter, ...pass } = ps;
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         (collection && recordType)
@@ -26,20 +27,17 @@ export const CRTFieldPointer = withField({ Control: (ps) => {
         );
     }
 
+    var filterFN = undefined;
+    if (filter) {
+        filterFN = sift(filter);
+    }
+
     var { hasSubChannels, fieldDefinitions } = fetched.data;
     var options = {};
     if (hasSubChannels) {
         for (var subChannel of Object.keys(fieldDefinitions)) {
             for (var it of fieldDefinitions[subChannel]) {
-                if (
-                    // TODO: enable ForeignId make sure backend handles change
-                    // in 1:1 correctly i.e. remove references from
-                    // other targetting source records
-                    ['ForeignIdList'].includes(it.type)
-                    && it.props.collection === collection
-                    && it.props.recordType === recordType
-                    && it.props.readOnly === true // TODO
-                ) {
+                if (filterFN ? filterFN(it) : true) {
                     options[it.pointer] = it.displayName;
                 }
             }
@@ -47,15 +45,7 @@ export const CRTFieldPointer = withField({ Control: (ps) => {
     }
     else {
         for (var it of fieldDefinitions) {
-            if (
-                // TODO: enable ForeignId make sure backend handles change
-                // in 1:1 correctly i.e. remove references from
-                // other targetting source records
-                ['ForeignIdList'].includes(it.type)
-                && it.props.collection === collection
-                && it.props.recordType === recordType
-                && it.props.readOnly === true // TODO
-            ) {
+            if (filterFN ? filterFN(it) : true) {
                 options[it.pointer] = it.displayName;
             }
         }

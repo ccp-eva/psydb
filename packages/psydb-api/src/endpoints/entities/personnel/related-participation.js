@@ -37,6 +37,16 @@ var relatedParticipation = async (context, next) => {
         { collection: 'study'}
     ], { wrap: true });
 
+    if (!allCRTSettings.subject?.length || !allCRTSettings.study?.length) {
+        context.body = ResponseBody({ data: {
+            records: [],
+            related: {}
+        }});
+
+        await next();
+        return;
+    }
+
     var subjectLabelProjection = mergeRecordLabelProjections(
         allCRTSettings.subject, { as: '_labelProjection' }
     );

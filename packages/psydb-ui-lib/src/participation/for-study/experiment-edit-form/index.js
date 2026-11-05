@@ -191,24 +191,24 @@ var switchFormContainer = (labMethodKey) => {
 }
 
 const NotPostprocessedAlert = (ps) => {
+    var translate = useUITranslation();
     return (
         <Alert variant='danger'>
-            <b>Termin ist nicht nachbereitet!</b><br/>
+            <b>{ translate('Appointment is not postprocessed!') }</b><br/>
             <div>
-                Nur Teilnahmen von nachbereitetetn Terminen können manuell
-                verändert werden.
+                { translate('Only participations of postprocessed appointments can be changed manually.') }
             </div>
         </Alert>
     )
 }
 
 const IsCanceledAlert = (ps) => {
+    var translate = useUITranslation();
     return (
         <Alert variant='danger'>
-            <b>Termin wurde abgesagt!</b><br/>
+            <b>{ translate('Appointment was canceled!') }</b><br/>
             <div>
-                Teilnahmen von abgesagten Termine können
-                nicht manuell bearbeitet werden.
+                { translate('Participations of canceled appointments cannot be edited manually.') }
             </div>
         </Alert>
     )

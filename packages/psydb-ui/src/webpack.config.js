@@ -1,11 +1,14 @@
 'use strict';
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const getBuildVersion = require('./get-build-version');
 
 module.exports = {
     context: __dirname,
     mode: 'development',
     devtool: 'inline-source-map',
+    //devtool: 'eval-cheap-module-source-map', 
     entry: './index.js',
     output: {
         //path: path.resolve(__dirname, 'dist'),
@@ -39,7 +42,18 @@ module.exports = {
             },
         ]
     },
+    //resolve: {
+    //    mainFields: [ 'browser', 'main' ],
+    //    fallback: {
+    //        "querystring": require.resolve("querystring-es3"),
+    //        //'querystring': 'querystring-es3',
+    //    },
+    //    //symlinks: false,
+    //},
     plugins: [
+        new webpack.DefinePlugin({
+            __PSYDB_VERSION__: JSON.stringify(getBuildVersion()),
+        }),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './template.html'),
             title: 'psydb',
@@ -57,4 +71,5 @@ module.exports = {
             }
         }
     },
+    cache: { type: 'filesystem' }
 };

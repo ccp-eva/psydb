@@ -1,0 +1,5 @@
+subjectId;contactType;date;time;contactedBy;comment
+1;email;04.03.2026;09:15;2;dd.mm.yyyy
+2;phone;1.7.2026;10:00;3;d.m.yyyy
+3;phone;2026-05-12;14:30;2;yyyy-mm-dd
+4;email;31.04.2026;10:00;2;invalid date

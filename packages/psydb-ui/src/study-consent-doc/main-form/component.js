@@ -1,0 +1,120 @@
+import React from 'react';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useFetchAll } from '@mpieva/psydb-ui-hooks';
+import { AsyncButton } from '@mpieva/psydb-ui-layout';
+import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
+
+import ConsentDocElement from './consent-doc-element';
+
+export const Component = (ps) => {
+    var {
+        studyConsentForm, subjectCRT, labOperatorIds, consentObtainedBy,
+        initialValues, onSubmit, isTransmitting,
+    } = ps;
+
+    var { studyId } = studyConsentForm;
+    var { title, titleI18N } = studyConsentForm.state;
+    var [{ translate, language }] = useI18N();
+
+    return (
+        <DefaultForm
+            initialValues={ initialValues }
+            onSubmit={ onSubmit }
+            useAjvAsync
+        >
+            {(formikProps) => (
+                <>
+                    <InfoBox
+                        studyId={ studyId }
+                        labOperatorIds={ labOperatorIds }
+                        consentObtainedBy={ consentObtainedBy }
+                    />
+
+                    <h1>{ titleI18N?.[language] || title }</h1>
+                    <hr />
+                    <FormFields
+                        studyConsentForm={ studyConsentForm }
+                        subjectCRT={ subjectCRT }
+                    />
+                    <AsyncButton
+                        type='submit'
+                        isTransmitting={ isTransmitting }
+                    >
+                        { translate('Save') }
+                    </AsyncButton>
+                </>
+            )}
+        </DefaultForm>
+    );
+}
+
+const FormFields = (ps) => {
+    var { studyConsentForm, subjectCRT } = ps;
+    var [{ translate }] = useI18N();
+
+    var { elements } = studyConsentForm.state;
+
+    return (
+        <>
+            { elements.map((it, ix) => (
+                <ConsentDocElement
+                    { ...it } key={ ix } 
+                    index={ ix } subjectCRT={ subjectCRT }
+                />
+            ))}
+        </>
+    )
+}
+
+export var InfoBox = (ps) => {
+    var {
+        style, className, studyId, labOperatorIds = [], consentObtainedBy,
+        date = new Date(), // NOTE: when filling the doc its now
+    } = ps;
+    var [{ translate, fdate }] = useI18N();
+
+    // NOTE: older docs dont have consentObtainedBy
+    var personnelIds = [
+        ...labOperatorIds,
+        ...(consentObtainedBy ? [ consentObtainedBy ] : [])
+    ];
+    var [ didFetch, fetched ] = useFetchAll((agent) => ({
+        personnel: agent.personnel.readManyLabels({ ids: personnelIds }),
+        study: agent.readRecord({ collection: 'study', id: studyId }),
+    }), [ studyId, personnelIds.join(',') ])
+
+    if (!didFetch) {
+        return null;
+    }
+
+    var { personnel, study } = fetched._stageDatas;
+
+    return (
+        <div className='d-flex justify-content-between mb-3'>
+            <div>
+                <div className='mb-2'>
+                    <header><b>{ translate('Study') }</b></header>
+                    { study.record.state.name }
+                </div>
+                <div>
+                    <header><b>{ translate('Date') }</b></header>
+                    { fdate(date) }
+                </div>
+            </div>
+            <div>
+                <div className='mb-2'>
+                    <header><b>{ translate('Study Investigator') }</b></header>
+                    { labOperatorIds.map((it, ix) => (
+                        <div key={ ix }>{ personnel.labels[it] }</div>
+                    )) }
+                </div>
+                <div>
+                    <header>
+                        <b>{ translate('Person obtaining consent') }</b>
+                    </header>
+                    { personnel.labels[consentObtainedBy] }
+                </div>
+            </div>
+        </div>
+    )
+}

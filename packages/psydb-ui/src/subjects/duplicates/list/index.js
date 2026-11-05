@@ -60,6 +60,7 @@ const CRTFetchWrapper = (ps) => {
 const DuplicatesList = (ps) => {
     var { recordType, crtSettings } = ps;
     var { duplicateCheckSettings } = crtSettings.getRaw();
+    var { dev_subjectDuplicatesSearchFields } = useUIConfig();
     var [{ translate }] = useI18N();
 
     var [ query, updateQuery ] = useURLSearchParamsB64();
@@ -75,6 +76,20 @@ const DuplicatesList = (ps) => {
                 updateQuery({ fields: [ ...fields, next ]})
             )
         }
+    }
+
+    var hasPointerConfig = (
+        dev_subjectDuplicatesSearchFields?.[recordType]?.length > 0
+    );
+    if (!hasPointerConfig) {
+        return (
+            <Alert variant='warning'>
+                <b>{ translate(
+                    'Duplicates search is not configured for subject type "${recordType}".',
+                    { recordType }
+                )}</b>
+            </Alert>
+        )
     }
 
     var content = (

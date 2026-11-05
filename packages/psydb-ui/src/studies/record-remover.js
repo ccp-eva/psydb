@@ -112,7 +112,7 @@ const SafetyForm = (ps) => {
                 { translate('Delete') }
             </Button>
 
-            { permissions.isRoot() && (
+            { /*permissions.isRoot() && (
                 <>
                     <hr />
                     <AsyncButton
@@ -123,7 +123,7 @@ const SafetyForm = (ps) => {
                         { translate('DIST CLEAN') }
                     </AsyncButton>
                 </>
-            )}
+            )*/}
         </FormBox>
     )
 }

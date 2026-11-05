@@ -1,11 +1,12 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { Button } from '@mpieva/psydb-ui-layout';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { AsyncButton } from '@mpieva/psydb-ui-layout';
 import {
     DefaultForm,
     Fields,
     FormBox,
-    SubmitAndChangeVisibilityButton
+    SubmitAndChangeVisibilityButton,
+    UpdateRecordVisibilityButton
 } from '@mpieva/psydb-ui-lib';
 
 export const Component = (ps) => {
@@ -14,16 +15,18 @@ export const Component = (ps) => {
         crtSettings,
         initialValues,
         onSubmit,
+        isTransmitting,
 
         record,        
         related,
         permissions,
+        isAnonymized,
 
         renderFormBox = true,
         renderVisibilityButton = false,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     // FIXME: i dont like how this works
     var wrappedOnSubmit = (formData, formikBag) => {
@@ -54,16 +57,22 @@ export const Component = (ps) => {
                 <>
                     { /*console.log(formikProps.values) || ''*/ }
                     <FormFields
+                        record={ record }
                         crtSettings={ crtSettings }
                         related={ related }
                         permissions={ permissions }
+                        isAnonymized={ isAnonymized }
                     />
                     <hr />
                     <div className='d-flex justify-content-between'>
-                        <Button type='submit'>
+                        <AsyncButton
+                            type='submit'
+                            isTransmitting={ isTransmitting }
+                            disabled={ isAnonymized }
+                        >
                             { translate('Save') }
-                        </Button>
-                        { renderVisibilityButton && (
+                        </AsyncButton>
+                        { (renderVisibilityButton && !isAnonymized) && (
                             <SubmitAndChangeVisibilityButton
                                 record={ record }
                                 formikForm={ formikProps }
@@ -87,16 +96,18 @@ export const Component = (ps) => {
 }
 
 const FormFields = (ps) => {
-    var { crtSettings, related, permissions } = ps;
+    var { record, crtSettings, related, permissions, isAnonymized } = ps;
     var { requiresTestingPermissions } = crtSettings;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>
             <Fields.FullUserOrdered
                 crtSettings={ crtSettings }
                 related={ related }
+                isAnonymized={ isAnonymized }
+                disabled={ isAnonymized }
                 exclude={[
                     '/sequenceNumber',
                     '/onlineId',
@@ -121,7 +132,8 @@ const FormFields = (ps) => {
                 label={ translate('Record Access for') }
                 dataXPath='$.scientific.systemPermissions.accessRightsByResearchGroup'
                 related={ related }
-                required
+                required={ true }
+                disabled={ isAnonymized }
             />
         </>
     );

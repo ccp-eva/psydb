@@ -39,9 +39,15 @@ var fetchAvailableCRTSettings = async (bag) => {
     else {
         // TODO: maybe move that into permissions itself
         availableTypesByCollection = {
-            'subject': permissions.availableSubjectTypes.map(onlykey),
-            'study': permissions.availableStudyTypes.map(onlykey),
-            'location': permissions.availableLocationTypes.map(onlykey),
+            'subject': permissions.isRoot() ? 'ALL' : (
+                permissions.availableSubjectTypes.map(onlykey)
+            ),
+            'study': permissions.isRoot() ? 'ALL' : (
+                permissions.availableStudyTypes.map(onlykey)
+            ),
+            'location': permissions.isRoot() ? 'ALL' : (
+                permissions.availableLocationTypes.map(onlykey)
+            ),
             'externalPerson': 'ALL', // FIXME
             'externalOrganization': 'ALL', // FIXME
         }

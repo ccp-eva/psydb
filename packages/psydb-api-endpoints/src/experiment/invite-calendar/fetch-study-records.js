@@ -9,6 +9,7 @@ var fetchStudyRecords = async (bag) => {
     var {
         db, interval, researchGroupIds, labMethods,
         studyId = undefined,
+        subjectRecordType = undefined,
     } = bag;
 
     var studies = await aggregateToArray({ db, study: [
@@ -30,6 +31,9 @@ var fetchStudyRecords = async (bag) => {
             { $match: {
                 'studyId': { $in: studies.map(it => it._id) },
                 'type': { $in: labMethods },
+                ...(subjectRecordType && {
+                    'state.subjectTypeKey': subjectRecordType
+                }),
             }},
             { $project: { 'studyId': true }}
         ]

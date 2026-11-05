@@ -23,6 +23,7 @@ const StudyInhouseLocations = (ps) => {
 
         desiredTestInterval,
         testableIntervals,
+        ageFrameIntervals,
 
         activeLocationType,
         onSelectLocationType,
@@ -122,6 +123,7 @@ const StudyInhouseLocations = (ps) => {
                 currentSubjectRecord,
                 desiredTestInterval,
                 testableIntervals,
+                ageFrameIntervals,
 
                 locationRecordType: activeLocationType,
 

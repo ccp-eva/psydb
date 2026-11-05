@@ -1,6 +1,7 @@
 'use strict';
-var { keyBy, entries, compareIds } = require('@mpieva/psydb-core-utils');
-var withRetracedErrors = require('../with-retraced-errors');
+var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
+var { keyBy, entries, compareIds, unique } = require('@mpieva/psydb-core-utils');
+var { keyRecords } = require('@mpieva/psydb-common-lib');
 
 var setup = async ({ db, self }) => {
     var {
@@ -28,14 +29,11 @@ var setupRolesAndResearchGroups = async ({ db, self }) => {
     var _researchGroupIds = researchGroupSettings.map(it => (
         it.researchGroupId
     ));
-    var researchGroups = await withRetracedErrors(
-        db.collection('researchGroup')
-        .find(
-            self.hasRootAccess
-            ? {}
-            : { _id: { $in: _researchGroupIds }}
-        ).toArray()
-    );
+    var researchGroups = await aggregateToArray({ db, researchGroup: (
+        self.hasRootAccess
+        ? {}
+        : { '_id': { $in: _researchGroupIds }}
+    )})
     self.researchGroupIds = researchGroups.map(it => it._id);
     self.researchGroups = researchGroups;
 
@@ -52,19 +50,11 @@ var setupRolesAndResearchGroups = async ({ db, self }) => {
         }
     }
 
-    var roles = await withRetracedErrors(
-        db.collection('systemRole')
-        .find({ _id: { $in: (
-            Object.values(userRoleIdsByGID)
-        )}})
-        .toArray()
-    );
+    var roles = await aggregateToArray({ db, systemRole: {
+        '_id': { $in: Object.values(userRoleIdsByGID) }
+    }});
 
-    var rolesById = keyBy({
-        items: roles,
-        byProp: '_id'
-    });
-
+    var rolesById = keyRecords(roles);
     for (var [ gid, roleId] of entries(userRoleIdsByGID)) {
         self.rolesByResearchGroupId[gid] = rolesById[roleId];
     }
@@ -73,29 +63,28 @@ var setupRolesAndResearchGroups = async ({ db, self }) => {
 var setupAvailableCRTsAndMethods = async ({ db, self }) => {
     var researchGroups = getActiveResearchGroups({ self });
     
-    self.availableSubjectTypes = unique({
-        from: reduceCRTs({
-            items: researchGroups,
-            pointer: '/state/subjectTypes'
-        }),
-        transformOption: (it) => (it.key)
-    })
-    self.availableLocationTypes = unique({
-        from: reduceCRTs({
-            items: researchGroups,
-            pointer: '/state/locationTypes'
-        }),
-        transformOption: (it) => (it.key)
+    self.availableSubjectTypes = gatherCRTRefKeys({
+        from: researchGroups,
+        pointer: '/state/subjectTypes'
     });
-    self.availableStudyTypes = unique({
-        from : reduceCRTs({
-            items: researchGroups,
-            pointer: '/state/studyTypes'
-        }),
-        transformOption: (it) => (it.key)
+    self.availableLocationTypes = gatherCRTRefKeys({
+        from: researchGroups,
+        pointer: '/state/locationTypes'
+    });
+    self.availableStudyTypes = gatherCRTRefKeys({
+        from: researchGroups,
+        pointer: '/state/studyTypes'
+    });
+    self.availableExternalOrganizationTypes = gatherCRTRefKeys({
+        from: researchGroups,
+        pointer: '/state/externalOrganizationTypes'
+    });
+    self.availableExternalPersonTypes = gatherCRTRefKeys({
+        from: researchGroups,
+        pointer: '/state/externalPersonTypes'
     });
 
-    self.availableLabMethods = unique(reduceCRTs({
+    self.availableLabMethods = unique(gatherPointerValuesFromList({
         items: researchGroups,
         pointer: '/state/labMethods'
     }));
@@ -129,10 +118,25 @@ var getActiveResearchGroups = (bag) => {
     return researchGroups;
 }
 
+var gatherCRTRefKeys = (bag) => {
+    var { from, pointer } = bag;
+
+    var out = unique({
+        from: gatherPointerValuesFromList({ items: from, pointer }),
+        transformOption: (it) => (it.key)
+    });
+
+    return out;
+}
+
+
 var jsonpointer = require('jsonpointer')
 var { unique, arrify } = require('@mpieva/psydb-core-utils');
 
-var reduceCRTs = ({ items, pointer = '/'}) => {
+// FIXME: maybe better name; it used to be called 'reduceCRTs' which worse
+// unionize() ???
+var gatherPointerValuesFromList = (bag) => {
+    var { items, pointer = '/' } = bag;
     var reduced = items.reduce((acc, it) => {
         var values = arrify(jsonpointer.get(it, pointer) || []);
 

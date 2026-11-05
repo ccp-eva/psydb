@@ -1,7 +1,9 @@
 import React from 'react';
+import { merge } from '@mpieva/psydb-core-utils';
 import enums from '@mpieva/psydb-schema-enums';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-import { useModalReducer, useSend } from '@mpieva/psydb-ui-hooks';
+import { useModalReducer, useSend, usePermissions }
+    from '@mpieva/psydb-ui-hooks';
 import { ColoredBox } from '@mpieva/psydb-ui-layout';
 
 import ExperimentDropdown from '../../experiment-dropdown';
@@ -32,20 +34,34 @@ const ExperimentSummaryMedium = (ps) => {
 
         experimentRelated,
         experimentOperatorTeamRecords,
+        labTeamRelated,
+        studyConsentDocs = [],
         subjectRecordsById,
         subjectRelated,
         subjectDisplayFieldData,
 
         showPast,
         onSuccessfulUpdate,
+
+        // NOTE: injected since it lives in psydb-ui
+        ConsentFormSelectModal,
     } = ps;
 
     var [{ translate }] = useI18N();
+    var permissions = usePermissions();
+
+    var canObtainConsent = (
+        !!ConsentFormSelectModal
+        && permissions.hasLabOperationFlag(
+            experimentRecord.type, 'canObtainConsent'
+        )
+    );
 
     var moveExperimentModal = useModalReducer({ show: false });
     var changeTeamModal = useModalReducer({ show: false });
     var changeLocationModal = useModalReducer({ show: false });
 
+    var consentFormSelectModal = useModalReducer({ show: false });
     var commentPerSubjectModal = useModalReducer({ show: false });
     var moveSubjectModal = useModalReducer({ show: false });
     var followUpSubjectModal = useModalReducer({ show: false });
@@ -144,6 +160,20 @@ const ExperimentSummaryMedium = (ps) => {
 
                 onSuccessfulUpdate,
             }) } />
+
+            { canObtainConsent && (
+                <ConsentFormSelectModal
+                    experimentRecord={ experimentRecord }
+                    labTeamRecord={ teamRecord }
+                    related={{ records: merge(
+                        _related,
+                        labTeamRelated?.relatedRecordLabels || {}
+                    )}}
+
+                    { ...consentFormSelectModal.passthrough }
+                    onRefresh={ onSuccessfulUpdate }
+                />
+            )}
 
             <PerSubjectCommentModal { ...({
                 ...commentPerSubjectModal.passthrough,
@@ -244,6 +274,17 @@ const ExperimentSummaryMedium = (ps) => {
                             subjectRelated,
                             subjectDisplayFieldData,
     
+                            ...(canObtainConsent && {
+                                onClickConsent: (
+                                    consentFormSelectModal.handleShow
+                                ),
+                                hasStudyConsentDoc: (
+                                    studyConsentDocs.some(doc => (
+                                        doc.studyId === studyId
+                                        && doc.subjectId === it.subjectId
+                                    ))
+                                ),
+                            }),
                             onClickComment: commentPerSubjectModal.handleShow,
 
                             onClickMove: moveSubjectModal.handleShow,

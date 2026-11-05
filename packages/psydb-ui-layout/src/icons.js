@@ -28,12 +28,16 @@ export {
     Plus,
     List,
     GearFill,
+    PersonFillGear,
     PencilFill,
     PersonFill,
     DoorClosedFill,
     XCircle,
     XLg,
-    X
+    X,
+
+    Check,
+    CheckAll,
 
 } from 'react-bootstrap-icons';
 

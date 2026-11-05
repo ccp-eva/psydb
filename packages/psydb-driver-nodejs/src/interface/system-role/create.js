@@ -1,5 +1,5 @@
 'use strict';
-var { jsonpointer } = require('@mpieva/psydb-core-utils');
+var { jsonpointer } = require('../../core-utils');
 
 var create = async (bag) => {
     var { driver, name, initial = false, override = [] } = bag;
@@ -36,6 +36,10 @@ var create = async (bag) => {
         '/canWriteStudies',
         '/canRemoveStudies',
         '/canViewStudyLabOpsSettings',
+        '/canViewStudyLabTeams',
+
+        '/canReadStudyEmailMetaTemplates',
+        '/canWriteStudyEmailMetaTemplates',
 
         '/canReadSubjects',
         '/canWriteSubjects',

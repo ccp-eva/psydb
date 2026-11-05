@@ -41,6 +41,14 @@ module.exports = {
         searchDisplayType: 'SaneString',
     },
 
+    Phone: {
+        canBeCustomField: true,
+        canBeDisplayField: true,
+        canBeLabelField: true,
+        canSearch: true,
+        searchDisplayType: 'SaneString',
+    },
+
     PhoneWithTypeList: {
         canBeCustomField: true,
         canBeDisplayField: true,

@@ -8,6 +8,10 @@ export const switchComponent = (type) => {
             return Components.ManualOnlyParticipation;
         case 'online-survey':
             return Components.OnlineSurvey;
+        case 'inhouse':
+            return Components.Inhouse;
+        case 'away-team':
+            return Components.AwayTeam;
         default:
             throw new Error(`unknown type ${type}`)
     }

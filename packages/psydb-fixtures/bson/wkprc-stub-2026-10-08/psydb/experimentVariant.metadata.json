@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"unique":true,"key":{"sequenceNumber":{"$numberInt":"1"}},"name":"sequenceNumber_1"}],"uuid":"a49990f693874e18b8372684f9ffa328","collectionName":"experimentVariant","type":"collection"}

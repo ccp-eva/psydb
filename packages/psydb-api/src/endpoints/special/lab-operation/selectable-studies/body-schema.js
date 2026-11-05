@@ -8,16 +8,16 @@ var {
     ExperimentVariantEnum,
 } = require('@mpieva/psydb-schema-fields');
 
+var Filters = () => ({ type: 'object' /* TODO */ });
+
 var RequestBodySchema = () => ({
+    // NOTE oneOf because of array/scalar mix in experimentTypes i guess?
     oneOf: [
         ExactObject({
             properties: {
                 studyRecordType: CustomRecordTypeKey({ collection: 'study' }),
                 target: StringEnum([ 'table', 'optionlist' ]),
-                filters: {
-                    type: 'object',
-                    // TODO
-                },
+                filters: Filters(),
             },
             required: [
                 'studyRecordType',
@@ -29,10 +29,7 @@ var RequestBodySchema = () => ({
                 // FIXME: this is actually labProcedureType
                 experimentType: ExperimentVariantEnum(),
                 target: StringEnum([ 'table', 'optionlist' ]),
-                filters: {
-                    type: 'object',
-                    // TODO
-                },
+                filters: Filters(),
             },
             required: [
                 'studyRecordType',
@@ -48,10 +45,7 @@ var RequestBodySchema = () => ({
                     minItems: 1
                 }),
                 target: StringEnum([ 'table', 'optionlist' ]),
-                filters: {
-                    type: 'object',
-                    // TODO
-                },
+                filters: Filters(),
             },
             required: [
                 'studyRecordType',

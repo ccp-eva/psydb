@@ -1,0 +1,20 @@
+{
+  "name": "@mpieva/psydb-db-utils",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "",
+    "test": "npx mocha --config mocha.config.json test"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {
+    "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-common-lib": "workspace:*",
+    "@mpieva/psydb-mongo-adapter": "workspace:*",
+    "@mpieva/psydb-schema-creators": "workspace:*",
+    "@mpieva/psydb-api-lib-errors": "workspace:*"
+  },
+  "devDependencies": {}
+}

@@ -13,11 +13,15 @@ var createFakeRootFlags = () => ({
     ...([
         'Subjects',
         'SubjectGroups',
+        
         'Studies',
+        'StudyTopics',
+        'StudyConsentDocs',
+        'StudyConsentForms',
+
         'Locations',
         'ExternalPersons',
         'ExternalOrganizations',
-        'StudyTopics',
         'HelperSets',
         'Personnel'
     ]).reduce((acc, it) => ({
@@ -27,26 +31,33 @@ var createFakeRootFlags = () => ({
         [`canRemove${it}`]: true,
     }), {}),
 
+    canReadStudyEmailMetaTemplates: true,
+    canWriteStudyEmailMetaTemplates: true,
+
     canReadParticipation: true,
     canWriteParticipation: true,
 
 
+    canAccessSensitiveFields: true,
     canViewReceptionCalendar: true,
     canViewStudyLabOpsSettings: true,
-    canAccessSensitiveFields: true,
+    canViewStudyLabTeams: true,
 
     labOperation: {
         'inhouse': {
             canWriteReservations: true,
+            canSearchSelectableSubjects: true,
             canSelectSubjectsForExperiments: true,
             canConfirmSubjectInvitation: true,
             canViewExperimentCalendar: true,
             canMoveAndCancelExperiments: true,
             canChangeOpsTeam: true,
             canPostprocessExperiments: true,
+            canObtainConsent: true,
         },
         'away-team': {
             canWriteReservations: true,
+            canSearchSelectableSubjects: true,
             canSelectSubjectsForExperiments: true,
             canViewExperimentCalendar: true,
             canMoveAndCancelExperiments: true,
@@ -57,6 +68,7 @@ var createFakeRootFlags = () => ({
         },
         'online-video-call': {
             canWriteReservations: true,
+            canSearchSelectableSubjects: true,
             canSelectSubjectsForExperiments: true,
             canConfirmSubjectInvitation: true,
             canViewExperimentCalendar: true,

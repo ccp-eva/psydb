@@ -34,13 +34,13 @@ else {
             digest: 'sha256', // thats also the default
         },
         db: {
-            url: 'mongodb://127.0.0.1:47017/psydb',
+            url: 'mongodb://127.222.0.1:47017/psydb',
             dbName: 'psydb',
             useUnifiedTopology: true,
         },
         smtp: {
             senderEmail: 'psydb-noreply@example.com',
-            host: '127.0.0.1',
+            host: '127.222.0.1',
             //port: 1025, // mailhog
             port: 3025, // greenmail
             secure: false,

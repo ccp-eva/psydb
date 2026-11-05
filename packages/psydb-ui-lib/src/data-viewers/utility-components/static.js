@@ -563,3 +563,73 @@ export const FileRef = (ps) => {
         <a href={`/api/file/download?fileId=${value}`} target='_blank'>{ value }</a>
     );
 }
+
+export const CRTRefList = (ps) => {
+    var { value, props, related, __useNewRelated, newTab = false } = ps;
+    var { collection } = props;
+    
+    if (!(Array.isArray(value) && value.length)) {
+        return <NoValue />
+    }
+
+    var formatted = value.map((it, ix) => (
+        <CRTRef
+            key={ ix }
+            value={ it }
+            props={ props }
+            related={ related }
+            __useNewRelated={ __useNewRelated }
+            newTab={ newTab }
+        />
+    ));
+    
+    return (
+        <Joined delimiter=', '>{ formatted }</Joined>
+    )
+}
+CRTRefList.Study = ({ props = {}, ...pass }) => (
+    <CRTRefList { ...pass } props={{ ...props, collection: 'study' }} />
+)
+CRTRefList.Subject = ({ props = {}, ...pass }) => (
+    <CRTRefList { ...pass } props={{ ...props, collection: 'subject' }} />
+)
+CRTRefList.Location = ({ props = {}, ...pass }) => (
+    <CRTRefList { ...pass } props={{ ...props, collection: 'location' }} />
+)
+CRTRefList.ExternalOrganization = ({ props = {}, ...pass }) => (
+    <CRTRefList { ...pass } props={{
+        ...props, collection: 'externalOrganization'
+    }} />
+)
+CRTRefList.ExternalPerson = ({ props = {}, ...pass }) => (
+    <CRTRefList { ...pass } props={{
+        ...props, collection: 'externalPerson'
+    }} />
+)
+
+export const CRTRef = (ps) => {
+    var { value, props, related, __useNewRelated, newTab = false } = ps;
+    var { collection, recordType } = props;
+    
+    var translate = useUITranslation();
+
+    if (!value) {
+        return <NoValue unknown={ props.displayEmptyAsUnknown } />
+    }
+    var { key, id = null } = value;
+    // TODO: id is optional we need routing for #/crt/[collection]/[key]
+    // also we sould maybe inject the ids on create/patch
+    // or on read as fallback for legacy maybe
+    
+    // XXX
+    var relatedCRT = undefined
+    if (__useNewRelated) {
+        relatedCRT = related?.crts[collection][key];
+    }
+    else {
+        relatedCRT = related?.relatedCustomRecordTypes[collection]?.[key];
+    }
+
+    var label = relatedCRT ? translate.crt(relatedCRT) : key
+    return label;
+}

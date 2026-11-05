@@ -21,6 +21,10 @@ module.exports = [
         de: 'Kann Räumlichkeiten Reservieren',
     },
     {
+        en: 'Can Search Selectable Subjects',
+        de: 'Kann Auswählbare Proband:innen Suchen',
+    },
+    {
         en: 'Can Select Subjects for Appointments',
         de: 'Kann Proband:innen für Termine Auswählen',
     },
@@ -43,6 +47,10 @@ module.exports = [
     {
         en: 'Can Postprocess Appointments',
         de: 'Kann Termine Nachbereiten',
+    },
+    {
+        en: 'Can Obtain Consent',
+        de: 'Kann Einwilligungen Einholen',
     },
 
     {
@@ -213,4 +221,8 @@ module.exports = [
         en: 'Can Access Sensitive Fields (e.g. WKPRC-Comment)',
         de: 'kann sensible Felder einsehen (z.B. WKPRC-Kommentar)'
     },
+    {
+        en: 'General Scheduling',
+        de: 'Generelle Terminplanung'
+    }
 ]

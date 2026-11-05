@@ -5,6 +5,13 @@ import { Nav, LinkContainer } from '@mpieva/psydb-ui-layout';
 
 import Logo from './main-logo';
 
+// NOTE: injected by webpack DefinePlugin
+const buildVersion = (
+    typeof __PSYDB_VERSION__ !== 'undefined'
+    ? __PSYDB_VERSION__
+    : 'unknown'
+);
+
 const Link = (ps) => {
     var { to, ...pass } = ps;
 
@@ -34,6 +41,9 @@ const SideNav = (ps) => {
             >
                 <div className='navbar-nav'>
                     { items }
+                </div>
+                <div className='border-top mt-2 pt-2 text-muted small'>
+                    v{ buildVersion }
                 </div>
             </Nav>
         </>
@@ -105,11 +115,17 @@ var checkNavItemEnabled = (bag) => {
         dev_enableCSVSubjectImport = false,
         dev_enableCSVParticipationImport = false,
         dev_enableStatistics = false,
+        dev_enableExtendedExperimentSearch = false,
+        dev_enableStudyEmailTemplates = false,
     } = config;
 
     switch (path) {
         case '/statistics':
             return dev_enableStatistics;
+        case '/experiments/extended-search':
+            return dev_enableExtendedExperimentSearch;
+        case '/study-email-meta-templates':
+            return dev_enableStudyEmailTemplates;
         case '/csv-imports':
             return (
                 dev_enableCSVSubjectImport
@@ -155,6 +171,7 @@ var checkNavItemAllowed = (bag) => {
             ]});
         case '/lab-operation/subject-selection':
             return hasSomeLabOperationFlags({ types: 'any', flags: [
+                'canSearchSelectableSubjects',
                 'canSelectSubjectsForExperiments'
             ]});
         case '/lab-operation/invite-confirmation':
@@ -180,6 +197,10 @@ var checkNavItemAllowed = (bag) => {
             return hasSomeFlags([
                 'canReadLocations',
                 'canWriteLocations'
+            ]);
+        case '/experiments/extended-search':
+            return hasSomeFlags([
+                'canUseExtendedSearch',
             ]);
         case '/external-persons':
             return hasSomeFlags([
@@ -211,8 +232,14 @@ var checkNavItemAllowed = (bag) => {
                 'canReadPersonnel',
                 'canWritePersonnel'
             ]);
+        case '/study-email-meta-templates':
+            return hasSomeFlags([
+                'canReadStudyEmailMetaTemplates',
+                'canWriteStudyEmailMetaTemplates'
+            ]);
         case '/statistics':
         case '/csv-imports':
+        case '/study-consent-templates':
         case '/research-groups':
         case '/system-roles':
         case '/custom-record-types':

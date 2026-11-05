@@ -3,71 +3,50 @@ var debug = require('debug')(
     'psydb:api:endpoints:experimentOperatorTeamsForStudy'
 );
 
-var { ejson, compareIds } = require('@mpieva/psydb-core-utils');
+var { ejson } = require('@mpieva/psydb-core-utils');
+var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 
 var {
-    ResponseBody,
-
-    validateOrThrow,
-    withRetracedErrors,
-    aggregateToArray,
-    verifyStudyAccess,
-
-    createRecordLabel,
-    fetchRecordById,
-    createSchemaForRecordType,
+    ResponseBody, validateOrThrow,
+    verifyPermissionFlags, verifyStudyAccess,
     fetchRelatedLabelsForMany,
-    SmartArray
 } = require('@mpieva/psydb-api-lib');
 
-var {
-    ExactObject,
-    ForeignId,
-} = require('@mpieva/psydb-schema-fields');
+var { ClosedObject, ForeignId } = require('@mpieva/psydb-schema-fields');
 
-var RequestParamsSchema = () => ExactObject({
-    properties: {
-        studyId: ForeignId({ collection: 'study' }),
-    },
-    required: [
-        'studyId',
-    ]
+var ParamsSchema = () => ClosedObject({
+    'studyId': ForeignId({ collection: 'study' }),
 })
 
 var experimentOperatorTeamsForStudy = async (context, next) => {
-    var { 
-        db,
-        permissions,
-        params,
-    } = context;
+    var { db, permissions, params } = context;
 
     validateOrThrow({
-        schema: RequestParamsSchema(),
+        schema: ParamsSchema(),
         payload: params
     })
 
-    var {
-        studyId,
-    } = params;
+    var { studyId } = params;
 
-    var canChangeOpsTeam = (
-        permissions.hasSomeLabOperationFlags({
-            types: 'any',
-            flags: [ 'canChangeOpsTeam' ]
-        })
-    );
+    // NOTE: if you can change the ops team for
+    // lab operation this takes precedent as its needed in calednars n such
+    var canChangeOpsTeam = permissions.hasSomeLabOperationFlags({
+        types: 'any', flags: [ 'canChangeOpsTeam' ]
+    });
+
     // FIXME: this is incomplete
     // we need to check if the studies
     // research groups match with the users
     if (!canChangeOpsTeam) {
+        await verifyPermissionFlags({
+            db, permissions, flags: [ 'canViewStudyLabTeams' ], match: 'some'
+        });
+
         await verifyStudyAccess({
-            db,
-            permissions,
-            studyId,
-            action: 'read',
+            db, permissions, studyId, action: 'read',
         });
     }
-
+    
     var teamStages = [
         { $match: {
             studyId,
@@ -83,9 +62,9 @@ var experimentOperatorTeamsForStudy = async (context, next) => {
         }},
     ];
     //console.dir(ejson(teamStages), { depth: null })
-    var teamRecords = await withRetracedErrors(
-        aggregateToArray({ db, experimentOperatorTeam: teamStages })
-    );
+    var teamRecords = await aggregateToArray({
+        db, experimentOperatorTeam: teamStages
+    });
 
     var {
         relatedRecords,

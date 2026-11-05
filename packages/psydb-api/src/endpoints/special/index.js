@@ -80,9 +80,9 @@ module.exports = {
         require('./extended-experiment-data')
     ),
 
-    experimentPostprocessing: (
-        require('./experiment-postprocessing')
-    ),
+    //experimentPostprocessing: (
+    //    require('./experiment-postprocessing')
+    //),
 
     experimentVariants: (
         require('./experiment-variants')

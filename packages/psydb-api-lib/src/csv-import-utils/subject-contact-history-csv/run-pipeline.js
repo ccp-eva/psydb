@@ -1,0 +1,44 @@
+'use strict';
+var { CSVColumnRemappers } = require('@mpieva/psydb-common-lib');
+var { runDefaultPipeline } = require('../common');
+
+var CSVSchema = require('./csv-schema');
+var transformPrepared = require('./transform-prepared');
+
+var runPipeline = async (bag) => {
+    var {
+        db, csvLines: csvData,
+        subjectType, timezone: unmarshalClientTimezone
+    } = bag;
+
+    var schema = CSVSchema({ subjectType });
+    var customColumnRemap = (
+        CSVColumnRemappers.SubjectContactHistory().csv2obj
+    );
+
+    var { pipelineData } = await runDefaultPipeline({
+        db, csvData, schema, customColumnRemap, unmarshalClientTimezone,
+        extraRecordResolvePointers: {
+            subject: [ '/sequenceNumber', '/onlineId' ],
+            personnel: [ '/scientific/state/manualImportId' ],
+        },
+    });
+
+    var okPipelineData = (
+        pipelineData.filter(it => it.isValid && it.isRefReplacementOk)
+    );
+
+    var transformed = transformPrepared({
+        pipelineData: okPipelineData,
+
+        subjectType,
+        timezone: unmarshalClientTimezone
+    });
+
+    return {
+        pipelineData,
+        transformed
+    }
+}
+
+module.exports = runPipeline;

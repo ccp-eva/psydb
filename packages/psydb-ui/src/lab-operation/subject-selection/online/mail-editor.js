@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     Form
@@ -32,6 +33,7 @@ var defaults = {
 const MailEditor = ({
    onChange, 
 }) => {
+    var translate = useUITranslation();
     var [ state, setState ] = useState({ ...defaults })
 
     var wrappedOnChange = (nextEditorValue) => {
@@ -49,7 +51,7 @@ const MailEditor = ({
     return (
         <div>
             <Form.Group>
-                <Form.Label><b>Betreff</b></Form.Label>
+                <Form.Label><b>{ translate('Mail Subject') }</b></Form.Label>
                 <Form.Control type='text'
                     value={ state.mailSubject }
                     onChange={ (event) => {

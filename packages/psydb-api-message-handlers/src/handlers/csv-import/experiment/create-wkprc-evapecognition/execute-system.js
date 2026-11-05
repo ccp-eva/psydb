@@ -1,5 +1,4 @@
 'use strict';
-var { swapTimezone } = require('@mpieva/psydb-timezone-helpers');
 var { createId } = require('@mpieva/psydb-api-lib');
 
 
@@ -9,13 +8,12 @@ var executeSystemEvents = async (context) => {
         dispatch, dispatchProps
     } = context;
 
-    var { timezone, payload } = message;
-    var { subjectType  } = payload;
+    var { subjectType, skipPossibleDuplicates } = message.payload;
 
     var { study, file, pipelineOutput } = cache.get();
 
-    var { pipelineData, transformed } = pipelineOutput;
-    var { experiments, participations } = transformed;
+    var { pipelineData, allTransformed, todo } = pipelineOutput;
+    var { experiments, participations } = todo;
 
     var now = new Date();
     var csvImportId = await createId();
@@ -28,6 +26,7 @@ var executeSystemEvents = async (context) => {
         studyId: study._id,
         subjectType,
         pipelineData,
+        skipPossibleDuplicates,
     });
 
     for (var it of experiments) {

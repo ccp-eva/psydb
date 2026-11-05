@@ -6,6 +6,10 @@ module.exports = {
     ),
     noop: require('./noop'),
 
-    ...require('./verify-one-record'),
-    ...require('./verify-one-crt'),
+    composables: require('./composables'),
+    ...require('./composables/verify-one-record'), // FIXME: compat
+    ...require('./composables/verify-one-crt'), // FIXME: compat
+
+    createSchemaDefauls: require('./create-schema-defaults'),
+    prepareStateUpdate: require('./prepare-state-update'),
 };

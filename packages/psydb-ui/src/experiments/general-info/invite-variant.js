@@ -4,6 +4,7 @@ import { Pair, Split } from '@mpieva/psydb-ui-layout';
 import { formatDateInterval } from '@mpieva/psydb-ui-lib';
 
 import TeamNameAndColor from '@mpieva/psydb-ui-lib/src/team-name-and-color';
+import Experimenters from './experimenters';
 
 
 const InviteVariant = (ps) => {
@@ -14,9 +15,13 @@ const InviteVariant = (ps) => {
         interval,
         locationData,
         opsTeamData,
+        opsTeamRelated,
+        experimentOperatorIds,
+        experimentRelated,
     } = ps;
 
     var [{ translate, locale }] = useI18N();
+    var hasExperimenters = experimentOperatorIds?.length > 0;
 
     var {
         startDate, startTime, endTime
@@ -28,13 +33,25 @@ const InviteVariant = (ps) => {
                 <Pair label={ translate('Study') }>
                     { studyLabel }
                 </Pair>
-                <Pair label={ translate('Team') }>
-                    { opsTeamData ? (
-                        <TeamNameAndColor teamRecord={ opsTeamData.record } />
-                    ) : (
-                        translate('Unknown')
-                    )}
-                </Pair>
+                { hasExperimenters ? (
+                    <Pair label={ translate('Experimenters') }>
+                        <Experimenters
+                            ids={ experimentOperatorIds }
+                            related={ experimentRelated }
+                        />
+                    </Pair>
+                ) : (
+                    <Pair label={ translate('Team') }>
+                        { opsTeamData ? (
+                            <TeamNameAndColor
+                                teamRecord={ opsTeamData.record }
+                                related={ opsTeamRelated }
+                            />
+                        ) : (
+                            translate('Unknown')
+                        )}
+                    </Pair>
+                )}
             </Split>
 
             <Split num={2}>

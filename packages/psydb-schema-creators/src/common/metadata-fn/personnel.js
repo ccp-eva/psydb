@@ -30,6 +30,13 @@ module.exports = (bag) => {
                 props: {},
             },
             {
+                key: '_manualImportId',
+                systemType: 'SaneString',
+                dataPointer: '/scientific/state/manualImportId',
+                displayName: 'Manual ID for Imports',
+                displayNameI18N: { de: 'Manuelle ID für Importe' },
+            },
+            {
                 key: '_firstname',
                 systemType: 'SaneString',
                 dataPointer: '/gdpr/state/firstname',
@@ -61,7 +68,7 @@ module.exports = (bag) => {
                 key: '_researchGroupSettings',
                 systemType: 'PersonnelResearchGroupSettingsList',
                 dataPointer: '/scientific/state/researchGroupSettings',
-                displayName: 'Sysetm Roles',
+                displayName: 'System Roles',
                 displayNameI18N: { de: 'System-Rollen' },
             },
             {

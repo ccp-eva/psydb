@@ -29,17 +29,18 @@ module.exports = async (context) => {
     await crt.setupDisplaySettings({
         recordLabelDefinition: {
             format: '${#}',
-            tokens: asPointers([ 'shorthand' ])
+            // NOTE: with dev_enableWKPRCPatches studies have no shorthand
+            tokens: asPointers([ 'name' ])
         },
         displayFields: {
             'table': [ '/sequenceNumber', ...asPointers([
-                'shorthand',
+                'name',
                 'scientistIds',
                 'runningPeriod/start',
                 'runningPeriod/end',
             ])],
             'optionlist': [ '/sequenceNumber', ...asPointers([
-                'shorthand',
+                'name',
             ])]
         },
     })
@@ -65,8 +66,6 @@ var FieldDefinitions = ({ cache, type }) => ({
             minItems: 0,
             collection: 'personnel',
             constraints: {},
-            displayEmptyAsUnknown: false,
-            addReferenceToTarget: false,
             readOnly: false,
         }
     },
@@ -81,8 +80,6 @@ var FieldDefinitions = ({ cache, type }) => ({
             minItems: 0,
             collection: 'personnel',
             constraints: {},
-            displayEmptyAsUnknown: false,
-            addReferenceToTarget: false,
             readOnly: false,
         }
     },
@@ -120,6 +117,6 @@ var FieldDefinitions = ({ cache, type }) => ({
         displayNameI18N: {
             'de': 'Beschreibung'
         },
-        props: { minLength: 0 }
+        props: { minLength: 0, isSensitive: false }
     }
 })

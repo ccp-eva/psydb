@@ -43,11 +43,11 @@ const ExperimentList = (ps) => {
                 key={ ix } cols={[ '1fr', '1fr' ]}
                 className='bg-white border p-3'
             >
-                <span>Datum/Zeit</span>
+                <span>{ translate('Date/Time') }</span>
                 <b>{ Fields.DateTime.stringifyValue({
                     definition: definitions.start, record, i18n
                 })}</b>
-                <span>Studie</span>
+                <span>{ translate('Study') }</span>
                 <b>{ Fields.ForeignId.stringifyValue({
                     definition: definitions.studyId, record, i18n, related
                 })}</b>

@@ -62,7 +62,7 @@ export const PasswordForm = (ps) => {
                         { formikProps.values['$'].method === 'manual' && (
                             <>
                                 <Fields.Password
-                                    label='Neues Passwort'
+                                    label={ translate('New Password') }
                                     dataXPath='$.password'
                                     required
                                 />

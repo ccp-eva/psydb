@@ -90,6 +90,18 @@ const FormFields = (ps) => {
                 dataXPath='$.locationTypes'
             />
             
+            <AssignedTypeList
+                label={ translate('External Organization Types') }
+                collection='externalOrganization'
+                dataXPath='$.externalOrganizationTypes'
+            />
+            
+            <AssignedTypeList
+                label={ translate('External Person Types') }
+                collection='externalPerson'
+                dataXPath='$.externalPersonTypes'
+            />
+            
             <AssignedHelperSetList
                 label={ translate('Helper Tables') }
                 dataXPath='$.helperSetIds'

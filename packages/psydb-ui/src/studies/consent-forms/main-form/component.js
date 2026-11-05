@@ -1,0 +1,70 @@
+import React from 'react';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { AsyncButton } from '@mpieva/psydb-ui-layout';
+import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
+
+import ConsentFormElementList from './consent-form-element-list';
+
+export const Component = (ps) => {
+    var {
+        subjectCRT, initialValues, onSubmit, enableReinitialize,
+        isTransmitting,
+    } = ps;
+    var [{ translate }] = useI18N();
+
+    return (
+        <DefaultForm
+            initialValues={ initialValues }
+            onSubmit={ onSubmit }
+            useAjvAsync={ true }
+            enableReinitialize={ enableReinitialize }
+        >
+            {(formikProps) => (
+                <>
+                    <FormFields subjectCRT={ subjectCRT }/>
+                    <AsyncButton
+                        type='submit'
+                        isTransmitting={ isTransmitting }
+                    >
+                        { translate('Save') }
+                    </AsyncButton>
+                </>
+            )}
+        </DefaultForm>
+    );
+}
+
+const FormFields = (ps) => {
+    var { subjectCRT } = ps;
+    var [{ translate }] = useI18N();
+
+    return (
+        <>
+            <Fields.SaneString
+                label={ translate('Form-Shorthand') }
+                dataXPath='$.internalName'
+                required
+            />
+            <Fields.SaneString
+                label={ translate('Title for Subjects') }
+                dataXPath='$.title'
+                required
+            />
+            <Fields.DefaultBool
+                label={ translate('Enabled') }
+                dataXPath='$.isEnabled'
+                required
+            />
+           
+            <div className='px-3'>
+                <ConsentFormElementList
+                    label={ translate('Elements') }
+                    dataXPath='$.elements'
+                    enableMove={ true }
+                    enableRemove={ true }
+                    subjectCRT={ subjectCRT }
+                />
+            </div>
+        </>
+    );
+}

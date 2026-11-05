@@ -9,6 +9,7 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
+    "debug": "~4.3.4",
     "copy-anything": "~2.0.6",
     "koa-compose": "~4.1.0",
     "mongodb": "~3.6.3",
@@ -17,9 +18,10 @@
     "@cdxoo/koa-mongo-mq": "~1.4.0",
     "@cdxoo/mongo-rohrpost": "~3.4.0",
     "deepmerge": "~4.2.2",
-    "@mpieva/psydb-api-lib": "workspace:~0.1.0-alpha",
     "@cdxoo/tiny-ejson": "~1.0.0",
-    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha"
+    "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-api-lib": "workspace:*",
+    "@mpieva/psydb-koa-event-helpers": "workspace:*"
   },
   "devDependencies": {
     "mocha": "~10.2.0",

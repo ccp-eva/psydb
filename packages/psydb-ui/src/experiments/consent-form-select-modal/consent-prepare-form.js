@@ -1,0 +1,170 @@
+import React, { useState } from 'react';
+
+import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { useSelectionReducer } from '@mpieva/psydb-ui-hooks';
+import { Grid, Alert, SmallFormFooter } from '@mpieva/psydb-ui-layout';
+
+import { GenericEnum } from '@mpieva/psydb-ui-form-controls';
+
+import {
+    LabOperatorCheckbox,
+    AddLabOperatorDropdown,
+    PersonnelDropdown,
+    ConsentObtainedByRadio,
+    GotoButton
+} from './utils';
+
+const ConsentPrepareForm = (ps) => {
+    var {
+        onHide,
+        experimentRecord, subjectRecord, labTeamRecord,
+        studyConsentFormRecords,
+        related,
+
+        deferredConsentDocFetch,
+    } = ps;
+
+    var [{ translate }] = useI18N();
+
+    var [
+        selectedStudyConsentFormId,
+        setSelectedStudyConsentFormId
+    ] = useState(
+        studyConsentFormRecords.length === 1
+        ? studyConsentFormRecords[0]._id
+        : undefined
+    );
+
+    var { _id: experimentId, state: { studyId }} = experimentRecord;
+    var { _id: subjectId } = subjectRecord;
+
+    var labOperatorIds = (
+        labTeamRecord?.state.personnelIds
+        || experimentRecord?.state.experimentOperatorIds
+        || []
+    );
+
+    var selectedLabOperatorIds = useSelectionReducer({
+        defaultSelection: labOperatorIds
+    });
+
+    var [ addedLabOperators, setAddedLabOperators ] = useState([]);
+    var addedLabOperatorIds = addedLabOperators.map(it => it._id);
+
+    var handleAddLabOperator = ({ _id, label }) => {
+        if (
+            labOperatorIds.includes(_id)
+            || addedLabOperatorIds.includes(_id)
+        ) {
+            return;
+        }
+        setAddedLabOperators([ ...addedLabOperators, { _id, label }]);
+        if (!selectedLabOperatorIds.value.includes(_id)) {
+            selectedLabOperatorIds.toggle(_id);
+        }
+    }
+
+    var [ consentObtainedBy, setConsentObtainedBy ] = useState();
+
+    var gotoBag = {
+        experimentId, subjectId, studyId,
+        studyConsentFormId: selectedStudyConsentFormId,
+        labOperatorIds: selectedLabOperatorIds.value,
+        consentObtainedBy,
+    }
+
+    var [ didFetch, fetched ] = deferredConsentDocFetch;
+    if (didFetch && fetched?.data?.record) {
+        return null;
+    }
+
+    return (
+        <Grid cols={[ '1fr' ]} gap='1rem'>
+            <Grid cols={[ '225px', '1fr' ]} className='align-items-center'>
+                <b>{ translate('Consent Form') }</b>
+                <GenericEnum
+                    options={ studyConsentFormRecords.reduce((acc, it) => ({
+                        ...acc, [it._id]: it.state.internalName
+                    }), {}) }
+                    value={ selectedStudyConsentFormId }
+                    onChange={ setSelectedStudyConsentFormId }
+                />
+            </Grid>
+            <Grid cols={[ '225px', '1fr' ]} className='align-items-center'>
+                <b className='align-self-start'>
+                    { translate('Study Investigators') }
+                </b>
+                <div>
+                    { labOperatorIds.map((it, ix) => (
+                        <LabOperatorCheckbox
+                            key={ ix } _id={ it } related={ related }
+                            selection={ selectedLabOperatorIds }
+                        />
+                    )) }
+                    { addedLabOperators.map(({ _id, label }) => (
+                        <LabOperatorCheckbox
+                            key={ _id } _id={ _id } label={ label }
+                            related={ related }
+                            selection={ selectedLabOperatorIds }
+                        />
+                    )) }
+                </div>
+                <div />
+                <div>
+                    <i className='text-muted'>
+                        { translate('other Staff Member') }:
+                    </i>
+                    <AddLabOperatorDropdown
+                        onAdd={ handleAddLabOperator }
+                        excludedIds={[
+                            ...labOperatorIds, ...addedLabOperatorIds
+                        ]}
+                    />
+                </div>
+            </Grid>
+            <Grid cols={[ '225px', '1fr' ]} className='align-items-center'>
+                <b className='align-self-start'>
+                    { translate('Person obtaining consent') }
+                </b>
+                <div>
+                    { labOperatorIds.map((it, ix) => (
+                        <ConsentObtainedByRadio
+                            key={ ix } _id={ it } related={ related }
+                            value={ consentObtainedBy }
+                            onChange={ setConsentObtainedBy }
+                        />
+                    )) }
+                </div>
+                <div />
+                <div>
+                    <i className='text-muted'>
+                        { translate('other Staff Member') }:
+                    </i>
+                    <PersonnelDropdown
+                        value={
+                            labOperatorIds.includes(consentObtainedBy)
+                            ? undefined
+                            : consentObtainedBy
+                        }
+                        onChange={ setConsentObtainedBy }
+                        excludedIds={ labOperatorIds }
+                    />
+                </div>
+            </Grid>
+            { !(
+                selectedStudyConsentFormId
+                && selectedLabOperatorIds.value.length > 0
+                && consentObtainedBy
+            ) && (
+                <Alert variant='info'>
+                    <i>{ translate('Please select consent form, lab operators and person obtaining consent.') }</i>
+                </Alert>
+            ) }
+            <SmallFormFooter>
+                <GotoButton { ...gotoBag } />
+            </SmallFormFooter>
+        </Grid>
+    )
+}
+
+export default ConsentPrepareForm;

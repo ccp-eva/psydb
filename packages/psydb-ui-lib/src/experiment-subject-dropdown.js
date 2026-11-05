@@ -28,6 +28,7 @@ var ExperimentSubjectDropdown = (ps) => {
         subjectRecord,
         enableStatusChanges = true,
 
+        onClickConsent,
         onClickComment,
         onClickMove,
         onClickFollowUp,
@@ -57,6 +58,10 @@ var ExperimentSubjectDropdown = (ps) => {
         subjectRecord,
         experimentType,
     };
+
+    var wrappedOnClickConsent = useCallback(() => (
+        onClickConsent(sharedPayload)
+    ), [ onClickConsent, subjectRecord ]);
 
     var wrappedOnClickComment = useCallback(() => (
         onClickComment(sharedPayload)
@@ -147,11 +152,19 @@ var ExperimentSubjectDropdown = (ps) => {
                         </span>
                     )
                     : (
-                        <Icons.GearFill style={{
-                            width: '18px',
-                            height: '18px',
-                            marginTop: '-3px',
-                        }} />
+                        variant === 'calendar' ? (
+                            <Icons.PersonFillGear style={{
+                                width: '20px',
+                                height: '20px',
+                                marginTop: '-4px',
+                            }} />
+                        ) : (
+                            <Icons.GearFill style={{
+                                width: '18px',
+                                height: '18px',
+                                marginTop: '-3px',
+                            }} />
+                        )
                     )
                 }
             </Dropdown.Toggle>
@@ -164,6 +177,17 @@ var ExperimentSubjectDropdown = (ps) => {
                             href={`#/subjects/${subjectType}/${subjectId}`}
                         >
                             { translate('Subject Details') }
+                        </Dropdown.Item>
+                        <Dropdown.Divider />
+                    </>
+                )}
+                { onClickConsent && (
+                    <>
+                        <Dropdown.Item
+                            as='button'
+                            onClick={ wrappedOnClickConsent }
+                        >
+                            { translate('Consent Form') }
                         </Dropdown.Item>
                         <Dropdown.Divider />
                     </>

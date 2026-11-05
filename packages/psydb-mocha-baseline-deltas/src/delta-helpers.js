@@ -1,6 +1,6 @@
 'use strict';
+var { BaselineDeltas } = require('@cdxoo/chai-baseline-deltas');
 var { expect } = require('chai');
-var { ejson } = require('@mpieva/psydb-core-utils');
 
 var AnyRohrpostMeta = (options = {}) => (bag) => {
     var { eventIds } = options;
@@ -12,38 +12,6 @@ var AnyRohrpostMeta = (options = {}) => (bag) => {
         if (eventIds) {
             expect(current.eventIds).to.eql(eventIds);
         }
-    }
-    catch (error) {
-        // FIXME: this should trigger handleDeltaError
-        error.message += ` at pointer ${pointer}`;
-        throw error;
-    }
-}
-
-var AnyDate = (options = {}) => (bag) => {
-    var { baseline, current, pointer } = bag;
-    try {
-        expect(JSON.stringify(current))
-            .to.not.eql(JSON.stringify(baseline));
-
-        expect(current).to.be.an('object');
-        expect(ejson(current)).to.have.property('$date');
-    }
-    catch (error) {
-        // FIXME: this should trigger handleDeltaError
-        error.message += ` at pointer ${pointer}`;
-        throw error;
-    }
-}
-
-var AnyObjectId = (options = {}) => (bag) => {
-    var { baseline, current, pointer } = bag;
-    try {
-        expect(JSON.stringify(current))
-            .to.not.eql(JSON.stringify(baseline));
-
-        expect(current).to.be.an('object');
-        expect(ejson(current)).to.have.property('$oid');
     }
     catch (error) {
         // FIXME: this should trigger handleDeltaError
@@ -68,11 +36,26 @@ var AnyFileId = (options = {}) => (bag) => {
     }
 }
 
-var DeletedValue = (options = {}) => (bag) => {
+var AnyObject = (options = {}) => (bag) => {
+    var { eventIds } = options;
     var { baseline, current, pointer } = bag;
     try {
         expect(current).to.not.eql(baseline);
-        expect(current).to.not.exist;
+        expect(current).to.be.an('object');
+    }
+    catch (error) {
+        // FIXME: this should trigger handleDeltaError
+        error.message += ` at pointer ${pointer}`;
+        throw error;
+    }
+}
+
+var AnyArray = (options = {}) => (bag) => {
+    var { eventIds } = options;
+    var { baseline, current, pointer } = bag;
+    try {
+        expect(current).to.not.eql(baseline);
+        expect(current).to.be.an('array');
     }
     catch (error) {
         // FIXME: this should trigger handleDeltaError
@@ -82,9 +65,11 @@ var DeletedValue = (options = {}) => (bag) => {
 }
 
 module.exports = {
+    AnyObjectId: BaselineDeltas.AnyMongoId, // FIXME: deprecate
+
+    AnyObject,
+    AnyArray,
+
     AnyRohrpostMeta,
-    AnyDate,
-    AnyObjectId,
     AnyFileId,
-    DeletedValue
 }

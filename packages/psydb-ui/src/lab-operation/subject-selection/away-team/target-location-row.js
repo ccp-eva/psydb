@@ -63,9 +63,11 @@ const TargetLocationRow = (ps) => {
                                 />
                             </div>
 
-                            <ExcludedWeekdays {...({
-                                excluded: record.state.reservationSettings.excludedExperimentWeekdays
-                            })} />
+                            { record.state?.reservationSettings?.excludedExperimentWeekdays && (
+                                <ExcludedWeekdays {...({
+                                    excluded: record.state.reservationSettings.excludedExperimentWeekdays
+                                })} />
+                            )}
                             <UpcomingExperiments { ...({
                                 className: 'mr-5',
                                 records: record._upcomingExperiments,

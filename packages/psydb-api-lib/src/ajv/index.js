@@ -47,9 +47,11 @@ var AjvWrapper = (bag = {}) => {
     ajv.addFormat('mongodb-object-id', mergedFormats.mongodbObjectId);
     ajv.addFormat('nanoid-default', mergedFormats.nanoidDefault);
     ajv.addFormat('phone-number', mergedFormats.germanPhoneNumber);
+    ajv.addFormat('phone-number-optional', mergedFormats.germanPhoneNumberOptional);
     ajv.addFormat('hex-color', mergedFormats.hexColor);
     ajv.addFormat('time-hm', mergedFormats.timeHM);
     ajv.addFormat('date-only-server-side', mergedFormats.dateOnlyServerSide);
+    ajv.addFormat('date-ymd-or-dmy', mergedFormats.dateYMDOrDMY);
     
     ajvKeywords(ajv, [
         'uniqueItemProperties',

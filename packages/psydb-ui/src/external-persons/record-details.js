@@ -1,21 +1,20 @@
 import React from 'react';
 
 import { useRouteMatch  } from 'react-router-dom';
-import { withRecordDetails } from '@mpieva/psydb-ui-lib';
-import { DetailsBox } from '@mpieva/psydb-ui-layout';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
+import { DetailsBox } from '@mpieva/psydb-ui-layout';
+import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 
 import { ExternalPerson } from '@mpieva/psydb-ui-lib/data-viewers';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
 export const DetailsBody = (ps) => {
-    var {
-        fetched,
-        permissions
-    } = ps;
-    
+    var { fetched, permissions } = ps;
     var { record, crtSettings, related } = fetched;
+    
     var { url } = useRouteMatch();
+    var [{ translate }] = useI18N();
     
     var canEdit = permissions.hasCollectionFlag(
         'externalPerson', 'write'
@@ -30,11 +29,9 @@ export const DetailsBody = (ps) => {
 
     var isHidden = record.state.systemPermissions.isHidden;
 
-    //var title = `${crtSettings.label} Datensatz-Details`;
-    var title = 'Externe-Person-Details';
     return (
         <DetailsBox
-            title={ title }
+            title={ translate('External Person Details') }
             editUrl={ `${up(url, 1)}/edit` }
             canEdit= { canEdit }
             isRecordHidden={ isHidden }

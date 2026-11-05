@@ -35,6 +35,10 @@ var fakeRecord = (bag) => {
         '/canWriteStudies',
         '/canRemoveStudies',
         '/canViewStudyLabOpsSettings',
+        '/canViewStudyLabTeams',
+
+        '/canReadStudyEmailMetaTemplates',
+        '/canWriteStudyEmailMetaTemplates',
 
         '/canReadSubjects',
         '/canWriteSubjects',

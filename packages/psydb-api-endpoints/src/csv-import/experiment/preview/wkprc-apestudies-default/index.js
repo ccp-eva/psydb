@@ -1,5 +1,4 @@
 'use strict';
-var { only } = require('@mpieva/psydb-core-utils');
 var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
 var {
     compose,
@@ -7,6 +6,7 @@ var {
     ResponseBody,
     validateOrThrow,
     fetchRecordLabelsManual,
+    fetchCRTSettings
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -17,36 +17,40 @@ var {
 var Schema = require('./schema');
 
 var preview = async (context, next) => {
-    var { db, permissions, request } = context;
-    
-    var i18n = only({ from: context, keys: [
-        'language', 'locale', 'timezone'
-    ]});
+    var { db, permissions, request, i18n } = context;
     
     if (!permissions.isRoot()) {
         throw new ApiError(403);
     }
 
     validateOrThrow({ schema: Schema(), payload: request.body });
-    var { fileId, subjectType, studyId } = request.body;
+    var {
+        fileId, subjectType, studyId,
+        skipPossibleDuplicates = false,
+    } = request.body;
 
     var file = await aggregateOne({ db, file: { _id: fileId }});
     var study = await aggregateOne({ db, study: { _id: studyId }});
     
+    var subjectCRT = await fetchCRTSettings({
+        db, subject: subjectType, wrap: true
+    });
+
     var pipelineOutput = await (
         ExperimentCSV.WKPRCApestudiesDefault.runPipeline({
             db,
             csvLines: file.blob.toString(),
+            skipPossibleDuplicates,
 
-            subjectType,
+            subjectCRT,
             study,
-            timezone: i18n.timezone
+            i18n,
         })
     );
 
-    var { pipelineData, transformed } = pipelineOutput;
+    var { pipelineData, todo, possibleDuplicates } = pipelineOutput;
     
-    var previewRecords = transformed.experiments.map(it => ({
+    var previewRecords = todo.experiments.map(it => ({
         ...it.record,
         csvImportId: null,
     }));
@@ -75,6 +79,7 @@ var preview = async (context, next) => {
     context.body = ResponseBody({ data: {
         pipelineData,
         previewRecords,
+        possibleDuplicatesCount: possibleDuplicates.experiments.length,
         related,
     }});
 

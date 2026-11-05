@@ -56,6 +56,13 @@ const Weekdays = (ps) => {
     var { value } = ps;
     
     var locale = useUILocale();
+    var translate = useUITranslation();
+
+    if (!value) {
+        return (
+            <i style={{ color: '#bbb' }}>{ translate('Not Specified') }</i>
+        )
+    }
     
     return (
         Object.keys(value)

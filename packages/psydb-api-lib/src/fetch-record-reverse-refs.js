@@ -123,6 +123,8 @@ var fetchReferencingRecords = async (options) => {
     if (collection === 'subject') {
         searchPaths = searchPaths.filter(it => (
             !it.startsWith('scientific.state.internals.participatedInStudies')
+            // NOTE: subject/remove cleans those up itself
+            && !it.startsWith('scientific.state.internals.nonDuplicateIds')
         ));
     }
 

@@ -10,6 +10,7 @@ export const AsyncButton = (ps) => {
         isTransmitting = false,
         variant,
         disabled,
+        style,
         children,
 
         ...pass
@@ -32,6 +33,7 @@ export const AsyncButton = (ps) => {
                 type={ isTransmitting ? 'button' : type }
                 onClick={ isTransmitting ? undefined : () => onClick?.() }
                 variant={ variant }
+                style={{ position: 'relative', ...style }}
                 //disabled={ disabled || isTransmitting }
                 disabled={ disabled }
             >
@@ -39,12 +41,12 @@ export const AsyncButton = (ps) => {
                     { children }
                 </span>
                 <span style={{
-                    width: '25px',
                     position: 'absolute',
-                    left: 0,
-                    right: 0,
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
+                    top: 0, bottom: 0, left: 0, right: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    pointerEvents: 'none',
                 }}>
                     { isTransmitting && (
                         <LoadingIndicator

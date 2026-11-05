@@ -23,17 +23,22 @@ const GenericRecordEditorFooter = (ps) => {
 
         enableHide,
         enableRemove,
+        enableCleanGdpr,
         onSuccessfulUpdate,
 
         removeUrl = `${up(url, 1)}/remove`,
+        cleanGdprUrl = `${up(url, 1)}/clean-gdpr`,
         className = 'd-flex justify-content-between mt-4 mb-4'
     } = ps;
 
+    var { record } = fetched;
 
     var canEdit = permissions.hasCollectionFlag(collection, 'write');
     var canRemove = permissions.hasCollectionFlag(collection, 'remove');
 
-    var { record } = fetched;
+    var isGdprRedacted = record.gdpr?.state === '[[REDACTED]]';
+    var canCleanGdpr = canRemove && !isGdprRedacted;
+    
 
     var isHidden = (
         record.scientific
@@ -54,15 +59,25 @@ const GenericRecordEditorFooter = (ps) => {
                                 onSuccessfulUpdate={ onSuccessfulUpdate }
                             />
                         ) : <div />}
-                        
-                        { canRemove && enableRemove && (
-                            <LinkButton
-                                variant='danger'
-                                to={ removeUrl }
-                            >
-                                { translate('Delete') }
-                            </LinkButton>
-                        )}
+                      
+                        <div className='d-flex gapx-3'>
+                            { canCleanGdpr && enableCleanGdpr && (
+                                <LinkButton
+                                    variant='danger'
+                                    to={ cleanGdprUrl }
+                                >
+                                    { translate('Anonymize') }
+                                </LinkButton>
+                            )}
+                            { canRemove && enableRemove && (
+                                <LinkButton
+                                    variant='danger'
+                                    to={ removeUrl }
+                                >
+                                    { translate('Delete') }
+                                </LinkButton>
+                            )}
+                        </div>
                     </div>
                 </>
             )}

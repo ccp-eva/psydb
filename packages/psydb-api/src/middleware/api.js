@@ -11,6 +11,7 @@ var withClientTimezone = require('./with-client-timezone');
 var withClientI18N = require('./with-client-i18n');
 var withSession = require('./session');
 var withErrorHandling = require('./errors');
+var withContentEncodingProtection = require('./content-encoding-protection');
 var withRouting = require('./routing');
 
 var encodeBrandingLogos = require('./encode-branding-logos');
@@ -24,6 +25,7 @@ var createApi = (bag) => {
         withApiConfig(config),
         withNowDate(), // TODO: pass now to mq/rohrpost
         withErrorHandling(),
+        withContentEncodingProtection(),
         withClientTimezone(),
         withClientI18N(),
         withMongoDB(config.db),

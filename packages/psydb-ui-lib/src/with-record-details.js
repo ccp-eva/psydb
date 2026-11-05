@@ -21,17 +21,37 @@ export const withRecordDetails = (options) => {
     } = options;
 
     var RecordDetails = (ps) => {
-        var { collection, recordType, id: manualId } = ps;
+        var {
+            collection, recordType, id: manualId,
+            
+            fetched: props_fetched,
+            revision: props_revision,
+        } = ps;
+
         var { id: paramId } = useParams();
         var id = manualId || paramId;
 
-        var revision = useRevision();
+        var revision = props_revision || useRevision();
         var permissions = usePermissions();
         var canRead = permissions.hasCollectionFlag(
             collection, 'read'
         );
         if (!canRead) {
             return <PermissionDenied />
+        }
+
+        // XXX
+        if (props_fetched) {
+            var fetched = props_fetched;
+            return (
+                <DetailsBody
+                    { ...ps }
+                    id={ id }
+                    fetched={ fetched }
+                    permissions={ permissions }
+                    revision={ revision }
+                />
+            )
         }
 
         var [ didFetch, fetched ] = useReadRecord({

@@ -30,6 +30,8 @@ import {
     InviteExperimentSummary
 } from '@mpieva/psydb-ui-lib';
 
+import { ConsentFormSelectModal } from '../../experiments/consent-form-select-modal';
+
 const DaysContainer = withExperimentCalendarDays({
     ExperimentSummaryDaily: InviteExperimentSummary.Medium,
     ExperimentSummary3Day: InviteExperimentSummary.Medium,
@@ -101,6 +103,8 @@ const Calendar = (ps) => {
         studyRecords,
         experimentRecords,
         experimentOperatorTeamRecords,
+        labTeamRelated,
+        studyConsentDocs,
         experimentRelated,
         subjectRecordsById,
         subjectRelated,
@@ -137,6 +141,8 @@ const Calendar = (ps) => {
 
                 experimentRelated,
                 experimentOperatorTeamRecords,
+                labTeamRelated,
+                studyConsentDocs,
                 subjectRecordsById,
                 subjectRelated,
                 subjectDisplayFieldData,
@@ -145,7 +151,9 @@ const Calendar = (ps) => {
                 calendarVariant,
                 showPast,
                 onSelectDay,
-                onSuccessfulUpdate: revision.up
+                onSuccessfulUpdate: revision.up,
+
+                ConsentFormSelectModal,
             }) }/>
 
             <CalendarTeamLegend { ...({

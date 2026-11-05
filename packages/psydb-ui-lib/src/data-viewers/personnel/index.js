@@ -20,6 +20,7 @@ const labels = {
     '/gdpr/state/phones': 'Phone',
     '/gdpr/state/description': 'Description',
 
+    '/scientific/state/manualImportId': 'Manual ID for Imports',
     '/scientific/state/researchGroupSettings': 'Research Groups',
 }
 
@@ -28,6 +29,14 @@ addComponents(Personnel, PersonnelContext, labels, [
     {
         cname: 'SequenceNumber',
         path: '/sequenceNumber',
+        Component: withPair(SaneString)
+    },
+
+    // FIXME: default theme will somehow display 'undefined'
+    // when value id '' ... omit 'Component' to reproduce
+    {
+        cname: 'ManualImportId',
+        path: '/scientific/state/manualImportId',
         Component: withPair(SaneString)
     },
     { cname: 'Firstname', path: '/gdpr/state/firstname' },

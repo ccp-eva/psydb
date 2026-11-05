@@ -16,6 +16,8 @@ import {
     RecordRemover
 } from '@mpieva/psydb-ui-record-views/subjects';
 
+import { RecordAnonymizer } from './record-anonymizer';
+
 const SubjectTypeView = withRecordTypeView({
     RecordCreator: Creator,
     RecordEditor: Editor,
@@ -23,6 +25,7 @@ const SubjectTypeView = withRecordTypeView({
     RecordHistory: History,
     //RecordDetails,
     RecordRemover,
+    RecordAnonymizer,
     CustomRouting: IntraTypeRouting,
 })
 

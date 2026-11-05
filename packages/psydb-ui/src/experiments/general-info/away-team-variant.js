@@ -8,6 +8,7 @@ import { formatDateInterval, datefns } from '@mpieva/psydb-ui-lib';
 
 import { EditExperimentCommentModal } from '@mpieva/psydb-ui-lib/src/modals';
 import TeamNameAndColor from '@mpieva/psydb-ui-lib/src/team-name-and-color';
+import Experimenters from './experimenters';
 
 
 const AwayTeamVariant = (ps) => {
@@ -22,12 +23,16 @@ const AwayTeamVariant = (ps) => {
         locationData,
 
         opsTeamData,
+        opsTeamRelated,
+        experimentOperatorIds,
+        experimentRelated,
         comment,
         onSuccessfulUpdate
     } = ps;
 
     var commentModal = useModalReducer();
     var [{ translate, locale, language }] = useI18N();
+    var hasExperimenters = experimentOperatorIds?.length > 0;
 
     
     locationData = __fixRelated(locationData);
@@ -49,15 +54,25 @@ const AwayTeamVariant = (ps) => {
                     <Pair label={ translate('Study') }>
                         { studyLabel }
                     </Pair>
-                    <Pair label={ translate('Team') }>
-                        { 
-                            opsTeamData
-                            ? <TeamNameAndColor
-                                teamRecord={ opsTeamData.record }
+                    { hasExperimenters ? (
+                        <Pair label={ translate('Experimenters') }>
+                            <Experimenters
+                                ids={ experimentOperatorIds }
+                                related={ experimentRelated }
                             />
-                            : translate('Unknown')
-                        }
-                    </Pair>
+                        </Pair>
+                    ) : (
+                        <Pair label={ translate('Team') }>
+                            { 
+                                opsTeamData
+                                ? <TeamNameAndColor
+                                    teamRecord={ opsTeamData.record }
+                                    related={ opsTeamRelated }
+                                />
+                                : translate('Unknown')
+                            }
+                        </Pair>
+                    )}
                     <Pair label={ translate('Date') }>
                         <a href={`#/calendars/away-team/${locationType}/${firstResearchGroupId}?d=${weekStartTimestamp}`}>
                             { startDate }

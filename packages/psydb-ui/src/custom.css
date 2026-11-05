@@ -371,3 +371,21 @@ a {
     transform: rotate(360deg);
   }
 }
+
+@media (min-width: 992px) {
+  .modal-xxl {
+    max-width: 800px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .modal-xl {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1880px) {
+  .modal-xxl {
+    max-width: 1820px;
+  }
+}

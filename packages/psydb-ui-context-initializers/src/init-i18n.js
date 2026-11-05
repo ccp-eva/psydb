@@ -1,3 +1,5 @@
+import * as datefns from 'date-fns';
+
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 import { createTranslate } from '@mpieva/psydb-common-translations';
 import { localesByCode, enUSLocale } from '@mpieva/psydb-ui-date-locales';
@@ -13,9 +15,22 @@ const initI18N = (bag) => {
     var translate = createTranslate(language);
     var timezone = getSystemTimezone();
 
+    var fdate = (datelike, fmt = 'P') => (
+        datelike
+        ? datefns.format(new Date(_fixmillis(datelike)), fmt, { locale })
+        : '-'
+    );
+    var fdatetime = (datelike, fmt = 'P p') => (
+        datelike
+        ? datefns.format(new Date(_fixmillis(datelike)), fmt, { locale })
+        : '-'
+    );
+
     var i18n = {
         language, translate,
         localeCode, locale, timezone,
+
+        fdate, fdatetime,
     }
 
     return [ i18n, setCookieI18N ];
@@ -73,6 +88,10 @@ var getDefaultLanguageLocaleCode = (language) => {
         'en': 'en-US',
         'de': 'de' 
     }[language] || 'en-US')
+}
+
+var _fixmillis = (datelike) => {
+    return new Date(new Date(datelike).getTime() + 1)
 }
 
 export default initI18N;

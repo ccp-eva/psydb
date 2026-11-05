@@ -1,12 +1,13 @@
 'use strict';
-var { PointerGen } = require('../../../utils');
+var { PointerGen, seedFakerForNextId } = require('../../../utils');
 
 module.exports = async (context) => {
-    var { driver, cache, as } = context;
+    var { driver, cache, as, idgen } = context;
     
     var definitions = FieldDefinitions({ cache });
     var asPointers = PointerGen(definitions);
 
+    seedFakerForNextId({ idgen, collection: 'customRecordType' });
     var crt = await driver.crt.create({
         collection: 'subject', key: 'cat',
         displayNames: {
@@ -100,10 +101,22 @@ var FieldDefinitions = ({ cache }) => ({
             recordType: 'catOwner',
             minItems: 0,
             readOnly: false,
-            addReferenceToTarget: true,
-            targetReferenceField: (
-                '/scientific/state/custom/knownCatIds'
-            ),
+            constraints: {},
+        },
+    },
+
+    'trainerId': {
+        __subChannelKey: 'scientific',
+        type: 'ForeignId',
+        key: 'trainerId',
+        displayName: 'Current Trainer',
+        displayNameI18N: { de: 'Aktuelle:r Trainer:in' },
+        props: {
+            collection: 'subject',
+            recordType: 'catTrainer',
+            isNullable: true,
+            displayEmptyAsUnknown: false,
+            addReferenceToTarget: false,
             constraints: {},
         },
     },
