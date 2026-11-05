@@ -1,8 +1,18 @@
 import React from 'react';
 
 const TeamNameAndColor = (ps) => {
-    var { teamRecord, as = 'div', ...pass } = ps;
-    var { name, color } = teamRecord.state;
+    var { teamRecord, related, as = 'div', ...pass } = ps;
+    var { name, color, personnelIds = [] } = teamRecord.state;
+
+    // NOTE: when related is given we render the actual personnel labels
+    // instead of the pregenerated team name
+    var label = (
+        related
+        ? personnelIds.map(it => (
+            related.records?.personnel?.[it]?._recordLabel || it
+        )).join(', ')
+        : name
+    );
 
     var Wrapper = as;
 
@@ -14,7 +24,7 @@ const TeamNameAndColor = (ps) => {
                 width: '24px',
                 verticalAlign: 'bottom',
             }} />
-            <span>{ name }</span>
+            <span>{ label }</span>
         </Wrapper>
     );
 }
