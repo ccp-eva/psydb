@@ -8,7 +8,7 @@ import { GenericEnum } from '@mpieva/psydb-ui-form-controls';
 
 import {
     LabOperatorCheckbox,
-    LabOperatorDropdown,
+    AddLabOperatorDropdown,
     PersonnelDropdown,
     ConsentObtainedByRadio,
     GotoButton
@@ -47,6 +47,23 @@ const ConsentPrepareForm = (ps) => {
     var selectedLabOperatorIds = useSelectionReducer({
         defaultSelection: labOperatorIds
     });
+
+    var [ addedLabOperators, setAddedLabOperators ] = useState([]);
+    var addedLabOperatorIds = addedLabOperators.map(it => it._id);
+
+    var handleAddLabOperator = ({ _id, label }) => {
+        if (
+            labOperatorIds.includes(_id)
+            || addedLabOperatorIds.includes(_id)
+        ) {
+            return;
+        }
+        setAddedLabOperators([ ...addedLabOperators, { _id, label }]);
+        if (!selectedLabOperatorIds.value.includes(_id)) {
+            selectedLabOperatorIds.toggle(_id);
+        }
+    }
+
     var [ consentObtainedBy, setConsentObtainedBy ] = useState();
 
     var gotoBag = {
@@ -84,15 +101,24 @@ const ConsentPrepareForm = (ps) => {
                             selection={ selectedLabOperatorIds }
                         />
                     )) }
+                    { addedLabOperators.map(({ _id, label }) => (
+                        <LabOperatorCheckbox
+                            key={ _id } _id={ _id } label={ label }
+                            related={ related }
+                            selection={ selectedLabOperatorIds }
+                        />
+                    )) }
                 </div>
                 <div />
                 <div>
                     <i className='text-muted'>
                         { translate('other Staff Member') }:
                     </i>
-                    <LabOperatorDropdown
-                        selection={ selectedLabOperatorIds }
-                        excludedIds={ labOperatorIds }
+                    <AddLabOperatorDropdown
+                        onAdd={ handleAddLabOperator }
+                        excludedIds={[
+                            ...labOperatorIds, ...addedLabOperatorIds
+                        ]}
                     />
                 </div>
             </Grid>

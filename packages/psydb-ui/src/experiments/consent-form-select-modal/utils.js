@@ -1,15 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { JsonBase64 } from '@cdxoo/json-base64';
 
 import { merge } from '@mpieva/psydb-core-utils';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
-import { Grid, Button } from '@mpieva/psydb-ui-layout';
+import { Grid, Button, InputGroup } from '@mpieva/psydb-ui-layout';
 import { PlainCheckbox, GenericEnum } from '@mpieva/psydb-ui-form-controls';
 
-export const PersonnelDropdown = (ps) => {
-    var { value, onChange, excludedIds = [] } = ps;
-
+const usePersonnelOptions = ({ excludedIds = [] }) => {
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.personnel.list({
             target: 'optionlist',
@@ -20,7 +18,7 @@ export const PersonnelDropdown = (ps) => {
     ), []);
 
     if (!didFetch) {
-        return null;
+        return undefined;
     }
 
     var { records } = fetched.data;
@@ -35,6 +33,17 @@ export const PersonnelDropdown = (ps) => {
         options[it._id] = `${firstname} ${lastname}`;
     }
 
+    return options;
+}
+
+export const PersonnelDropdown = (ps) => {
+    var { value, onChange, excludedIds = [] } = ps;
+
+    var options = usePersonnelOptions({ excludedIds });
+    if (!options) {
+        return null;
+    }
+
     return (
         <GenericEnum
             options={ options }
@@ -44,29 +53,48 @@ export const PersonnelDropdown = (ps) => {
     )
 }
 
-export const LabOperatorDropdown = (ps) => {
-    var { selection, excludedIds = [] } = ps;
+export const AddLabOperatorDropdown = (ps) => {
+    var { onAdd, excludedIds = [] } = ps;
 
-    // NOTE: this should be fine as all the ids that are possible
-    // to select in other ways (i.e. multiple ids sleected)
-    // are excluded
-    var [ selected ] = selection.value;
+    var [{ translate }] = useI18N();
+    var [ selected, setSelected ] = useState();
+
+    var options = usePersonnelOptions({ excludedIds });
+    if (!options) {
+        return null;
+    }
+
+    var handleAdd = () => {
+        onAdd({ _id: selected, label: options[selected] });
+        setSelected(undefined);
+    }
+
     return (
-        <PersonnelDropdown
-            value={ selected }
-            onChange={ (next) => selection.set(next) }
-            excludedIds={ excludedIds }
-        />
+        <InputGroup>
+            <GenericEnum
+                options={ options }
+                value={ selected }
+                onChange={ setSelected }
+            />
+            <InputGroup.Append>
+                <Button
+                    disabled={ !selected || !options[selected] }
+                    onClick={ handleAdd }
+                >
+                    { translate('Add') }
+                </Button>
+            </InputGroup.Append>
+        </InputGroup>
     )
 }
 
 export const LabOperatorCheckbox = (ps) => {
-    var { _id, related, selection } = ps;
+    var { _id, label, related, selection } = ps;
     
     return (
         <PlainCheckbox
             id={ _id }
-            label={ fromRelated(related, _id) }
+            label={ label || fromRelated(related, _id) }
             value={ selection.value.includes(_id) }
             onChange={ () => selection.toggle(_id) }
         />
