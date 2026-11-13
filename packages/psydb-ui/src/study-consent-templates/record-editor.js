@@ -4,15 +4,18 @@ import { useParams } from 'react-router';
 import { merge } from '@mpieva/psydb-core-utils';
 import { CRTSettings } from '@mpieva/psydb-common-lib';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
+import { useFetch, useSend, usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import { LoadingIndicator, FormBox } from '@mpieva/psydb-ui-layout';
 import MainForm from './main-form';
+import { RemoveButton } from './remove-button';
 
 const RecordEditor = (ps) => {
     var { onSuccessfulUpdate } = ps;
     var { id: studyConsentTemplateId } = useParams();
     var [{ translate }] = useI18N();
+    // NOTE: there are no system role flags for consent templates
+    var canRemove = usePermissions().isRoot();
 
     var send = useSend((formData) => {
         var { elements, ...pass } = formData;
@@ -53,6 +56,21 @@ const RecordEditor = (ps) => {
                 initialValues={ initialValues }
                 onSubmit={ send.exec }
             />
+            { canRemove && (
+                <div className='d-flex justify-content-end mt-3'>
+                    <RemoveButton
+                        title={ translate('Delete Consent Template') }
+                        confirmText={ translate(
+                            'Do you really want to delete this consent template?'
+                        )}
+                        createMessage={ () => ({
+                            type: 'study-consent-template/remove',
+                            payload: { studyConsentTemplateId }
+                        })}
+                        onSuccessfulUpdate={ () => onSuccessfulUpdate() }
+                    />
+                </div>
+            )}
         </FormBox>
     );
 }

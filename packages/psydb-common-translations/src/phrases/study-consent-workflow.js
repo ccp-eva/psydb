@@ -271,4 +271,24 @@ module.exports = [
         en: 'Please close this tab and refresh the consent doc',
         de: 'Bitte Tab schließen und Einwilligung aktualisieren'
     },
+    {
+        en: 'Delete Consent Form',
+        de: 'Einwilligungsformular löschen'
+    },
+    {
+        en: 'Delete Consent Template',
+        de: 'Einwilligungs-Template löschen'
+    },
+    {
+        en: 'Do you really want to delete this consent form?',
+        de: 'Soll dieses Einwilligungsformular wirklich gelöscht werden?'
+    },
+    {
+        en: 'Do you really want to delete this consent template?',
+        de: 'Soll dieses Einwilligungs-Template wirklich gelöscht werden?'
+    },
+    {
+        en: 'This consent form is already used by consent docs and cannot be deleted.',
+        de: 'Dieses Einwilligungsformular wird bereits von Einwilligungen verwendet und kann nicht gelöscht werden.'
+    },
 ]

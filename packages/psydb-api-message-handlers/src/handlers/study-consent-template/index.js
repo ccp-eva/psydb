@@ -4,6 +4,7 @@ var { MessageHandlerGroup } = require('@mpieva/psydb-koa-event-middleware');
 var StudyConsentTemplateGroup = MessageHandlerGroup([
     require('./create'),
     require('./patch'),
+    require('./remove'),
 ]);
 
 module.exports = StudyConsentTemplateGroup;

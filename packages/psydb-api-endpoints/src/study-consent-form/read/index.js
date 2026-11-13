@@ -34,6 +34,12 @@ var readEndpoint = async (context, next) => {
         '_id': studyConsentFormId
     }});
 
+    // NOTE: forms that are referenced by consent docs cannot be removed
+    var studyConsentDocCount = await (
+        db.collection('studyConsentDoc')
+        .countDocuments({ 'studyConsentFormId': studyConsentFormId })
+    );
+
     var subjectCRT = await fetchCRTSettings({
         db, collectionName: 'subject', recordType: record.subjectType
     });
@@ -42,6 +48,7 @@ var readEndpoint = async (context, next) => {
         data: {
             record, related: {},
             subjectCRT,
+            studyConsentDocCount,
         },
     });
 }

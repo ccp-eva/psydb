@@ -4,14 +4,18 @@ import { useParams } from 'react-router';
 import { merge } from '@mpieva/psydb-core-utils';
 import { CRTSettings } from '@mpieva/psydb-common-lib';
 import { useI18N } from '@mpieva/psydb-ui-contexts';
-import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
+import { useFetch, useSend, usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import MainForm from './main-form';
+import { RemoveButton } from '../../study-consent-templates/remove-button';
 
 const RecordEditor = (ps) => {
     var { onSuccessfulUpdate } = ps;
     var { id: studyConsentFormId } = useParams();
+    var [{ translate }] = useI18N();
+    var permissions = usePermissions();
+    var canRemove = permissions.hasCollectionFlag('studyConsentForm', 'remove');
 
     var send = useSend((formData) => {
         var { elements, ...pass } = formData;
@@ -32,7 +36,7 @@ const RecordEditor = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var { record, related, subjectCRT } = fetched.data;
+    var { record, related, subjectCRT, studyConsentDocCount } = fetched.data;
     subjectCRT = CRTSettings({ data: subjectCRT });
 
     var initialValues = record.state;
@@ -42,12 +46,33 @@ const RecordEditor = (ps) => {
     //);
     
     return (
-        <MainForm.Component
-            subjectCRT={ subjectCRT }
-            initialValues={ initialValues }
-            onSubmit={ send.exec }
-            isTransmitting={ send.isTransmitting }
-        />
+        <>
+            <MainForm.Component
+                subjectCRT={ subjectCRT }
+                initialValues={ initialValues }
+                onSubmit={ send.exec }
+                isTransmitting={ send.isTransmitting }
+            />
+            { canRemove && (
+                <div className='d-flex justify-content-end mt-3'>
+                    <RemoveButton
+                        title={ translate('Delete Consent Form') }
+                        confirmText={ translate(
+                            'Do you really want to delete this consent form?'
+                        )}
+                        blockedText={ studyConsentDocCount > 0 && (
+                            translate('This consent form is already used by consent docs and cannot be deleted.')
+                            + ` (${studyConsentDocCount})`
+                        )}
+                        createMessage={ () => ({
+                            type: 'study-consent-form/remove',
+                            payload: { studyConsentFormId }
+                        })}
+                        onSuccessfulUpdate={ () => onSuccessfulUpdate() }
+                    />
+                </div>
+            )}
+        </>
     );
 }
 
