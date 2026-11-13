@@ -26,7 +26,7 @@ const Control = (ps) => {
     var translate = useUITranslation();
 
     return (
-        <SplitPartitioned partitions={[ 5,3 ]}>
+        <SplitPartitioned partitions={[ 5,3 ]} stackWhenNarrow>
             <ForeignId
                 dataXPath={ `${dataXPath}.researchGroupId` }
                 label={ translate('Research Group') }

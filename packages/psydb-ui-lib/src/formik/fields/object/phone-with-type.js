@@ -35,7 +35,7 @@ const Control = (ps) => {
     }
 
     return (
-        <SplitPartitioned partitions={[ 5,3 ]}>
+        <SplitPartitioned partitions={[ 5,3 ]} stackWhenNarrow>
             <SaneString
                 label={ translate('_phone_number') }
                 dataXPath={ `${dataXPath}.number` }

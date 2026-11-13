@@ -11,6 +11,9 @@ export const SplitPartitioned = (ps) => {
         extraClassName,
         itemClassName,
         breakFirst,
+        // NOTE: stacks items when the available width is too small;
+        // uses container queries, see psydb-ui custom.css
+        stackWhenNarrow = false,
     } = ps;
 
     if (breakFirst && !breakpoints.includes(breakFirst)) {
@@ -24,13 +27,14 @@ export const SplitPartitioned = (ps) => {
     }
 
     var total = partitions.reduce((acc, it) => acc + it, 0);
-    return (
+    var rendered = (
         <div className={`d-flex flex-wrap ${extraClassName}`}>
             { children.map((it, index) => (
                 <div
                     key={ index }
                     className={ classnames([
                         itemClassName,
+                        stackWhenNarrow && 'psydb-stacking-split-item',
                         'flex-grow-1',
                         index === 0 && breakFirst && (
                             `psydb-split-breakpoint-${breakFirst}`
@@ -44,5 +48,11 @@ export const SplitPartitioned = (ps) => {
                 </div>
             ))}
         </div>
-    )
+    );
+
+    return (
+        stackWhenNarrow
+        ? <div className='psydb-stacking-split'>{ rendered }</div>
+        : rendered
+    );
 }

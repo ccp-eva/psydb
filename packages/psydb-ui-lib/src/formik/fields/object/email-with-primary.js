@@ -17,14 +17,8 @@ const Control = (ps) => {
 
     var translate = useUITranslation();
 
-    // NOTE: wraps "isPrimary" below "email" when the available width
-    // is too small (e.g. 50/50 splits in modals); see custom.css
     return (
-        <div className='psydb-email-with-primary'>
-        <SplitPartitioned
-            partitions={[ 5,3 ]}
-            itemClassName='psydb-email-with-primary-item'
-        >
+        <SplitPartitioned partitions={[ 5,3 ]} stackWhenNarrow>
             <Email
                 label={ translate('E-Mail') }
                 dataXPath={ `${dataXPath}.email` }
@@ -40,7 +34,6 @@ const Control = (ps) => {
                 uiSplit={[ 6,6 ]}
             />
         </SplitPartitioned>
-        </div>
     )
 }
 
