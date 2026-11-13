@@ -200,6 +200,10 @@ module.exports = [
         de: 'Alle'
     },
     {
+        en: 'Any',
+        de: 'Beliebig'
+    },
+    {
         en: 'Show Past',
         de: 'Vergangenheit anzeigen'
     },

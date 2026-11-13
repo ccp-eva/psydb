@@ -117,6 +117,12 @@ const FieldList = (ps) => {
             }
         }
         
+        // NOTE: bool quicksearch is opt-in per definition as not all
+        // list endpoints support it
+        if (systemType === 'DefaultBool' && !def.enableQuickSearch) {
+            continue;
+        }
+
         var Field = QuickSearchFields[systemType];
         if (!Field) {
             continue;

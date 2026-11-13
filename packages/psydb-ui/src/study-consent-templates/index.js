@@ -15,6 +15,7 @@ import { getEnabledRowClassName, getEnabledCellClassName }
 const RecordList = (ps) => (
     <GenericRecordListContainer
         { ...ps }
+        enableShowHidden={ false }
         getRowClassName={ getEnabledRowClassName }
         getCellClassName={ getEnabledCellClassName }
     />

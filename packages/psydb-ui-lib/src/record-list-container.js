@@ -82,6 +82,7 @@ const RecordListContainer = (ps) => {
         defaultSort,
 
         enableNew,
+        enableShowHidden,
         enableView,
         enableEdit_old,
         enableRecordRowLink,
@@ -200,6 +201,7 @@ const RecordListContainer = (ps) => {
 
                 showHidden,
                 setShowHidden,
+                enableShowHidden,
 
                 canSort,
             }) } />

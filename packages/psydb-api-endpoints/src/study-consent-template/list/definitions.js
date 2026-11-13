@@ -22,7 +22,8 @@ var displayFields = [
     },
     {
         systemType: 'DefaultBool', pointer: '/state/isEnabled',
-        displayName: 'Enabled', displayNameI18N: { 'de': 'Aktiv' }
+        displayName: 'Enabled', displayNameI18N: { 'de': 'Aktiv' },
+        enableQuickSearch: true,
     },
 ];
 

@@ -48,6 +48,7 @@ var RecordList = (ps) => {
 
         showHidden,
         setShowHidden,
+        enableShowHidden = true,
 
         linkBaseUrl,
         tableClassName,
@@ -184,22 +185,24 @@ var RecordList = (ps) => {
                             }
                         }}
                     />
-                    <div className='pt-2 px-3'>
-                        <div
-                            role='button'
-                            className='d-flex align-items-center text-primary'
-                            onClick={ () => setShowHidden(!showHidden) }
-                        >
-                            {
-                                showHidden 
-                                ? <Icons.CheckSquareFill />
-                                : <Icons.Square />
-                            }
-                            <span className='ml-2'>
-                                { translate('Show Hidden') }
-                            </span>
+                    { enableShowHidden && (
+                        <div className='pt-2 px-3'>
+                            <div
+                                role='button'
+                                className='d-flex align-items-center text-primary'
+                                onClick={ () => setShowHidden(!showHidden) }
+                            >
+                                {
+                                    showHidden 
+                                    ? <Icons.CheckSquareFill />
+                                    : <Icons.Square />
+                                }
+                                <span className='ml-2'>
+                                    { translate('Show Hidden') }
+                                </span>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
                 <Pagination
                     { ...pagination }
