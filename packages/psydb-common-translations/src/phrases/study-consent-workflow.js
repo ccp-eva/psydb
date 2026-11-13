@@ -17,8 +17,8 @@ module.exports = [
         de: 'Die Einwilligungserklärung enthält neue Informationen, die im Profil der Proband:in ergänzt werden müssen. Das kann z.B. ein neuer Nachname oder eine veränderte Telefonnummer sein.'
     },
     {
-        en: 'The consent form contains new information that has to be added to the subject\'s profile. This could be e.g. a new last name or a changed phone number. Please add the new information to the subject\'s profile.',
-        de: 'Die Einwilligungserklärung enthält neue Informationen, die im Profil der Proband:in ergänzt werden müssen. Das kann z.B. ein neuer Nachname oder eine veränderte Telefonnummer sein. Bitte die neuen Informationen im Profil der Proband:in ergänzen.'
+        en: 'The consent form contains new information that has to be added to the subject\'s profile. This could be e.g. a new last name or a changed phone number. Please add the new information to the subject\'s profile on the right and save it.',
+        de: 'Die Einwilligungserklärung enthält neue Informationen, die im Profil der Proband:in ergänzt werden müssen. Das kann z.B. ein neuer Nachname oder eine veränderte Telefonnummer sein. Bitte die neuen Informationen rechts im Profil der Proband:in ergänzen und speichern.'
     },
     {
         en: 'Erroneous information was entered when filling out the consent form. This could be e.g. a typo, transposed digits or a very unlikely year of birth. Please describe the error in more detail in the comment.',

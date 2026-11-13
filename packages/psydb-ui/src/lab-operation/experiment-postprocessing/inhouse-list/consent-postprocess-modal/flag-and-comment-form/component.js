@@ -48,7 +48,7 @@ const FormFields = (ps) => {
                 dataXPath='$.containsSubjectUpdate'
                 inverted={ true }
                 helpText={ translate(
-                    'The consent form contains new information that has to be added to the subject\'s profile. This could be e.g. a new last name or a changed phone number. Please add the new information to the subject\'s profile.'
+                    'The consent form contains new information that has to be added to the subject\'s profile. This could be e.g. a new last name or a changed phone number. Please add the new information to the subject\'s profile on the right and save it.'
                 )}
             />
             <Fields.FullText
