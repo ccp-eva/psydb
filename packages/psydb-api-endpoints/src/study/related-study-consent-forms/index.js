@@ -1,11 +1,19 @@
 'use strict';
 var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
-var { ResponseBody, validateOrThrow } = require('@mpieva/psydb-api-lib');
+var { ApiError, ResponseBody, validateOrThrow } = require('@mpieva/psydb-api-lib');
 
 var BodySchema = require('./body-schema');
 
 var relatedStudyConsentFormsEndpoint = async (context, next) => {
     var { db, request, permissions } = context;
+
+    var canReadConsentForm = (
+        permissions.hasCollectionFlag('studyConsentForm', 'read')
+        || permissions.hasLabOperationFlag('inhouse', 'canObtainConsent')
+    );
+    if (!canReadConsentForm) {
+        throw new ApiError(403);
+    }
 
     // TODO: check headers with ajv
     var { language = 'en', locale, timezone } = request.headers;

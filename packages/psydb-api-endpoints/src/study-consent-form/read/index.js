@@ -2,7 +2,7 @@
 var debug = require('../debug-helper')('list');
 
 var { aggregateOne } = require('@mpieva/psydb-mongo-adapter');
-var { ResponseBody, validateOrThrow, fetchCRTSettings }
+var { ApiError, ResponseBody, validateOrThrow, fetchCRTSettings }
     = require('@mpieva/psydb-api-lib');
 
 var BodySchema = require('./body-schema');
@@ -10,6 +10,14 @@ var BodySchema = require('./body-schema');
 
 var readEndpoint = async (context, next) => {
     var { db, request, permissions } = context;
+
+    var canReadConsentForm = (
+        permissions.hasCollectionFlag('studyConsentForm', 'read')
+        || permissions.hasLabOperationFlag('inhouse', 'canObtainConsent')
+    );
+    if (!canReadConsentForm) {
+        throw new ApiError(403);
+    }
     
     // TODO: check headers with ajv
     var { language = 'en', locale, timezone } = request.headers;

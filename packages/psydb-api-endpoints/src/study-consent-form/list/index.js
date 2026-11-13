@@ -6,7 +6,7 @@ var { aggregateToArray, aggregateCount }
 var { MatchConstraintsStage } = require('@mpieva/psydb-mongo-stages');
 
 var { SmartArray } = require('@mpieva/psydb-common-lib');
-var { ResponseBody, validateOrThrow, fetchCRTLabelsManual }
+var { ApiError, ResponseBody, validateOrThrow, fetchCRTLabelsManual }
     = require('@mpieva/psydb-api-lib');
 
 var futils = require('@mpieva/psydb-custom-fields-mongo');
@@ -16,6 +16,14 @@ var BodySchema = require('./body-schema');
 
 var listEndpoint = async (context, next) => {
     var { db, request, permissions } = context;
+
+    var canReadConsentForm = (
+        permissions.hasCollectionFlag('studyConsentForm', 'read')
+        || permissions.hasLabOperationFlag('inhouse', 'canObtainConsent')
+    );
+    if (!canReadConsentForm) {
+        throw new ApiError(403);
+    }
 
     // TODO: check headers with ajv
     var { language = 'en', locale, timezone } = request.headers;
