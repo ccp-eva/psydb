@@ -160,11 +160,9 @@ var SafeRemoveModal = WithDefaultModal({
         
         var [{ translate }] = useI18N();
         
-        console.log({ onSuccessfulRemove });
-
         var sendRemove = useSend(() => ({
             type: 'subject/remove',
-            payload: { id: subjectId }
+            payload: { _id: subjectId }
         }), { onSuccessfulUpdate: [
             () => onSuccessfulRemove({ removedId: subjectId }),
             onHide
