@@ -389,3 +389,32 @@ a {
     max-width: 1820px;
   }
 }
+
+/* email-with-primary: move "isPrimary" below "email" when there is not
+ * enough width; uses container queries so it also works in split modals */
+.psydb-email-with-primary {
+  container-type: inline-size;
+}
+@container (max-width: 680px) {
+  .psydb-email-with-primary-item {
+    width: 100% !important;
+  }
+  .psydb-email-with-primary-item + .psydb-email-with-primary-item > .form-group {
+    padding-left: 0 !important;
+    margin-top: 0.5rem !important;
+  }
+}
+/* align stacked "isPrimary" label/value with the 3/9 split of "email";
+ * below sm bootstrap stacks label and value anyway */
+@media (min-width: 576px) {
+  @container (max-width: 680px) {
+    .psydb-email-with-primary-item + .psydb-email-with-primary-item > .form-group > .col-sm-6:first-child {
+      flex: 0 0 25%;
+      max-width: 25%;
+    }
+    .psydb-email-with-primary-item + .psydb-email-with-primary-item > .form-group > .col-sm-6:last-child {
+      flex: 0 0 75%;
+      max-width: 75%;
+    }
+  }
+}
