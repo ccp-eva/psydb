@@ -10,6 +10,9 @@ import { LoadingIndicator, LinkButton, Table, TableHead, TableEmptyFallback }
 import { TableHeadCustomCols, TableBodyCustomCols }
     from '@mpieva/psydb-custom-fields-ui';
 
+import { getEnabledRowClassName, getEnabledCellClassName }
+    from '../../study-consent-templates/enabled-styles';
+
 
 const ConsentFormList = (ps) => {
     var { studyId } = ps;
@@ -70,6 +73,7 @@ const ConsentFormList = (ps) => {
                     { records.map((record, ix) => (
                         <tr
                             key={ ix }
+                            className={ getEnabledRowClassName(record) }
                             style={{ cursor: 'pointer' }}
                             role='button'
                         >
@@ -77,6 +81,7 @@ const ConsentFormList = (ps) => {
                                 record={ record }
                                 related={ related }
                                 definitions={ definitions }
+                                getCellClassName={ getEnabledCellClassName }
                                 wrapAsLinkTo={ `#${url}/${record._id}`}
                             />
                         </tr>

@@ -24,10 +24,13 @@ const TableRow = (ps) => {
 
         linkBaseUrl,
         CustomActionListComponent,
+        getRowClassName,
+        getCellClassName,
     } = ps;
 
     var className = classnames([
-        record._isHidden && 'bg-light text-grey'
+        record._isHidden && 'bg-light text-grey',
+        getRowClassName && getRowClassName(record),
     ]);
 
     return (
@@ -72,6 +75,8 @@ const TDs = (ps) => {
 
         linkBaseUrl,
         CustomActionListComponent,
+        getRowClassName,
+        getCellClassName,
     } = ps;
 
     return (
@@ -84,7 +89,7 @@ const TDs = (ps) => {
                 }) } />
             )}
             <TableBodyCustomCols { ...({
-                record, definitions, related,
+                record, definitions, related, getCellClassName,
                 ...(enableRecordRowLink && {
                     wrapAsLinkTo: `#${linkBaseUrl}/${record._id}`
                 })

@@ -4,7 +4,10 @@ import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { LinkTD } from '@mpieva/psydb-ui-layout';
 
 const TableBodyCustomCols = (ps) => {
-    var { record, related, definitions, wrapAsLinkTo = false } = ps;
+    var {
+        record, related, definitions, wrapAsLinkTo = false,
+        getCellClassName = undefined,
+    } = ps;
     var [ i18n ] = useI18N();
     var { translate } = i18n;
 
@@ -28,17 +31,22 @@ const TableBodyCustomCols = (ps) => {
             console.log({ str, systemType });
         }
 
+        var className = [
+            isAnonymized && 'text-danger',
+            getCellClassName && getCellClassName({ record, definition: it }),
+        ].filter(Boolean).join(' ') || undefined;
+
         out.push(wrapAsLinkTo ? (
             <LinkTD
                 key={ pointer } href={ wrapAsLinkTo }
-                className={ isAnonymized && 'text-danger' }
+                className={ className }
             >
                 { str }
             </LinkTD>
         ) : (
             <td 
                 key={ pointer }
-                className={ isAnonymized && 'text-danger' }
+                className={ className }
             >
                 { str }
             </td>

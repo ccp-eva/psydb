@@ -32,6 +32,8 @@ var RecordListTable = (ps) => {
         
         linkBaseUrl,
         CustomActionListComponent,
+        getRowClassName,
+        getCellClassName,
         bsTableProps,
         emptyInfoText,
 
@@ -116,6 +118,8 @@ var RecordListTable = (ps) => {
 
                 linkBaseUrl,
                 CustomActionListComponent,
+                getRowClassName,
+                getCellClassName,
             })} />
         </Table>
     );

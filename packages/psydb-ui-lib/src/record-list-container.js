@@ -102,6 +102,8 @@ const RecordListContainer = (ps) => {
         tableClassName,
         bsTableProps,
         CustomActionListComponent,
+        getRowClassName,
+        getCellClassName,
     } = ps;
 
     var { path, url } = useRouteMatch();
@@ -193,6 +195,8 @@ const RecordListContainer = (ps) => {
                 tableClassName,
                 bsTableProps,
                 CustomActionListComponent,
+                getRowClassName,
+                getCellClassName,
 
                 showHidden,
                 setShowHidden,

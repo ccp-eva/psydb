@@ -53,6 +53,8 @@ var RecordList = (ps) => {
         tableClassName,
         bsTableProps,
         CustomActionListComponent,
+        getRowClassName,
+        getCellClassName,
     } = ps;
 
     var translate = useUITranslation();
@@ -229,6 +231,8 @@ var RecordList = (ps) => {
                 linkBaseUrl,
                 bsTableProps,
                 CustomActionListComponent,
+                getRowClassName,
+                getCellClassName,
             })} />
         </>
     )
