@@ -29,6 +29,7 @@ var relatedStudyConsentFormsEndpoint = async (context, next) => {
     var records = await aggregateToArray({ db, studyConsentForm: [
         { $match: {
             'studyId': studyId,
+            'state.isEnabled': true,
             ...(subjectType && { subjectType })
         }},
         { $project: {

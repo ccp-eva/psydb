@@ -7,6 +7,7 @@ var { verifyOneRecord, verifyOneCRT }
 var compose_verifyAllowedAndPlausible = () => compose([
     verifyPermissions,
     verifyStudyConsentFormRecord,
+    verifyStudyConsentFormIsEnabled,
     verifySubjectRecord,
     verifyConsentObtainedByRecord,
     verifyElementValues,
@@ -27,6 +28,17 @@ var verifyStudyConsentFormRecord = verifyOneRecord({
     by: '/payload/studyConsentFormId',
     cache: true
 });
+
+var verifyStudyConsentFormIsEnabled = async (context, next) => {
+    var { cache } = context;
+    var { studyConsentForm } = cache.get();
+
+    if (!studyConsentForm.state.isEnabled) {
+        throw new ApiError(409, 'StudyConsentFormIsDisabled');
+    }
+
+    await next();
+}
 
 var verifySubjectRecord = verifyOneRecord({
     collection: 'subject',

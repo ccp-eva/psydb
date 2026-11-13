@@ -165,6 +165,7 @@ const StudyConsentFormSelect = (ps) => {
         agent.studyConsentForm.list({
             //target: 'option-list', // FIXME
             constraints: { '/studyId': studyId },
+            quicksearch: { '/state/isEnabled': true },
             offset: 0, limit: 1000,
         })
     ), [ studyId ]);
