@@ -37,6 +37,8 @@ var allHandlers = [
     require('./handlers/study-consent-template'),
     require('./handlers/study-consent-form'),
     require('./handlers/study-consent-doc'),
+
+    require('./handlers/subject-contact-history'),
     
     require('./handlers/study-email-template'),
     require('./handlers/study-email-meta-template'),
