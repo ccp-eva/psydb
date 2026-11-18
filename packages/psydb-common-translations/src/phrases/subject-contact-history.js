@@ -69,7 +69,7 @@ module.exports = [
         de: 'Nicht Erreicht',
     },
     {
-        en: 'Add Contact',
-        de: 'Kontakt hinzufügen',
+        en: 'Log Contact',
+        de: 'Kontakt Nachtragen',
     },
 ]

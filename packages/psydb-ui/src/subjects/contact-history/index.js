@@ -31,7 +31,7 @@ const SubjectContactHistory = (ps) => {
             />
             <Header
                 title={ translate('Contact History') }
-                editLabel={ translate('Add Contact') }
+                editLabel={ translate('Log Contact') }
                 canEdit={ canCreate }
                 onEditClick={ () => createModal.handleShow() }
             />

@@ -117,7 +117,7 @@ const FormFields = () => {
 }
 
 const CreateModal = WithDefaultModal({
-    title: 'Add Contact',
+    title: 'Log Contact',
     size: 'lg',
     Body: CreateModalBody,
 });
