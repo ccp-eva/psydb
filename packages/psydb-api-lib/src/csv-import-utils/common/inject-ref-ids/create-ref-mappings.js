@@ -1,6 +1,8 @@
 'use strict';
 var perlify = require('@cdxoo/stringify-path-perlstyle');
-var { isArray, keyBy, traverse } = require('@mpieva/psydb-core-utils');
+var {
+    isArray, isPlainObject, keyBy, traverse
+} = require('@mpieva/psydb-core-utils');
 
 var {
     isRecordRef, isHSIRef, isRefList,
@@ -59,13 +61,28 @@ var createRefMappings = (bag) => {
             traverseArrays: true,
             createPathToken: ({ parentNode, key, value }) => ({
                 key,
-                type: isArray(value) ? 'array' : typeof value,
+                type: getTokenType(value),
                 isArrayItem: isArray(parentNode.value),
             })
         });
     }
 
     return refMappings
+}
+
+// NOTE: traverse() only descends into plain objects, so leaves can be
+// non-plain objects like ObjectIds (i.e. when the csv contains an id);
+// those must be typed as scalars, otherwise their perl path ends in
+// '%key' instead of '$key' and does not match the schema's ref path
+var getTokenType = (value) => {
+    if (isArray(value)) {
+        return 'array';
+    }
+    if (isPlainObject(value)) {
+        return 'object';
+    }
+    var type = typeof value;
+    return (type === 'object' ? 'scalar' : type);
 }
 
 var pointerize = (path) => {

@@ -28,8 +28,8 @@ var replaceRefs = (bag) => {
           
             var matchingItems = bucket.filter(it => (
                 recordType
-                ? (it.type === recordType && it.value === value)
-                : it.value === value
+                ? (it.type === recordType && isSameValue(it.value, value))
+                : isSameValue(it.value, value)
             ));
             if (matchingItems.length === 1) {
                 var [ matched ] = matchingItems;
@@ -66,5 +66,18 @@ var replaceRefs = (bag) => {
     }
     return out;
 }
+
+var isObjectId = (that) => (
+    !!that && typeof that === 'object'
+    && /^ObjectI[dD]$/.test(that._bsontype)
+);
+
+// NOTE: values resolved via '/_id' are ObjectIds, which are distinct
+// instances and never '===' the ObjectId parsed from the csv
+var isSameValue = (a, b) => (
+    isObjectId(a) && isObjectId(b)
+    ? String(a) === String(b)
+    : a === b
+);
 
 module.exports = replaceRefs;
