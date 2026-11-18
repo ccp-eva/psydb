@@ -128,22 +128,6 @@ var createRouting = (bag = {}) => {
         enableApiKeyAuth: true,
     }));
 
-    //router.post('/helperSet/search', ...withPostStages({
-    //    endpoint: endpoints.helperSet.search,
-    //    enableApiKeyAuth: true,
-    //}));
-    //router.post('/helperSetItem/search', ...withPostStages({
-    //    endpoint: endpoints.helperSetItem.search,
-    //    enableApiKeyAuth: true,
-    //}));
-    
-    //router.post('/search/helperSetItem',
-    //    withSelfAuth(),
-    //    withPermissions(),
-    //    withKoaBody(),
-    //    endpoints.helperSetItem.search
-    //);
-    
     router.post('/search-export',
         withSelfAuth(),
         withPermissions(),
@@ -429,13 +413,13 @@ var createRouting = (bag = {}) => {
     router.get('/experiment-variant/pre-remove-info/:id',
         withSelfAuth(),
         withPermissions(),
-        endpoints.experimentVariant.preRemoveInfo
+        endpoints_SPLIT.experimentVariant.preRemoveInfo
     );
     
     router.get('/experiment-variant-setting/pre-remove-info/:id',
         withSelfAuth(),
         withPermissions(),
-        endpoints.experimentVariantSetting.preRemoveInfo
+        endpoints_SPLIT.experimentVariantSetting.preRemoveInfo
     );
 
 
@@ -448,14 +432,16 @@ var createRouting = (bag = {}) => {
 
 
 
+    // NOTE: subjectGroup.search is currently unused, the UI uses the
+    // generic '/search' endpoint instead; path below is also wrong
     // FIXME
     //router.post('/api-key/search', ...withPostStages({
-    //    endpoint: endpoints.subjectGroup.search
+    //    endpoint: endpoints_SPLIT.subjectGroup.search
     //}));
     router.get('/subject-group/pre-remove-info/:id',
         withSelfAuth(),
         withPermissions(),
-        endpoints.subjectGroup.preRemoveInfo
+        endpoints_SPLIT.subjectGroup.preRemoveInfo
     );
 
     router.post('/location/related-experiments',

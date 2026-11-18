@@ -22,16 +22,11 @@ module.exports = {
     researchGroup: require('./entities/research-group'),
     opsTeam: require('./entities/ops-team'),
     //subject: require('./entities/subject'),
-    subjectGroup: require('./entities/subject-group'),
     location: require('./entities/location'),
     personnel: require('./entities/personnel'),
     study: require('./entities/study'),
     
-    helperSet: require('./entities/helper-set'),
-    helperSetItem: require('./entities/helper-set-item'),
     
-    experimentVariant: require('./entities/experiment-variant'),
-    experimentVariantSetting: require('./entities/experiment-variant-setting'),
 
     statistics: require('./statistics'),
     audit: require('./audit'),

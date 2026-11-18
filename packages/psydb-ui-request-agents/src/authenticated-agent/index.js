@@ -181,7 +181,7 @@ const createAgent = (options = {}) => {
         showHidden,
     }) => {
         var url = (
-            ['apiKey', 'helperSet', 'helperSetItem'].includes(collection)
+            ['apiKey'].includes(collection)
             ? `/api/${collection}/search`
             : '/api/search'
         )

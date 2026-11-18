@@ -17,6 +17,10 @@ module.exports = {
 
     helperSet: require('./helper-set'),
     helperSetItem: require('./helper-set-item'),
+
+    subjectGroup: require('./subject-group'),
+    experimentVariant: require('./experiment-variant'),
+    experimentVariantSetting: require('./experiment-variant-setting'),
     
     apiKey: require('./api-key'),
     file: require('./file'),

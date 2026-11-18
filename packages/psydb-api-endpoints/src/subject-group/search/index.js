@@ -1,7 +1,9 @@
 'use strict';
+// NOTE: currently unused; this endpoint is not routed. The UI lists
+// subject groups via the generic '/search' endpoint (agent.searchRecords
+// with collection 'subjectGroup'). Kept for a possible switch-over.
 var debug = require('debug')('psydb:api:endpoints:subjectGroup:search');
-var { copy } = require('copy-anything');
-var { keyBy } = require('@mpieva/psydb-core-utils');
+var { copy, keyBy } = require('@mpieva/psydb-core-utils');
 var { fieldTypeMetadata } = require('@mpieva/psydb-common-lib');
 
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
