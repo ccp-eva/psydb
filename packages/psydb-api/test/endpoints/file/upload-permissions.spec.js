@@ -6,7 +6,7 @@ var supertest = require('supertest');
 var { Permissions } = require('@mpieva/psydb-common-lib');
 var { Self } = require('@mpieva/psydb-api-lib');
 var withApiErrors = require('../../../src/middleware/errors');
-var upload = require('../../../src/endpoints/entities/file/upload');
+var upload = require('@mpieva/psydb-api-endpoints').file.upload;
 
 describe('endpoints/file/upload permissions', function () {
     var db;

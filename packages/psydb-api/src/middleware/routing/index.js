@@ -480,13 +480,13 @@ var createRouting = (bag = {}) => {
     router.post('/file/upload',
         withSelfAuth(),
         withPermissions(),
-        endpoints.file.upload
+        endpoints_SPLIT.file.upload
     );
     router.post('/file/read', ...withPostStages({
-        endpoint: endpoints.file.read
+        endpoint: endpoints_SPLIT.file.read
     }));
     router.get('/file/download', ...withGetStages({
-        endpoint: endpoints.file.download,
+        endpoint: endpoints_SPLIT.file.download,
     }));
     
 

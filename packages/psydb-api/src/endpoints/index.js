@@ -17,7 +17,6 @@ module.exports = {
     channelHistory: require('./channel-history'),
 
     customRecordType: require('./entities/custom-record-type'),
-    file: require('./entities/file'),
     //csvImport: require('./entities/csv-import'),
 
     researchGroup: require('./entities/research-group'),
