@@ -291,4 +291,8 @@ module.exports = [
         en: 'This consent form is already used by consent docs and cannot be deleted.',
         de: 'Dieses Einwilligungsformular wird bereits von Einwilligungen verwendet und kann nicht gelöscht werden.'
     },
+    {
+        en: 'No consent docs found.',
+        de: 'Keine Einwilligungen gefunden.'
+    },
 ]

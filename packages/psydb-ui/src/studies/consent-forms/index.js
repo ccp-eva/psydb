@@ -19,7 +19,7 @@ const StudyConsentFormRouting = (ps) => {
     return (
         <Switch>
             <Route exact path={ path }>
-                <div className='border p-3'>
+                <div className='border p-3 bg-light'>
                     <h5>{ translate('Consent Forms') }</h5>
                     <hr />
                     <List studyId={ studyId } />

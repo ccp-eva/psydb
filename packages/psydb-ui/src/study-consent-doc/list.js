@@ -12,7 +12,8 @@ import { TableHeadCustomCols, TableBodyCustomCols }
 
 
 const ConsentDocList = (ps) => {
-    var { studyId } = ps;
+    var { studyId, subjectId } = ps;
+    var canCreate = !!studyId;
     
     var { url } = useRouteMatch();
     var [{ translate }] = useI18N();
@@ -25,28 +26,38 @@ const ConsentDocList = (ps) => {
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.studyConsentDoc.list({
             offset: 0, limit: 1000,
-            constraints: { '/studyId': studyId }
+            constraints: {
+                ...(studyId && { '/studyId': studyId }),
+                ...(subjectId && { '/subjectId': subjectId }),
+            }
         })
-    ), []);
+    ), [ studyId, subjectId ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
 
     var { records, recordsCount, displayFieldData, related } = fetched.data;
-    var definitions = displayFieldData; // FIXME
+    // NOTE: hide the column we are already scoped to
+    var definitions = displayFieldData.filter(it => !(
+        (studyId && it.pointer === '/studyId')
+        || (subjectId && it.pointer === '/subjectId')
+    ));
 
     var headBag = { definitions, sorter, canSort: true };
     if (records.length < 1) {
         return (
             <>
-                <div className='d-flex justify-content-between mb-3'>
-                    <LinkButton size='sm' to={ `${url}/new` }>
-                        { '+ ' + translate('New Consent Doc') }
-                    </LinkButton>
-                </div>
+                { canCreate && (
+                    <div className='d-flex justify-content-between mb-3'>
+                        <LinkButton size='sm' to={ `${url}/new` }>
+                            { '+ ' + translate('New Consent Doc') }
+                        </LinkButton>
+                    </div>
+                )}
                 <TableEmptyFallback
-                    emptyInfoText={ 'No study consent forms found.' }
+                    emptyInfoText={ 'No consent docs found.' }
+                    tableExtraClassName='bg-white border'
                 >
                     <TableHeadCustomCols { ...headBag } />
                 </TableEmptyFallback>
@@ -56,12 +67,15 @@ const ConsentDocList = (ps) => {
 
     return (
         <>
-            <div className='d-flex justify-content-between mb-3'>
-                <LinkButton size='sm' to={ `${url}/new` }>
-                    { '+ ' + translate('New Consent Doc') }
-                </LinkButton>
-            </div>
+            { canCreate && (
+                <div className='d-flex justify-content-between mb-3'>
+                    <LinkButton size='sm' to={ `${url}/new` }>
+                        { '+ ' + translate('New Consent Doc') }
+                    </LinkButton>
+                </div>
+            )}
             <Table
+                className='bg-white border'
                 style={{ borderCollapse: 'separate', borderSpacing: 0 }}
                 hover={ true }
             >

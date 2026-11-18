@@ -9,6 +9,7 @@ import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 import IntraRecordNav from './intra-record-nav';
 import SubjectParticipation from './participation';
 import SubjectContactHistory from './contact-history';
+import SubjectConsentDocs from './consent-docs';
 
 const IntraRecordRoutingBody = (ps) => {
     var {
@@ -21,7 +22,11 @@ const IntraRecordRoutingBody = (ps) => {
 
     var { record } = fetched;
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
-    var { dev_enableCSVSubjectContactHistoryImport = false } = useUIConfig();
+    var canReadStudyConsentDocs = permissions.hasFlag('canReadStudyConsentDocs');
+    var {
+        dev_enableCSVSubjectContactHistoryImport = false,
+        dev_enableStudyConsentWorkflow = false,
+    } = useUIConfig();
 
     var [{ translate }] = useI18N();
     var history = useHistory();
@@ -49,6 +54,12 @@ const IntraRecordRoutingBody = (ps) => {
             { dev_enableCSVSubjectContactHistoryImport && (
                 <Route path={`${path}/contact-history`}>
                     <SubjectContactHistory { ...sharedBag } />
+                </Route>
+            )}
+
+            { dev_enableStudyConsentWorkflow && canReadStudyConsentDocs && (
+                <Route path={`${path}/consent-docs`}>
+                    <SubjectConsentDocs subjectId={ record._id } />
                 </Route>
             )}
 

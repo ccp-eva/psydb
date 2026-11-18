@@ -17,6 +17,12 @@ var displayFields = [
     },
     {
         systemType: 'ForeignId',
+        pointer: '/studyId',
+        displayName: 'Study', displayNameI18N: { 'de': 'Studie' },
+        props: { collection: 'study' }
+    },
+    {
+        systemType: 'ForeignId',
         pointer: '/subjectId',
         displayName: 'Subject', displayNameI18N: { 'de': 'Proband:in' },
         props: { collection: 'subject', recordType: 'child' /* XXX */ }

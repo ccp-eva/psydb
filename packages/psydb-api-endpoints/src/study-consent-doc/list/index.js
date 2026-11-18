@@ -83,6 +83,7 @@ var listEndpoint = async (context, next) => {
     var related = {
         records: await fetchRecordLabelsManual(db, {
             'subject': records.map(it => it.subjectId),
+            'study': records.map(it => it.studyId),
         }, { oldWrappedLabels: true, ...i18n }),
         crts: await fetchCRTLabelsManual({
             db, i18n, records, pointers: { 'subject': [ '/subjectType' ]}

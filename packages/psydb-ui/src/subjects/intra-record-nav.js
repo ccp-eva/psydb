@@ -8,12 +8,16 @@ const IntraRecordNav = (ps) => {
     var { record } = fetched;
 
     var [{ translate }] = useI18N();
-    var { dev_enableCSVSubjectContactHistoryImport = false } = useUIConfig();
+    var {
+        dev_enableCSVSubjectContactHistoryImport = false,
+        dev_enableStudyConsentWorkflow = false,
+    } = useUIConfig();
     var permissions = usePermissions();
 
     var canEdit = permissions.hasCollectionFlag('subject', 'write');
     var canHistory = permissions.isRoot();
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
+    var canReadStudyConsentDocs = permissions.hasFlag('canReadStudyConsentDocs');
 
     var { hashurl, core } = Nav.useLinks({ record });
 
@@ -29,6 +33,11 @@ const IntraRecordNav = (ps) => {
         [`${hashurl}/contact-history`]: {
             label: translate('Contact History'),
             show: dev_enableCSVSubjectContactHistoryImport, enabled: true
+        },
+        [`${hashurl}/consent-docs`]: {
+            label: translate('Consent Docs'),
+            show: dev_enableStudyConsentWorkflow && canReadStudyConsentDocs,
+            enabled: true
         },
     };
     var hasActivityLinks = (

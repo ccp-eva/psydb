@@ -48,6 +48,7 @@ const ConsentFormList = (ps) => {
                 </div>
                 <TableEmptyFallback
                     emptyInfoText={ 'No study consent forms found.' }
+                    tableExtraClassName='bg-white border'
                 >
                     <TableHeadCustomCols { ...headBag } />
                 </TableEmptyFallback>
@@ -63,6 +64,7 @@ const ConsentFormList = (ps) => {
                 </LinkButton>
             </div>
             <Table
+                className='bg-white border'
                 style={{ borderCollapse: 'separate', borderSpacing: 0 }}
                 hover={ true }
             >

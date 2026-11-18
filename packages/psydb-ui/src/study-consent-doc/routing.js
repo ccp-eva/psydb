@@ -10,7 +10,7 @@ import RecordCreator from './record-creator';
 import RecordDetails from './record-details';
 
 const StudyConsentDocRouting = (ps) => {
-    var { studyId } = ps;
+    var { studyId, subjectId, ListWrapper = DefaultListWrapper } = ps;
     var { path, url } = useRouteMatch();
     var history =  useHistory();
 
@@ -19,27 +19,40 @@ const StudyConsentDocRouting = (ps) => {
     return (
         <Switch>
             <Route exact path={ path }>
-                <div className='border p-3'>
-                    <h5>{ translate('Consent Docs') }</h5>
-                    <hr />
-                    <List studyId={ studyId } />
-                </div>
+                <ListWrapper>
+                    <List studyId={ studyId } subjectId={ subjectId } />
+                </ListWrapper>
             </Route>
-            <Route path={ `${path}/new` }>
-                <FormBox title={ translate('New Consent Doc') }>
-                    <RecordCreator
-                        studyId={ studyId }
-                        onSuccessfulUpdate={ () => history.push(`${url}`) }
-                        enableFullScreenLink={ true }
-                    />
-                </FormBox>
-            </Route>
+            { studyId && (
+                <Route path={ `${path}/new` }>
+                    <FormBox title={ translate('New Consent Doc') }>
+                        <RecordCreator
+                            studyId={ studyId }
+                            onSuccessfulUpdate={ () => history.push(`${url}`) }
+                            enableFullScreenLink={ true }
+                        />
+                    </FormBox>
+                </Route>
+            )}
             <Route path={ `${path}/:studyConsentDocId` }>
                 <FormBox title={ translate('Consent Doc Details') }>
                     <RecordDetails />
                 </FormBox>
             </Route>
         </Switch>
+    )
+}
+
+const DefaultListWrapper = (ps) => {
+    var { children } = ps;
+    var [{ translate }] = useI18N();
+
+    return (
+        <div className='border p-3 bg-light'>
+            <h5>{ translate('Consent Docs') }</h5>
+            <hr />
+            { children }
+        </div>
     )
 }
 
