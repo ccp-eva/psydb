@@ -1,7 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:apiKey:search');
-var { copy } = require('copy-anything');
-var { keyBy } = require('@mpieva/psydb-core-utils');
+var { copy, keyBy } = require('@mpieva/psydb-core-utils');
 var { fieldTypeMetadata } = require('@mpieva/psydb-common-lib');
 
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');

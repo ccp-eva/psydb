@@ -28,6 +28,7 @@
     "@mpieva/psydb-schema-enums": "workspace:*",
     "@mpieva/psydb-schema-fields": "workspace:*",
     "@mpieva/psydb-schema-fields-special": "workspace:*",
+    "@mpieva/psydb-schema-creators": "workspace:*",
     "@mpieva/psydb-mongo-adapter": "workspace:*",
     "@mpieva/psydb-mongo-stages": "workspace:*",
     "@mpieva/psydb-db-utils": "workspace:*",

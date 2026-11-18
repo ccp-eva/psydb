@@ -466,7 +466,7 @@ var createRouting = (bag = {}) => {
     );
 
     router.post('/apiKey/search', ...withPostStages({
-        endpoint: endpoints.apiKey.search
+        endpoint: endpoints_SPLIT.apiKey.search
     }));
 
     router.get('/channel-history/:channelId',

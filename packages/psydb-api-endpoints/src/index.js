@@ -18,6 +18,8 @@ module.exports = {
     helperSet: require('./helper-set'),
     helperSetItem: require('./helper-set-item'),
     
+    apiKey: require('./api-key'),
+
     csvImport: require('./csv-import'),
     wkprcCSVExport: require('./wkprc-csv-export'),
 }
