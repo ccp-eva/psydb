@@ -501,10 +501,10 @@ var createRouting = (bag = {}) => {
 
     
     router.post('/experiment/read', ...withPostStages({
-        endpoint: endpoints.experiment.read
+        endpoint: endpoints_SPLIT.experiment.read
     }));
     router.post('/experiment/read-spooled', ...withPostStages({
-        endpoint: endpoints.experiment.readSpooled
+        endpoint: endpoints_SPLIT.experiment.readSpooled
     }));
 
     // XXX
