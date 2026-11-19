@@ -24,7 +24,6 @@ module.exports = {
     //subject: require('./entities/subject'),
     location: require('./entities/location'),
     personnel: require('./entities/personnel'),
-    study: require('./entities/study'),
     
     
 

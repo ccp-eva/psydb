@@ -1,28 +1,27 @@
 'use strict';
 var endpoints_SPLIT = require('@mpieva/psydb-api-endpoints');
-var endpoints = require('../../endpoints/');
 var { withPostStages, withGetStages } = require('./stage-helpers');
 
 var addStudyRoutes = (bag) => {
     var { router } = bag;
 
     router.post('/study/read', ...withPostStages({
-        endpoint: endpoints.study.read
+        endpoint: endpoints_SPLIT.study.read
     }));
     router.post('/study/read-many', ...withPostStages({
-        endpoint: endpoints.study.readMany
+        endpoint: endpoints_SPLIT.study.readMany
     }));
     router.post('/study/subject-type-infos', ...withPostStages({
-        endpoint: endpoints.study.subjectTypeInfos
+        endpoint: endpoints_SPLIT.study.subjectTypeInfos
     }));
     router.post('/study/available-subject-crts', ...withPostStages({
-        endpoint: endpoints.study.availableSubjectCRTs
+        endpoint: endpoints_SPLIT.study.availableSubjectCRTs
     }));
     router.post('/study/enabled-subject-crts', ...withPostStages({
-        endpoint: endpoints.study.enabledSubjectCRTs
+        endpoint: endpoints_SPLIT.study.enabledSubjectCRTs
     }));
     router.post('/study/enabled-csv-importers', ...withPostStages({
-        endpoint: endpoints.study.enabledCSVImporters
+        endpoint: endpoints_SPLIT.study.enabledCSVImporters
     }));
     
     router.post('/study/list', ...withPostStages({
