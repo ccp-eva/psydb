@@ -18,6 +18,12 @@ var addCRTSettingsRoutes = (bag) => {
     router.post('/crt-settings/read-many', ...withPostStages({
         endpoint: endpoints_SPLIT.crtSettings.readMany
     }));
+
+    // NOTE: root only; used to move crts to another system
+    router.get('/crt-settings/export', ...withGetStages({
+        endpoint: endpoints_SPLIT.crtSettings.export,
+        enableApiKeyAuth: true,
+    }));
 }
 
 module.exports = addCRTSettingsRoutes;

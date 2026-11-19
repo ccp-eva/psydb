@@ -31,7 +31,12 @@ var cliOptions = [
         long: 'restore-fixture',
         arg: 'fixturePath',
         description: 'fixture to restore before running script',
-    }
+    },
+    {
+        long: 'input-file',
+        arg: 'inputFile',
+        description: 'input file for scripts that require one (e.g. import-crt-export)',
+    },
 ];
 
 for (var it of cliOptions) {
