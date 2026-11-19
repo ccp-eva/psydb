@@ -22,11 +22,8 @@ var CoreBodySchema = require('./core-body-schema');
 var FullBodySchema = require('./full-body-schema');
 
 var listEndpoint = async (context, next) => {
-    var { db, request, permissions } = context;
-
-    // TODO: check headers with ajv
-    var { language = 'en', locale, timezone } = request.headers;
-    var i18n = { language, locale, timezone };
+    var { db, request, permissions, i18n } = context;
+    var { timezone } = i18n;
 
     debug('start validating');
 

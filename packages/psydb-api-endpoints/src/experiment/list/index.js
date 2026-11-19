@@ -23,15 +23,11 @@ var {
 var BodySchema = require('./body-schema');
 
 var listEndpoint = async (context, next) => {
-    var { db, request, permissions } = context;
+    var { db, request, permissions, i18n } = context;
 
     if (!permissions.hasFlag('canReadParticipation')) {
         throw new ApiError(403);
     }
-
-    // TODO: check headers with ajv
-    var { language = 'en', locale, timezone } = request.headers;
-    var i18n = { language, locale, timezone };
 
     validateOrThrow({
         schema: BodySchema(),

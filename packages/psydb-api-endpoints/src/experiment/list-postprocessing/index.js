@@ -23,9 +23,6 @@ var experimentPostprocessing = async (context, next) => {
     var { db, request, permissions, i18n } = context;
     var now = new Date(); // XXX: why now not in context??
     
-    // TODO: check headers with ajv
-    //var { language = 'en', locale, timezone } = request.headers;
-    //var i18n = { language, locale, timezone };
 
     validateOrThrow({
         schema: BodySchema(),

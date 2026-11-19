@@ -11,9 +11,6 @@ var BodySchema = require('./body-schema');
 var readEndpoint = async (context, next) => {
     var { db, request, permissions } = context;
     
-    // TODO: check headers with ajv
-    var { language = 'en', locale, timezone } = request.headers;
-    var i18n = { language, locale, timezone };
 
     validateOrThrow({
         schema: BodySchema(),

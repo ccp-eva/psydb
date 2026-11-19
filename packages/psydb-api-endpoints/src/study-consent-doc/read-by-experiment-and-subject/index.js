@@ -21,10 +21,6 @@ var endpoint = async (context, next) => {
     if (!canReadConsentDoc) {
         throw new ApiError(403);
     }
-    
-    // TODO: check headers with ajv
-    var { language = 'en', locale, timezone } = request.headers;
-    var i18n = { language, locale, timezone };
 
     validateOrThrow({
         schema: BodySchema(),
