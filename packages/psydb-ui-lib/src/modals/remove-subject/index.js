@@ -1,7 +1,7 @@
 import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 import {
     WithDefaultModal,
@@ -38,7 +38,7 @@ const UnscheduleSubjectModalBody = (ps) => {
         experimentId = experimentData.record._id;
     }
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var [ didFetch, fetched ] = useFetch((agent) => {
         if (shouldFetch) {
@@ -149,7 +149,7 @@ const UnscheduleSubjectModalBody = (ps) => {
 }
 
 const FormFields = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { getFieldProps } = useFormikContext();
     
     var shouldBlock = getFieldProps(

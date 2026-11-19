@@ -1,11 +1,11 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import * as Fields from '../../form-fields';
 
 const PreselectedSubjectFields = (ps) => {
     var { subjectType, enableFollowUpExperiments } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { demuxed, arrify } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSelectionReducer, useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
 
@@ -23,7 +23,7 @@ const StudyExclusionModalBody = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var [ selectedTopic, onSelectTopic ] = useState();
     var topicIdsSelection = useSelectionReducer({

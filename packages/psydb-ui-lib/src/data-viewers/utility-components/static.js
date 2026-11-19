@@ -3,10 +3,6 @@ import { jsonpointer } from '@mpieva/psydb-core-utils';
 import { calculateAge } from '@mpieva/psydb-common-lib';
 
 import {
-    useUILanguage,
-    useUITranslation,
-    useUILocale,
-
     useI18N,
     useUIConfig,
 } from '@mpieva/psydb-ui-contexts';
@@ -30,7 +26,7 @@ var collectionUIMapping = {
 // TODO: put elsewhere
 const NoValue = (ps) => {
     var { unknown } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         unknown
@@ -57,7 +53,7 @@ export const Lambda = (ps) => {
     var { record, definition } = ps;
     var { fn, input } = definition.props;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     
     if (!record) {
         return <span className='text-danger'>'ERROR'</span>
@@ -143,7 +139,7 @@ export const HelperSetItemIdList = (ps) => {
     var { value, props, related } = ps;
     var { setId } = props;
 
-    var [ language ] = useUILanguage();
+    var [{ language }] = useI18N();
 
     if (!(Array.isArray(value) && value.length)) {
         return <NoValue />
@@ -167,7 +163,7 @@ export const HelperSetItemId = (ps) => {
     var { value, props, related } = ps;
     var { setId } = props;
     
-    var [ language ] = useUILanguage();
+    var [{ language }] = useI18N();
 
     if (!value) {
         return <NoValue unknown={ props.displayEmptyAsUnknown } />
@@ -214,8 +210,7 @@ export const ForeignIdList = (ps) => {
 export const DateOnlyServerSide = (ps) => {
     var { value, props = {}, related } = ps;
     
-    var translate = useUITranslation();
-    var locale = useUILocale();
+    var [{ translate, locale }] = useI18N();
     
     var hasValue = (
         value !== undefined && value !== null
@@ -258,7 +253,7 @@ export const DateOnlyServerSide = (ps) => {
 
 export const DateTime = (ps) => {
     var { value, props, related } = ps;
-    var locale = useUILocale();
+    var [{ locale }] = useI18N();
 
     var formatted = (
         value === undefined || value === null
@@ -299,7 +294,7 @@ export const Address = (ps) => {
 
 export const EmailWithPrimaryList = (ps) => {
     var { value } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     
     if (!(Array.isArray(value) && value.length)) {
         return <NoValue />
@@ -322,7 +317,7 @@ export const EmailWithPrimaryList = (ps) => {
 
 export const PhoneWithTypeList = (ps) => {
     var { value } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     
     if (!(Array.isArray(value) && value.length)) {
         return <i className='text-muted'>{ translate('None') }</i>
@@ -362,7 +357,7 @@ export const PhoneList = (ps) => {
 
 export const BiologicalGender = (ps) => {
     var { value } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (!value) {
         return <NoValue />
@@ -511,7 +506,7 @@ export const CustomRecordTypeKey = (ps) => {
     var { value, props, related, __useNewRelated = false } = ps;
     var { collection } = props;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (!value) {
         return <NoValue />
@@ -611,7 +606,7 @@ export const CRTRef = (ps) => {
     var { value, props, related, __useNewRelated, newTab = false } = ps;
     var { collection, recordType } = props;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (!value) {
         return <NoValue unknown={ props.displayEmptyAsUnknown } />

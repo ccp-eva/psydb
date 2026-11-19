@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetch,
@@ -63,7 +63,7 @@ const LocationCalendarList = (ps) => {
         revision = 0,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
     var showPast = useToggleReducer(false, { as: 'props' });
 

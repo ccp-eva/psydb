@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { only } from '@mpieva/psydb-core-utils';
-import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetchAll, useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, FormHelpers } from '@mpieva/psydb-ui-layout';
 import { RecordPicker } from '@mpieva/psydb-ui-lib';
@@ -16,7 +16,7 @@ const ExperimentImportCreateForm = (ps) => {
         'onSuccessfulUpdate', 'onFailedUpdate'
     ]});
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var [ stage, setStage ] = useState('prepare');
 
     var [ studyType, setStudyType ] = useState(
@@ -102,7 +102,7 @@ const HelperControlsContainer = (ps) => {
         csvImporter, setCSVImporter
     } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
 import {
     Pair,
@@ -30,7 +30,7 @@ const SafetyForm = (ps) => {
     var { record } = fetched;
     var { state: { name }} = record;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var send = useSendRemove({
         collection,
@@ -93,7 +93,7 @@ const SafetyForm = (ps) => {
 
 const SuccessInfo = (ps) => {
     var { successInfoBackLink } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <FormBox
             titleClassName='text-success'

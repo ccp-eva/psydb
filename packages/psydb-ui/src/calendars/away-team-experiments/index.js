@@ -5,7 +5,7 @@ import {
     useRouteMatch,
 } from 'react-router-dom';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -23,7 +23,7 @@ const AwayTeamExperimentsRouting = (ps) => {
     var { locationTypes: locationCRTs } = ps;
     var { path, url } = useRouteMatch();
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
 
     var [ didFetch, fetched ] = useFetch((agent) => (

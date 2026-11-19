@@ -1,11 +1,11 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import classnames from 'classnames';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { Button, AsyncButton } from '@mpieva/psydb-ui-layout';
 
 const ExtraFunctionBar = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { subjectSelection, fetchBag, onClickInvite } = ps;
 
     var sample = useFetch((agent) => (

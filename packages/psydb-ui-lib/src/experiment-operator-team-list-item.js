@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer } from 'react';
 import classnames from 'classnames';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Button, Icons } from '@mpieva/psydb-ui-layout';
 
 const StudyTeamListItem = ({
@@ -16,7 +16,7 @@ const StudyTeamListItem = ({
     onDeleteClick,
     enableDelete,
 }) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var cls = classnames([
         'd-flex border',
         record.state.hidden ? 'bg-light' : 'bg-white',
@@ -99,7 +99,7 @@ const StudyTeamListItem = ({
 const TeamEditButton = ({
     onClick
 }) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <TeamButton
             className='bg-white border-left border-bottom'
@@ -115,7 +115,7 @@ const TeamEditButton = ({
 const TeamDeleteButton = ({
     onClick
 }) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <TeamButton
             className='bg-white border-left border-top text-danger'

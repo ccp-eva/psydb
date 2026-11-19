@@ -1,10 +1,10 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 export const MultiSubjectHint = (ps) => {
     var { isGrouped } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var tag = (
         isGrouped
         ? '_participation_multi_subject_grouped_hint'

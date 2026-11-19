@@ -1,7 +1,7 @@
 import React from 'react';
 import { jsonpointer } from '@mpieva/psydb-core-utils';
 import { calculateAge } from '@mpieva/psydb-common-lib';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useModalReducer } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -146,7 +146,7 @@ const PostprocessSubjectRow = (ps) => {
     var { type: experimentType } = experimentRecord;
     var { enableFollowUpExperiments } = studyData.record.state;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var handleEdit = () => (
         subjectModal.handleShow({

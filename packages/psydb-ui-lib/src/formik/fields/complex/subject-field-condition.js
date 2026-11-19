@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { FormHelpers } from '@mpieva/psydb-ui-layout';
 
 import factory from '../../field-array-factory';
@@ -75,7 +75,7 @@ const Control = (ps) => {
         disabled,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var { getFieldProps, values } = formikForm;
     var selectedPointer = (

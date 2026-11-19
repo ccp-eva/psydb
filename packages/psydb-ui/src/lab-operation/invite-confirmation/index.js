@@ -1,6 +1,6 @@
 import React from 'react';
 import { unique } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -25,7 +25,7 @@ import InviteConfirmationList from './invite-confirmation-list';
 
 const InviteConfirmationRouting = (ps) => {
     var { path, url } = useRouteMatch();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
 
     var allowedResearchGroupIds = unique([

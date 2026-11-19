@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetchChain } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -13,7 +13,7 @@ import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 const StudySummary = (ps) => {
     var { studyId, settings, settingsRelated, subjectCRTSettings } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var [ didFetch, fetched ] = useFetchChain(() => ([
         ({ agent }) => ({

@@ -1,6 +1,6 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import * as Scalars from '../scalar';
 
 const SaneString = withField({
@@ -30,7 +30,7 @@ const Control = (ps) => {
         isCountryRequired = false
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var labelClassName = 'd-block m-0 text-small';
 

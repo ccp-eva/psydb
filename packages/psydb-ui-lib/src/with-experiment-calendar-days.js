@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Container, Col, Row } from '@mpieva/psydb-ui-layout';
 
 import CalendarDayHeader from './calendar-day-header';
@@ -50,7 +50,7 @@ export const withExperimentCalendarDays = (options) => {
             ...pass
         } = ps;
 
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
 
         var dayIndex = datefns.getISODay(dayStart);
         var dayEnd = datefns.endOfDay(dayStart);

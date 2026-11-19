@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, SplitPartitioned } from '@mpieva/psydb-ui-layout';
 
@@ -67,7 +67,7 @@ const FormBody = (ps) => {
     var { values } = formik;
     var { subjectsAreTestedTogether } = values['$'];
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>

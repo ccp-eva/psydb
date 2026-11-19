@@ -1,6 +1,6 @@
 import React from 'react';
 import { __fixRelated } from '@mpieva/psydb-common-compat';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -23,8 +23,7 @@ const ExperimentContainer = (ps) => {
 
     related = __fixRelated(related, { isResponse: false, labelize: true });
 
-    var locale = useUILocale();
-    var translate = useUITranslation();
+    var [{ locale, translate }] = useI18N();
     var moveExperimentModal = useModalReducer();
 
     var { _id, type, state: {

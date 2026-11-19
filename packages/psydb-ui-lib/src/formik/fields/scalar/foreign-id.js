@@ -1,7 +1,7 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 import { entries, jsonpointer } from '@mpieva/psydb-core-utils';
-import { useUIConfig, useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import RecordPicker from '../../../pickers/record-picker';
 
 export const ForeignId = withField({ Control: (ps) => {
@@ -127,7 +127,7 @@ var RefLink = (ps) => {
     var { record, collection, recordType } = ps;
     var value = record?._id;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var collectionUI = collectionUIMapping[collection];
     var uri = undefined;

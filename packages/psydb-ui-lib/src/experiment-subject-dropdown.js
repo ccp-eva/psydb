@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -91,7 +91,7 @@ var ExperimentSubjectDropdown = (ps) => {
         onClickContactFailed(sharedPayload)
     ), [ onClickContactFailed, subjectRecord ]);
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
     var canViewSubject = permissions.hasCollectionFlag(
         'subject', 'read'

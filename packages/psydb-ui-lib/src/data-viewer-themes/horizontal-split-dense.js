@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Pair } from '@mpieva/psydb-ui-layout';
 
 export const Field = (ps) => {
@@ -13,7 +13,7 @@ export const Field = (ps) => {
         wRight = 9
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (children === undefined) {
         if (handleMissing === 'warn') {

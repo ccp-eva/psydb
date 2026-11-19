@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     Fields,
@@ -50,7 +50,7 @@ const ListOfObjectsFieldDefinitionList = withFieldArray({
 
 export const ListOfObjects = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <>
             <MinItemsProp { ...ps  } />

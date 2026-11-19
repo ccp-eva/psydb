@@ -1,10 +1,10 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import ToggleButton from './toggle-button';
 
 export const ShowPast = (ps) => {
     var { value, onToggle } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <ToggleButton

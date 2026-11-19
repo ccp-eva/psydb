@@ -8,7 +8,7 @@ import {
     useHistory,
 } from 'react-router-dom';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useReadRecord } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -31,7 +31,7 @@ const HelperSetItems = () => {
     var { setId } = useParams();
     var history = useHistory();
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var [ didFetch, fetched ] = useReadRecord({
         collection: 'helperSet',

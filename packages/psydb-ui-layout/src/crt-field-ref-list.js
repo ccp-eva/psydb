@@ -1,10 +1,10 @@
 import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 export const CRTFieldRefList = (ps) => {
     var { crtFieldRefs } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <>
             <b>{ translate('Fields') }</b>

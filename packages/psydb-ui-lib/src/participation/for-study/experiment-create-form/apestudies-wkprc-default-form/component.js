@@ -1,6 +1,6 @@
 import React from 'react';
 import { only } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import { DefaultForm } from '../../../../formik';
@@ -78,7 +78,7 @@ const FormBody = (ps) => {
         preselectedSubject,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var { values } = formik;
     var {
@@ -175,7 +175,7 @@ const BranchFields = (ps) => {
         subjectConstraints
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (preselectedSubject) {
         return (

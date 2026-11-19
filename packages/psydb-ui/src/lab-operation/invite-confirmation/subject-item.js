@@ -1,8 +1,6 @@
 import React from 'react';
 import {
-    useUITranslation,
-    useUILanguage,
-    useUILocale,
+    useI18N,
 } from '@mpieva/psydb-ui-contexts';
 
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
@@ -44,9 +42,7 @@ const SubjectItem = (ps) => {
 
     var subjectRecord = subjectRecordsById[subjectId];
 
-    var [ language ] = useUILanguage();
-    var locale = useUILocale();
-    var translate = useUITranslation();
+    var [{ language, locale, translate }] = useI18N();
 
     var commentPerSubjectModal = useModalReducer();
     var moveSubjectModal = useModalReducer();

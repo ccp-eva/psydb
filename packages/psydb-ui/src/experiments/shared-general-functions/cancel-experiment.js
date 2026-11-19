@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { CancelExperimentModal } from '@mpieva/psydb-ui-lib/src/modals';
@@ -10,7 +10,7 @@ export const CancelExperimentContainer = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var modal = useModalReducer();
 
     var { subjectData } = experimentData.record.state;

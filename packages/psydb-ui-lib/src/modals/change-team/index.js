@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 import {
     WithDefaultModal,
@@ -60,7 +60,7 @@ const ChangeOpsTeamForm = (ps) => {
         onSubmit
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var initialValues = {
         experimentOperatorTeamId: selectedTeamId,

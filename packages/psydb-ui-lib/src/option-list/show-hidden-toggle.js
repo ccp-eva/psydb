@@ -1,10 +1,10 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Icons } from '@mpieva/psydb-ui-layout';
 
 const ShowHiddenToggle = (ps) => {
     var { showHidden, setShowHidden } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <div

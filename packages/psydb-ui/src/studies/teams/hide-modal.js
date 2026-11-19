@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
 
@@ -8,7 +8,7 @@ const HideOpsTeamModalBody = (ps) => {
     var { modalPayloadData, onHide, onSuccessfulUpdate } = ps;
     var teamId = modalPayloadData;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var send = useSend((formData) => ({
         type: 'experimentOperatorTeam/set-visibility',

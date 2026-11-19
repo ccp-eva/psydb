@@ -1,5 +1,5 @@
 import React  from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { demuxed } from '@mpieva/psydb-ui-utils';
 
 import {
@@ -8,7 +8,7 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 const HandleDuplicateModalBody = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { onHide, modalPayloadData, onSuccessfulUpdate, recordType } = ps;
     var { responseData, formikForm } = modalPayloadData;
     var { possibleDuplicates, more } = responseData;

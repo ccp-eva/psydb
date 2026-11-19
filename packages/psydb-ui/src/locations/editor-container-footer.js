@@ -3,8 +3,8 @@ import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { groupBy } from '@mpieva/psydb-core-utils';
 import {
-    useUITranslation,
-    RecordEditorContext
+    RecordEditorContext,
+    useI18N,
 } from '@mpieva/psydb-ui-contexts';
 import { urlUp as up, demuxed } from '@mpieva/psydb-ui-utils';
 import { useFetch, useModalReducer } from '@mpieva/psydb-ui-hooks';
@@ -24,7 +24,7 @@ const LocationEditorFooter = (ps) => {
     var { onSuccessfulUpdate } = ps;
 
     var { path, url } = useRouteMatch();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var modal = useModalReducer();
 
     var context = useContext(RecordEditorContext);
@@ -82,7 +82,7 @@ const LocationEditorFooter = (ps) => {
 const UpdateVisibilityModalBody = (ps) => {
     var { onHide, id, onSuccessfulUpdate } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var [ detachSubjects, setDetachSubjects ] = useState(false);
 
     var [ didFetchRefs, fetchedReverseRefs ] = useFetch((agent) => (

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
 
@@ -38,7 +38,7 @@ const withGeneralSettingsEditor = (bag) => {
     });
 
     var WrappedView = (ps) => {
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
         var modal = useModalReducer();
         return (
             <>

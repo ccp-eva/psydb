@@ -2,7 +2,7 @@ import React from 'react';
 import sift from 'sift';
 
 import { jsonpointer } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import { CustomField } from './custom-field';
@@ -13,7 +13,7 @@ export const createDisplayOrdered = (options) => (ps) => {
     var { displayFields, value, related } = ps;
     
     var permissions = usePermissions();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (!permissions.hasFlag('canAccessSensitiveFields')) {
         displayFields = displayFields.filter(sift({

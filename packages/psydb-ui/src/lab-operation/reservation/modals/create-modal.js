@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -27,7 +27,7 @@ const CreateModalBody = (ps) => {
         maxEnd,
     } = modalPayloadData;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var locationId = locationRecord._id;
 
     var minEnd = new Date(start.getTime() + slotDuration);

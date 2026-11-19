@@ -1,9 +1,9 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 export const Legend = (ps) => {
     var { children, renderHR = true, ...pass } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <div { ...pass }>

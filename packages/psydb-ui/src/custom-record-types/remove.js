@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 
 import { URL, demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     usePermissions,
@@ -37,7 +37,7 @@ const SafetyForm = (ps) => {
 
     var { state: { label }} = fetched.data;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var send = useSend(() => ({
         type: 'custom-record-types/remove',
@@ -99,7 +99,7 @@ const SafetyForm = (ps) => {
 
 const SuccessInfo = (ps) => {
     var { successInfoBackLink } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <FormBox

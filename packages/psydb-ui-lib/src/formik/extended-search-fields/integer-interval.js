@@ -1,11 +1,11 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import * as CoreFields from '../fields';
 
 export const IntegerInterval = withField({ Control: (ps) => {
     var { dataXPath } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <div className='d-flex border p-3'>
             <div className='w-50 flex-grow'>

@@ -1,6 +1,6 @@
 import React  from 'react';
 
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -17,8 +17,7 @@ import datefns from '../date-fns';
 const CancelExperimentModalBody = (ps) => {
     var { onHide, experimentType, experimentId, onSuccessfulUpdate } = ps;
 
-    var translate = useUITranslation();
-    var locale = useUILocale();
+    var [{ translate, locale }] = useI18N();
 
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.fetchExtendedExperimentData({

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Fields, useFormikContext } from '@mpieva/psydb-ui-lib';
 import {
     MinItemsProp,
@@ -35,7 +35,7 @@ export const FullText = (ps) => {
 
 export const Integer = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <>
             <Fields.Integer
@@ -94,7 +94,7 @@ export const HelperSetItemIdList = (ps) => {
 export const ForeignId = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { values } = useFormikContext();
     
     var {
@@ -144,7 +144,7 @@ export const ForeignIdList = (ps) => {
 
 export const Address = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <>
             <Fields.DefaultBool
@@ -192,7 +192,7 @@ export const GeoCoords = (ps) => {
 
 export const BiologicalGender = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>
@@ -240,7 +240,7 @@ export const PhoneWithTypeList = (ps) => {
 
 export const Lambda = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <>
             <Fields.GenericEnum

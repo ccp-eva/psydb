@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { withField } from '@cdxoo/formik-utils';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
@@ -19,7 +19,7 @@ const CommentField = withField({
 const Body = (ps) => {
     var { onHide, modalPayloadData, onSuccessfulUpdate } = ps;
     var { experimentId, experimentComment } = modalPayloadData;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var send = useSend((formData) => ({
         type: 'experiment/change-comment',

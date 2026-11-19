@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     useFetch,
     useModalReducer,
@@ -25,7 +25,7 @@ const StudyExclusion = (ps) => {
     var { studyTopicIds, excludedOtherStudyIds } = studyRecord.state;
     var { relatedRecordLabels } = studyRelated;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
     var canWrite = permissions.hasCollectionFlag('study', 'write');
 

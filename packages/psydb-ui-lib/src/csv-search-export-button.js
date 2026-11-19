@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useURLSearchParamsB64 } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
@@ -16,7 +16,7 @@ const CSVSearchExportButton = (ps) => {
         className
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var [ query ] = useURLSearchParamsB64();
     var { showHidden, ...filters } = query;
 

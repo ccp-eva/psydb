@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend, useModalReducer } from '@mpieva/psydb-ui-hooks';
 
 import { Button } from '@mpieva/psydb-ui-layout';
@@ -14,7 +14,7 @@ import FieldList from './field-list';
 const FieldDefinitionEditor = (ps) => {
     var { record, onSuccessfulUpdate } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var newFieldModal = useModalReducer();
     var editFieldModal = useModalReducer();

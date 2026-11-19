@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router';
 import { Permissions } from '@mpieva/psydb-common-lib';
-import { useUITranslation, SelfContext } from '@mpieva/psydb-ui-contexts';
+import { SelfContext, useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -15,7 +15,7 @@ export const SwitchResearchGroupModal = WithDefaultModal({
     Body: (ps) => {
         var { onHide } = ps;
         var history = useHistory();
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
         var { setSelf, ...self } = useContext(SelfContext);
 
         var [ didFetch, fetched ] = useFetch((agent) => (

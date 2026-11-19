@@ -6,7 +6,7 @@ import {
     useRouteMatch,
 } from 'react-router-dom';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import { 
@@ -19,7 +19,7 @@ import ExperimentPostprocessingList from './experiment-postprocessing-list';
 const ExperimentPostprocessingRouting = (ps) => {
     var { subjectRecordTypes } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { path, url } = useRouteMatch();
 
     var [ didFetch, fetched ] = useFetch((agent) => (

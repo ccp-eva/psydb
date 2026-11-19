@@ -1,7 +1,7 @@
 import React from 'react';
 import * as datefns from 'date-fns';
 import { hasNone } from '@mpieva/psydb-core-utils';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
@@ -20,8 +20,7 @@ import {
 export const PersonnelParticipationList = (ps) => {
     var { id } = ps;
 
-    var locale = useUILocale();
-    var translate = useUITranslation();
+    var [{ locale, translate }] = useI18N();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchPersonnelParticipation({ personnelId: id })

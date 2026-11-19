@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
@@ -10,7 +10,7 @@ import {
 
 // TODO
 export const SelectSubjectContainer = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var modal = useModalReducer();
 
     return (

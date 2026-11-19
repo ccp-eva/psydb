@@ -6,7 +6,7 @@ import {
     calculateAge,
 } from '@mpieva/psydb-common-lib';
 
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { SplitPartitioned } from '@mpieva/psydb-ui-layout';
 import { datefns } from '@mpieva/psydb-ui-lib';
 
@@ -14,8 +14,7 @@ import { datefns } from '@mpieva/psydb-ui-lib';
 const SubjectSummary = (ps) => {
     var { record, crtSettings } = ps;
     
-    var locale = useUILocale();
-    var translate = useUITranslation();
+    var [{ locale, translate }] = useI18N();
     var ageField = findCRTAgeFrameField(crtSettings, { as: 'definition' });
 
     return (

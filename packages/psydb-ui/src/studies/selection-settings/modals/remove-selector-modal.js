@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
 
@@ -16,7 +16,7 @@ const RemoveSelectorModalBody = (ps) => {
     var { _id: selectorId, subjectTypeKey } = selectorRecord;
     var subjectCRT = availableSubjectCRTs.find({ type: subjectTypeKey });
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var send = useSend(() => ({
         type: `subjectSelector/remove`,

@@ -2,7 +2,7 @@ import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
 import { calculateAge } from '@mpieva/psydb-common-lib';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import {
     WithDefaultModal,
@@ -37,8 +37,7 @@ const CreateExperimentModalBody = (ps) => {
 
     var { teamRecord, interval } = modalPayloadData;
 
-    var translate = useUITranslation();
-    var locale = useUILocale();
+    var [{ translate, locale }] = useI18N();
 
     var send = useSend((formData) => ({
         type: 'experiment/create-from-awayteam-reservation',

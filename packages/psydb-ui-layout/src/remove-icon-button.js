@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button } from 'react-bootstrap';
 import { XLg } from 'react-bootstrap-icons';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import LinkButton from './link-button';
 
 var buttonProps = {
@@ -24,7 +24,7 @@ const RemoveIconButton = (ps) => {
         title,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (to) {
         return (

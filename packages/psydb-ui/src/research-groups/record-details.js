@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { DetailsBox } from '@mpieva/psydb-ui-layout';
 
 import { withRecordDetails } from '@mpieva/psydb-ui-lib';
@@ -17,7 +17,7 @@ const DetailsBody = (ps) => {
     
     var { record, related } = fetched;
     var { url } = useRouteMatch();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
    
     var canEdit = permissions.hasCollectionFlag('researchGroup', 'write');
 

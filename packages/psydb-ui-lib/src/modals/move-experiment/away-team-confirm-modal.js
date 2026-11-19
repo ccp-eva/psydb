@@ -4,7 +4,7 @@ import {
     format as formatDateInterval
 } from '@mpieva/psydb-date-interval-fns';
 
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -28,8 +28,7 @@ const FormContainer = (ps) => {
         nextInterval,
     } = ps;
 
-    var translate = useUITranslation();
-    var locale = useUILocale();
+    var [{ translate, locale }] = useI18N();
 
     var formatOptions = { dateFormat: 'cccc P', locale };
     var formattedNow = formatDateInterval(

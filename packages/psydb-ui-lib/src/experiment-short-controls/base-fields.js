@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Form } from '@mpieva/psydb-ui-layout';
 
 import datefns from '../date-fns';
@@ -15,7 +15,7 @@ const BoolControl = (ps) => {
         onChange
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var [ internalValue, setInternalValue ] = useState(0);
 
     var options = [
@@ -57,7 +57,7 @@ const SlotControl = (ps) => {
         step,
     } = ps;
 
-    var locale = useUILocale();
+    var [{ locale }] = useI18N();
 
     var slots = [];
     for (var t = min.getTime(); t < max.getTime(); t += step) {

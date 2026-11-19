@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { only } from '@mpieva/psydb-core-utils';
 
 import { DefaultForm } from '../../../../formik';
@@ -52,7 +52,7 @@ export const Component = (ps) => {
 }
 
 const FormBody = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var {
         formik,
         labMethodSettings,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import * as Icons from '../icons';
 import { ErrorIndicator } from './error-indicator';
 
@@ -29,7 +29,7 @@ export const ObjectArrayContentWrapper = (ps) => {
 
 const Fallback = (ps) => {
     var { disabled } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     
     return (
         <div>
@@ -84,7 +84,7 @@ const AddButtonWrapper = ({ children }) => (
 
 const AddButton = (ps) => {
     var { children, onClick, style, disabled } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <button
             type='button'

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     SplitPartitioned,
     PillNav
@@ -13,7 +13,7 @@ const SelectableProcedures = (ps) => {
         onSelect
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (!selectedStudy) {
         return null; // FIXME: better failover

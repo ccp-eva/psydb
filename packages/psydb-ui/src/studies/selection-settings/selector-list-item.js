@@ -1,7 +1,7 @@
 import React from 'react';
 import { only } from '@mpieva/psydb-core-utils';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { OuterSettingPanel } from '@mpieva/psydb-ui-layout';
 import AgeFrameList from './age-frame-list';
 
@@ -23,7 +23,7 @@ const SelectorListItem = (ps) => {
         'onRemoveAgeFrame',
     ]})
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var {
         studyId,

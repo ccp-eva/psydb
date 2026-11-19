@@ -1,12 +1,12 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 export const ErrorIndicator = (ps) => {
     var { index, formikMeta = {} } = ps;
     var { error } = formikMeta;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (error && index >= 0) {
         error = error[index];

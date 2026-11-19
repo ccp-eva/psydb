@@ -1,7 +1,7 @@
 import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
 import { unique } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 
 import { Fields, useFormikContext } from '../../../formik';
@@ -14,7 +14,7 @@ export const Integer = Fields.Integer;
 
 export const DateOnlyTimestamp = (ps) => {
     var { ...pass } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Fields.DateOnlyServerSide
             label={ translate('Date') }
@@ -26,7 +26,7 @@ export const DateOnlyTimestamp = (ps) => {
 
 export const Timestamp = (ps) => {
     var { ...pass } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <Fields.DateTime
@@ -40,7 +40,7 @@ export const Timestamp = (ps) => {
 
 export const Interval = (ps) => {
     var { ...pass } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <>
             <Fields.DateTime
@@ -59,7 +59,7 @@ export const Interval = (ps) => {
 
 export const IntervalStartOnly = (ps) => {
     var { ...pass } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Fields.DateTime
             label={ translate('Date/Time') }
@@ -72,7 +72,7 @@ export const IntervalStartOnly = (ps) => {
 export const Team = (ps) => {
     var { studyId, disabled } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { setFieldValue } = useFormikContext();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
@@ -117,7 +117,7 @@ export const Team = (ps) => {
 
 export const Status = (ps) => {
     var { type, ...pass } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var keys = unique({
         'invite': [
@@ -148,7 +148,7 @@ export const Status = (ps) => {
 }
 
 export const ExperimentOperators = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Fields.ForeignIdList
             label={ translate('Experimenters') }
@@ -162,7 +162,7 @@ export const ExperimentOperators = (ps) => {
 export const LabProcedureType_OLD = (ps) => {
     var { settingsByType, types, disabled } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { setFieldValue } = useFormikContext();
 
     return (
@@ -196,7 +196,7 @@ export const LabProcedureType_OLD = (ps) => {
 export const InviteLocation = (ps) => {
     var { locationItems, related } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var options = {};
     for (var it of locationItems) {
@@ -222,7 +222,7 @@ export const ApestudiesWKPRCDefaultLocation = (ps) => {
     var { labMethodSettings, related, disabled, required, readOnly } = ps;
     var { locationTypeKeys } = labMethodSettings.state;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { values } = useFormikContext();
 
     var preselectedType = (

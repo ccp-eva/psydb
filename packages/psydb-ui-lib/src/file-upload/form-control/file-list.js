@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 const FileList = (ps) => {
     var { records = [], onRemove, canRemove, multiple } = ps;
@@ -21,7 +21,7 @@ const FileList = (ps) => {
 };
 
 const Row = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { file, multiple, onRemove, canRemove } = ps;
     
     return (
@@ -42,7 +42,7 @@ const Row = (ps) => {
 }
 
 var Empty = () => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <span
             className="m-l-sm block"

@@ -1,6 +1,6 @@
 import React from 'react';
 import inline from '@cdxoo/inline-string';
-import { useUITranslation, useUIConfig } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { withField, withFieldArray } from '@cdxoo/formik-utils';
 
 import { without, jsonpointer } from '@mpieva/psydb-core-utils';
@@ -20,7 +20,7 @@ const LabProcedurePermission = withField({
         } = ps;
         
         var { enabledLabMethods } = useUIConfig();
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
 
         var { value } = formikField;
         var allowedValues = [
@@ -74,7 +74,7 @@ const Control = (ps) => {
         existingResearchGroupIds
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var { values: allFormValues, setFieldValue } = formikForm;
     var { value } = formikField;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import * as Fields from './static';
 
 const CustomFieldFallback = (ps) => {
@@ -29,7 +29,7 @@ export const CustomField = (ps) => {
         props
     } = definition;
 
-    var [ language ] = useUILanguage();
+    var [{ language }] = useI18N();
 
     type = fixSystemType(type);
     var isRequired = true;

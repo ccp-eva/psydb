@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 
 import { URL } from '@mpieva/psydb-ui-utils';
-import { useSelf, useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useSelf, useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSendCreate, usePermissions } from '@mpieva/psydb-ui-hooks';
 import { withRecordCreator } from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
@@ -18,7 +18,7 @@ const CreateForm = (ps) => {
         
     var history = useHistory();
     var { url } = useRouteMatch();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var self = useSelf();
 
     var send = useSendCreate({

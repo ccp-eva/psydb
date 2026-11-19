@@ -1,7 +1,7 @@
 import React  from 'react';
 import omit from '@cdxoo/omit';
 import { useParams } from 'react-router-dom';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     usePermissions,
@@ -53,7 +53,7 @@ export const withCalendarVariantContainer = (options = {}) => {
 
         var [ query, updateQuery ] = useURLSearchParams();
         var permissions = usePermissions();
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
         //var showPast = useToggleReducer(false, { as: 'props' });
         // FIXME: move to togglebutton and add property withURLSearchParams?
         // FIXME: can we add conversions to withURLSearchParams hook?

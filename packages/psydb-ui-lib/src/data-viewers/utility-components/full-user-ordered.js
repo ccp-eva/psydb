@@ -1,6 +1,6 @@
 import React from 'react';
 import { keyBy, jsonpointer, entries } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { CustomField } from './custom-field';
 import { AnonField } from './anon-field';
@@ -11,7 +11,7 @@ export const createFullUserOrdered = (options) => (ps) => {
     var { value, related, crtSettings, exclude = []  } = ps;
 
     var permissions = usePermissions();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var {
         hasSubChannels,

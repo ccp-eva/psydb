@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { ColoredBox } from '@mpieva/psydb-ui-layout';
 
 import datefns from '../../../date-fns';
@@ -20,7 +20,7 @@ const ReservationSlot = (ps) => {
         onSelectReservationSlot,
     } = ps;
     
-    var locale = useUILocale();
+    var [{ locale }] = useI18N();
     
     var canSelect = (
         checkReservationSlotSelectable

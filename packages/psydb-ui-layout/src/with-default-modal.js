@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 const WithDefaultModal = (options) => (ps) => {
     var {
@@ -24,7 +24,7 @@ const WithDefaultModal = (options) => (ps) => {
         propsTitle,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     if (forceShow) {
         show = true;
     }

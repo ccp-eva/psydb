@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useThemeContext } from '../core/theme-context';
 import {
     ForeignId,
@@ -7,7 +7,7 @@ import {
 
 export const SystemPermissions = (ps) => {
     var { value, related } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { Field } = useThemeContext();
 
     return (
@@ -29,7 +29,7 @@ const SystemPermissionItem = (ps) => {
     var { value, related } = ps;
     var { researchGroupId, permission } = value;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     
     var permissionOptions = {
         'read': translate('Read'),

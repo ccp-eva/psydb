@@ -3,7 +3,7 @@ import inline from '@cdxoo/inline-text';
 
 import { merge, unique, only } from '@mpieva/psydb-core-utils';
 import { __fixRelated } from '@mpieva/psydb-common-compat';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
@@ -33,7 +33,7 @@ const ExperimentEditForm = (ps) => {
         send
     } = fromHooks(ps);
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
@@ -191,7 +191,7 @@ var switchFormContainer = (labMethodKey) => {
 }
 
 const NotPostprocessedAlert = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Alert variant='danger'>
             <b>{ translate('Appointment is not postprocessed!') }</b><br/>
@@ -203,7 +203,7 @@ const NotPostprocessedAlert = (ps) => {
 }
 
 const IsCanceledAlert = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Alert variant='danger'>
             <b>{ translate('Appointment was canceled!') }</b><br/>

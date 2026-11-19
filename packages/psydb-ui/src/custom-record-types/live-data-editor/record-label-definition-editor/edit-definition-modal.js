@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import { Modal, Button } from 'react-bootstrap';
 import EditDefinitionForm from './edit-definition-form';
@@ -13,7 +13,7 @@ const EditDefinitionModal = ({
     availableFieldDataByPointer,
     onSuccessfulUpdate,
 }) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var handleSuccess = () => {
         onSuccessfulUpdate();

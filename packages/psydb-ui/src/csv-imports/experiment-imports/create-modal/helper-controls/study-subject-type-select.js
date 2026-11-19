@@ -1,12 +1,12 @@
 import React from 'react';
-import { useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { FormHelpers } from '@mpieva/psydb-ui-layout';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
 
 export const StudySubjectTypeSelect = (ps) => {
     var { label, value, onChange, studyId } = ps;
-    var [ language ] = useUILanguage();
+    var [{ language }] = useI18N();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchStudyEnabledSubjectCRTs({

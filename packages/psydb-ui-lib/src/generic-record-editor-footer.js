@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
 import {
-    useUITranslation,
-    RecordEditorContext
+    RecordEditorContext,
+    useI18N,
 } from '@mpieva/psydb-ui-contexts';
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
@@ -11,7 +11,7 @@ import { LinkButton, Button } from '@mpieva/psydb-ui-layout';
 import UpdateRecordVisibilityButton from './update-record-visibility-button';
 
 const GenericRecordEditorFooter = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { path, url } = useRouteMatch();
 
     var {

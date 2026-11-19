@@ -1,6 +1,6 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { SplitPartitioned } from '@mpieva/psydb-ui-layout';
 
 import { Email, DefaultBool } from '../scalar';
@@ -15,7 +15,7 @@ const Control = (ps) => {
         disabled,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <SplitPartitioned partitions={[ 5,3 ]} stackWhenNarrow>

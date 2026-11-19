@@ -1,7 +1,7 @@
 import React from 'react';
 import { only } from '@mpieva/psydb-core-utils';
 import { CRTSettings } from '@mpieva/psydb-common-lib';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -78,7 +78,7 @@ const FormBody = (ps) => {
         related
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var footerPass = only({ from: ps, keys: [
         'isTransmitting',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Table, Button, Icons } from '@mpieva/psydb-ui-layout';
 
 const FieldPointerList = (ps) => {
@@ -11,7 +11,7 @@ const FieldPointerList = (ps) => {
         emptyFallback = 'No display fields set.'
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (dataPointers.length < 1) {
         return (

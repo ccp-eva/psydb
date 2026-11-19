@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { OptionDeselectIndicator } from '@mpieva/psydb-ui-layout';
 
 export const List = (ps) => {
@@ -8,7 +8,7 @@ export const List = (ps) => {
         onSelect
     } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (records.length < 1) {
         return (

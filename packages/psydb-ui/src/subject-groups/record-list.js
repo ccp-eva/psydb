@@ -4,7 +4,7 @@ import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container'
 
 import { entries, keyBy, groupBy } from '@mpieva/psydb-core-utils';
 import { __fixRelated } from '@mpieva/psydb-common-compat';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetch,
@@ -32,7 +32,7 @@ export const RecordList = (ps) => {
     var { path, url } = useRouteMatch();
     var revision = useRevision();
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
     var enableNew = true;
     var canCreate = permissions.hasCollectionFlag('subjectGroup', 'write');

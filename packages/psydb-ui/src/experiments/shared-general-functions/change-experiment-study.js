@@ -1,6 +1,6 @@
 import React from 'react';
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
@@ -21,7 +21,7 @@ import {
 import StudyTeamListItem from '@mpieva/psydb-ui-lib/src/experiment-operator-team-list-item';
 
 export const ChangeExperimentStudyContainer = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var modal = useModalReducer();
 
     return (
@@ -49,7 +49,7 @@ const ChangeExperimentStudyModalBody = (ps) => {
         onSuccessfulUpdate,
     } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var send = useSend((formData) => ({
         type: 'experiment/change-study',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUIConfig, useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     useModalReducer,
     usePermissions
@@ -48,7 +48,7 @@ const ParticipationList = (ps) => {
     } = ps;
 
     var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var editModal = useModalReducer();
     var removeModal = useModalReducer();
     
@@ -164,7 +164,7 @@ const ParticipationListRow = (ps) => {
     var { _id: subjectId, type: subjectType } = subjectRecord;
 
     var { dev_enableWKPRCPatches: IS_WKPRC } = useUIConfig();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
 
     var showEdit = permissions.hasFlag('canWriteParticipation');

@@ -1,6 +1,6 @@
 import React from 'react';
 import { unique } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetchAll } from '@mpieva/psydb-ui-hooks';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
 import { withField, useFormikTheme } from '@mpieva/psydb-ui-lib';

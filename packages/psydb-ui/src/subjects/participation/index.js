@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import { JsonBase64 } from '@mpieva/psydb-core-utils';
-import { useUITranslation, useUIConfig } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     usePermissions,
@@ -21,7 +21,7 @@ const SubjectParticipation = (ps) => {
     var { recordType } = ps;
 
     var { id } = useParams();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var revision = useRevision();
     var permissions = usePermissions();
     var participationModal = useModalReducer();

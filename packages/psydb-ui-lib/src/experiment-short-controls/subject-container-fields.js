@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     Row,
     Col,
@@ -14,7 +14,7 @@ import {
 
 const CommentControl = (ps) => {
     var { comment, onChangeComment } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (onChangeComment) {
         var onChange = wrapOnChange(onChangeComment);
@@ -48,7 +48,7 @@ const CommentControl = (ps) => {
 
 const AutoConfirmControl = (ps) => {
     var { autoConfirm, onChangeAutoConfirm } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     
     if (onChangeAutoConfirm) {
         var onChange = wrapOnChange(onChangeAutoConfirm);

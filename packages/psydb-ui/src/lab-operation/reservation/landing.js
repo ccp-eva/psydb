@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRouteMatch, useParams, useHistory } from 'react-router-dom';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     PageWrappers,
     OptionSelectIndicator,
@@ -11,7 +11,7 @@ import { StudySelectList } from '@mpieva/psydb-ui-lib';
 
 
 const Landing = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { path, url } = useRouteMatch();
     var { studyType } = useParams();
     var history =  useHistory();

@@ -1,11 +1,11 @@
 import React from 'react';
 import { format } from '@mpieva/psydb-date-interval-fns';
-import { useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 export const CalendarItemInterval = (ps) => {
     var { start, end } = ps;
     
-    var locale = useUILocale();
+    var [{ locale }] = useI18N();
     
     start = new Date(start);
     end = new Date(new Date(end).getTime() + 1); // FIXME: 1ms offset

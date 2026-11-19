@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
 // FIXME: invite-confirm-modal as its also video-calls now
 
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import intervalfns from '@mpieva/psydb-date-interval-fns';
 import { withField } from '@cdxoo/formik-utils';
 import { useSend } from '@mpieva/psydb-ui-hooks';
@@ -40,8 +40,7 @@ const FormContainer = (ps) => {
         state: experimentState
     } = experimentData.record;
 
-    var locale = useUILocale();
-    var translate = useUITranslation();
+    var [{ locale, translate }] = useI18N();
 
     var { startDate, startTime } = intervalfns.format(
         confirmData, { locale }
@@ -99,7 +98,7 @@ const FormContainer = (ps) => {
 }
 
 const InhouseConfirmModalBody = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var {
         onHide,
 
@@ -198,7 +197,7 @@ const SlotControl = withField({
     Control: (ps) => {
         var { dataXPath, formikField, min, max, step } = ps;
 
-        var locale = useUILocale();
+        var [{ locale }] = useI18N();
 
         var slots = [];
         for (var t = min.getTime(); t < max.getTime(); t += step) {

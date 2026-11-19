@@ -1,6 +1,6 @@
 import React from 'react';
 import { intersect } from '@mpieva/psydb-core-utils';
-import { useUIConfig, useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { withRecordCreator } from '../lib';
 import MainForm from './main-form';
 
@@ -22,7 +22,7 @@ const CreateForm = (ps) => {
     } = crtSettings;
 
     var { enabledLabMethods } = useUIConfig();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var initialValues = MainForm.createDefaults({
         fieldDefinitions,

@@ -4,15 +4,14 @@ import {
     format as formatDateInterval
 } from '@mpieva/psydb-date-interval-fns';
 
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Container, Pair } from '@mpieva/psydb-ui-layout';
 
 const ExperimentIntervalSummary = (ps) => {
     var { experimentRecord } = ps;
     var { start, end } = experimentRecord.state.interval;
     
-    var translate = useUITranslation();
-    var locale = useUILocale();
+    var [{ translate, locale }] = useI18N();
 
     var { startDate, startTime, endTime } = formatDateInterval(
         experimentRecord.state.interval,

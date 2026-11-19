@@ -1,6 +1,6 @@
 import React from 'react';
 import { withField, withFieldArray } from '@cdxoo/formik-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { CustomField } from './custom-field';
 
 const ListOfObjectsFieldItem = withField({
@@ -33,7 +33,7 @@ const ListOfObjectsInternal = withFieldArray({
 export const ListOfObjectsField = (ps) => {
     var { definition } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var label = translate.fieldDefinition(definition);
     
     return (

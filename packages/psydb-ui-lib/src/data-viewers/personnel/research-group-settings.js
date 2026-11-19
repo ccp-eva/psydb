@@ -1,12 +1,12 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     ForeignId,
     ExtBool,
 } from '../utility-components';
 
 const ResearchGroupSettings = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { value, related } = ps;
     if (value.length < 1) {
         return (
@@ -26,7 +26,7 @@ const ResearchGroupSettings = (ps) => {
 }
 
 const ResearchGroupWithRole = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { value, related } = ps;
     console.log(value);
     var { researchGroupId, systemRoleId } = value;

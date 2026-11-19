@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, Icons } from '@mpieva/psydb-ui-layout';
 import { StudyTopic } from '@mpieva/psydb-ui-lib';
@@ -12,7 +12,7 @@ export const StudyTopicSelector = (ps) => {
         onReset,
     } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var [ quickSelect, setQuickSelect ] = useState('study-topics');
     var [ query, updateQuery ] = useState({ name: undefined });

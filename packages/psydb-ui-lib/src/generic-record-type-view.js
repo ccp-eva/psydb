@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     Route,
@@ -23,7 +23,7 @@ const GenericRecordTypeView = ({
 
     CustomRoutingComponent,
 }) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { path, url } = useRouteMatch();
     var { recordType } = useParams();
 

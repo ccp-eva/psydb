@@ -1,12 +1,12 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Alert, Icons } from '@mpieva/psydb-ui-layout';
 
 const LabMethodSettingsError = (ps) => {
     var { studyRecord, urlAffix = '', children } = ps;
     var { _id: studyId, type: studyType } = studyRecord;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     
     return (
         <Alert variant='danger' className='mt-3'>

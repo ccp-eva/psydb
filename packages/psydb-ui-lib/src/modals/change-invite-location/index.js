@@ -1,5 +1,5 @@
 import React  from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { sliceDays } from '@mpieva/psydb-date-interval-fns';
 import { compareIds, groupBy } from '@mpieva/psydb-core-utils';
 
@@ -34,7 +34,7 @@ const ChangeInviteLocationModalBody = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var selection = useSelectionReducer();
 
     var [ didFetch, fetched ] = useFetchChain(() => ([

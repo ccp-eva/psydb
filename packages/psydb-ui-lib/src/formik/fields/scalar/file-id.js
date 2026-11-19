@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withField } from '@cdxoo/formik-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button, LoadingIndicator, Icons } from '@mpieva/psydb-ui-layout';
 
@@ -20,7 +20,7 @@ export const FileId = withField({ Control: (ps) => {
         extraOnChange,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var modal = useModalReducer();
 
     var { value: fileId } = formikField;

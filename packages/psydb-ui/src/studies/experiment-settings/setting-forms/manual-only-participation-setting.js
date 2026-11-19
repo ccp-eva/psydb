@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     LoadingIndicator,
     AsyncButton,
@@ -27,8 +27,7 @@ export const ManualOnlyParticipationSetting = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var [ language ] = useUILanguage();
-    var translate = useUITranslation();
+    var [{ language, translate }] = useI18N();
 
     var settingId, settingState;
     if (settingRecord) {
@@ -69,8 +68,7 @@ const FormBody = (ps) => {
 
     var { getFieldProps } = formik;
     
-    var [ language ] = useUILanguage();
-    var translate = useUITranslation();
+    var [{ language, translate }] = useI18N();
 
     var selectedSubjectType = getFieldProps('$.subjectTypeKey').value;
 

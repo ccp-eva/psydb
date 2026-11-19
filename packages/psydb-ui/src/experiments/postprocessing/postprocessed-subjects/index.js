@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Alert, SubjectIconButton } from '@mpieva/psydb-ui-layout';
 import { withLabProcedureSettingsIterator } from '@mpieva/psydb-ui-lib';
@@ -20,7 +20,7 @@ const PostprocessedSubjects = withLabProcedureSettingsIterator({
             ...pass
         } = ps;
 
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
 
         var fullSubjectData = subjectDataByType[subjectTypeKey];
         if (fullSubjectData.records.length < 1) {

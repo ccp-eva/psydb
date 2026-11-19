@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useThemeContext } from '../core/theme-context';
 import * as Fields from './static';
 
@@ -31,7 +31,7 @@ export const CustomField = (ps) => {
         props
     } = definition;
 
-    var [ language ] = useUILanguage();
+    var [{ language }] = useI18N();
 
     type = fixSystemType(type);
     var Component = Fields[type];

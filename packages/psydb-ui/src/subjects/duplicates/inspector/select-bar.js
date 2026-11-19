@@ -1,5 +1,5 @@
 import React from 'react';
-import { useI18N, useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Grid, Alert } from '@mpieva/psydb-ui-layout';
 import { GenericEnum } from '@mpieva/psydb-ui-form-controls';
 
@@ -37,7 +37,7 @@ const ItemSelect = (ps) => {
 }
 
 const SubjectExperimentSummary = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { past, future } = ps;
 
     return (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { unique, keyBy, hasOnlyOne } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -20,7 +20,7 @@ const withSubjectTypeSelect = (Component) => {
 
         var permissions = usePermissions();
         var [ subjectType, setSubjectType ] = useState();
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
 
         var [ autoSelectedType, enabledSubjectTypes ] = maybeAutoSelect({
             selectables: unique(

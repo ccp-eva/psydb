@@ -1,7 +1,7 @@
 import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Form, InputGroup, AsyncButton } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields, withField } from '../formik';
@@ -21,7 +21,7 @@ const PostprocessSubjectForm = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var send = useSend((formData) => ({
         type: 'experiment/change-participation-status',

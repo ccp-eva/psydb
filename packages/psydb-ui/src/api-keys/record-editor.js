@@ -1,6 +1,6 @@
 import React from 'react';
 import { only } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
 import { withRecordEditor } from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
@@ -14,7 +14,7 @@ const EditForm = (ps) => {
     } = ps;
 
     var { record } = fetched;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var send = useSendPatch({
         collection,

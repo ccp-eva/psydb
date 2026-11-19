@@ -1,6 +1,6 @@
 import React from 'react';
 import { keys, keyBy } from '@mpieva/psydb-core-utils';
-import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
@@ -36,7 +36,7 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
         } = settingRecord)
     }
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var bodyBag = {
         availableSubjectCRTs,
@@ -68,8 +68,7 @@ const FormBody = (ps) => {
 
     var { getFieldProps } = formik;
 
-    var [ language ] = useUILanguage();
-    var translate = useUITranslation();
+    var [{ language, translate }] = useI18N();
 
     var selectedSubjectType = getFieldProps('$.subjectTypeKey').value;
 

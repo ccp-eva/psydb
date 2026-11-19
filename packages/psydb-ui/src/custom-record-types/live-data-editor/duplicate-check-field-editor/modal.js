@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { withField } from '@cdxoo/formik-utils';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
@@ -19,7 +19,7 @@ const ColumnField = withField({
 const Body = (ps) => {
     var { id, crt, onHide, modalPayloadData, onSuccessfulUpdate } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     
     var { duplicateCheckSettings = {} } = crt.getRaw();
     var { fieldSettings = [] } = duplicateCheckSettings;

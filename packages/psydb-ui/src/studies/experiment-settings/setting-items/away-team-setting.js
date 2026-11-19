@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Pair } from '@mpieva/psydb-ui-layout';
 import { DefaultSettingWrapper } from './utils';
 
@@ -22,7 +22,7 @@ export const AwayTeamSetting = (ps) => {
         'pointer': subjectLocationFieldPointer
     });
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <DefaultSettingWrapper { ...ps }>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { createBase, withPair, addComponents } from '../core';
 import {
     Custom,
@@ -24,7 +24,7 @@ var DisplayNameDE = withPair(SaneString);
 
 const DisplayNameI18N = (ps) => {
     var { value = {}, ...pass } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <DisplayNameDE
@@ -37,7 +37,7 @@ const DisplayNameI18N = (ps) => {
 
 const ReservationType = (ps) => {
     var { value } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return translate(`_reservationType_${value}`);
 }

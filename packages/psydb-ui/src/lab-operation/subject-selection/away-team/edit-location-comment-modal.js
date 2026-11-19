@@ -2,7 +2,7 @@ import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
 
@@ -20,7 +20,7 @@ const Body = (ps) => {
     var { onHide, modalPayloadData, onSuccessfulUpdate } = ps;
     var { locationId, locationLabel, locationComment } = modalPayloadData;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var send = useSend((formData) => ({
         type: 'location/change-comment',

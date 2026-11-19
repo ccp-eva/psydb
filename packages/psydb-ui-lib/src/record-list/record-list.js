@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { entries, transliterate } from '@mpieva/psydb-core-utils';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     useFetch,
     usePaginationReducer,
@@ -58,7 +58,7 @@ var RecordList = (ps) => {
         getCellClassName,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var [ isInitialized, setIsInitialized ] = useState(false);
     var [ payload, setPayload ] = useState([]);

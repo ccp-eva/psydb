@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     SmallFormFooter,
@@ -9,7 +9,7 @@ import {
 
 const ButtonHeader = (ps) => {
     var { onSubmit, onClickBack, isTransmitting, enableSubmit } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <SmallFormFooter>

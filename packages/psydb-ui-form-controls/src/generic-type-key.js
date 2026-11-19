@@ -1,6 +1,6 @@
 import React from 'react';
 import { SmartArray } from '@mpieva/psydb-common-lib';
-import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import { GenericEnum } from './generic-enum';
@@ -15,7 +15,7 @@ export const GenericTypeKey = (ps) => {
         ...pass
     } = ps;
 
-    var [ language ] = useUILanguage();
+    var [{ language }] = useI18N();
     
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchAvailableCRTs({

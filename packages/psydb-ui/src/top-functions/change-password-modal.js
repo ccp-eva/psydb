@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import { useUITranslation, SelfContext } from '@mpieva/psydb-ui-contexts';
+import { SelfContext, useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal, Button, Alert } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
@@ -13,7 +13,7 @@ export const ChangePasswordModal = WithDefaultModal({
         var [ wasSuccessful, setSuccessful ] = useState(false);
         var [ error, setError ] = useState();
         
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
 
         var send = useSend((payload) => ({
             type: 'self/set-password',
@@ -73,7 +73,7 @@ export const ChangePasswordModal = WithDefaultModal({
 const Form = (ps) => {
     var { error, onSubmit } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var initialValues = {
         currentPassword: '',
@@ -121,7 +121,7 @@ const Form = (ps) => {
 
 const SuccessIndicator = (ps) => {
     var { onHide } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>

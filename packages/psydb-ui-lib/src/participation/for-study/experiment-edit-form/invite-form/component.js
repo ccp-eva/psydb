@@ -1,6 +1,6 @@
 import React from 'react';
 import { only, unique } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import { DefaultForm } from '../../../../formik';
 import * as Fields from '../../form-fields';
@@ -69,7 +69,7 @@ const FormBody = (ps) => {
         enableFollowUpExperiments,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var subjectFieldsBag = {
         label: translate('Subjects'),

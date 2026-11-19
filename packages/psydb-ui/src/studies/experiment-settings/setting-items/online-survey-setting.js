@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     Pair,
     EditIconButton,
@@ -14,7 +14,7 @@ export const OnlineSurveySetting = (ps) => {
         onRemove,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var { subjectTypeKey } = settingRecord.state;
     var { relatedCustomRecordTypes } = settingRelated;

@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, Alert } from '@mpieva/psydb-ui-layout';
 
@@ -80,7 +80,7 @@ const ResearchGroup = (ps) => {
         experiments
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var className = classnames([
         'flex-grow-1',

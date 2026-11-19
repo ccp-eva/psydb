@@ -1,6 +1,6 @@
 import React from 'react';
 import { omit } from '@mpieva/psydb-core-utils';
-import { useUITranslation, useI18N } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     Table,
@@ -41,7 +41,7 @@ const StudyStatisticsResults = (ps) => {
 }
 
 const Fallback = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <>
             <Table>
@@ -55,7 +55,7 @@ const Fallback = (ps) => {
 }
 
 const TableHead = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <thead><tr>
             <th>{ translate('Shorthand') }</th>
@@ -72,7 +72,7 @@ const TableHead = (ps) => {
 
 const ResultTable = (ps) => {
     var { aggregateItems, related } = ps;
-    var translate = useUITranslation(); 
+    var [{ translate }] = useI18N();
 
     var studyCount = aggregateItems.length;
     var participationTotal = 0;
@@ -205,7 +205,7 @@ var Row = (ps) => {
 
 const LabMethods = (ps) => {
     var { types, counts } = ps;
-    var translate = useUITranslation(); 
+    var [{ translate }] = useI18N();
     
     types = types.map(it => ({
         key: it,
@@ -228,7 +228,7 @@ const LabMethods = (ps) => {
 
 const SubjectTypes = (ps) => {
     var { types, counts, related } = ps;
-    var translate = useUITranslation(); 
+    var [{ translate }] = useI18N();
     
     types = types.map(it => ({
         key: it,

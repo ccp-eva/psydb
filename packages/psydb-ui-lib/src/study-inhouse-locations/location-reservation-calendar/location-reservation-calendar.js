@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { sliceDays } from '@mpieva/psydb-date-interval-fns';
 import { useRouteMatch } from 'react-router-dom';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import TimeTable from '../location-time-table';
 
 const LocationCalendar = (ps) => {
@@ -44,7 +44,7 @@ const LocationCalendar = (ps) => {
         showPast,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { path, url } = useRouteMatch();
 
     var {

@@ -3,7 +3,7 @@ import { Base64 } from 'js-base64';
 import { useHistory } from 'react-router';
 import { useParams, useRouteMatch, Switch, Route, Redirect } from 'react-router-dom';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { PageWrappers } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, useFormikContext } from '@mpieva/psydb-ui-lib';
 
@@ -43,7 +43,7 @@ const ParamWrapper = (ps) => {
     var decodedFormData = maybeDecodeBase64(b64, { isJson: true });
 
     var history = useHistory();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var handleSwitchTab = ({ nextTab, formData }) => {
         var formData64 = Base64.encode(JSON.stringify(formData));

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { FormBox, LinkButton } from '@mpieva/psydb-ui-lib';
 import { PanelPair, PanelColumn } from './util';
 
@@ -18,7 +18,7 @@ const LiveDataEditor = (ps) => {
     var { collection, type, state } = record;
     var { label } = state;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (collection === 'subject') {
         return (

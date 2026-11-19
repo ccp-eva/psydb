@@ -1,10 +1,10 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 export const CalendarPostprocessingStatus = (ps) => {
     var { isPostprocessed, hasProcessedSubjects, shouldPostprocess } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var label = undefined;
     if (isPostprocessed) {

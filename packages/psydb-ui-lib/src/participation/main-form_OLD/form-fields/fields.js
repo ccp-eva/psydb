@@ -1,13 +1,13 @@
 import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 
 import { Fields, useFormikContext } from '../../../formik';
 export const DefaultBool = Fields.DefaultBool;
 
 export const Timestamp = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Fields.DateTime
             label={ translate('Date/Time') }
@@ -19,7 +19,7 @@ export const Timestamp = (ps) => {
 export const Team = (ps) => {
     var { studyId, disabled } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { setFieldValue } = useFormikContext();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
@@ -64,7 +64,7 @@ export const Team = (ps) => {
 
 export const Status = (ps) => {
     var { type } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var options = ({
         'invite': {
@@ -93,7 +93,7 @@ export const Status = (ps) => {
 }
 
 export const ExperimentOperators = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Fields.ForeignIdList
             label={ translate('Experimenters') }
@@ -105,7 +105,7 @@ export const ExperimentOperators = (ps) => {
 
 export const LabProcedureType = (ps) => {
     var { settingsByType, types, disabled } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { setFieldValue } = useFormikContext();
 
     return (
@@ -138,7 +138,7 @@ export const LabProcedureType = (ps) => {
 
 export const InviteLocation = (ps) => {
     var { locations, related } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Fields.GenericEnum
             label={ translate('Room') }

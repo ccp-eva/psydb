@@ -1,7 +1,7 @@
 import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
 import { only } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { OuterSettingPanel } from '@mpieva/psydb-ui-layout';
 import SettingList from './setting-list';
 
@@ -28,7 +28,7 @@ const VariantListItem = (ps) => {
 
     var { type: variantType, state: variantState } = variantRecord;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var existingSubjectTypes = (
         settingRecords.map(it => it.state.subjectTypeKey)

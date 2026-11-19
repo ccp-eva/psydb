@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Button, Icons } from '@mpieva/psydb-ui-layout';
 
 export const EditButton = (ps) => {
@@ -9,7 +9,7 @@ export const EditButton = (ps) => {
         onClick
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <Button
@@ -31,7 +31,7 @@ export const ClearButton = (ps) => {
         onClick
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <Button

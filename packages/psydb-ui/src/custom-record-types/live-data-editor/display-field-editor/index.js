@@ -3,7 +3,7 @@ import React from 'react';
 import { keyBy } from '@mpieva/psydb-core-utils';
 import { gatherDisplayFieldData } from '@mpieva/psydb-common-lib';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button, Table } from '@mpieva/psydb-ui-layout';
 
@@ -20,7 +20,7 @@ const DisplayFieldEditor = (ps) => {
 
     var { collection } = record;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var modal = useModalReducer();
 
     var availableDisplayFieldData = gatherDisplayFieldData({

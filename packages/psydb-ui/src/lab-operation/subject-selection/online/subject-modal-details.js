@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
@@ -54,7 +54,7 @@ const SubjectModalDetails = ({
 }
 
 const HasEditedInfo = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { onReEdit } = ps;
     return (
         <Alert variant='info' className='d-flex justify-content-between'>

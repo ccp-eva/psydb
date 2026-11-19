@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -33,7 +33,7 @@ const DetailedPostprocessModalBody = (ps) => {
     var canEdit = permissions.hasFlag('canWriteSubjects');
     var [ hasEdited, setHasEdited ] = useState(false);
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>
@@ -77,7 +77,7 @@ const DetailedPostprocessModalBody = (ps) => {
 
 const HasEditedInfo = (ps) => {
     var { onReEdit } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Alert variant='info' className='d-flex justify-content-between'>
             <i>{ translate('Subject saved!') }</i>
@@ -89,7 +89,7 @@ const HasEditedInfo = (ps) => {
 }
 
 const Postprocessing = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var {
         subjectId,
         experimentRecord,

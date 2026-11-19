@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetchAll, useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -23,7 +23,7 @@ const ParticipationCreateModalBody = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
         studyTypes: agent.fetchCollectionCRTs({ collection: 'study' }),

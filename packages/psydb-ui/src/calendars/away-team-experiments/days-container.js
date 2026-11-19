@@ -2,7 +2,7 @@ import React, { useReducer, useEffect, useMemo } from 'react';
 
 import { hasNone } from '@mpieva/psydb-core-utils';
 import { dtoi } from '@mpieva/psydb-date-interval-fns';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import { Container, Col, Row } from '@mpieva/psydb-ui-layout';
 
@@ -94,7 +94,7 @@ const ItemsInDay = (ps) => {
         ...pass
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (hasNone(experiments) && hasNone(reservations)) {
         return (

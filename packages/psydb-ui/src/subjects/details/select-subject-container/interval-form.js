@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     Button,
     SplitPartitioned
@@ -17,7 +17,7 @@ const IntervalForm = (ps) => {
         onSubmit,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>

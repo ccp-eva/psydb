@@ -1,6 +1,6 @@
 import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import WithField from '../../with-field';
 import { GenericEnum } from '../scalar';
 
@@ -36,7 +36,7 @@ const Control = (ps) => {
         disabled,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var { getFieldProps } = formikForm;
     var selectedPointer = (

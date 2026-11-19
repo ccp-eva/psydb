@@ -1,12 +1,12 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { List } from './list';
 
 export const ExcludedStudies = (ps) => {
     var { records, onSelect } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <div className='d-flex flex-column flex-grow'>

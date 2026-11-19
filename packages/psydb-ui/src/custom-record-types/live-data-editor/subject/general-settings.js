@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
@@ -26,7 +26,7 @@ const Form = (ps) => {
         showOnlineId,
     };
         
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <DefaultForm

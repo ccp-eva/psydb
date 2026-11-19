@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useRevision } from '@mpieva/psydb-ui-hooks';
 
 import { Modal, TabNav, WithDefaultModal } from '@mpieva/psydb-ui-layout';
@@ -29,7 +29,7 @@ const SubjectModalBody = (ps) => {
         testableInStudies,
     } = modalPayloadData;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
     var revision = useRevision();
     var canReadSubjects = permissions.hasFlag('canReadSubjects');
@@ -122,7 +122,7 @@ const SubjectModal = WithDefaultModal({
     size: 'xl',
     title: (ps) => {
         var { modalPayloadData: { record }} = ps;
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
         return (
             <>
                 { translate('Appointment Invitation') }

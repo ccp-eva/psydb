@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { only } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Button, SmallFormFooter } from '@mpieva/psydb-ui-layout';
 import { DefaultForm } from '@mpieva/psydb-ui-lib/src/formik';
 
@@ -14,7 +14,7 @@ export const OnlineSurvey = (ps) => {
         'onSuccessfulUpdate', 'onFailedUpdate'
     ]});
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var initialValues = {
         //fileId: '66909c1e373d99dc8b8605be',
     }
@@ -50,7 +50,7 @@ const PrepareStage = (ps) => {
     var { studyId, subjectType, formValues, gotoPreview } = ps;
     var { fileId } = formValues['$'];
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>

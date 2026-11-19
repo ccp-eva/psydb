@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     useFetch,
     useSendCreate,
@@ -14,7 +14,7 @@ import MainForm from './main-form';
 const CreateForm = (ps) => {
     var { collection, recordType, onSuccessfulUpdate } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
 
     var [ didFetch, fetched ] = useFetch((agent) => (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Alert, Button, SmallFormFooter } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib/src/formik';
 
@@ -14,7 +14,7 @@ const PrepareStage = (ps) => {
         researchGroupId,
     } = formValues['$'];
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>

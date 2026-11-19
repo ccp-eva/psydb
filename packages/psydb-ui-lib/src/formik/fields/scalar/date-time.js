@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import { withField } from '@cdxoo/formik-utils';
 import { translate } from '@mpieva/psydb-common-translations';
-import { useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 const Control = (ps) => {
     var {
@@ -14,7 +14,7 @@ const Control = (ps) => {
     var { error } = formikMeta;
     var { value, onChange } = formikField;
 
-    var locale = useUILocale();
+    var [{ locale }] = useI18N();
 
     var isValidDate = (
         /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(value)

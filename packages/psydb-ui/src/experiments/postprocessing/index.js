@@ -1,6 +1,6 @@
 import React from 'react';
 import { unique } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import GeneralInfo from '../general-info';
@@ -22,7 +22,7 @@ const ExperimentPostprocessing = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
 
     var {
@@ -132,7 +132,7 @@ const ProcessingLists = (ps) => {
         subjectsBag
     } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>

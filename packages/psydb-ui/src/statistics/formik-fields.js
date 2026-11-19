@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     withField, withFieldArray,
     Fields as CoreFields
@@ -7,7 +7,7 @@ import {
 
 const AgeFrameInterval = withField({ Control: (ps) => {
     var { dataXPath } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <div className='border p-3'>
@@ -33,7 +33,7 @@ const AgeFrameInterval = withField({ Control: (ps) => {
 
 const DateOnlyServerSideInterval = withField({ Control: (ps) => {
     var { dataXPath } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <div className='border p-3'>
@@ -74,7 +74,7 @@ const withLogicGate = (bag) => {
 
     var Complex = withField({ Control: (ps) => {
         var { dataXPath } = ps;
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
 
         return (
             <div className='border pt-3 px-3'>

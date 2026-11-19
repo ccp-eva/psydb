@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import enums from '@mpieva/psydb-schema-enums';
 import { unique, only } from '@mpieva/psydb-core-utils';
 import { __fixRelated } from '@mpieva/psydb-common-compat';
-import { useUIConfig, useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, FormHelpers } from '@mpieva/psydb-ui-layout';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
@@ -15,7 +15,7 @@ const withLabMethodSelect = (Component) => {
         
         var config = useUIConfig();
         var permissions = usePermissions();
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
         var [ labMethod, setLabMethod ] = useState();
 
         var [ didFetch, fetched ] = useFetch((agent) => (

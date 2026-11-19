@@ -12,7 +12,6 @@ import { Base64 } from 'js-base64';
 
 import intervalfns from '@mpieva/psydb-date-interval-fns';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetch,

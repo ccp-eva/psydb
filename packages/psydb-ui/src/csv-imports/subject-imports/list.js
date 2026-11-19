@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     useRevision,
     useModalReducer,
@@ -20,7 +20,7 @@ import { datefns } from '@mpieva/psydb-ui-lib';
 import CreateModal from './create-modal';
 
 const List = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var revision = useRevision();
     var createModal = useModalReducer({
         //show: true
@@ -51,7 +51,7 @@ const List = (ps) => {
 
 const RecordTable = (ps) => {
     var { records, related } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Table
             className='mt-3'
@@ -81,8 +81,7 @@ const RecordRow = (ps) => {
     var { _id, subjectType, createdAt, createdBy } = record;
     
     var { url } = useRouteMatch();
-    var translate = useUITranslation();
-    var locale = useUILocale();
+    var [{ translate, locale }] = useI18N();
     
     return (
         <>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Icons } from '@mpieva/psydb-ui-layout';
 import { format as formatDateInterval } from '@mpieva/psydb-date-interval-fns';
 
@@ -14,7 +14,7 @@ const CalendarNav = (ps) => {
         showCalendarWeek = true,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <div className={`d-flex justify-content-between ${className}`}>
@@ -39,7 +39,7 @@ const CalendarNav = (ps) => {
 
 var PageNavButton = (ps) => {
     var { type, onClick, children } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <div
@@ -73,8 +73,7 @@ var DateInfo = (ps) => {
         showCalendarWeek = true,
     } = ps;
 
-    var translate = useUITranslation();
-    var locale = useUILocale();
+    var [{ translate, locale }] = useI18N();
 
     var isSameDay = false
     if (datefns.isSameDay(currentPageStart, currentPageEnd)) {

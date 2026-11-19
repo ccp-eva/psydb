@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Pair, Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -27,7 +27,7 @@ const Component = (ps) => {
         enableSubjectTypeSelect
     }
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <FormBox title={ title }>
@@ -63,7 +63,7 @@ const FormFields = (ps) => {
     } = ps;
     var { props: { locationType }} = formikProps.values['$'];
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import * as Fields from './static';
 
 /*
@@ -96,7 +96,7 @@ const CustomField = (ps) => {
     var { dataXPath, definition, related, extraTypeProps = {} } = ps;
     // FIXME: displayNameI18N can be null somehow
     var { displayName, displayNameI18N = {}, type, props } = definition;
-    var [ language ] = useUILanguage();
+    var [{ language }] = useI18N();
 
     type = fixSystemType(type);
 

@@ -7,7 +7,7 @@ import {
 
 import { jsonpointer } from '@mpieva/psydb-core-utils';
 import { __fixRelated } from '@mpieva/psydb-common-compat';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     useFetchAll,
     useSortReducer,
@@ -119,7 +119,7 @@ const ParticipationByType = (ps) => {
 
     var related = __fixRelated(subjectData, { isResponse: false });
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var ageFrameField = subjectData.displayFieldData.find(it => (
         it.props && it.props.isSpecialAgeFrameField

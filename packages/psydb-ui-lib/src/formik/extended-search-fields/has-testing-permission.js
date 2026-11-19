@@ -1,14 +1,14 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 import enums from '@mpieva/psydb-schema-enums';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import * as CoreFields from '../fields';
 
 export const HasTestingPermission = withField({ Control: (ps) => {
     var { formikForm, dataXPath } = ps;
     var { setFieldValue } = formikForm;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     
     return (
         <div className='border p-3'>

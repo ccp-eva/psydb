@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useUITranslation, useSelf } from '@mpieva/psydb-ui-contexts';
+import { useSelf, useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import {
     WithDefaultModal,
@@ -41,7 +41,7 @@ const CreateModalBody = (ps) => {
 
 const Form = (ps) => {
     var { initialValues, onSubmit, isTransmitting } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <DefaultForm
@@ -68,7 +68,7 @@ const Form = (ps) => {
 }
 
 const FormFields = () => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { getFieldProps, setFieldValue } = useFormikContext();
     var { value: type } = getFieldProps('$.type');
     var { value: status } = getFieldProps('$.status');

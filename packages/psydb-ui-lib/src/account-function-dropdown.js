@@ -2,8 +2,7 @@ import React from 'react';
 
 import {
     useUIConfig,
-    useUITranslation,
-    useUILanguage
+    useI18N,
 } from '@mpieva/psydb-ui-contexts';
 
 import {
@@ -28,8 +27,7 @@ export const AccountFunctionDropdown = ({
     disabled,
 }) => {
     var config = useUIConfig();
-    var [ language, setLanguage ] = useUILanguage();
-    var translate = useUITranslation();
+    var [{ language, translate }, setI18N ] = useI18N();
 
     return (
         <Dropdown>

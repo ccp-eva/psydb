@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
 import enums from '@mpieva/psydb-schema-enums';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { SplitPartitioned } from '@mpieva/psydb-ui-layout';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
 import { Fields, useFormikContext } from '@mpieva/psydb-ui-lib';
 import getFieldValue from './get-field-value';
 
 export const SubChannelKey = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Fields.GenericEnum
             label={ translate('Data Channel') }
@@ -26,7 +26,7 @@ export const SubChannelKey = (ps) => {
 export const KeyAndDisplayName = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { setFieldValue } = useFormikContext();
 
     return (
@@ -56,7 +56,7 @@ export const KeyAndDisplayName = (ps) => {
 
 export const MinItemsProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Fields.Integer
             label={ translate('Minimum Number') }
@@ -70,7 +70,7 @@ export const MinItemsProp = (ps) => {
 
 export const MinLengthProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Fields.Integer
             label={ translate('Characters (Minimum)') }
@@ -84,7 +84,7 @@ export const MinLengthProp = (ps) => {
 
 export const IsNullableProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Fields.DefaultBool
             label={ translate('Optional') }
@@ -97,7 +97,7 @@ export const IsNullableProp = (ps) => {
 
 export const IsSpecialAgeFrameFieldProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Fields.DefaultBool
             label={ translate('Age Range Anchor') }
@@ -110,7 +110,7 @@ export const IsSpecialAgeFrameFieldProp = (ps) => {
 
 export const SetIdProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Fields.HelperSetId
             label={ translate('Helper Table') }
@@ -124,7 +124,7 @@ export const SetIdProp = (ps) => {
 export const SharedForeignIdProps = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { values } = useFormikContext();
     
     var { collection } = getFieldValue(values, `${dataXPath}.props`);
@@ -259,7 +259,7 @@ const ConstraintPair = (ps) => {
 
 export const DisplayEmptyAsUnknownProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Fields.DefaultBool
             label={ translate('Empty as "Unknown"') }
@@ -272,7 +272,7 @@ export const DisplayEmptyAsUnknownProp = (ps) => {
 
 export const IsSensitiveProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Fields.DefaultBool
             label={ translate('Is Sensitive') }
@@ -285,7 +285,7 @@ export const IsSensitiveProp = (ps) => {
 
 export const EnableUnknownValueProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <Fields.DefaultBool
             label={ translate('Enable "Unknown" Value') }

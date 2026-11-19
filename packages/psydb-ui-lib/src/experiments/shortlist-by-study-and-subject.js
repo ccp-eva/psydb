@@ -1,6 +1,6 @@
 import React from 'react';
 import { __fixRelated } from '@mpieva/psydb-common-compat';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -9,7 +9,7 @@ import formatInterval from '../format-date-interval';
 const ShortListByStudyAndSubject = (ps) => {
     var { studyId, subjectId, revision } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchSubjectExperiments({
@@ -46,7 +46,7 @@ const Item = (ps) => {
     var { record, related, showStudyLabel = true } = ps;
     var { interval, studyId } = record.state;
 
-    var locale = useUILocale();
+    var [{ locale }] = useI18N();
     var { startDate } = formatInterval(interval, { locale });
     
     var uri = `#/experiments/${record.type}/${record._id}`;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import enums from '@mpieva/psydb-schema-enums';
 import { keyBy } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Pair } from '@mpieva/psydb-ui-layout';
 import { DefaultSettingWrapper } from './utils';
 
@@ -34,7 +34,7 @@ export const InviteSetting = (ps) => {
         byProp: 'pointer'
     });
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <DefaultSettingWrapper { ...ps }>

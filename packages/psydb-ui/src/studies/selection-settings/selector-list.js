@@ -1,6 +1,6 @@
 import React from 'react';
 import { groupBy, only } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { SimpleList } from '@mpieva/psydb-ui-layout';
 import SelectorListItem from './selector-list-item';
 
@@ -28,7 +28,7 @@ const SelectorList = (ps) => {
         'onRemoveAgeFrame',
     ]})
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var groupedAgeFrames = groupBy({
         items: ageFrameRecords,

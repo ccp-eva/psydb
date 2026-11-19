@@ -1,6 +1,6 @@
 import React from 'react';
 import { groupBy } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     SplitPartitioned,
     ColoredBox,
@@ -16,7 +16,7 @@ const CalendarTeamLegend = (ps) => {
         onClickTeam,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var teamsForStudy = groupBy({
         items: experimentOperatorTeamRecords,

@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 const FormBox = (ps) => {
     var {
@@ -12,7 +12,7 @@ const FormBox = (ps) => {
         isRecordHidden
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var className = classnames([
         'border p-3 bg-light',

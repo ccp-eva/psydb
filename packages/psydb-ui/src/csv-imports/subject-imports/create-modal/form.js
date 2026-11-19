@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { only } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     DefaultForm,
@@ -16,7 +16,7 @@ const SubjectImportCreateForm = (ps) => {
         'onSuccessfulUpdate', 'onFailedUpdate'
     ]});
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var [ stage, setStage ] = useState('prepare');
 
     var initialValues = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -21,7 +21,7 @@ export const TopicForm = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var recordId, lastKnownEventId, recordState;
     if (record) {

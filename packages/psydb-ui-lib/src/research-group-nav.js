@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -20,7 +20,7 @@ const ResearchGroupNav = (ps) => {
     } = ps;
 
     var { url } = useRouteMatch();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.getAxios().get('/api/self/research-groups')

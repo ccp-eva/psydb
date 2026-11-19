@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -47,7 +47,7 @@ var ExperimentDropdown = (ps) => {
         label
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
 
     

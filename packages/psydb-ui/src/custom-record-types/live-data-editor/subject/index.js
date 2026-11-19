@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { FormBox } from '@mpieva/psydb-ui-lib';
 import { PanelPair, PanelColumn } from '../util';
 import {
@@ -13,7 +13,7 @@ import {
 import GeneralSettings from './general-settings';
 
 const SubjectContainer = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <PanelPair>
             <PanelColumn>

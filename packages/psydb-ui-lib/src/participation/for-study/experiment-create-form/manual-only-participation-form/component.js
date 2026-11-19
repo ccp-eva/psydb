@@ -1,6 +1,6 @@
 import React from 'react';
 import { only } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import { DefaultForm } from '../../../../formik';
 import * as Fields from '../../form-fields';
@@ -86,7 +86,7 @@ var BranchFields = (ps) => {
         subjectType
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (preselectedSubjectId) {
         return (

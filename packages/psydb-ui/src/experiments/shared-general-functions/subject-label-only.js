@@ -2,7 +2,7 @@ import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
 
 import { groupBy } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
 
@@ -50,7 +50,7 @@ const SubjectLabelOnlyModal = WithDefaultModal({
 export const SubjectLabelOnlyContainer = (ps) => {
     var { experimentData } = ps; 
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var modal = useModalReducer();
 
     return (

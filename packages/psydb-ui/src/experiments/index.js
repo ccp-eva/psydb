@@ -9,7 +9,7 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { useUITranslation, useUIConfig } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { PageWrappers } from '@mpieva/psydb-ui-layout';
 import { FormBox } from '@mpieva/psydb-ui-lib';
 
@@ -19,7 +19,7 @@ import ExtendedSearch from './extended-search';
 
 const Experiments = () => {
     var { path, url } = useRouteMatch();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { dev_enableExtendedExperimentSearch = false } = useUIConfig();
 
     return (
@@ -57,7 +57,7 @@ const Experiments = () => {
 
 const RemoveSuccessInfo = (ps) => {
     var { experimentType } = useParams();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var successInfoBackLink = getSuccessInfoBackLink(experimentType);
 

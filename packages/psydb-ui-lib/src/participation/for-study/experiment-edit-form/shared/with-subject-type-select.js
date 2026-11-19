@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { unique, keyBy, hasOnlyOne } from '@mpieva/psydb-core-utils';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, FormHelpers } from '@mpieva/psydb-ui-layout';
@@ -7,7 +7,7 @@ import * as Controls from '@mpieva/psydb-ui-form-controls';
 
 const withSubjectTypeSelect = (Component) => {
     var WithSubjectTypeSelect = (ps) => {
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
         var { labMethodSettings, ...pass } = ps;
 
         var {

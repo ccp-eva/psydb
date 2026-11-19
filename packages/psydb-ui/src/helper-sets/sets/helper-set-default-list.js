@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { entries } from '@mpieva/psydb-core-utils';
-import { useUILanguage, useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetch,
@@ -34,8 +34,7 @@ const HelperSetDefaultList = (ps) => {
         CustomActionListComponent,
     } = ps;
     
-    var [ language ] = useUILanguage();
-    var translate = useUITranslation();
+    var [{ language, translate }] = useI18N();
 
     var [ didChangeFilters, setDidChangeFilters ] = useState(false);
     var [ filters, setFilters ] = useURLSearchParamsB64();

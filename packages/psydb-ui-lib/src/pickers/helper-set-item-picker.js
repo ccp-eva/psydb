@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     Form,
@@ -21,7 +21,7 @@ const HelperSetItemPicker = (ps) => {
         hasErrors,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var {
         modal, cached, onEdit, onSelect, onClear

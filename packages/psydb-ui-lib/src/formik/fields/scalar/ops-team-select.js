@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import classnames from 'classnames';
 import { withField } from '@cdxoo/formik-utils';
 import { hasNone } from '@mpieva/psydb-core-utils';
@@ -34,7 +34,7 @@ export const OpsTeamSelect = withField({ Control: (ps) => {
 }})
 
 const OpsTeamSelectControl = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { value, onChange, teamRecords, disabled } = ps;
 
     return (

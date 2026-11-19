@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouteMatch, useHistory } from 'react-router';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
@@ -112,7 +112,7 @@ const ChangeTeamContainer = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var modal = useModalReducer();
 
     return (
@@ -141,7 +141,7 @@ const MoveExperimentContainer = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var modal = useModalReducer();
 
     return (

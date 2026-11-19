@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -16,7 +16,7 @@ export const PasswordForm = (ps) => {
     var { id, fetched, onSuccessfulUpdate } = ps;
     var { record } = fetched;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var sendManualPassword = useSend((formData) => ({
         type: 'set-personnel-password',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { InputGroup, Form } from '@mpieva/psydb-ui-layout';
 
 const PartField = withField({
@@ -30,7 +30,7 @@ export const AgeFrameBoundary = withField({ Control: (ps) => {
     } = ps;
 
     var { error } = formikMeta;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <InputGroup>

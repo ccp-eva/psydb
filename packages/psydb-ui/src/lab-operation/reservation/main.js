@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom';
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetchAll } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -24,7 +24,7 @@ import StudyPicker from './study-picker';
 const Main = (ps) => {
     var { customRecordTypes } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var pflags = usePFlags();
 
     var { path, url } = useRouteMatch();

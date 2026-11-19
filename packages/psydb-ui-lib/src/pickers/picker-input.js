@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Form, InputGroup, PaddedText } from '@mpieva/psydb-ui-layout';
 import { EditButton, ClearButton } from './buttons';
 
@@ -33,7 +33,7 @@ export const PickerInput = (ps) => {
         onClear,
     } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var className = classnames([
         'pl-3',

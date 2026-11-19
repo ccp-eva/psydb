@@ -1,6 +1,6 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
-import { useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import RecordPicker from '../../../pickers/record-picker';
 
 export const HelperSetItemId = withField({ Control: (ps) => {
@@ -18,7 +18,7 @@ export const HelperSetItemId = withField({ Control: (ps) => {
         related,
     } = ps;
 
-    var [ language ] = useUILanguage();
+    var [{ language }] = useI18N();
 
     var collection = 'helperSetItem';
     var constraints = { '/setId': setId };

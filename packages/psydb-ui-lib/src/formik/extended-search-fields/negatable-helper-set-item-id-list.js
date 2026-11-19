@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { withField } from '@cdxoo/formik-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Icons } from '@mpieva/psydb-ui-layout';
 import * as CoreFields from '../fields';
 import { PlainCheckbox } from './plain-checkbox';
@@ -12,7 +12,7 @@ export const NegatableHelperSetItemIdList = withField({ Control: (ps) => {
     var { value } = formikField;
     var { any = false, negate = false, values } = value || {};
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var onClickNoCondition = () => (
         setFieldValue(dataXPath, undefined)

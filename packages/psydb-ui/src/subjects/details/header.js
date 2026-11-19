@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { useUITranslation, useUIConfig } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { LinkButton, Button } from '@mpieva/psydb-ui-layout';
 
 import SelectSubjectContainer from './select-subject-container';
@@ -25,7 +25,7 @@ const Header = ({
     canSelectSubjectsForExperiments,
 }) => {
     var { path, url } = useRouteMatch();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { dev_enableWKPRCPatches } = useUIConfig();
 
     title = title || translate('Record Details');

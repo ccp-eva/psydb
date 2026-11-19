@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
@@ -16,7 +16,7 @@ const SelectableStudies = (ps) => {
         onSelect
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var [ didFetch, fetched, isTransmitting ] = useFetch((agent) => (
         agent.getAxios().post('/api/search-studies-testable-for-subject', {

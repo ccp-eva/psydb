@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Table, Alert } from 'react-bootstrap';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import { TableHead } from './table-head';
 
@@ -17,7 +17,7 @@ export const TableEmptyFallback = (ps) => {
         ...passToTable
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     tableClassName = tableClassName || classnames([
         'mb-1', tableExtraClassName

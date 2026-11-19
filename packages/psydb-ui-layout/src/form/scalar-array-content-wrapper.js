@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Button } from 'react-bootstrap';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import * as Icons from '../icons';
 import { ErrorIndicator } from './error-indicator';
 
@@ -47,7 +47,7 @@ export const ScalarArrayContentWrapper = (ps) => {
 }
 
 const Fallback = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <div>
@@ -84,7 +84,7 @@ const Footer = ({ formikArrayHelpers, defaultItemValue, disabled }) => (
 
 const AddButton = (ps) => {
     var { children, onClick, style, disabled } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <a
             type='button'

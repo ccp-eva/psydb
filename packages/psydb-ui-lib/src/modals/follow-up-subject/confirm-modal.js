@@ -1,7 +1,7 @@
 import React from 'react';
 import intervalfns from '@mpieva/psydb-date-interval-fns';
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     WithDefaultModal,
     Button,
@@ -26,7 +26,7 @@ const ConfirmModalBody = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var FormContainer = (
         modalPayloadData.experimentRecord

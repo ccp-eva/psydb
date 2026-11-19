@@ -3,7 +3,7 @@ import classnames from 'classnames';
 
 import { only, groupBy } from '@mpieva/psydb-core-utils';
 import { CSVColumnRemappers, CRTSettings } from '@mpieva/psydb-common-lib';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -35,7 +35,7 @@ const PreviewStage = (ps) => {
         'onSuccessfulUpdate', 'onFailedUpdate'
     ]});
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var [ selectedIndex, setSelectedIndex ] = useState(0);
     
     var [ didFetch, fetched ] = useFetch((agent) => (

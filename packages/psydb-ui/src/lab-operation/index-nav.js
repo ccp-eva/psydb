@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { BigNav } from '@mpieva/psydb-ui-layout';
 
 const IndexNav = (ps) => {
@@ -12,7 +12,7 @@ const IndexNav = (ps) => {
         canPostprocess,
     } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { url } = useRouteMatch();
     var { studyType } = useParams();
     

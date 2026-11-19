@@ -1,6 +1,6 @@
 import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, Row, Col } from '@mpieva/psydb-ui-layout';
 import {
@@ -12,7 +12,7 @@ import {
 
 const CreateNewType = (ps) => {
     var { onCreated } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var onSuccessfulUpdate = (response) => {
         var recordId = response.data.data.find(it => (
@@ -55,7 +55,7 @@ const CreateNewType = (ps) => {
 
 const FormFields = (ps) => {
     var { setFieldValue } = useFormikContext();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <>
             <Fields.GenericEnum

@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Icons } from '@mpieva/psydb-ui-layout';
 import { AccountFunctionDropdown } from '@mpieva/psydb-ui-lib';
@@ -16,7 +16,7 @@ const TopFunctions = (ps) => {
         extraClassName
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var switchRGModal = useModalReducer();
     var changePasswordModal = useModalReducer();
     var i18nModal = useModalReducer();

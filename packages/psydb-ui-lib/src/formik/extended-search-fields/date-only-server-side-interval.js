@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import { withField } from '@cdxoo/formik-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Icons } from '@mpieva/psydb-ui-layout';
 import * as CoreFields from '../fields';
 
@@ -10,7 +10,7 @@ export const DateOnlyServerSideInterval = withField({ Control: (ps) => {
     var { value } = formikField;
     var { setFieldValue } = formikForm;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     
     var [ variant, setVariant ] = useState(
         value && value.interval ? 'date': 'age'

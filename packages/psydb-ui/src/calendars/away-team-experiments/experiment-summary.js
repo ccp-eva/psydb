@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { ColoredBox } from '@mpieva/psydb-ui-layout';
 
@@ -33,7 +33,7 @@ const ExperimentSummary = (ps) => {
         style,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var changeTeamModal = useModalReducer({ show: false });
     var moveExperimentModal = useModalReducer({ show: false });

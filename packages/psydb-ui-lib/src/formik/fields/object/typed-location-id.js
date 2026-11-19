@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import WithField from '../../with-field';
 import {
     GenericEnum,
@@ -24,7 +24,7 @@ const Control = (ps) => {
         getFieldProps(`${dataXPath}.customRecordTypeKey`).value
     );
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     //console.log({ related });
 
     return (

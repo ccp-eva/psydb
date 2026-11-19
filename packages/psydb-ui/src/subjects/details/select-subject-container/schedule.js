@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Alert } from '@mpieva/psydb-ui-layout';
 import { datefns } from '@mpieva/psydb-ui-lib';
@@ -23,7 +23,7 @@ const Schedule = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var experimentCreateModal = useModalReducer();
     var experimentUpdateModal = useModalReducer();

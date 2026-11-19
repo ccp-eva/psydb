@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, Container } from '@mpieva/psydb-ui-layout';
 
@@ -43,7 +43,7 @@ const ReservationFormContainer = (ps) => {
         it.subjectId === subjectData.record._id
     ));
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var {
         end,

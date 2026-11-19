@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { only, groupBy } from '@mpieva/psydb-core-utils';
 import { CSVColumnRemappers } from '@mpieva/psydb-common-lib';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 import { Alert, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -17,7 +17,7 @@ const PreviewStage = (ps) => {
     var { studyId, subjectType, formValues, gotoPrepare } = ps;
     var { fileId } = formValues['$'];
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var triggerBag = only({ from: ps, keys: [
         'onSuccessfulUpdate', 'onFailedUpdate'

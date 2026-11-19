@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Base64 } from 'js-base64';
 import { useHistory, useLocation } from 'react-router';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetchAll,
@@ -84,7 +84,7 @@ const ExtendedSearch = (ps) => {
 
     var location = useLocation();
     var history = useHistory();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var [ query, updateQuery ] = useURLSearchParams({
         defaults: { tab: 'filters' }
@@ -172,7 +172,7 @@ const Inner = (ps) => {
         formData,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var Component = {
         filters: Filters,

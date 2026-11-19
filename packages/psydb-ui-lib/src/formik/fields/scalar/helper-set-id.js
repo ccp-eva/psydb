@@ -1,6 +1,6 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
-import { useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import { GenericEnum } from './generic-enum';
@@ -8,7 +8,7 @@ import { GenericEnum } from './generic-enum';
 export const HelperSetId = withField({ Control: (ps) => {
     var { collection, ...pass } = ps;
 
-    var [ language ] = useUILanguage();
+    var [{ language }] = useI18N();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetch('/helperSet/list', {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -21,7 +21,7 @@ export const MainForm = (ps) => {
         permissions,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <FormBox title={ title }>
@@ -48,7 +48,7 @@ export const MainForm = (ps) => {
 
 const FormFields = (ps) => {
     var { related, permissions } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <>
             <Fields.SaneString

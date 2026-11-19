@@ -12,7 +12,7 @@ import {
     Form,
 } from '@mpieva/psydb-ui-layout';
 
-import { useRequestAgent, useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useRequestAgent, useI18N } from '@mpieva/psydb-ui-contexts';
 import datefns from '../../date-fns';
 
 import {
@@ -39,7 +39,7 @@ const FormContainer = (ps) => {
     } = ps;
     
     var agent = useRequestAgent();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var {
         _id: studyId,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     useFetch,
     useRevision,
@@ -15,7 +15,7 @@ const SelectionSettings = (ps) => {
     var { recordType: studyType } = ps;
     var { id: studyId } = useParams();
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var revision = useRevision();
     
     var [ didFetch, fetched ] = useFetch((agent) => (

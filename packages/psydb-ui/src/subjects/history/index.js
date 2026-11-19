@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import * as datefns from 'date-fns';
 import { useParams } from 'react-router'
 import { useFetchAll } from '@mpieva/psydb-ui-hooks'
@@ -37,7 +37,7 @@ const filterHistory = (bag) => {
 }
 
 const History = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { collection, recordType } = ps;
     var { id } = useParams();
 
@@ -98,7 +98,7 @@ const History = (ps) => {
 }
 
 var HistoryItem = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { item, onlyPath, subChannelKey, crtSettings } = ps;
     var { event, diff, version, message } = item;
     var { personnelId } = message;

@@ -7,7 +7,7 @@ import {
     useRouteMatch,
 } from 'react-router-dom';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import LabMethodSettingsError from './lab-method-settings-error';
 import Locations from './locations';
@@ -20,7 +20,7 @@ const LocationTypeRouting = (ps) => {
         settingRecords,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { path, url } = useRouteMatch();
 
     var firstSetting = settingRecords.find(it => (

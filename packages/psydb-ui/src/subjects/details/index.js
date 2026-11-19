@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import { RecordDetails } from '@mpieva/psydb-ui-record-views/subjects';
@@ -16,7 +16,7 @@ const SubjectDetailsContainer = ({
 }) => {
     var { path, url } = useRouteMatch();
     var { id } = useParams();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
 
     var isRoot = permissions.isRoot();

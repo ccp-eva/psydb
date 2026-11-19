@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 
 import { Pair, Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
@@ -17,8 +17,7 @@ const CreateModalBody = (ps) => {
 
     var { teamRecord, interval } = modalPayloadData;
     
-    var locale = useUILocale();
-    var translate = useUITranslation();
+    var [{ locale, translate }] = useI18N();
 
     var send = useSend(() => ({
         type: 'reservation/reserve-awayteam-slot',

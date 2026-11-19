@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { FormattedDuration } from '@mpieva/psydb-common-lib/src/durations';
 import { useThemeContext } from '../core/theme-context';
 
@@ -20,7 +20,7 @@ const ReservationSettings = (ps) => {
 const InhouseReservationSettings = (ps) => {
     var { value, related } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { Field } = useThemeContext();
 
     return (
@@ -40,7 +40,7 @@ const InhouseReservationSettings = (ps) => {
 const AwayTeamReservationSettings = (ps) => {
     var { value, related } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { Field } = useThemeContext();
     
     return (
@@ -55,8 +55,7 @@ const AwayTeamReservationSettings = (ps) => {
 const Weekdays = (ps) => {
     var { value } = ps;
     
-    var locale = useUILocale();
-    var translate = useUITranslation();
+    var [{ locale, translate }] = useI18N();
 
     if (!value) {
         return (

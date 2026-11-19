@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     Row,
@@ -27,8 +27,7 @@ const EndControl = (ps) => {
         onChangeEnd,
     } = ps;
 
-    var locale = useUILocale();
-    var translate = useUITranslation();
+    var [{ locale, translate }] = useI18N();
 
     if (onChangeEnd) {
         var onChange = wrapOnChange((nextEnd) => {
@@ -69,7 +68,7 @@ const TeamControl = (ps) => {
         onChangeTeamId
     } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     if (onChangeTeamId) {
         var filteredTeamRecords = teamRecords.filter(it => (

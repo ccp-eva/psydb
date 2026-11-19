@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import intervalfns from '@mpieva/psydb-date-interval-fns';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal, Button, Alert } from '@mpieva/psydb-ui-layout';
 
@@ -33,7 +33,7 @@ const ExperimentUpdateModalBody = (ps) => {
         studyId
     } = modalPayloadData;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var studyRecord = studyData.records.find(it => it._id === studyId);
     var { enableFollowUpExperiments } = studyRecord.state;

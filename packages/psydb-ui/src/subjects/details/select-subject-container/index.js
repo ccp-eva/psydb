@@ -7,7 +7,7 @@ import {
     calculateAge,
 } from '@mpieva/psydb-common-lib';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetch,
@@ -37,7 +37,7 @@ import Schedule from './schedule';
 const SelectSubjectContainer = (ps) => {
     var { className, ...pass } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var modal = useModalReducer();
     
     return (

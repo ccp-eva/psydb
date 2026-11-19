@@ -1,6 +1,6 @@
 import React from 'react';
 import { entries, groupBy } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Alert } from '@mpieva/psydb-ui-layout';
 
 const IssueItemsAlert = (ps) => {
@@ -19,7 +19,7 @@ const IssueItemsAlert = (ps) => {
 
 const InvalidItemList = (ps) => {
     var { style, className, items, remapper, demapping } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <div style={ style } className={ className }>
@@ -51,7 +51,7 @@ const CSVLine = (ps) => {
 
 const IssueItemWrapper = (ps) => {
     var { index, remapper, demapping, children } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <div className='d-flex'>
             <b style={{ display: 'block', minWidth: '70px' }}>
@@ -176,7 +176,7 @@ var demap = ({ dataPath, demapping }) => {
 var ValidationError = (ps) => {
     var { error, remapper, demapping } = ps;
     var { dataPath, keyword, params, message } = error;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     
     console.log({ error });
 
@@ -242,7 +242,7 @@ var ReplacementError = (ps) => {
     var { error, remapper, demapping } = ps;
     var { matchingItems, mapping } = error;
     var { csvColumn, value } = mapping;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
    
     // FIXME: csvCOlumn??
     console.log({ csvColumn });

@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouteMatch, Switch, Route } from 'react-router-dom';
 
 import { groupBy } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useFetch } from '@mpieva/psydb-ui-hooks';
 import { PermissionDenied, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -14,7 +14,7 @@ import IndexRouting from './index-routing';
 const Calendars = () => {
     var { path } = useRouteMatch();
    
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
    
     var pflags = permissions.gatherFlags((p) => ({

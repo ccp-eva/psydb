@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { Button } from 'react-bootstrap';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import LinkButton from './link-button';
 
 const DetailsBox = (ps) => {
@@ -48,7 +48,7 @@ const DetailsBox = (ps) => {
 }
 
 const Header = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var {
         title = translate('Record Details'),

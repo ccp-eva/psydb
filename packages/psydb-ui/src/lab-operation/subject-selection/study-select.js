@@ -6,7 +6,7 @@ import {
     useHistory,
 } from 'react-router-dom';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSelectionReducer } from '@mpieva/psydb-ui-hooks';
 import { LinkButton, OptionSelectIndicator } from '@mpieva/psydb-ui-layout';
 import { StudySelectList } from '@mpieva/psydb-ui-lib';
@@ -21,7 +21,7 @@ const StudySelect = (ps) => {
     var { studyType } = useParams();
     var history =  useHistory();
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var selection = useSelectionReducer({
         selected: [],

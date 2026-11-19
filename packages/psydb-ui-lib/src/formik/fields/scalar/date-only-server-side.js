@@ -8,7 +8,7 @@ import { withField } from '@cdxoo/formik-utils';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 
 import { translate } from '@mpieva/psydb-common-translations';
-import { useUIConfig, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useI18N } from '@mpieva/psydb-ui-contexts';
 import { Form } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -26,7 +26,7 @@ const Control = (ps) => {
     var { error } = formikMeta;
     var { value, onChange } = formikField;
 
-    var locale = useUILocale();
+    var [{ locale }] = useI18N();
 
     var isValidDate = (
         /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(value)

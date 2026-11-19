@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useThemeContext } from '../core/theme-context';
 import { CustomField } from './custom-field';
 
@@ -9,7 +9,7 @@ export const ListOfObjectsField = (ps) => {
     var context = useThemeContext();
     var { Field } = context;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var label = translate.fieldDefinition(definition);
 
     return (

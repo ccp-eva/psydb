@@ -8,7 +8,7 @@ import {
 
 import { only } from '@mpieva/psydb-core-utils';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { TabNav } from '@mpieva/psydb-ui-layout';
 
 import LocationTypeRouting from './location-type-routing';
@@ -32,7 +32,7 @@ const ReservationTypeRouting = (ps) => {
     var { navItem } = useParams();
     var history =  useHistory();
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var tabs = [];
     if (canReserveLocations) {

@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { entries } from '@mpieva/psydb-core-utils';
 import { __fixDefinitions } from '@mpieva/psydb-common-compat';
 
-import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Button, Icons } from '@mpieva/psydb-ui-layout';
 
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
@@ -24,7 +24,7 @@ const QuickSearch = (ps) => {
         onSubmit
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     // TODO: make this controllable via crt settings
     var maxFields = (target === 'table' || !target) ? 5 : 3;
@@ -94,7 +94,7 @@ const FieldList = (ps) => {
     var { displayFieldData: definitions, maxFields } = ps;
     var definitions = __fixDefinitions(definitions);
     
-    var [ language ] = useUILanguage();
+    var [{ language }] = useI18N();
     //console.log(displayFieldData);
 
     var count = 0;

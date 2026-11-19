@@ -2,7 +2,7 @@ import React from 'react';
 
 import { hasNone } from '@mpieva/psydb-core-utils';
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -31,7 +31,7 @@ const RemoveSettingModalBody = (ps) => {
 
     var { _id: settingId, type: variantType } = settingRecord;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var send = useSend(() => ({
         type: `experiment-variant-setting/remove`,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { jsonpointer, keyBy } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useFetchAll } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
@@ -24,7 +24,7 @@ export const Component = (ps) => {
         onSubmit,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var renderedForm = (
         <DefaultForm

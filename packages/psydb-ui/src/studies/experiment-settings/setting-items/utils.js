@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { InnerSettingPanel } from '@mpieva/psydb-ui-layout';
 
 export const DefaultSettingWrapper = (ps) => {
@@ -19,7 +19,7 @@ export const DefaultSettingWrapper = (ps) => {
     var { subjectTypeKey } = settingRecord.state;
     var { relatedCustomRecordTypes } = settingRelated;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var label = translate.crt(
         relatedCustomRecordTypes.subject[subjectTypeKey]
     );

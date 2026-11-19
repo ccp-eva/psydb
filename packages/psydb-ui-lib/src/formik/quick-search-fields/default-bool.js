@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { Form, FormHelpers } from '@mpieva/psydb-ui-layout';
 import WithField from '../with-field';
 
@@ -11,7 +11,7 @@ export const DefaultBool = WithField({
         var { value } = formikField;
         var { setFieldValue } = formikForm;
 
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
 
         var onChange = (event) => {
             var next = ({

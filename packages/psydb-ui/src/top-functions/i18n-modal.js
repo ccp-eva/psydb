@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import {
-    useUITranslation,
-    useUILanguage,
-    useUILocale
+    useI18N,
 } from '@mpieva/psydb-ui-contexts';
 
 import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
@@ -13,12 +11,10 @@ export const I18NModal = WithDefaultModal({
     size: 'lg',
     Body: (ps) => {
         var { onHide } = ps;
-        var [ language, setLanguage ] = useUILanguage();
-        
-        var translate = useUITranslation();
+        var [{ language, translate }, setI18N ] = useI18N();
 
         var handleSubmit = (formData, formikForm) => {
-            setLanguage({ ...formData });
+            setI18N({ ...formData });
             onHide();
         }
 
@@ -30,9 +26,7 @@ export const I18NModal = WithDefaultModal({
 const Form = (ps) => {
     var { onSubmit } = ps;
 
-    var [ language ] = useUILanguage();
-    var locale = useUILocale();
-    var translate = useUITranslation();
+    var [{ language, locale, translate }] = useI18N();
 
     var initialValues = {
         language,

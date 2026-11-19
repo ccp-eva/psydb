@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     LoadingIndicator,
     AsyncButton,
@@ -36,7 +36,7 @@ export const AgeFrameForm = (ps) => {
         ({ _id: ageFrameId, state: ageFrameState } = ageFrameRecord)
     }
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var bodyBag = {
         subjectCRT,
@@ -62,7 +62,7 @@ export const AgeFrameForm = (ps) => {
 const FormBody = (ps) => {
     var { formik, subjectCRT, isTransmitting } = ps;
     
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>

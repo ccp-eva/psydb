@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import {
     withField,
@@ -9,7 +9,7 @@ import {
 import * as Fields from '../../form-fields';
 
 const Control = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var {
         dataXPath,
         subjectType,

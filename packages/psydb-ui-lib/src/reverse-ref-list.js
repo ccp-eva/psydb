@@ -1,7 +1,7 @@
 import React from 'react';
 import { groupBy } from '@mpieva/psydb-core-utils';
 import enums from '@mpieva/psydb-schema-enums';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 var collectionUILinks = {
     'subject': 'subjects',
@@ -19,7 +19,7 @@ var collectionUILinks = {
 
 export const ReverseRefList = (ps) => {
     var { reverseRefs, shouldInlineItems = false } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var groupedReverseRefs = groupBy({
         items: reverseRefs,

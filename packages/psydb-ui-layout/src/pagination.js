@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import { Form, Button } from 'react-bootstrap';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 import * as Icons from './icons';
 import PaddedText from './padded-text';
@@ -31,7 +31,7 @@ const Pagination = (ps) => {
         showJump = true,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var className = classnames([
         'bg-light pt-2 pb-2 pr-3 pl-3',
@@ -117,7 +117,7 @@ const PageNav = (ps) => {
         showJump,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var start = page - 1;
     var end = page + 2;

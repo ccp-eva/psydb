@@ -2,7 +2,7 @@ import React from 'react';
 
 import { keyBy } from '@mpieva/psydb-core-utils';
 import { __fixRelated } from '@mpieva/psydb-common-compat';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 
 import { useFormikContext } from '../../../formik';
@@ -23,7 +23,7 @@ export const LabProcedureFields = (ps) => {
         enableTeamSelect,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var { values, setFieldValue, dirty: isFormDirty } = useFormikContext();
     var { labProcedureType } = values['$'];

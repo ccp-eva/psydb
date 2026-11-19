@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Dropzone from 'react-dropzone';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useWriteRequest } from '@mpieva/psydb-ui-hooks';
 
 import LoadingIndicator from './loading-indicator';
@@ -101,7 +101,7 @@ const TheDropzone = (ps) => {
 }
 
 const Default = ({ isHighlighted }) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <div style={{ color: '#c0c0c0' }}>
             <i 
@@ -128,7 +128,7 @@ const mbytes = (n) => (
 )
 
 const Rejected = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { accept = '', maxSize, rejectedFiles } = ps;
     console.log(rejectedFiles);
 

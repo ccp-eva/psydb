@@ -2,7 +2,7 @@ import React  from 'react';
 import classnames from 'classnames';
 
 import { omit } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     useFetch,
     usePermissions,
@@ -24,7 +24,7 @@ import EditModal from './edit-modal';
 import RemoveModal from './remove-modal';
 
 const StudyTopics = () => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
     var revision = useRevision();
 

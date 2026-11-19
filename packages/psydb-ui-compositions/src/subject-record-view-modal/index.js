@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { demuxed } from '@mpieva/psydb-ui-utils';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
@@ -12,7 +12,7 @@ import {
 import { RecordEditor } from '@mpieva/psydb-ui-record-views/subjects';
 
 const SubjectRecordViewModalBody = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var {
         show,
         onHide,
@@ -69,7 +69,7 @@ const SubjectRecordViewModalBody = (ps) => {
 }
 
 const HasEditedInfo = (ps) => {
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var { onReEdit } = ps;
     return (
         <Alert variant='info' className='d-flex justify-content-between'>

@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom';
 
 import { URL } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { RoutedTabNav, LinkButton } from '@mpieva/psydb-ui-layout';
 import { withRecordEditor } from '@mpieva/psydb-ui-lib';
 
@@ -34,7 +34,7 @@ const Inner = (ps) => {
     var { isNew, isDirty } = state;
 
     var { path, url } = useRouteMatch();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <>
@@ -99,7 +99,7 @@ const BaseRouting = (ps) => {
     var { children } = ps;
     
     var { path, url } = useRouteMatch();
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var navItems = [
         {

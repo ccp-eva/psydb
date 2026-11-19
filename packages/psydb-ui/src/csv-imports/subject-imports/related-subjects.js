@@ -1,6 +1,6 @@
 import React from 'react';
 import { __fixRelated } from '@mpieva/psydb-common-compat';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -13,7 +13,7 @@ import {
 const RelatedSubjects = (ps) => {
     var { csvImportId, revision } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchCSVSubjectImportSubjects({

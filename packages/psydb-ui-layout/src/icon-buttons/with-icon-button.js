@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 
 const factoryButtonProps = {
     size: 'sm',
@@ -50,7 +50,7 @@ export const withIconButton = (options) => {
             disabled,
         } = ps;
 
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
 
         var mergedButtonProps = {
             ...defaultButtonProps,

@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import * as Icons from '../../icons';
 
 export const ObjectArrayItemWrapper = (ps) => {
@@ -56,7 +56,7 @@ const Footer = (ps) => {
         hasRemove,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var moveUp = () => formikArrayHelpers.swap(index, index - 1);
     var moveDown = () => formikArrayHelpers.swap(index, index + 1);
@@ -123,7 +123,7 @@ const MoveButton = ({ children, onClick, disabled, title }) => (
 
 const RemoveButton = (ps) => {
     var { children, onClick, disabled } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <button
             type='button'

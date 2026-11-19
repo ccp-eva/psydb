@@ -1,6 +1,6 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { SplitPartitioned } from '@mpieva/psydb-ui-layout';
 
 import { SaneString, GenericEnum } from '../scalar';
@@ -17,7 +17,7 @@ const Control = (ps) => {
         enableParentNumbers,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var fieldOptions = {
         'business': '_phone_type_business',

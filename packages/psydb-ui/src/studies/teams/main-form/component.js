@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { inlineText } from '@mpieva/psydb-common-lib';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
@@ -9,7 +9,7 @@ import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 export const Component = (ps) => {
     var { initialValues, onSubmit, ...pass } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     return (
         <DefaultForm
@@ -40,7 +40,7 @@ const FormFields = (ps) => {
     var { researchGroupId } = values['$'];
     
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var permissions = usePermissions();
 
     return (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import {
     useFetch,
     useModalReducer,
@@ -36,7 +36,7 @@ const SubjectModalSchedule = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     var experimentCreateModal = useModalReducer();
     var experimentUpdateModal = useModalReducer();
 

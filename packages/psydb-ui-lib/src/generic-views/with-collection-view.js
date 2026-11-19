@@ -4,7 +4,7 @@ import { useRouteMatch } from 'react-router-dom';
 import enums from '@mpieva/psydb-schema-enums';
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import {
     PermissionDenied,
@@ -42,7 +42,7 @@ const withCollectionView = (options) => {
             noSpacer
         } = ps;
 
-        var translate = useUITranslation();
+        var [{ translate }] = useI18N();
         var title = translate(
             enums.collections.getLabel(collection) || collection
         );

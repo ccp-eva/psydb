@@ -1,10 +1,10 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { AsyncButton } from '@mpieva/psydb-ui-layout';
 
 export const Footer = (ps) => {
     var { isTransmitting, enableSubmit = true } = ps;
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
     return (
         <>
             <hr />

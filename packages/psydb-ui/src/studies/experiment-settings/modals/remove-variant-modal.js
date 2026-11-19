@@ -3,7 +3,7 @@ import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
 import { hasNone } from '@mpieva/psydb-core-utils';
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useI18N } from '@mpieva/psydb-ui-contexts';
 import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     Alert,
@@ -23,7 +23,7 @@ const RemoveVariantModalBody = (ps) => {
     var { index, variantRecord } = modalPayloadData;
     var { _id: variantId, type: variantType } = variantRecord;
 
-    var translate = useUITranslation();
+    var [{ translate }] = useI18N();
 
     var send = useSend(() => ({
         type: `experiment-variant/remove`,
