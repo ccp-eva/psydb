@@ -42,13 +42,6 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
             var [ _unused, ix = 0 ] = col.split('_');
             return `subjectData[${ix}].role`;
         }
-        if (/^comment$/.test(col)) {
-            return '__subjectData_comment';
-        }
-        if (/^comment(_\d+)?/.test(col)) {
-            var [ _unused, ix = 0 ] = col.split('_');
-            return `subjectData[${ix}].comment`;
-        }
         if (col === 'trial_participants') {
             return 'totalSubjectCount';
         }
@@ -70,11 +63,6 @@ var CSVWKPRCApestudiesDefaultColumnRemapper = (bag) => {
                 { key: 'subjectData', type: 'array' },
                 { key: 'role', type: 'scalar' }
             ],
-            comment: [
-                { key: 'subjectData', type: 'array' },
-                { key: 'comment', type: 'scalar' }
-            ],
-
             experiment_name: [{ key: 'experimentName', type: 'scalar' }],
             condition: [{ key: 'conditionName', type: 'scalar' }],
             room_enclosure: [{ key: 'roomOrEnclosure', type: 'scalar' }],

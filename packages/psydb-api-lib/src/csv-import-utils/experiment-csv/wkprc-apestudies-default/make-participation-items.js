@@ -22,7 +22,7 @@ var makeParticipationItems = (bag) => {
 
     var out = [];
     for (var it of subjectData) {
-        var { subjectId, comment, role } = it;
+        var { subjectId, role } = it;
         var participationItem = {
             _id: ObjectId(),
             experimentId: experimentParts._id,

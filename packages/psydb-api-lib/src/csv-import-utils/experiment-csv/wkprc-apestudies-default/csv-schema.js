@@ -44,7 +44,6 @@ var CSVSchema = () => {
                     properties: {
                         'subjectId': ForeignId({ collection: 'subject' }),
                         'role': SaneString({ minLength: 1 }),
-                        'comment': SaneString(),
                     },
                     required: [ 'subjectId', 'role' ]
                 }),
@@ -52,7 +51,6 @@ var CSVSchema = () => {
             }),
             
             'totalSubjectCount': Integer({ minimum: 1 }),
-            '__subjectData_comment': SaneString(),
         },
         required: [
             'experimentName',
