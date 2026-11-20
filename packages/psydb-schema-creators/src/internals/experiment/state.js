@@ -91,13 +91,14 @@ var ExperimentState = ({
                         subjectType: CustomRecordTypeKey({
                             collection: 'subject'
                         }),
-                        invitatonStatus: InvitationStatus(),
+                        invitationStatus: InvitationStatus(),
                         participationStatus: ParticipationStatus(),
                         comment: FullText(),
                         // TODO: file refs?
                     },
+                    // TODO: check if subjectType should also be required
                     required: [
-                        'studyId',
+                        'subjectId',
                         'invitationStatus',
                         'participationStatus',
                         'comment',
