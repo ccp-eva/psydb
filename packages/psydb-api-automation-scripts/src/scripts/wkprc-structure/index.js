@@ -11,18 +11,28 @@ var createStudyCRT = require('./create-study-crt');
 
 var createResearchGroup = require('./create-research-group');
 
+// NOTE: labels as on the live system (see crt export 2026-11-19)
 var subjects = [
     {
         type: 'wkprc_chimpanzee',
-        crtLabels: { en: 'Chimpanzees', de: 'Schimpansen' },
-        speciesLabels: {
-            en: 'Chimpanzee Sub-Species',
-            de: 'Schimpansen Sub-Species',
-        }
+        label: 'Chimpanzee',
+        speciesSetLabel: 'WKPRC Chimpanzee Sub-Species',
     },
-    { type: 'wkprc_bonobo', label: 'Bonobo' },
-    { type: 'wkprc_gorilla', label: 'Gorilla' },
-    { type: 'wkprc_orang_utan', label: 'Orang-Utan' },
+    {
+        type: 'wkprc_bonobo',
+        label: 'Bonobo',
+        speciesSetLabel: 'WKPRC Bonobo',
+    },
+    {
+        type: 'wkprc_gorilla',
+        label: 'Gorilla',
+        speciesSetLabel: 'WKPRC Gorilla Sub-Species',
+    },
+    {
+        type: 'wkprc_orang_utan',
+        label: 'Orang-Utan',
+        speciesSetLabel: 'WKPRC Orang-Utan Sub-Species',
+    },
 ];
 
 module.exports = async (bag) => {
@@ -33,29 +43,21 @@ module.exports = async (bag) => {
     await createRARole({ ...context, as: 'wkprc_ra' });
     await createScientistRole({ ...context, as: 'wkprc_scientist' });
 
-    //await createLocationTypeSet({ ...context, as: 'locationType' });
-    await driver.helperSet.create({ displayNames: {
-        'en': 'Origin',
-        'de': 'Herkunft'
-    }});
+    await driver.helperSet.create({ displayNames: { en: 'WKPRC Origin' }});
     cache.addId({ collection: 'helperSet', as: 'wkprc_origin' });
 
     await driver.helperSet.create({ displayNames: {
-        'en': 'Rearing History',
-        'de': 'Aufzucht'
+        en: 'WKPRC Rearing History'
     }});
     cache.addId({ collection: 'helperSet', as: 'wkprc_rearingHistory' });
 
     await createLocationCRT({ driver, cache, as: 'wkprc_ape_location' });
 
     for (var it of subjects) {
-        var { type, label, crtLabels, speciesLabels } = it;
-        
+        var { type, label, speciesSetLabel } = it;
+
         await driver.helperSet.create({
-            displayNames: speciesLabels || {
-                en: `${label} Sub-Species`,
-                de: `${label} Sub-Spezies`,
-            }
+            displayNames: { en: speciesSetLabel }
         });
         cache.addId({
             collection: 'helperSet', as: `${type}SubSpecies`
@@ -63,10 +65,7 @@ module.exports = async (bag) => {
 
         await createSubjectCRT({
             driver, cache,
-            type, displayNames: crtLabels || {
-                en: `${label}s`,
-                de: `${label}s`,
-            },
+            type, displayNames: { en: label },
         });
     }
 

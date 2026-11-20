@@ -31,15 +31,27 @@ var beforeAll = async function () {
         return out;
     };
 
-    this.execute = async ({ script, apiKey, extraOptions }) => {
+    this.execute = async ({ script, apiKey, extraOptions, apiConfig }) => {
         var { mongo } = this.context;
 
         var app = new Koa();
+        // NOTE: close in finally; otherwise a failing request leaves
+        // the connection open and keeps mocha from exiting
         app.use(async (context, next) => {
-            await next();
-            context.mongoConnector.close();
+            try {
+                await next();
+            }
+            finally {
+                await context.mongoConnector?.close();
+            }
         });
         app.use(withApi({ app, config: {
+            ...apiConfig,
+            sessionSecret: [
+                '------------------------------------------',
+                'DO NOT USE IN PRODUCTION GENERATE YOUR OWN',
+                '------------------------------------------',
+            ].join(''),
             db: {
                 url: mongo.uri,
                 dbName: mongo.dbName,
@@ -52,14 +64,18 @@ var beforeAll = async function () {
         }}));
 
         var agent = createAgent(app.callback());
-        var out = await executeWithDriver({
-            agent, apiKey, extraOptions: {
-                mongodb: `${mongo.uri}${mongo.dbName}`
-            },
-            script,
-        })
-        agent.close();
-        return out;
+        try {
+            return await executeWithDriver({
+                agent, apiKey, extraOptions: {
+                    ...extraOptions,
+                    mongodb: `${mongo.uri}${mongo.dbName}`
+                },
+                script,
+            });
+        }
+        finally {
+            agent.close();
+        }
     }
 }
 

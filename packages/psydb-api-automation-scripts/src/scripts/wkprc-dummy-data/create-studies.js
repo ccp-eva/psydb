@@ -37,7 +37,7 @@ module.exports = async (bag) => {
                     cache.get('/personnel/Alice'),
                     cache.get('/personnel/Bob'),
                 ],
-                helperPersonIds: [],
+                herlperPersonIds: [], // sic! as on live system
                 equipmentLinks: [],
                 equipmentLocation: '',
                 doi: '',

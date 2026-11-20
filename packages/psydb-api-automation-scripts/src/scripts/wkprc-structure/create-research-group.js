@@ -28,7 +28,9 @@ module.exports = async (context) => {
                 { key: 'wkprc_chimpanzee' },
                 { key: 'wkprc_bonobo' },
                 { key: 'wkprc_gorilla' },
-                { key: 'wkprc_orangutan' },
+                // TODO: we would like to have 'wkprc_orangutan' instead
+                // but live system uses 'wkprc_orang_utan'
+                { key: 'wkprc_orang_utan' },
             ],
             locationTypes: [
                 { key: 'wkprc_ape_location' },

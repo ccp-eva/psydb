@@ -2,8 +2,7 @@
 var createLocationCRT = async (context) => {
     var { driver, cache, as } = context;
     var displayNames = {
-        en: 'Ape Locations',
-        de: 'Affen-Locations',
+        en: 'Ape-Location',
     };
 
     var crt = await driver.crt.create({
@@ -13,13 +12,12 @@ var createLocationCRT = async (context) => {
 
     cache.addCRT(crt.meta);
     var { _id: crtId } = crt.meta;
-    
+
     await crt.addManyFields({ definitions: [
         {
             type: 'SaneString',
             key: 'name',
             displayName: 'Name',
-            displayNameI18N: { 'de': 'Name' },
             props: { minLength: 1 }
         }
     ]});
@@ -41,11 +39,15 @@ var createLocationCRT = async (context) => {
                 '/state/custom/name',
             ]
         },
+        formOrder: [
+            '/state/comment',
+            '/state/custom/name',
+        ]
     });
 
     await crt.updateGeneralSettings({
         displayNames,
-        reservationType: 'away-team',
+        reservationType: 'no-reservation',
     })
 
     return crtId;

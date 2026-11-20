@@ -6,8 +6,7 @@ var asPointers = (keys) => keys.map(it => (
 module.exports = async (context) => {
     var { driver, cache, as } = context;
     var displayNames = {
-        en: 'WKPRC Studies',
-        de: 'WKPRC-Studien',
+        en: 'WKPRC-Study',
     };
 
     var definitions = FieldDefinitions({ cache });
@@ -19,7 +18,7 @@ module.exports = async (context) => {
 
     cache.addCRT(crt.meta);
     var { _id: crtId } = crt.meta;
- 
+
     await crt.addManyFields({ definitions: [
         ...Object.values(definitions),
     ]});
@@ -33,17 +32,29 @@ module.exports = async (context) => {
             tokens: asPointers([ 'name' ])
         },
         displayFields: {
-            'table': [ '/sequenceNumber', ...asPointers([
-                'name',
-                'scientistIds',
-                'runningPeriod/start',
-                'runningPeriod/end',
-            ])],
             'optionlist': [ '/sequenceNumber', ...asPointers([
                 'name',
             ])]
         },
     })
+
+    // NOTE: "/state/experimentNames" only exists with
+    // dev_enableWKPRCPatches and "/state/shorthand" only without;
+    // the live system has both, so we drop what the target rejects
+    await sendWithOptionalPointer({
+        driver, optionalPointer: '/state/experimentNames',
+        pointers: [ '/sequenceNumber', ...asPointers([
+            'name',
+            'scientistIds',
+            'runningPeriod/start',
+            'runningPeriod/end',
+            'experimentNames',
+        ])],
+        send: (fieldPointers) => driver.sendMessage({
+            type: 'custom-record-types/set-display-fields',
+            payload: { id: crtId, target: 'table', fieldPointers }
+        })
+    });
 
     await crt.updateGeneralSettings({
         displayNames,
@@ -51,35 +62,76 @@ module.exports = async (context) => {
         enableSubjectSelectionSettings: false,
     })
 
+    // NOTE: after set-general-data since that modifies the form order
+    await sendWithOptionalPointer({
+        driver, optionalPointer: '/state/shorthand',
+        pointers: [
+            ...asPointers([
+                'shorthand',
+                'name',
+                'scientistIds',
+                'researchGroupIds',
+                'studyTopicIds',
+                'runningPeriod/start',
+                'runningPeriod/end',
+                'custom/experimenterIds',
+                'custom/herlperPersonIds',
+                'custom/equipmentLinks',
+                'custom/equipmentLocation',
+                'custom/doi',
+                'custom/description',
+            ]),
+            '/sequenceNumber'
+        ],
+        send: (formOrder) => driver.sendMessage({
+            type: 'custom-record-types/set-form-order',
+            payload: { id: crtId, formOrder }
+        })
+    });
+
     return crtId;
 }
 
+var sendWithOptionalPointer = async (bag) => {
+    var { pointers, optionalPointer, send } = bag;
+    try {
+        await send(pointers);
+    }
+    catch (e) {
+        if (e.apiStatus !== 'InvalidFieldPointer') {
+            throw e;
+        }
+        await send(pointers.filter(it => it !== optionalPointer));
+    }
+}
+
+// NOTE: key "herlperPersonIds" (sic!) and translations as on live system
 var FieldDefinitions = ({ cache, type }) => ({
-    'experimentIds': {
+    'experimenterIds': {
         type: 'ForeignIdList',
         key: 'experimenterIds',
         displayName: 'Experimenters',
-        displayNameI18N: {
-            'de': 'Experimenter:innen'
-        },
+        displayNameI18N: { 'de': 'Experimenter' },
         props: {
             minItems: 0,
             collection: 'personnel',
             constraints: {},
+            displayEmptyAsUnknown: false,
+            addReferenceToTarget: false,
             readOnly: false,
         }
     },
-    'helperPersonIds': {
+    'herlperPersonIds': {
         type: 'ForeignIdList',
-        key: 'helperPersonIds', // XXX: was 'herlper....'
-        displayName: 'Helpers',
-        displayNameI18N: {
-            'de': 'Helfer:innen'
-        },
+        key: 'herlperPersonIds',
+        displayName: 'Helper Staff',
+        displayNameI18N: { 'de': 'Helfer' },
         props: {
             minItems: 0,
             collection: 'personnel',
             constraints: {},
+            displayEmptyAsUnknown: false,
+            addReferenceToTarget: false,
             readOnly: false,
         }
     },
@@ -96,27 +148,21 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'SaneString',
         key: 'equipmentLocation',
         displayName: 'Storage Location of the Apparatus',
-        displayNameI18N: {
-            'de': 'Lagerort der Apparatur'
-        },
+        displayNameI18N: { 'de': 'Lagerort der Apperatur' },
         props: { minLength: 0 }
     },
     'doi': {
         type: 'SaneString',
         key: 'doi', // FIXME: maybe publicationDOI ?
         displayName: 'DOI',
-        displayNameI18N: {
-            'de': 'DOI'
-        },
+        displayNameI18N: { 'de': 'DOI' },
         props: { minLength: 0 }
     },
     'description': {
         type: 'FullText',
         key: 'description',
         displayName: 'Description',
-        displayNameI18N: {
-            'de': 'Beschreibung'
-        },
-        props: { minLength: 0, isSensitive: false }
+        displayNameI18N: { 'de': 'Beschreibung' },
+        props: { minLength: 0 }
     }
 })

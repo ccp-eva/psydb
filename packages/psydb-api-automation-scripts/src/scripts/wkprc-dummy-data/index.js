@@ -13,17 +13,17 @@ var createChimpanzees = require('./create-chimpanzees');
 var createStudies = require('./create-studies');
 
 var helperSetItems = {
-    'Chimpanzee Sub-Species': [
+    'WKPRC Chimpanzee Sub-Species': [
         'Central African chimpanzee - Pan troglodytes troglodytes',
         'East African chimpanzee - Pan troglodytes schweinfurthi',
         'Nigeria chimpanzee - Pan troglodytes ellioti',
         'West African chimpanzee - Pan troglodytes verus',
     ],
-    'Origin': [
+    'WKPRC Origin': [
         'captive-born',
         'wild-born'
     ],
-    'Rearing History': [
+    'WKPRC Rearing History': [
         'hand-reared',
         'mother-reared',
     ]
