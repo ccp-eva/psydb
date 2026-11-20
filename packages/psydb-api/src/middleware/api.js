@@ -6,7 +6,7 @@ var compose = require('koa-compose');
 var withMongoDB = require('@mpieva/psydb-mongo-adapter').createMiddleware;
 
 var withApiConfig = require('./with-api-config');
-var withNowDate = require('./with-client-timezone');
+var withNowDate = require('./with-now-date');
 var withClientTimezone = require('./with-client-timezone');
 var withClientI18N = require('./with-client-i18n');
 var withSession = require('./session');
