@@ -14,7 +14,7 @@ var executeSystemEvents = async (context) => {
 
     var _id = await createId();
     var core = {
-        type, csvImportId: null,
+        type, csvImportId: null, experimentId: null,
         subjectId, subjectType: subject.type,
         timezone,
         contactedBy,

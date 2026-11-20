@@ -8,6 +8,7 @@ var FullSchema = (bag) => ClosedObject({
     'type': StringEnum([ 'email', 'phone' ]),
     'subjectType': CustomRecordTypeKey({ collection: 'subject' }),
     'subjectId': ForeignId({ collection: 'subject' }),
+    'experimentId': ForeignId({ collection: 'experiment', isNullable: true }),
     'contactedAt': DateTime(),
     'contactedBy': ForeignId({ collection: 'personnel', isNullable: true  }),
     'state': internals.SubjectContactHistoryState(bag)

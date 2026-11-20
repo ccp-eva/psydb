@@ -52,6 +52,7 @@ describe('csv-import/subject-contact-history/create baseline', function () {
                 '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
                 'type': type,
                 'csvImportId': csvImportId,
+                'experimentId': null,
                 'subjectId': subjectId,
                 'subjectType': subjectType,
                 'timezone': 'Europe/Berlin',
@@ -123,6 +124,7 @@ describe('csv-import/subject-contact-history/create baseline', function () {
             '_id': BaselineDeltas.AnyObjectId(),
             '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
             'csvImportId': csvImportId,
+            'experimentId': null,
             'subjectType': subjectType,
             'timezone': 'Europe/Berlin',
         }
@@ -175,6 +177,7 @@ describe('csv-import/subject-contact-history/create baseline', function () {
             '_id': BaselineDeltas.AnyObjectId(),
             '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
             'csvImportId': csvImportId,
+            'experimentId': null,
             'subjectType': subjectType,
             'timezone': 'Europe/Berlin',
         }
@@ -226,6 +229,7 @@ describe('csv-import/subject-contact-history/create baseline', function () {
             '_id': BaselineDeltas.AnyObjectId(),
             '_rohrpostMetadata': BaselineDeltas.AnyRohrpostMeta(),
             'csvImportId': csvImportId,
+            'experimentId': null,
             'subjectType': subjectType,
             'timezone': 'Europe/Berlin',
         }

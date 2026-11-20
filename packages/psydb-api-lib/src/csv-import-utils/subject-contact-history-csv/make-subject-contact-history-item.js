@@ -17,7 +17,7 @@ var makeSubjectContactHistoryItem = (bag) => {
   
     var _id = ObjectId();
     var core = {
-        type: contactType, csvImportId: null,
+        type: contactType, csvImportId: null, experimentId: null,
         subjectId, subjectType, // NOTE: not sure if better in state
         timezone,
         contactedBy,
