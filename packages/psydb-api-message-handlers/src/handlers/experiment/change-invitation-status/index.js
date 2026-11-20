@@ -6,6 +6,9 @@ var datefns = require('date-fns');
 var { checkLabOperationAccess } = require('@mpieva/psydb-common-lib');
 var { SimpleHandler } = require('../../../lib/');
 var createSchema = require('./schema');
+var appendCommentsToSubjects = require(
+    '../../csv-import/subject-contact-history/create/append-comments-to-subjects'
+);
 
 var handler = SimpleHandler({
     messageType: 'experiment/change-invitation-status',
@@ -153,20 +156,34 @@ handler.triggerSystemEvents = async ({
         }
 
         var _id = await createId();
+        var core = {
+            type: 'phone', csvImportId: null, experimentId,
+            subjectId, subjectType: subjectRecord.type,
+            timezone,
+            contactedBy: personnelId,
+            contactedAt: now,
+        };
+        var state = { status: contactHistoryStatus, comment };
+
         await dispatchProps({
             collection: 'subjectContactHistory',
             channelId: _id,
             isNew: true,
-            additionalChannelProps: {
-                type: 'phone', csvImportId: null, experimentId,
-                subjectId, subjectType: subjectRecord.type,
-                timezone,
-                contactedBy: personnelId,
-                contactedAt: now,
-            },
-            props: { status: contactHistoryStatus, comment },
+            additionalChannelProps: core,
+            props: state,
             initialize: false, // NOTE no schema currently
         });
+
+        var {
+            dev_appendContactHistoryCommentToSubject: appendComments = false
+        } = apiConfig || {};
+        if (appendComments) {
+            await appendCommentsToSubjects({
+                db, dispatchProps, timezone,
+                items: [{ parts: { _id, core, state }}],
+                language: appendComments === true ? 'en' : appendComments,
+            });
+        }
     }
 }
 
