@@ -21,7 +21,8 @@ var createSubjectGroupCombinationView = async (bag) => {
     var subjectGroupRecords = await aggregateToArray({ db, subjectGroup: [
         { $match: {
             'subjectType': subjectType,
-            'state.name': { $in: subjectGroupValues }
+            'state.name': { $in: subjectGroupValues },
+            'state.internals.isRemoved': { $ne: true },
         }},
         { $project: {
             '_id': true,
@@ -35,6 +36,7 @@ var createSubjectGroupCombinationView = async (bag) => {
             '_id': { $in: (
                 subjectGroupRecords.map(it => it.locationId)
             )},
+            'state.internals.isRemoved': { $ne: true },
         }},
         { $project: {
             '_id': true,

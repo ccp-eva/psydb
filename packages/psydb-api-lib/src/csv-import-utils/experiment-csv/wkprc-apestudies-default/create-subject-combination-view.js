@@ -25,7 +25,8 @@ var createSubjectCombinationView = async (bag) => {
     var subjectRecords = await aggregateToArray({ db, subject: [
         { $match: {
             'type': subjectType,
-            'scientific.state.custom.name': { $in: subjectValues }
+            'scientific.state.custom.name': { $in: subjectValues },
+            'scientific.state.internals.isRemoved': { $ne: true },
         }},
         { $project: {
             '_id': true,
@@ -37,7 +38,8 @@ var createSubjectCombinationView = async (bag) => {
 
     var locationRecords = await aggregateToArray({ db, location: [
         { $match: {
-            '_id': { $in: subjectRecords.map(it => it.locationId) }
+            '_id': { $in: subjectRecords.map(it => it.locationId) },
+            'state.internals.isRemoved': { $ne: true },
         }},
         { $project: {
             '_id': true,
@@ -48,7 +50,8 @@ var createSubjectCombinationView = async (bag) => {
     
     var subjectGroupRecords = await aggregateToArray({ db, subjectGroup: [
         { $match: {
-            '_id': { $in: subjectRecords.map(it => it.subjectGroupId) }
+            '_id': { $in: subjectRecords.map(it => it.subjectGroupId) },
+            'state.internals.isRemoved': { $ne: true },
         }},
         { $project: {
             '_id': true,
