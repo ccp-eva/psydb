@@ -6,8 +6,8 @@ var datefns = require('date-fns');
 var { checkLabOperationAccess } = require('@mpieva/psydb-common-lib');
 var { SimpleHandler } = require('../../../lib/');
 var createSchema = require('./schema');
-var appendCommentsToSubjects = require(
-    '../../csv-import/subject-contact-history/create/append-comments-to-subjects'
+var injectCommentsIntoSubjects = require(
+    '../../csv-import/subject-contact-history/create/inject-comments-into-subjects'
 );
 
 var handler = SimpleHandler({
@@ -175,13 +175,13 @@ handler.triggerSystemEvents = async ({
         });
 
         var {
-            dev_appendContactHistoryCommentToSubject: appendComments = false
+            dev_injectContactHistoryCommentIntoSubject: injectComments = false
         } = apiConfig || {};
-        if (appendComments) {
-            await appendCommentsToSubjects({
+        if (injectComments) {
+            await injectCommentsIntoSubjects({
                 db, dispatchProps, timezone,
                 items: [{ parts: { _id, core, state }}],
-                language: appendComments === true ? 'en' : appendComments,
+                options: injectComments,
             });
         }
     }

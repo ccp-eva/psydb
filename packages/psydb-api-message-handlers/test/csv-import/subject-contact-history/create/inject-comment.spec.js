@@ -8,7 +8,7 @@ var apiConfig = require('@mpieva/psydb-api-config');
 
 var RootHandler = require('../../../../src');
 
-describe('csv-import/subject-contact-history/create append comment', function () {
+describe('csv-import/subject-contact-history/create inject comment', function () {
     var subjectType = 'catOwner';
 
     var db, ids;
@@ -35,7 +35,7 @@ describe('csv-import/subject-contact-history/create append comment', function ()
             login: { email: 'root@example.com' },
             apiConfig: {
                 ...apiConfig,
-                dev_appendContactHistoryCommentToSubject: flagValue
+                dev_injectContactHistoryCommentIntoSubject: flagValue
             },
         });
 
@@ -56,8 +56,8 @@ describe('csv-import/subject-contact-history/create append comment', function ()
         return deltas;
     }
 
-    it('de', async function () {
-        var deltas = await runImport(this, 'de');
+    it('append de', async function () {
+        var deltas = await runImport(this, { mode: 'append', language: 'de' });
 
         // NOTE: order as in dump; Maintenance has no comment in csv
         deltas.test({ expected: {
@@ -75,20 +75,76 @@ describe('csv-import/subject-contact-history/create append comment', function ()
         }, asFlatEJSON: true });
     });
 
-    it('true falls back to en', async function () {
+    it('true means append and en', async function () {
         var deltas = await runImport(this, true);
+
+        // NOTE: order as in dump; Maintenance has no comment in csv
+        deltas.test({ expected: {
+            '/0/comment': [
+                'Existing comment',
+                '[E-Mail Mar 4th, 2026 09:15: "Initial invitation newsletter"]',
+            ].join('\n'),
+            '/1/comment': [
+                '[Phone May 12th, 2026 14:30: "Follow-up regarding spring study"]',
+                '[Phone Sep 18th, 2026 16:45: "Appointment confirmed"]',
+            ].join('\n'),
+            '/4/comment': (
+                '[E-Mail Oct 20th, 2026 08:05: "Asked about availability in November"]'
+            ),
+        }, asFlatEJSON: true });
+    });
+
+    it('prepend de', async function () {
+        var deltas = await runImport(this, { mode: 'prepend', language: 'de' });
+
+        // NOTE: newest first
+        deltas.test({ expected: {
+            '/0/comment': [
+                '[E-Mail 04.03.2026 09:15: "Initial invitation newsletter"]',
+                'Existing comment',
+            ].join('\n'),
+            '/1/comment': [
+                '[Telefon 18.09.2026 16:45: "Appointment confirmed"]',
+                '[Telefon 12.05.2026 14:30: "Follow-up regarding spring study"]',
+            ].join('\n'),
+            '/4/comment': (
+                '[E-Mail 20.10.2026 08:05: "Asked about availability in November"]'
+            ),
+        }, asFlatEJSON: true });
+    });
+
+    it('object with mode and language', async function () {
+        var deltas = await runImport(this, { mode: 'append', language: 'en' });
 
         deltas.test({ expected: {
             '/0/comment': [
                 'Existing comment',
-                '[E-Mail 03/04/2026 9:15 AM: "Initial invitation newsletter"]',
+                '[E-Mail Mar 4th, 2026 09:15: "Initial invitation newsletter"]',
             ].join('\n'),
             '/1/comment': [
-                '[Phone 05/12/2026 2:30 PM: "Follow-up regarding spring study"]',
-                '[Phone 09/18/2026 4:45 PM: "Appointment confirmed"]',
+                '[Phone May 12th, 2026 14:30: "Follow-up regarding spring study"]',
+                '[Phone Sep 18th, 2026 16:45: "Appointment confirmed"]',
             ].join('\n'),
             '/4/comment': (
-                '[E-Mail 10/20/2026 8:05 AM: "Asked about availability in November"]'
+                '[E-Mail Oct 20th, 2026 08:05: "Asked about availability in November"]'
+            ),
+        }, asFlatEJSON: true });
+    });
+
+    it('object defaults to append and en', async function () {
+        var deltas = await runImport(this, {});
+
+        deltas.test({ expected: {
+            '/0/comment': [
+                'Existing comment',
+                '[E-Mail Mar 4th, 2026 09:15: "Initial invitation newsletter"]',
+            ].join('\n'),
+            '/1/comment': [
+                '[Phone May 12th, 2026 14:30: "Follow-up regarding spring study"]',
+                '[Phone Sep 18th, 2026 16:45: "Appointment confirmed"]',
+            ].join('\n'),
+            '/4/comment': (
+                '[E-Mail Oct 20th, 2026 08:05: "Asked about availability in November"]'
             ),
         }, asFlatEJSON: true });
     });

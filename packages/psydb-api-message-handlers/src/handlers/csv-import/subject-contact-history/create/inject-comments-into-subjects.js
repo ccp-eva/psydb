@@ -9,13 +9,21 @@ var { swapTimezone, getSystemTimezone }
 
 var locales = { de: deLocale, en: enLocale };
 
-// NOTE: appends i.e. [E-Mail 04.03.2026 09:15: "some comment"]
-// to the subjects comment for each contact history item with a comment
-var appendCommentsToSubjects = async (bag) => {
-    var { db, dispatchProps, items, language, timezone } = bag;
+// NOTE: en uses month names to avoid US/GB day-month ambiguity
+// TODO: maybe add a server locale or config locale instead of
+// hardcoding formats per language
+var formats = { de: 'P p', en: 'MMM do, yyyy HH:mm' };
+
+// NOTE: appends/prepends i.e. [Telefon 04.03.2026 09:15: "some comment"]
+// to the subjects comment for each contact history item with a comment;
+// options: 'append' | 'prepend' | true | { mode, language }
+// true means 'append'; language defaults to 'en'
+var injectCommentsIntoSubjects = async (bag) => {
+    var { db, dispatchProps, items, timezone, options = true } = bag;
+    var { mode, language } = normalizeOptions(options);
 
     var translate = createTranslate(language);
-    var locale = locales[language] || enLocale;
+    var locale = locales[language];
     var serverTimezone = getSystemTimezone();
 
     var withComment = items.filter(it => it.parts.state.comment);
@@ -44,14 +52,19 @@ var appendCommentsToSubjects = async (bag) => {
                 sourceTZ: timezone,
                 targetTZ: serverTimezone,
             });
-            var formatted = datefns.format(localDate, 'P p', { locale });
+            var formatted = datefns.format(localDate, formats[language], { locale });
             var label = translate(`_subjectContactType_${type}`);
 
             return `[${label} ${formatted}: "${comment}"]`;
         });
 
         var current = subject.scientific.state.comment || '';
-        var comment = [ current, ...lines ].filter(Boolean).join('\n');
+        // NOTE: prepend puts newest first, append puts newest last
+        var comment = (
+            mode === 'prepend'
+            ? [ ...lines.reverse(), current ]
+            : [ current, ...lines ]
+        ).filter(Boolean).join('\n');
 
         await dispatchProps({
             collection: 'subject',
@@ -62,4 +75,19 @@ var appendCommentsToSubjects = async (bag) => {
     }
 }
 
-module.exports = appendCommentsToSubjects;
+var normalizeOptions = (options) => {
+    var { mode = 'append', language = 'en' } = (
+        typeof options === 'object' && options !== null
+        ? options
+        : { mode: options === true ? 'append' : options }
+    );
+    if (![ 'append', 'prepend' ].includes(mode)) {
+        throw new Error(`unknown inject mode "${mode}"`);
+    }
+    if (!locales[language]) {
+        throw new Error(`unknown inject language "${language}"`);
+    }
+    return { mode, language };
+}
+
+module.exports = injectCommentsIntoSubjects;

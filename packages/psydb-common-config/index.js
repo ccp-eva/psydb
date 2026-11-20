@@ -26,8 +26,9 @@ var common = {
 
     dev_enableExtendedExperimentSearch: false,
     
-    // NOTE: true | 'en' | 'de'; true means 'en'
-    dev_appendContactHistoryCommentToSubject: false,
+    // NOTE: 'append' | 'prepend' | true | { mode, language: 'de' | 'en' }
+    // true means 'append'; language defaults to 'en'
+    dev_injectContactHistoryCommentIntoSubject: false,
 }
 
 var apedb = {
@@ -136,7 +137,9 @@ var cats = {
     dev_enableStudyConsentWorkflow: true,
     dev_enableStudyEmailTemplates: true,
     dev_enableCSVSubjectContactHistoryImport: true,
-    dev_appendContactHistoryCommentToSubject: 'de',
+    dev_injectContactHistoryCommentIntoSubject: {
+        mode: 'append', language: 'de'
+    },
     dev_enableImprovedContactTracking: true,
     dev_enableStudyRoadmap: true,
 
