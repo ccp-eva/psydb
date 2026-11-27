@@ -10,6 +10,7 @@ var {
     merge,
     compareIds,
     convertPointerToPath,
+    unique,
 } = require('@mpieva/psydb-core-utils');
 
 var {
@@ -222,14 +223,17 @@ var extendedExperimentData = async (context, next) => {
             permissions,
         });
 
-        var displayFields = [
-            ...crtSettings.tableDisplayFields,
-            ...(
-                experimentType === 'away-team'
-                ? crtSettings.awayTeamSelectionRowDisplayFields
-                : crtSettings.selectionRowDisplayFields
-            )
-        ];
+        var displayFields = unique({
+            from: [
+                ...crtSettings.tableDisplayFields,
+                ...(
+                    experimentType === 'away-team'
+                    ? crtSettings.awayTeamSelectionRowDisplayFields
+                    : crtSettings.selectionRowDisplayFields
+                )
+            ],
+            transformOption: (it) => it.pointer || it.dataPointer
+        });
 
         debug('fetching subject records');
         var records = await fetchRecordsByFilter({

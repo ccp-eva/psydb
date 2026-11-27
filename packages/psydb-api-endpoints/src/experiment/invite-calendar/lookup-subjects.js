@@ -1,4 +1,5 @@
 'use strict';
+var { unique } = require('@mpieva/psydb-core-utils');
 var { aggregateToArray } = require('@mpieva/psydb-mongo-adapter');
 var { fetchCRTSettings } = require('@mpieva/psydb-api-lib');
 var { ProjectDisplayFieldsStage }
@@ -13,10 +14,13 @@ lookupSubjects.onlyDisplayFields = async (bag) => {
         db, collectionName: 'subject', recordType: subjectType, wrap: true
     });
 
-    var definitions = [
-        ...crt.augmentedDisplayFields('table'),
-        ...crt.augmentedDisplayFields('selectionRow'),
-    ];
+    var definitions = unique({
+        from: [
+            ...crt.augmentedDisplayFields('table'),
+            ...crt.augmentedDisplayFields('selectionRow'),
+        ],
+        transformOption: (it) => it.pointer || it.dataPointer
+    });
 
     var records = await aggregateToArray({ db, subject: [
         { $match: { '_id': { $in: subjectIds }}},
