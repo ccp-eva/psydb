@@ -113,6 +113,9 @@ var humankind = {
     dev_enableCSVSubjectContactHistoryImport: true,
 
     dev_enableImprovedContactTracking: true,
+    dev_injectContactHistoryCommentIntoSubject: {
+        mode: 'prepend', language: 'de'
+    },
     dev_enableStudyRoadmap: true,
     
     enabledLabMethods: [
